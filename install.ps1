@@ -14,7 +14,12 @@ $Config = Join-Path $Root ".talking-pets.local.env"
 Set-Location $Root
 
 if (-not (Get-Command node -ErrorAction SilentlyContinue)) {
-  throw "Node.js が見つかりません。Windows版は Node.js 22 以上を推奨します。"
+  throw "Node.js が見つかりません。Windows版は Node.js 22 以上が必要です。"
+}
+
+$NodeMajor = [int](& node -p "Number(process.versions.node.split('.')[0])")
+if ($NodeMajor -lt 22) {
+  throw "Node.js 22 以上が必要です。現在のバージョン: $(& node --version)"
 }
 
 if ($Tts -eq "auto" -or $Tts -eq "kokoro") {

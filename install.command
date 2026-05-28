@@ -14,8 +14,15 @@ print_header() {
 
 need_node() {
   if ! command -v node >/dev/null 2>&1; then
-    echo "Node.js が見つかりません。Kokoro / VOICEVOX 連携には Node.js 18 以上が必要です。"
-    echo "macOS say だけで使う場合は、TTS選択で 3 を選んでください。"
+    echo "Node.js が見つかりません。Kokoro / VOICEVOX 連携には Node.js 22 以上が必要です。"
+    echo "macOS say だけで使う場合は、TTS選択で 4 を選んでください。"
+    return 1
+  fi
+
+  node_major="$(node -p "Number(process.versions.node.split('.')[0])" 2>/dev/null || echo 0)"
+  if [[ "$node_major" -lt 22 ]]; then
+    echo "Node.js 22 以上が必要です。現在のバージョン: $(node --version)"
+    echo "macOS say だけで使う場合は、TTS選択で 4 を選んでください。"
     return 1
   fi
 }

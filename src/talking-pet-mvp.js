@@ -69,11 +69,33 @@
     return speech ? speech.getVoices() : [];
   }
 
-  function scoreVoice(voice) {
+  function detectSpeechLanguage(text) {
+    let japanese = 0;
+    let latin = 0;
+    let hangul = 0;
+    for (const char of String(text || "")) {
+      const value = char.codePointAt(0);
+      if (value >= 0x3040 && value <= 0x30ff) japanese += 1;
+      else if (value >= 0xac00 && value <= 0xd7af) hangul += 1;
+      else if ((value >= 0x41 && value <= 0x5a) || (value >= 0x61 && value <= 0x7a)) latin += 1;
+    }
+    if (japanese > 0) return "ja";
+    if (hangul > 0) return "ko";
+    if (latin >= 4) return "en";
+    return "";
+  }
+
+  function scoreVoice(voice, preferredLanguage) {
     const name = `${voice.name} ${voice.lang}`.toLowerCase();
     let score = 0;
+    const lang = voice.lang ? voice.lang.toLowerCase() : "";
 
-    if (voice.lang && voice.lang.toLowerCase().startsWith("ja")) score += 100;
+    if (preferredLanguage && lang.startsWith(preferredLanguage)) score += 140;
+    if (preferredLanguage === "en" && name.includes("english")) score += 45;
+    if (preferredLanguage === "ja" && (name.includes("japanese") || name.includes("日本"))) score += 45;
+    if (preferredLanguage === "ko" && (name.includes("korean") || name.includes("한국"))) score += 45;
+
+    if (lang.startsWith("ja")) score += 30;
     if (name.includes("japanese") || name.includes("日本")) score += 50;
     if (name.includes("kyoko")) score += 35;
     if (name.includes("sayaka")) score += 30;
@@ -85,7 +107,7 @@
     return score;
   }
 
-  function pickDefaultVoice() {
+  function pickDefaultVoice(preferredLanguage = "") {
     const memoryVoice = findVoice(selectedVoiceURI, selectedVoiceName);
     if (memoryVoice) return memoryVoice;
 
@@ -96,7 +118,7 @@
 
     return getVoices()
       .slice()
-      .sort((a, b) => scoreVoice(b) - scoreVoice(a))[0] || null;
+      .sort((a, b) => scoreVoice(b, preferredLanguage) - scoreVoice(a, preferredLanguage))[0] || null;
   }
 
   function findVoice(voiceURI, voiceName) {
@@ -171,12 +193,13 @@
     speech.cancel();
 
     const utterance = new SpeechSynthesisUtterance(spokenText);
-    const voice = pickDefaultVoice();
+    const language = detectSpeechLanguage(spokenText);
+    const voice = pickDefaultVoice(language);
     const savedRate = Number(storageGet(STORAGE_KEYS.rate));
     const savedPitch = Number(storageGet(STORAGE_KEYS.pitch));
 
     if (voice) utterance.voice = voice;
-    utterance.lang = voice?.lang || "ja-JP";
+    utterance.lang = voice?.lang || (language === "en" ? "en-US" : language === "ko" ? "ko-KR" : "ja-JP");
     utterance.rate = Number.isFinite(savedRate) && savedRate > 0 ? savedRate : options.rate;
     utterance.pitch = Number.isFinite(savedPitch) && savedPitch > 0 ? savedPitch : options.pitch;
     utterance.volume = options.volume;
@@ -262,8 +285,8 @@
     panel.innerHTML = [
       "<label data-talking-pet-voice-row><span>Voice</span><select data-talking-pet-voice></select></label>",
       "<div data-talking-pet-actions>",
-      "<button type=\"button\" data-talking-pet-test>音声テスト</button>",
-      "<button type=\"button\" data-talking-pet-toggle>読み上げOn</button>",
+      "<button type=\"button\" data-talking-pet-test>Test voice</button>",
+      "<button type=\"button\" data-talking-pet-toggle>Speech On</button>",
       "</div>",
     ].join("");
 
@@ -360,7 +383,7 @@
       select.appendChild(option);
     }
 
-    toggle.textContent = storageGet(STORAGE_KEYS.enabled) === "false" ? "読み上げOff" : "読み上げOn";
+    toggle.textContent = storageGet(STORAGE_KEYS.enabled) === "false" ? "Speech Off" : "Speech On";
   }
 
   function init(userOptions = {}) {

@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="ja">
+<html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Talking Pet MVP</title>
+    <title>Talking Pets Demo</title>
     <style>
       body {
         min-height: 100vh;
@@ -110,24 +110,26 @@
     <main>
       <section class="stage">
         <div class="pet" aria-label="アイ">AI</div>
-        <div data-pet-bubble>マスター、実装しました。確認方法は demo/index.html を開いてください。</div>
+        <div data-pet-bubble></div>
       </section>
 
       <div class="preview-grid">
         <div class="preview">
-          <strong>画面表示文</strong>
-          <span data-display-preview>マスター、実装しました。確認方法は demo/index.html を開いてください。</span>
+          <strong data-label-display>Display text</strong>
+          <span data-display-preview></span>
         </div>
         <div class="preview">
-          <strong>読み上げ文</strong>
-          <span data-speech-preview>マスター、音声テストだよ。聞こえるかな。</span>
+          <strong data-label-speech>Spoken text</strong>
+          <span data-speech-preview></span>
         </div>
       </div>
 
       <div class="controls">
-        <button type="button" data-demo-test>音声テスト</button>
-        <button type="button" data-demo-message>表示文を変える</button>
-        <button type="button" data-demo-event>読み上げ専用文で喋る</button>
+        <button type="button" data-lang="en">English</button>
+        <button type="button" data-lang="ja">日本語</button>
+        <button type="button" data-demo-test></button>
+        <button type="button" data-demo-message></button>
+        <button type="button" data-demo-event></button>
       </div>
 
       <div data-voice-controls></div>
@@ -142,6 +144,59 @@
       const diagnostics = document.querySelector("[data-demo-diagnostics]");
       const displayPreview = document.querySelector("[data-display-preview]");
       const speechPreview = document.querySelector("[data-speech-preview]");
+      let currentLanguage = "en";
+      const copy = {
+        en: {
+          displayLabel: "Display text",
+          speechLabel: "Spoken text",
+          testButton: "Voice test",
+          messageButton: "Change display text",
+          eventButton: "Speak custom text",
+          initialDisplay: "Implementation is complete. Open demo/index.html to check the browser demo.",
+          initialSpeech: "The browser demo is ready.",
+          ready: "Demo JavaScript is running. Press a button to change this message.",
+          supported: "Speech API is available. Choose a voice and press Voice test.",
+          unsupported: "Speech API is not available in this browser. Button behavior can still be checked.",
+          testDisplay: "Voice test: the selected voice reads a short test sentence.",
+          testSpeech: "This is a short voice test.",
+          testSent: "Voice test sent. Check queued / start / error in diagnostics.",
+          testFailed: "Voice test could not be sent. Check the Speech API or voice settings.",
+          messageDisplay: "Result: the display text changed. The spoken sentence stays short.",
+          messageSpeech: "The display text changed, and the spoken text is shorter.",
+          messageSent: "Display text changed and custom spoken text was sent.",
+          messageFailed: "Display text changed, but speech could not be sent.",
+          eventDisplay: "Display only: a custom spoken-text event was sent.",
+          eventSpeech: "This spoken line is separate from the display text.",
+          eventSent: "Custom spoken text was sent once.",
+          eventFailed: "The custom spoken-text button was pressed, but speech could not be sent.",
+          apiLabel: "Speech API",
+        },
+        ja: {
+          displayLabel: "画面表示文",
+          speechLabel: "読み上げ文",
+          testButton: "音声テスト",
+          messageButton: "表示文を変える",
+          eventButton: "読み上げ専用文で喋る",
+          initialDisplay: "実装が完了しました。demo/index.html でブラウザデモを確認できます。",
+          initialSpeech: "ブラウザデモの準備ができました。",
+          ready: "デモJSは動いています。ボタンを押すと、この文が変わります。",
+          supported: "音声APIは使えます。声を選んで音声テストを押してください。",
+          unsupported: "このブラウザでは音声APIが使えません。ボタン反応だけ確認できます。",
+          testDisplay: "音声テスト: 選択中の声で短いテスト文を読み上げます。",
+          testSpeech: "短い音声テストです。聞こえるか確認してください。",
+          testSent: "音声テストを送信しました。診断欄の queued / start / error を見てください。",
+          testFailed: "音声テストを送信できませんでした。音声APIか読み上げ設定を確認してください。",
+          messageDisplay: "結論: 表示文を変更しました。読み上げ文は短く保ちます。",
+          messageSpeech: "表示文を変更しました。読み上げ文は短くしてあります。",
+          messageSent: "表示文を書き換えて、対応する読み上げ専用文を送信しました。",
+          messageFailed: "表示文を書き換えました。音声は送信できませんでした。",
+          eventDisplay: "画面表示: 読み上げ専用文イベントを送信しました。",
+          eventSpeech: "画面の文とは別に、耳で聞きやすい文で読み上げています。",
+          eventSent: "読み上げ専用文を1回だけ送信しました。",
+          eventFailed: "読み上げ専用文ボタンを押しました。ただし音声は送信できませんでした。",
+          apiLabel: "音声API",
+        }
+      };
       const petApi = window.TalkingPetMVP || {
         init() {
           throw new Error("talking-pet-mvp.js was not loaded");
@@ -176,26 +231,37 @@
       }
 
       function updateDiagnostics(extra) {
+        const ui = copy[currentLanguage];
         const voices = petApi.getVoices();
         diagnostics.textContent = [
           `JS: loaded`,
-          `音声API: ${petApi.isSupported() ? "available" : "not available"}`,
+          `${ui.apiLabel}: ${petApi.isSupported() ? "available" : "not available"}`,
           `voices: ${voices.length}`,
           `selected: ${petApi.getSelectedVoice?.()?.name || storageGet("talkingPet.voiceName") || "System Default"}`,
           extra ? `last: ${extra}` : ""
         ].filter(Boolean).join(" / ");
       }
 
-      setStatus("デモJSは動いています。ボタンを押すと、この文が変わります。");
+      function applyLanguage(language) {
+        currentLanguage = language;
+        const ui = copy[currentLanguage];
+        document.documentElement.lang = language;
+        document.querySelector("[data-label-display]").textContent = ui.displayLabel;
+        document.querySelector("[data-label-speech]").textContent = ui.speechLabel;
+        document.querySelector("[data-demo-test]").textContent = ui.testButton;
+        document.querySelector("[data-demo-message]").textContent = ui.messageButton;
+        document.querySelector("[data-demo-event]").textContent = ui.eventButton;
+        setPreview(ui.initialDisplay, ui.initialSpeech);
+        setStatus(petApi.isSupported() ? ui.supported : ui.unsupported);
+        updateDiagnostics();
+      }
+
       try {
         petApi.init({
           panelMount: "[data-voice-controls]",
           observeBubble: false
         });
-        setStatus(petApi.isSupported()
-          ? "音声APIは使えます。声を選んで音声テストを押してください。"
-          : "このブラウザでは音声APIが使えません。ボタン反応だけ確認できます。");
-        updateDiagnostics();
+        applyLanguage(currentLanguage);
       } catch (error) {
         setStatus(`初期化エラー: ${error.message}`);
         updateDiagnostics(`init error: ${error.message}`);
@@ -206,38 +272,39 @@
         const message = detail.error
           ? `${detail.status}: ${detail.error}`
           : `${detail.status}${detail.voice ? ` (${detail.voice})` : ""}`;
-        setStatus(`音声ステータス: ${message}`);
+        setStatus(`speech status: ${message}`);
         updateDiagnostics(message);
       });
 
+      document.querySelectorAll("[data-lang]").forEach((button) => {
+        button.addEventListener("click", () => applyLanguage(button.dataset.lang));
+      });
+
       document.querySelector("[data-demo-test]").addEventListener("click", () => {
-        const displayText = "音声テスト: 選択中の声で短いテスト文を読み上げます。";
-        const speechText = "マスター、音声テストだよ。聞こえるかな。";
+        const ui = copy[currentLanguage];
+        const displayText = ui.testDisplay;
+        const speechText = ui.testSpeech;
         setPreview(displayText, speechText);
         const ok = petApi.speak({ displayText, speechText });
-        setStatus(ok
-          ? "音声テストを送信しました。診断欄の queued / start / error を見てください。"
-          : "音声テストを送信できませんでした。音声APIか読み上げ設定を確認してください。");
+        setStatus(ok ? ui.testSent : ui.testFailed);
       });
 
       document.querySelector("[data-demo-message]").addEventListener("click", () => {
-        const displayText = "結論: 修正しました。/Users/tsukuyomi/Documents/Projects/talking-pets/src/talking-pet-mvp.js を確認してください。";
-        const speechText = "マスター、表示文を書き換えたよ。読み上げ用の文は短くしてあるね。";
+        const ui = copy[currentLanguage];
+        const displayText = ui.messageDisplay;
+        const speechText = ui.messageSpeech;
         setPreview(displayText, speechText);
         const ok = petApi.speak({ displayText, speechText });
-        setStatus(ok
-          ? "表示文を書き換えて、対応する読み上げ専用文を送信しました。"
-          : "表示文を書き換えました。音声は送信できませんでした。");
+        setStatus(ok ? ui.messageSent : ui.messageFailed);
       });
 
       document.querySelector("[data-demo-event]").addEventListener("click", () => {
-        const displayText = "画面表示: 読み上げ専用文イベントを送信しました。";
-        const speechText = "マスター、画面の文とは別に、耳で聞きやすい文で喋ってるよ。";
+        const ui = copy[currentLanguage];
+        const displayText = ui.eventDisplay;
+        const speechText = ui.eventSpeech;
         setPreview(displayText, speechText);
         const ok = petApi.speak({ displayText, speechText });
-        setStatus(ok
-          ? "読み上げ専用文を1回だけ送信しました。"
-          : "読み上げ専用文ボタンを押しました。ただし音声は送信できませんでした。");
+        setStatus(ok ? ui.eventSent : ui.eventFailed);
       });
     </script>
   </body>

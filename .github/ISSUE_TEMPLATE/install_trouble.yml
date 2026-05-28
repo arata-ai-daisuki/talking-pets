@@ -1,0 +1,35 @@
+name: Install trouble
+description: Get help with setup or first run
+title: "[Install]: "
+labels:
+  - install
+body:
+  - type: input
+    id: os
+    attributes:
+      label: OS and version
+      placeholder: "macOS 15.5 / Windows 11 / Ubuntu 24.04"
+    validations:
+      required: true
+  - type: input
+    id: node
+    attributes:
+      label: Node.js version
+      placeholder: "v22.x.x"
+    validations:
+      required: true
+  - type: textarea
+    id: check_output
+    attributes:
+      label: Check output
+      description: Paste `./check.command` or `.\check.ps1` output. Remove private paths if needed.
+      render: shell
+    validations:
+      required: true
+  - type: textarea
+    id: blocker
+    attributes:
+      label: Where did setup stop?
+      placeholder: "install.command, npm install, VOICEVOX check, dry run, start-selected-tts..."
+    validations:
+      required: true

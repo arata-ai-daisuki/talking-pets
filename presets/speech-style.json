@@ -4,7 +4,7 @@
       "fallback": "新しいメッセージがあります。",
       "templates": ["{text}"],
       "stripPrefixes": [],
-      "stripTerms": ["マスター"]
+      "stripTerms": []
     },
     "en": {
       "fallback": "New message.",

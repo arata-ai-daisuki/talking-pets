@@ -1,0 +1,52 @@
+name: Bug report
+description: Report a Talking Pets bug
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: input
+    id: os
+    attributes:
+      label: OS and version
+      placeholder: "macOS 15.5 / Windows 11 / Ubuntu 24.04"
+    validations:
+      required: true
+  - type: input
+    id: node
+    attributes:
+      label: Node.js version
+      placeholder: "v22.x.x"
+    validations:
+      required: true
+  - type: dropdown
+    id: tts
+    attributes:
+      label: TTS provider
+      options:
+        - auto
+        - VOICEVOX
+        - Kokoro.js
+        - OS speech
+        - browser demo
+    validations:
+      required: true
+  - type: textarea
+    id: commands
+    attributes:
+      label: Commands and output
+      description: Paste the command you ran and relevant check output. Remove private conversation text first.
+      render: shell
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
