@@ -73,6 +73,7 @@ function parseOptions(argv) {
     voiceboxProfile: null,
     voiceboxLanguage: null,
     speechLanguage: "auto",
+    speechStylePath: join(dirname(scriptDir), "presets", "speech-style.json"),
     languageRoute: false,
     rate: 185,
     dryRun: false,
@@ -133,6 +134,9 @@ function parseOptions(argv) {
         break;
       case "--speech-language":
         result.speechLanguage = takeValue();
+        break;
+      case "--speech-style":
+        result.speechStylePath = takeValue();
         break;
       case "--language-route":
         result.languageRoute = true;
@@ -276,7 +280,7 @@ function candidate(timestamp, source, text) {
 }
 
 function textForSource(text) {
-  return text
+  return result
     .replaceAll("\uFFFC", "")
     .replaceAll("\r", "\n")
     .split("\n")
@@ -293,12 +297,14 @@ function speechText(sourceText, opts) {
 
 function cuteSpeechSummary(text) {
   const prose = proseForSummary(text);
-  if (!prose) return "マスター、今の吹き出しはちゃんと見てるよ。";
+  if (!prose) return "New message.";
   const sentence = firstUsefulSentence(prose);
   const limit = prose.length <= 80 ? 72 : 64;
-  const core = speechCore(trimmedPhrase(sentence, limit));
-  if (!core) return "うん、今の吹き出しは拾えてるよ。";
-  return cleanSpeechLine(variedSpeechLine(core, prose));
+  const language = detectedLanguage(prose);
+  const style = speechStyleFor(language, options);
+  const core = speechCore(trimmedPhrase(sentence, limit), style);
+  if (!core) return style.fallback ?? "New message.";
+  return cleanSpeechLine(variedSpeechLine(core, prose, style), language);
 }
 
 function proseForSummary(text) {
@@ -324,9 +330,14 @@ function trimmedPhrase(text, maxCharacters) {
   return text.length <= maxCharacters ? text : `${text.slice(0, maxCharacters).trim()}...`;
 }
 
-function speechCore(text) {
-  return text
-    .replaceAll("マスター", "")
+function speechCore(text, style) {
+  const stripTerms = style.stripTerms ?? [];
+  let result = text;
+  for (const term of stripTerms) {
+    result = result.replaceAll(term, "");
+  }
+
+  return result
     .replace(/([、,])\s*([。！？!?])/g, "$2")
     .replace(/^[、,。\s]+/g, "")
     .replace(/[、,\s]+$/g, "")
@@ -335,35 +346,73 @@ function speechCore(text) {
     .trim();
 }
 
-function variedSpeechLine(core, seed) {
+function variedSpeechLine(core, seed, style) {
   const phrase = core
     .trim()
     .replace(/[、,。！？!?. ]+$/g, "")
-    .replace(/^(了解|りょうかい|うん|よし|OK|おっけー)[、,\s]+/g, "")
+    .replace(new RegExp(`^(${(style.stripPrefixes ?? []).map(escapeRegExp).join("|")})[、,\\s]+`, "u"), "")
     .replace(/[、,\s]+$/g, "")
     .trim();
-  if (!phrase) return "うん、今の吹き出しは拾えてるよ。";
-  const templates = [
-    value => `マスター、${value}。`,
-    value => `うん、${value}。`,
-    value => `よし、${value}。`,
-    value => `${value}。`,
-    value => `ここは、${value}。`,
-  ];
-  return templates[stableIndex(seed, templates.length)](phrase);
+  if (!phrase) return style.fallback ?? "New message.";
+
+  const templates = style.templates?.length ? style.templates : ["{text}"];
+  const template = templates[stableIndex(seed, templates.length)];
+  return template.replaceAll("{text}", phrase);
 }
 
-function cleanSpeechLine(text) {
+function cleanSpeechLine(text, language) {
   let result = text
     .replace(/[、,]\s*([。！？!?])/g, "$1")
     .replace(/([。！？!?]){2,}/g, "$1")
-    .replace(/あたしも追えてるよ[。！？!?]?/g, "")
     .replace(/\s+/g, " ")
     .trim()
     .replace(/^[、,\s]+|[、,\s]+$/g, "");
-  if (!/[。！？!?]$/.test(result)) result += "。";
+  if (!/[。！？!?.?]$/.test(result)) {
+    result += language === "ja" ? "。" : ".";
+  }
   return result;
 }
+
+function speechStyleFor(language, opts) {
+  const config = readSpeechStyle(opts.speechStylePath);
+  return config.languages?.[language] ?? config.languages?.fallback ?? DEFAULT_SPEECH_STYLE.languages.fallback;
+}
+
+function readSpeechStyle(path) {
+  if (!path) return DEFAULT_SPEECH_STYLE;
+  try {
+    return JSON.parse(readFileSync(path, "utf8"));
+  } catch {
+    return DEFAULT_SPEECH_STYLE;
+  }
+}
+
+function escapeRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+const DEFAULT_SPEECH_STYLE = {
+  languages: {
+    ja: {
+      fallback: "新しいメッセージがあります。",
+      templates: ["{text}"],
+      stripPrefixes: [],
+      stripTerms: ["マスター"],
+    },
+    en: {
+      fallback: "New message.",
+      templates: ["{text}"],
+      stripPrefixes: ["ok", "okay", "got it"],
+      stripTerms: [],
+    },
+    fallback: {
+      fallback: "New message.",
+      templates: ["{text}"],
+      stripPrefixes: [],
+      stripTerms: [],
+    },
+  },
+};
 
 function stableIndex(text, count) {
   let sum = 0;

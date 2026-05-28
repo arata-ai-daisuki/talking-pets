@@ -127,6 +127,49 @@ Multilingual auto routing:
 
 Initial voice presets live in [presets/voices.json](presets/voices.json).
 
+## Speech Style Customization
+
+The default speech formatter is local and rule-based. It does not call an LLM.
+It does not hard-code a character voice. You can customize spoken phrasing with [presets/speech-style.json](presets/speech-style.json).
+
+```json
+{
+  "languages": {
+    "en": {
+      "fallback": "New message.",
+      "templates": ["{text}"],
+      "stripPrefixes": ["ok", "okay", "got it"],
+      "stripTerms": []
+    }
+  }
+}
+```
+
+- `templates`: spoken line templates. `{text}` is replaced with the extracted message.
+- `stripPrefixes`: short leading acknowledgements to remove.
+- `stripTerms`: names or terms to remove from the spoken line.
+
+Use a custom file:
+
+```bash
+./scripts/pet-rollout-monitor-node.command --speech-style ./my-speech-style.json --tts auto --skip-existing
+```
+
+Currently `--speech-style` is read by the Node monitor. The stable macOS Swift monitor embeds the same neutral default style.
+
+## LLM Summaries
+
+This MVP does not call Codex, ChatGPT, or the OpenAI API to summarize text.
+It reads assistant messages already saved in local Codex logs and applies local rule-based formatting.
+
+So the default speech formatting does not require extra OpenAI API usage.
+
+Future LLM summarization should be optional and provider-agnostic.
+
+- Codex / ChatGPT: availability and limits depend on your ChatGPT plan. OpenAI Help Center says Codex is included with Plus, Pro, Business, Enterprise, and Edu, and for a limited time also Free and Go. Check [Using Codex with your ChatGPT plan](https://help.openai.com/en/articles/11369540-using-codex-with-your-chatgpt-plan) for current details.
+- OpenAI API: billed separately from ChatGPT plans.
+- Other LLMs: local LLMs or third-party LLMs can be connected through the same future summarizer interface.
+
 ## Check
 
 Dry-run without speaking:

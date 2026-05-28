@@ -1,0 +1,22 @@
+{
+  "languages": {
+    "ja": {
+      "fallback": "新しいメッセージがあります。",
+      "templates": ["{text}"],
+      "stripPrefixes": [],
+      "stripTerms": ["マスター"]
+    },
+    "en": {
+      "fallback": "New message.",
+      "templates": ["{text}"],
+      "stripPrefixes": ["ok", "okay", "got it"],
+      "stripTerms": []
+    },
+    "fallback": {
+      "fallback": "New message.",
+      "templates": ["{text}"],
+      "stripPrefixes": [],
+      "stripTerms": []
+    }
+  }
+}

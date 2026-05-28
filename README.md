@@ -127,6 +127,49 @@ macOS say:
 
 声プリセットの初期案は [presets/voices.json](presets/voices.json) にあります。
 
+## 話し方のカスタマイズ
+
+既定の読み上げ整形は、LLMを使わないローカル処理です。
+固定のキャラクター口調は持たせず、[presets/speech-style.json](presets/speech-style.json) で差し替えられるようにしています。
+
+```json
+{
+  "languages": {
+    "ja": {
+      "fallback": "新しいメッセージがあります。",
+      "templates": ["{text}"],
+      "stripPrefixes": [],
+      "stripTerms": ["マスター"]
+    }
+  }
+}
+```
+
+- `templates`: 読み上げ文のテンプレートです。`{text}` が本文に置き換わります。
+- `stripPrefixes`: 先頭から落としたい短い相づちを指定します。
+- `stripTerms`: 呼びかけや特定語を削りたい時に使います。
+
+独自ファイルを使う場合:
+
+```bash
+./scripts/pet-rollout-monitor-node.command --speech-style ./my-speech-style.json --tts auto --skip-existing
+```
+
+現時点で `--speech-style` を読むのはNode版monitorです。macOS安定版のSwift monitorは、同じ既定スタイルを内蔵しています。
+
+## LLM要約について
+
+現在のMVPは、CodexやChatGPT APIを追加で呼び出して要約する設計ではありません。
+Codexのローカル会話ログに保存された assistant 発話を読み、ローカルのルールで短く整形します。
+
+そのため、読み上げ整形だけなら追加のOpenAI API料金は不要です。
+
+将来的にLLM要約を追加する場合は、任意のsummarizerとして分離する予定です。
+
+- Codex / ChatGPT: 利用可否と上限はChatGPTプランに依存します。OpenAI Help Centerでは、CodexはPlus / Pro / Business / Enterprise / Eduに含まれ、期間限定でFree / Goにも含まれると案内されています。最新情報は [Using Codex with your ChatGPT plan](https://help.openai.com/en/articles/11369540-using-codex-with-your-chatgpt-plan) を確認してください。
+- OpenAI API: ChatGPTプランとは別課金です。
+- 他のLLM: ローカルLLMや他社LLMでも、同じsummarizerインターフェースに接続できる設計にする予定です。
+
 ## 動作確認
 
 最新発話を読み上げずに確認:
@@ -186,7 +229,7 @@ HTMLへ直接組み込む場合:
 window.dispatchEvent(new CustomEvent("codex-pet:message", {
   detail: {
     displayText: "画面にはこの文章を出す",
-    speechText: "マスター、こっちは耳で聞く用の話し方だよ。"
+    speechText: "これは読み上げ用の短い文です。"
   }
 }));
 ```

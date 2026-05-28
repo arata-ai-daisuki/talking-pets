@@ -17,6 +17,7 @@
     rate: 1.04,
     pitch: 1.18,
     volume: 1,
+    speechStyle: null,
   };
 
   let options = { ...DEFAULT_OPTIONS };
@@ -125,19 +126,12 @@
 
   function toSpokenText(displayText) {
     let text = cleanDisplayText(displayText);
+    const style = options.speechStyle || {};
 
     const replacements = [
       [/^結論[:：]\s*/u, ""],
-      [/^確認方法[:：]\s*/u, "確認はね、"],
-      [/^手順[:：]\s*/u, "手順はね、"],
-      [/実装しました[。！!]?/gu, "できたよ。"],
-      [/修正しました[。！!]?/gu, "直したよ。"],
-      [/確認しました[。！!]?/gu, "確認したよ。"],
-      [/できます[。！!]?/gu, "できるよ。"],
-      [/です。/gu, "だよ。"],
-      [/ます。/gu, "るね。"],
-      [/してください。/gu, "してね。"],
-      [/マスター、マスター、/gu, "マスター、"],
+      [/^確認方法[:：]\s*/u, ""],
+      [/^手順[:：]\s*/u, ""],
     ];
 
     for (const [pattern, replacement] of replacements) {
@@ -152,7 +146,7 @@
       .join("。");
 
     if (!text) return "";
-    if (!/^マスター[、,]/u.test(text)) text = `マスター、${text}`;
+    text = (style.template || "{text}").replaceAll("{text}", text);
     return text.endsWith("。") ? text : `${text}。`;
   }
 
@@ -326,18 +320,18 @@
         storageRemove(STORAGE_KEYS.voiceName);
         emitStatus({ status: "voice-selected", voice: "system default" });
       }
-      speakMessage({ speechText: "マスター、この声でいくね。" });
+      speakMessage({ speechText: options.speechStyle?.voiceSelectedText || "Voice selected." });
     });
 
     panel.querySelector("[data-talking-pet-test]").addEventListener("click", () => {
-      speakMessage({ speechText: "マスター、あいちゃんの声、聞こえてる？" });
+      speakMessage({ speechText: options.speechStyle?.testText || "This is a voice test." });
     });
 
     panel.querySelector("[data-talking-pet-toggle]").addEventListener("click", () => {
       const next = storageGet(STORAGE_KEYS.enabled) === "false";
       storageSet(STORAGE_KEYS.enabled, String(next));
       refreshPanel();
-      if (next) speakMessage({ speechText: "マスター、また喋るね。" });
+      if (next) speakMessage({ speechText: options.speechStyle?.enabledText || "Speech enabled." });
     });
   }
 

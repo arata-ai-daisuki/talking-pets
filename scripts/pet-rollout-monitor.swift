@@ -15,6 +15,7 @@ struct Options {
     var voiceboxProfile: String?
     var voiceboxLanguage: String?
     var speechLanguage = "auto"
+    var speechStylePath: String?
     var languageRoute = false
     var rate = 185
     var dryRun = false
@@ -58,6 +59,7 @@ func printUsage() {
       --voicebox-profile <id> Generic profile_id value. Also accepted as VOICEVOX speaker fallback
       --voicebox-language <l> Voicebox language value
       --speech-language <l>   Speech language hint: auto, ja, en, other. Default: auto
+      --speech-style <path>   Speech style JSON path. Default: presets/speech-style.json
       --language-route        Route ja/en to language-specific TTS. Default: on for --tts auto
       --no-language-route     Disable language-specific routing
       --rate <number>         macOS say rate. Default: 185
@@ -119,6 +121,9 @@ func parseOptions() -> Options {
         case "--speech-language":
             guard !args.isEmpty else { fatalError("--speech-language requires a value") }
             options.speechLanguage = args.removeFirst()
+        case "--speech-style":
+            guard !args.isEmpty else { fatalError("--speech-style requires a value") }
+            options.speechStylePath = args.removeFirst()
         case "--language-route":
             options.languageRoute = true
         case "--no-language-route":
@@ -336,18 +341,20 @@ func speechText(from sourceText: String, options: Options) -> String {
 func cuteSpeechSummary(from text: String) -> String {
     let prose = proseForSummary(text)
     guard !prose.isEmpty else {
-        return "マスター、今の吹き出しはちゃんと見てるよ。"
+        return "New message."
     }
 
     let sentence = firstUsefulSentence(in: prose)
     let limit = prose.count <= 80 ? 72 : 64
-    let core = speechCore(from: trimmedPhrase(sentence, maxCharacters: limit))
+    let language = detectedLanguage(for: prose)
+    let style = speechStyle(for: language)
+    let core = speechCore(from: trimmedPhrase(sentence, maxCharacters: limit), style: style)
 
     guard !core.isEmpty else {
-        return "うん、今の吹き出しは拾えてるよ。"
+        return style.fallback
     }
 
-    return cleanSpeechLine(variedSpeechLine(for: core, seed: prose))
+    return cleanSpeechLine(variedSpeechLine(for: core, seed: prose, style: style), language: language)
 }
 
 func proseForSummary(_ text: String) -> String {
@@ -410,10 +417,40 @@ func trimmedPhrase(_ text: String, maxCharacters: Int) -> String {
     return String(text[..<index]).trimmingCharacters(in: .whitespacesAndNewlines) + "..."
 }
 
-func speechCore(from text: String) -> String {
+struct SpeechStyle {
+    let fallback: String
+    let templates: [String]
+    let stripPrefixes: [String]
+    let stripTerms: [String]
+}
+
+func speechStyle(for language: String) -> SpeechStyle {
+    switch language {
+    case "ja":
+        return SpeechStyle(
+            fallback: "新しいメッセージがあります。",
+            templates: ["{text}"],
+            stripPrefixes: [],
+            stripTerms: ["マスター"]
+        )
+    case "en":
+        return SpeechStyle(
+            fallback: "New message.",
+            templates: ["{text}"],
+            stripPrefixes: ["ok", "okay", "got it"],
+            stripTerms: []
+        )
+    default:
+        return SpeechStyle(fallback: "New message.", templates: ["{text}"], stripPrefixes: [], stripTerms: [])
+    }
+}
+
+func speechCore(from text: String, style: SpeechStyle) -> String {
     var result = text
 
-    result = result.replacingOccurrences(of: "マスター", with: "")
+    for term in style.stripTerms {
+        result = result.replacingOccurrences(of: term, with: "")
+    }
     result = result.replacingOccurrences(
         of: #"([、,])\s*([。！？!?])"#,
         with: "$2",
@@ -443,37 +480,30 @@ func speechCore(from text: String) -> String {
     return result.trimmingCharacters(in: .whitespacesAndNewlines)
 }
 
-func variedSpeechLine(for core: String, seed: String) -> String {
-    let phrase = core
+func variedSpeechLine(for core: String, seed: String, style: SpeechStyle) -> String {
+    var phrase = core
         .trimmingCharacters(in: CharacterSet(charactersIn: "、,。！？!?. "))
-        .replacingOccurrences(
-            of: #"^(了解|りょうかい|うん|よし|OK|おっけー)[、,\s]+"#,
-            with: "",
-            options: .regularExpression
-        )
         .replacingOccurrences(
             of: #"[、,\s]+$"#,
             with: "",
             options: .regularExpression
         )
         .trimmingCharacters(in: .whitespacesAndNewlines)
+    for prefix in style.stripPrefixes {
+        let pattern = "^\(NSRegularExpression.escapedPattern(for: prefix))[、,\\s]+"
+        phrase = phrase.replacingOccurrences(of: pattern, with: "", options: .regularExpression)
+    }
     guard !phrase.isEmpty else {
-        return "うん、今の吹き出しは拾えてるよ。"
+        return style.fallback
     }
 
-    let templates: [(String) -> String] = [
-        { "マスター、\($0)。" },
-        { "うん、\($0)。" },
-        { "よし、\($0)。" },
-        { "\($0)。" },
-        { "ここは、\($0)。" },
-    ]
-
+    let templates = style.templates.isEmpty ? ["{text}"] : style.templates
     let index = stableIndex(for: seed, count: templates.count)
-    return templates[index](phrase)
+
+    return templates[index].replacingOccurrences(of: "{text}", with: phrase)
 }
 
-func cleanSpeechLine(_ text: String) -> String {
+func cleanSpeechLine(_ text: String, language: String) -> String {
     var result = text
     result = result.replacingOccurrences(
         of: #"[、,]\s*([。！？!?])"#,
@@ -486,18 +516,13 @@ func cleanSpeechLine(_ text: String) -> String {
         options: .regularExpression
     )
     result = result.replacingOccurrences(
-        of: #"あたしも追えてるよ[。！？!?]?"#,
-        with: "",
-        options: .regularExpression
-    )
-    result = result.replacingOccurrences(
         of: #"\s+"#,
         with: " ",
         options: .regularExpression
     )
     result = result.trimmingCharacters(in: CharacterSet(charactersIn: "、, \n\t"))
-    if !result.hasSuffix("。") && !result.hasSuffix("！") && !result.hasSuffix("？") {
-        result += "。"
+    if !result.hasSuffix("。") && !result.hasSuffix("！") && !result.hasSuffix("？") && !result.hasSuffix(".") && !result.hasSuffix("?") && !result.hasSuffix("!") {
+        result += language == "ja" ? "。" : "."
     }
     return result
 }
