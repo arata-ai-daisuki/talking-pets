@@ -160,9 +160,20 @@ CODEX_HOME=/path/to/codex-home ./scripts/pet-rollout-monitor.command --once --dr
 - Change config: `./install.command` を再実行して `.talking-pets.local.env` を作り直します。
 - Uninstall local config: `.talking-pets.local.env` を削除します。`node_modules/` も不要なら削除できます。
 
-## Windows Experimental
+## 実機検証メモ
 
-Windows experimental:
+2026-05-28 に macOS で `macOS say` を選択して、インストールから実Pet overlay表示まで確認しました。
+
+- install: `printf '4\nKyoko\n' | ./install.command`
+- check: `./check.command`
+- start: `./start-selected-tts.command`
+- demo: Codexスレッドへ短いデモ文を送信し、monitorが `source` と `pet` を検出
+- recording: [docs/demo/talking-pets-overlay-2026-05-28.mov](docs/demo/talking-pets-overlay-2026-05-28.mov)
+- still frame: [docs/demo/talking-pets-overlay-2026-05-28-frame.png](docs/demo/talking-pets-overlay-2026-05-28-frame.png)
+
+録画は手動確認時の約25秒の画面収録です。Pet overlay と通知が見える構図で、AAC音声トラックを含み、音声レベルが入っていることを確認しています。
+
+## Windows Experimental
 
 ```powershell
 .\install.ps1
