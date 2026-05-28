@@ -383,8 +383,8 @@ function speechText(sourceText, opts) {
 function cuteSpeechSummary(text) {
   const prose = proseForSummary(text);
   if (!prose) return "New message.";
-  const sentence = firstUsefulSentence(prose);
-  const limit = prose.length <= 80 ? 72 : 64;
+  const sentence = summarySegment(prose);
+  const limit = isMixedJapaneseEnglish(prose) ? 160 : (prose.length <= 80 ? 72 : 64);
   const language = detectedLanguage(prose);
   const style = speechStyleFor(language, options);
   const core = speechCore(trimmedPhrase(sentence, limit), style);
@@ -409,6 +409,28 @@ function firstUsefulSentence(text) {
     if (trimmed.length >= 8) return trimmed;
   }
   return text.trim();
+}
+
+function summarySegment(text) {
+  if (!isMixedJapaneseEnglish(text)) return firstUsefulSentence(text);
+
+  const useful = text
+    .split(/[。！？!?]/)
+    .map(part => part.trim())
+    .filter(part => part.length >= 8);
+
+  return useful.length >= 2 ? useful.slice(0, 2).join("。 ") : firstUsefulSentence(text);
+}
+
+function isMixedJapaneseEnglish(text) {
+  let hasJapanese = false;
+  let latin = 0;
+  for (const char of text) {
+    const value = char.codePointAt(0);
+    if ((value >= 0x3040 && value <= 0x30ff) || (value >= 0x4e00 && value <= 0x9fff)) hasJapanese = true;
+    else if ((value >= 0x41 && value <= 0x5a) || (value >= 0x61 && value <= 0x7a)) latin += 1;
+  }
+  return hasJapanese && latin >= 8;
 }
 
 function trimmedPhrase(text, maxCharacters) {

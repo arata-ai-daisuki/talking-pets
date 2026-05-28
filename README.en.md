@@ -82,7 +82,7 @@ cd /path/to/talking-pets
 ./start-selected-tts.command
 ```
 
-The installer lets you choose a local TTS provider. If unsure, choose `1` for automatic routing.
+The macOS installer first asks for a display language (`en` / `ja`), then lets you choose a local TTS provider. If unsure, choose `1` for automatic routing.
 
 | Choice | Best for | Extra setup |
 | --- | --- | --- |
@@ -185,6 +185,8 @@ Windows experimental:
 .\check.ps1
 .\start-selected-tts.ps1
 ```
+
+Use `.\install.ps1 -Language ja` for Japanese installer messages.
 
 If PowerShell blocks script execution, allow scripts for the current shell and run the command again:
 

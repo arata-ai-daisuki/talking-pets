@@ -1,5 +1,13 @@
 # Implementation Notes
 
+## 2026-05-28 580c Worktree Recovery
+
+- `/Users/tsukuyomi/.codex/worktrees/580c/talking-pets` は古い `3104812` 由来の detached worktree で、現 `origin/main` に対して公開準備ファイルや旧実験ルートが混在していたため、worktree全体は取り込まない方針にした。
+- 有益な差分として、macOS / Windows installer の表示言語切り替えと、日英混在の短いデモ文を最初の1文で切らず2文まで残す speech summary 改善だけを現 main ベースへ移植した。
+- 現 main で追加済みの Node.js 22 major version check、`check:syntax` / `test:dry-run`、YAML issue template、実Pet overlay demo asset は維持した。
+- README / README.en には、macOS installer の `en` / `ja` 選択と Windows `-Language ja` の使い方だけを追記した。
+- `test/fixtures/mixed-ja-en-rollout.jsonl` を追加し、`Talking Pets` のように日本語文中へ英字が入るデモ文でも2文目が落ちないことを dry-run で確認できるようにした。
+
 ## 2026-05-27 MVP
 
 - Codex Pet の `pet.json` はスプライト指定だけで、音声用フィールドは見つからなかった。

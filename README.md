@@ -82,7 +82,7 @@ cd /path/to/talking-pets
 ./start-selected-tts.command
 ```
 
-インストーラーでは、使うローカルTTSを選べます。迷ったら `1` の自動ルーティングを選んでください。
+macOSインストーラーでは、最初に表示言語（`en` / `ja`）を選び、その後に使うローカルTTSを選べます。迷ったら `1` の自動ルーティングを選んでください。
 
 | 選択肢 | 向いている人 | 追加準備 |
 | --- | --- | --- |
@@ -180,7 +180,7 @@ CODEX_HOME=/path/to/codex-home ./scripts/pet-rollout-monitor.command --once --dr
 
 2026-05-28 に macOS で `macOS say` を選択して、インストールから実Pet overlay表示まで確認しました。
 
-- install: `printf '4\nKyoko\n' | ./install.command`
+- install: `printf 'ja\n4\nKyoko\n' | ./install.command`
 - check: `./check.command`
 - start: `./start-selected-tts.command`
 - demo: Codexスレッドへ短いデモ文を送信し、monitorが `source` と `pet` を検出
@@ -196,6 +196,8 @@ CODEX_HOME=/path/to/codex-home ./scripts/pet-rollout-monitor.command --once --dr
 .\check.ps1
 .\start-selected-tts.ps1
 ```
+
+日本語表示で進めたい場合は `.\install.ps1 -Language ja` を使います。
 
 PowerShellでスクリプト実行が止まる場合は、現在のシェルだけ実行許可を緩めてから再実行します。
 
