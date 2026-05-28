@@ -333,3 +333,11 @@
 - 採用動画は `docs/demo/talking-pets-overlay-2026-05-28.mov`。H.264、2242x476、AAC stereo、約25秒で保存した。`volumedetect` では `mean_volume: -44.6 dB` / `max_volume: -17.1 dB` を確認した。
 - 収録内容の確認用に、採用動画の10秒地点から `docs/demo/talking-pets-overlay-2026-05-28-frame.png` を抽出し、READMEから参照できるようにした。
 - 最初に `screencapture -v -V 8` を試したが、macOS側が `dispatch_source_create returned NULL` で失敗した。`-V8` に直し、GUI権限つきで実行して解決した。
+
+## 2026-05-28 README Demo Recording And Compatibility Notes
+
+- README / README.en の冒頭付近に、実機デモ動画を `<video>` と静止画リンクの両方で参照する `Demo Recording` セクションを追加した。
+- GitHub環境によって `<video>` が表示されない場合に備え、同じ動画へ飛ぶ静止画リンクと直接リンクも残した。
+- デモ録画内のPetキャラクターは作者のローカル環境のもので、repoにはPet画像、Live2D素材、アバター素材、キャラクターアートを含めないことを明記した。
+- Talking Pets は公開Codex APIではなく、`state_5.sqlite` と rollout JSONL というローカル保存形式に依存するMVPであり、今後のCodexアップデートで壊れる可能性があることを明記した。
+- 互換性が怪しい時は `check.command` と `--once --dry-run` で最新assistant発話の取得可否を確認する流れを案内した。
