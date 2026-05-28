@@ -322,3 +322,14 @@
 - 公開向け既定値からユーザー固有の呼びかけを外すため、`presets/speech-style.json`、Node monitor、Swift monitor、README例の `stripTerms` を空配列に変更した。
 - 検証として、公開対象に `マスター|Master|OCR|bridge|Bridge|pet-ocr|codex-pet-voice-bridge|demo/bridge` が残っていないことを `rg` で確認した。残るのは `FUTURE_PLAN.md` のローカル退避方針のみ。
 - `npm run check:syntax`、`npm run test:dry-run`、`zsh -n scripts/pet-rollout-monitor.command check.command install.command` を実行し、現行ルートの検証が通ることを確認した。
+
+## 2026-05-28 Install-To-Overlay Demo Verification
+
+- 公開前の実機検証として、追加依存が不要な `macOS say` / `Kyoko` を選んで `install.command` を通した。
+- `check.command` では config、Node、npm、VOICEVOX疎通、macOS say、rollout dry-run を確認した。`node_modules` は `say` 選択では不要なため未作成のままにした。
+- `start-selected-tts.command` を起動し、このCodexスレッドへデモ文を送信したところ、monitorが `source` と `pet` を検出して読み上げ候補へ変換した。
+- 最初に作った画面収録は音声なしだったため、手動確認時の録画へ差し替えた。
+- その後、パスやrollout IDが見える録画を避けるため、Pet overlay と通知中心の構図で撮り直した約25秒の録画を採用した。
+- 採用動画は `docs/demo/talking-pets-overlay-2026-05-28.mov`。H.264、2242x476、AAC stereo、約25秒で保存した。`volumedetect` では `mean_volume: -44.6 dB` / `max_volume: -17.1 dB` を確認した。
+- 収録内容の確認用に、採用動画の10秒地点から `docs/demo/talking-pets-overlay-2026-05-28-frame.png` を抽出し、READMEから参照できるようにした。
+- 最初に `screencapture -v -V 8` を試したが、macOS側が `dispatch_source_create returned NULL` で失敗した。`-V8` に直し、GUI権限つきで実行して解決した。
