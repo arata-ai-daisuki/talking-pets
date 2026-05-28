@@ -1,0 +1,18 @@
+{
+  "name": "talking-pets",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "monitor:node": "node --no-warnings scripts/pet-rollout-monitor.mjs",
+    "tts:kokoro": "node scripts/tts-kokoro.mjs",
+    "tts:voicebox": "node scripts/tts-voicebox.mjs",
+    "tts:voicevox": "node scripts/tts-voicebox.mjs --mode voicevox"
+  },
+  "dependencies": {
+    "kokoro-js": "^1.2.1"
+  }
+}

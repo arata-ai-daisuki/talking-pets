@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Talking Pet MVP</title>
+    <style>
+      body {
+        min-height: 100vh;
+        margin: 0;
+        display: grid;
+        place-items: center;
+        background: #f5f7fb;
+        color: #172033;
+        font-family: system-ui, sans-serif;
+      }
+
+      main {
+        width: min(720px, calc(100vw - 32px));
+        display: grid;
+        gap: 16px;
+      }
+
+      .stage {
+        display: grid;
+        grid-template-columns: 128px 1fr;
+        gap: 16px;
+        align-items: end;
+      }
+
+      .pet {
+        width: 128px;
+        height: 128px;
+        display: grid;
+        place-items: center;
+        border-radius: 8px;
+        background: #ffe5ef;
+        border: 1px solid #f4b3ca;
+        font-size: 56px;
+      }
+
+      [data-pet-bubble] {
+        min-height: 80px;
+        padding: 16px;
+        border-radius: 8px;
+        border: 1px solid #d6dce8;
+        background: #fff;
+        font-size: 18px;
+        line-height: 1.6;
+      }
+
+      .preview-grid {
+        display: grid;
+        gap: 8px;
+      }
+
+      .preview {
+        padding: 12px;
+        border: 1px solid #d6dce8;
+        border-radius: 8px;
+        background: #fff;
+        font-size: 14px;
+        line-height: 1.6;
+      }
+
+      .preview strong {
+        display: block;
+        margin-bottom: 4px;
+        color: #4d5a70;
+        font-size: 12px;
+      }
+
+      .controls {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      [data-voice-controls] {
+        display: grid;
+        gap: 8px;
+      }
+
+      .diagnostics {
+        padding: 12px;
+        border: 1px solid #d6dce8;
+        border-radius: 8px;
+        background: #fff;
+        font-size: 13px;
+        line-height: 1.6;
+      }
+
+      [data-demo-status] {
+        min-height: 24px;
+        color: #4d5a70;
+        font-size: 14px;
+      }
+
+      button {
+        min-height: 36px;
+        border-radius: 8px;
+        border: 1px solid #b9c2d3;
+        background: #fff;
+        padding: 0 12px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section class="stage">
+        <div class="pet" aria-label="アイ">AI</div>
+        <div data-pet-bubble>マスター、実装しました。確認方法は demo/index.html を開いてください。</div>
+      </section>
+
+      <div class="preview-grid">
+        <div class="preview">
+          <strong>画面表示文</strong>
+          <span data-display-preview>マスター、実装しました。確認方法は demo/index.html を開いてください。</span>
+        </div>
+        <div class="preview">
+          <strong>読み上げ文</strong>
+          <span data-speech-preview>マスター、音声テストだよ。聞こえるかな。</span>
+        </div>
+      </div>
+
+      <div class="controls">
+        <button type="button" data-demo-test>音声テスト</button>
+        <button type="button" data-demo-message>表示文を変える</button>
+        <button type="button" data-demo-event>読み上げ専用文で喋る</button>
+      </div>
+
+      <div data-voice-controls></div>
+      <div data-demo-status aria-live="polite"></div>
+      <div class="diagnostics" data-demo-diagnostics></div>
+    </main>
+
+    <script src="../src/talking-pet-mvp.js?v=20260527-8"></script>
+    <script>
+      const bubble = document.querySelector("[data-pet-bubble]");
+      const status = document.querySelector("[data-demo-status]");
+      const diagnostics = document.querySelector("[data-demo-diagnostics]");
+      const displayPreview = document.querySelector("[data-display-preview]");
+      const speechPreview = document.querySelector("[data-speech-preview]");
+      const petApi = window.TalkingPetMVP || {
+        init() {
+          throw new Error("talking-pet-mvp.js was not loaded");
+        },
+        speak() {
+          return false;
+        },
+        getVoices() {
+          return [];
+        },
+        isSupported() {
+          return false;
+        },
+      };
+
+      function setStatus(message) {
+        status.textContent = message;
+      }
+
+      function setPreview(displayText, speechText) {
+        bubble.textContent = displayText;
+        displayPreview.textContent = displayText;
+        speechPreview.textContent = speechText;
+      }
+
+      function storageGet(key) {
+        try {
+          return localStorage.getItem(key);
+        } catch {
+          return null;
+        }
+      }
+
+      function updateDiagnostics(extra) {
+        const voices = petApi.getVoices();
+        diagnostics.textContent = [
+          `JS: loaded`,
+          `音声API: ${petApi.isSupported() ? "available" : "not available"}`,
+          `voices: ${voices.length}`,
+          `selected: ${petApi.getSelectedVoice?.()?.name || storageGet("talkingPet.voiceName") || "System Default"}`,
+          extra ? `last: ${extra}` : ""
+        ].filter(Boolean).join(" / ");
+      }
+
+      setStatus("デモJSは動いています。ボタンを押すと、この文が変わります。");
+      try {
+        petApi.init({
+          panelMount: "[data-voice-controls]",
+          observeBubble: false
+        });
+        setStatus(petApi.isSupported()
+          ? "音声APIは使えます。声を選んで音声テストを押してください。"
+          : "このブラウザでは音声APIが使えません。ボタン反応だけ確認できます。");
+        updateDiagnostics();
+      } catch (error) {
+        setStatus(`初期化エラー: ${error.message}`);
+        updateDiagnostics(`init error: ${error.message}`);
+      }
+
+      window.addEventListener("talking-pet:speech-status", (event) => {
+        const detail = event.detail || {};
+        const message = detail.error
+          ? `${detail.status}: ${detail.error}`
+          : `${detail.status}${detail.voice ? ` (${detail.voice})` : ""}`;
+        setStatus(`音声ステータス: ${message}`);
+        updateDiagnostics(message);
+      });
+
+      document.querySelector("[data-demo-test]").addEventListener("click", () => {
+        const displayText = "音声テスト: 選択中の声で短いテスト文を読み上げます。";
+        const speechText = "マスター、音声テストだよ。聞こえるかな。";
+        setPreview(displayText, speechText);
+        const ok = petApi.speak({ displayText, speechText });
+        setStatus(ok
+          ? "音声テストを送信しました。診断欄の queued / start / error を見てください。"
+          : "音声テストを送信できませんでした。音声APIか読み上げ設定を確認してください。");
+      });
+
+      document.querySelector("[data-demo-message]").addEventListener("click", () => {
+        const displayText = "結論: 修正しました。/Users/tsukuyomi/Documents/Projects/talking-pets/src/talking-pet-mvp.js を確認してください。";
+        const speechText = "マスター、表示文を書き換えたよ。読み上げ用の文は短くしてあるね。";
+        setPreview(displayText, speechText);
+        const ok = petApi.speak({ displayText, speechText });
+        setStatus(ok
+          ? "表示文を書き換えて、対応する読み上げ専用文を送信しました。"
+          : "表示文を書き換えました。音声は送信できませんでした。");
+      });
+
+      document.querySelector("[data-demo-event]").addEventListener("click", () => {
+        const displayText = "画面表示: 読み上げ専用文イベントを送信しました。";
+        const speechText = "マスター、画面の文とは別に、耳で聞きやすい文で喋ってるよ。";
+        setPreview(displayText, speechText);
+        const ok = petApi.speak({ displayText, speechText });
+        setStatus(ok
+          ? "読み上げ専用文を1回だけ送信しました。"
+          : "読み上げ専用文ボタンを押しました。ただし音声は送信できませんでした。");
+      });
+    </script>
+  </body>
+</html>

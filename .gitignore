@@ -1,0 +1,7 @@
+node_modules/
+.talking-pets.local.env
+.DS_Store
+*.log
+*.wav
+*.tmp
+

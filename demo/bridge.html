@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Codex Pet Voice Bridge Demo</title>
+    <style>
+      body {
+        min-height: 100vh;
+        margin: 0;
+        display: grid;
+        place-items: center;
+        background: #f5f7fb;
+        color: #172033;
+        font-family: system-ui, sans-serif;
+      }
+
+      main {
+        width: min(720px, calc(100vw - 32px));
+        display: grid;
+        gap: 16px;
+      }
+
+      .stage {
+        display: grid;
+        grid-template-columns: 128px 1fr;
+        gap: 16px;
+        align-items: end;
+      }
+
+      .pet {
+        width: 128px;
+        height: 128px;
+        display: grid;
+        place-items: center;
+        border-radius: 8px;
+        background: #ffe5ef;
+        border: 1px solid #f4b3ca;
+        font-size: 56px;
+      }
+
+      [data-pet-bubble],
+      .preview,
+      .diagnostics {
+        padding: 12px;
+        border: 1px solid #d6dce8;
+        border-radius: 8px;
+        background: #fff;
+        line-height: 1.6;
+      }
+
+      [data-pet-bubble] {
+        min-height: 80px;
+        font-size: 18px;
+      }
+
+      .controls {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      button {
+        min-height: 36px;
+        border-radius: 8px;
+        border: 1px solid #b9c2d3;
+        background: #fff;
+        padding: 0 12px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section class="stage">
+        <div class="pet" aria-label="アイ">AI</div>
+        <div data-pet-bubble>マスター、hatch-pet の吹き出しを監視するブリッジを起動したよ。</div>
+      </section>
+
+      <div class="controls">
+        <button type="button" data-next-message>吹き出しを変更</button>
+        <button type="button" data-speak-current>今の吹き出しを読む</button>
+      </div>
+
+      <div data-voice-controls></div>
+      <div class="preview" data-preview></div>
+      <div class="diagnostics" data-diagnostics></div>
+    </main>
+
+    <script src="../src/talking-pet-mvp.js?v=20260527-8"></script>
+    <script src="../src/codex-pet-voice-bridge.js?v=20260527-1"></script>
+    <script>
+      const messages = [
+        "マスター、差分を見たよ。ここは読み上げ文を短くすると聞きやすいね。",
+        "ログを確認しました。原因候補は localStorage と音声APIの初期化です。",
+        "実装メモも更新済みです。次は本体への差し込み口を探します。"
+      ];
+      let index = 0;
+
+      const bubble = document.querySelector("[data-pet-bubble]");
+      const preview = document.querySelector("[data-preview]");
+      const diagnostics = document.querySelector("[data-diagnostics]");
+
+      function setDiagnostics(message) {
+        diagnostics.textContent = message;
+      }
+
+      function selectedVoiceLabel() {
+        const voice = TalkingPetMVP.getSelectedVoice?.();
+        return voice ? `${voice.name} (${voice.lang})` : "system default";
+      }
+
+      function updatePreview(displayText) {
+        preview.textContent = [
+          `画面表示文: ${displayText}`,
+          `読み上げ文: ${TalkingPetMVP.toSpokenText(displayText)}`
+        ].join(" / ");
+      }
+
+      TalkingPetMVP.init({
+        panelMount: "[data-voice-controls]",
+        observeBubble: false
+      });
+
+      CodexPetVoiceBridge.start({
+        selectors: ["[data-pet-bubble]"]
+      });
+
+      updatePreview(bubble.textContent);
+      window.addEventListener("talking-pet:speech-status", (event) => {
+        const detail = event.detail || {};
+        const message = detail.error
+          ? `${detail.status}: ${detail.error}`
+          : `${detail.status}${detail.voice ? ` / ${detail.voice}` : ""}`;
+        setDiagnostics(`${message} / selected: ${selectedVoiceLabel()}`);
+      });
+
+      window.addEventListener("codex-pet-voice-bridge:status", (event) => {
+        const detail = event.detail || {};
+        if (detail.displayText) updatePreview(detail.displayText);
+        setDiagnostics(`${detail.status}${detail.selector ? ` / ${detail.selector}` : ""} / selected: ${selectedVoiceLabel()}`);
+      });
+
+      document.querySelector("[data-next-message]").addEventListener("click", () => {
+        bubble.textContent = messages[index % messages.length];
+        updatePreview(bubble.textContent);
+        index += 1;
+      });
+
+      document.querySelector("[data-speak-current]").addEventListener("click", () => {
+        CodexPetVoiceBridge.speakCurrentBubble();
+      });
+    </script>
+  </body>
+</html>

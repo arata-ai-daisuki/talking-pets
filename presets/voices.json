@@ -1,0 +1,23 @@
+{
+  "default": {
+    "engine": "auto",
+    "languageRoute": true
+  },
+  "languages": {
+    "ja": {
+      "engine": "voicevox",
+      "speaker": "3",
+      "label": "ずんだもん ノーマル"
+    },
+    "en": {
+      "engine": "kokoro",
+      "voice": "af_heart",
+      "label": "Kokoro Heart"
+    },
+    "fallback": {
+      "engine": "say",
+      "voice": "Kyoko",
+      "label": "macOS say fallback"
+    }
+  }
+}
