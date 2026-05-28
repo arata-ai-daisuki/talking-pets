@@ -344,8 +344,8 @@ func cuteSpeechSummary(from text: String) -> String {
         return "New message."
     }
 
-    let sentence = firstUsefulSentence(in: prose)
-    let limit = prose.count <= 80 ? 72 : 64
+    let sentence = summarySegment(in: prose)
+    let limit = isMixedJapaneseEnglish(prose) ? 160 : (prose.count <= 80 ? 72 : 64)
     let language = detectedLanguage(for: prose)
     let style = speechStyle(for: language)
     let core = speechCore(from: trimmedPhrase(sentence, maxCharacters: limit), style: style)
@@ -406,6 +406,42 @@ func firstUsefulSentence(in text: String) -> String {
     }
 
     return text.trimmingCharacters(in: .whitespacesAndNewlines)
+}
+
+func summarySegment(in text: String) -> String {
+    guard isMixedJapaneseEnglish(text) else {
+        return firstUsefulSentence(in: text)
+    }
+
+    let separators = CharacterSet(charactersIn: "。！？!?")
+    let parts = text.components(separatedBy: separators)
+    let useful = parts
+        .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+        .filter { $0.count >= 8 }
+
+    if useful.count >= 2 {
+        return useful.prefix(2).joined(separator: "。 ")
+    }
+
+    return firstUsefulSentence(in: text)
+}
+
+func isMixedJapaneseEnglish(_ text: String) -> Bool {
+    var hasJapanese = false
+    var latin = 0
+
+    for scalar in text.unicodeScalars {
+        switch scalar.value {
+        case 0x3040...0x30FF, 0x4E00...0x9FFF:
+            hasJapanese = true
+        case 0x0041...0x005A, 0x0061...0x007A:
+            latin += 1
+        default:
+            continue
+        }
+    }
+
+    return hasJapanese && latin >= 8
 }
 
 func trimmedPhrase(_ text: String, maxCharacters: Int) -> String {

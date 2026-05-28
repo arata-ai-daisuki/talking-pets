@@ -1,4 +1,6 @@
 param(
+  [ValidateSet("en", "ja")]
+  [string]$Language = "en",
   [ValidateSet("auto", "voicevox", "kokoro", "say")]
   [string]$Tts = "auto",
   [string]$VoicevoxUrl = "http://127.0.0.1:50021",
@@ -13,18 +15,42 @@ $Config = Join-Path $Root ".talking-pets.local.env"
 
 Set-Location $Root
 
+function Write-Localized {
+  param(
+    [string]$English,
+    [string]$Japanese
+  )
+  if ($Language -eq "ja") {
+    Write-Host $Japanese
+  } else {
+    Write-Host $English
+  }
+}
+
+function Throw-Localized {
+  param(
+    [string]$English,
+    [string]$Japanese
+  )
+  if ($Language -eq "ja") {
+    throw $Japanese
+  } else {
+    throw $English
+  }
+}
+
 if (-not (Get-Command node -ErrorAction SilentlyContinue)) {
-  throw "Node.js が見つかりません。Windows版は Node.js 22 以上が必要です。"
+  Throw-Localized "Node.js was not found. Windows support requires Node.js 22 or later." "Node.js が見つかりません。Windows版は Node.js 22 以上が必要です。"
 }
 
 $NodeMajor = [int](& node -p "Number(process.versions.node.split('.')[0])")
 if ($NodeMajor -lt 22) {
-  throw "Node.js 22 以上が必要です。現在のバージョン: $(& node --version)"
+  Throw-Localized "Node.js 22 or later is required. Current version: $(& node --version)" "Node.js 22 以上が必要です。現在のバージョン: $(& node --version)"
 }
 
 if ($Tts -eq "auto" -or $Tts -eq "kokoro") {
   if (-not (Get-Command npm -ErrorAction SilentlyContinue)) {
-    throw "npm が見つかりません。Kokoro を使うには npm が必要です。"
+    Throw-Localized "npm was not found. Kokoro requires npm." "npm が見つかりません。Kokoro を使うには npm が必要です。"
   }
   npm install
 }
@@ -32,13 +58,14 @@ if ($Tts -eq "auto" -or $Tts -eq "kokoro") {
 if ($Tts -eq "auto" -or $Tts -eq "voicevox") {
   try {
     Invoke-RestMethod -Uri "$VoicevoxUrl/version" -Method Get | Out-Null
-    Write-Host "VOICEVOX engine を確認しました。"
+    Write-Localized "VOICEVOX engine is reachable." "VOICEVOX engine を確認しました。"
   } catch {
-    Write-Host "VOICEVOX engine に接続できませんでした。VOICEVOXを起動してから check.ps1 を実行してください。"
+    Write-Localized "VOICEVOX engine was not reachable. Start VOICEVOX and then run check.ps1." "VOICEVOX engine に接続できませんでした。VOICEVOXを起動してから check.ps1 を実行してください。"
   }
 }
 
 @"
+TALKING_PETS_UI_LANGUAGE="$Language"
 TALKING_PETS_TTS="$Tts"
 TALKING_PETS_VOICEVOX_URL="$VoicevoxUrl"
 TALKING_PETS_VOICEVOX_SPEAKER="$VoicevoxSpeaker"
@@ -47,5 +74,5 @@ TALKING_PETS_SAY_VOICE="$SayVoice"
 TALKING_PETS_LANGUAGE_ROUTE="$(if ($Tts -eq "auto") { "1" } else { "0" })"
 "@ | Set-Content -Encoding UTF8 $Config
 
-Write-Host "設定を保存しました: $Config"
-Write-Host "起動: .\start-selected-tts.ps1"
+Write-Localized "Saved config: $Config" "設定を保存しました: $Config"
+Write-Localized "Start: .\start-selected-tts.ps1" "起動: .\start-selected-tts.ps1"
