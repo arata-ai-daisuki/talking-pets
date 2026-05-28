@@ -6,6 +6,16 @@ Codex本体や署名済みアプリを改造せず、ローカルに保存され
 
 ![Talking Pets demo preview](assets/demo-preview.png)
 
+## デモ録画
+
+<video controls width="100%" src="docs/demo/talking-pets-overlay-2026-05-28.mov">
+  <a href="docs/demo/talking-pets-overlay-2026-05-28.mov">デモ録画を見る</a>
+</video>
+
+[![Talking Pets demo recording](docs/demo/talking-pets-overlay-2026-05-28-frame.png)](docs/demo/talking-pets-overlay-2026-05-28.mov)
+
+GitHubの表示環境によって動画タグが再生されない場合は、上の静止画または [デモ録画](docs/demo/talking-pets-overlay-2026-05-28.mov) をクリックしてください。
+
 English: [README.en.md](README.en.md)
 
 ## 現在の状態
@@ -21,6 +31,12 @@ English: [README.en.md](README.en.md)
 | VOICEVOX | Optional | 日本語向け。別途VOICEVOX Engineを起動してください。 |
 | Kokoro.js | Optional | 英語系ボイス中心。初回にモデルを取得します。 |
 | OS標準音声 | Fallback | macOS `say`、Windows `System.Speech`、Linux `espeak` を使います。 |
+
+## 重要な注釈
+
+- デモ録画に写っているPetキャラクターの見た目は作者のローカル環境のものです。このリポジトリにはPet画像、Live2D素材、アバター素材は含まれていません。
+- Talking Pets は Codex の公開APIではなく、ローカルに保存された `state_5.sqlite` と rollout JSONL を読むMVPです。今後のCodexアップデートで保存場所、DB schema、JSONL形式、Pet overlayの挙動が変わると動かなくなる可能性があります。
+- 仕様変更が疑われる場合は、まず `./check.command` と `./scripts/pet-rollout-monitor.command --once --dry-run` で、最新assistant発話を取得できているか確認してください。
 
 ## 前提条件
 

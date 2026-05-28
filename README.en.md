@@ -6,6 +6,16 @@ It reads local conversation logs and sends short spoken lines to VOICEVOX, Kokor
 
 ![Talking Pets demo preview](assets/demo-preview.png)
 
+## Demo Recording
+
+<video controls width="100%" src="docs/demo/talking-pets-overlay-2026-05-28.mov">
+  <a href="docs/demo/talking-pets-overlay-2026-05-28.mov">Watch the demo recording</a>
+</video>
+
+[![Talking Pets demo recording](docs/demo/talking-pets-overlay-2026-05-28-frame.png)](docs/demo/talking-pets-overlay-2026-05-28.mov)
+
+If GitHub does not render the video player in your environment, click the still frame above or open the [demo recording](docs/demo/talking-pets-overlay-2026-05-28.mov) directly.
+
 Japanese: [README.md](README.md)
 
 ## Status
@@ -21,6 +31,12 @@ This repository is a public-ready MVP. The macOS Swift monitor is the stable pat
 | VOICEVOX | Optional | Recommended for Japanese. Start VOICEVOX Engine separately. |
 | Kokoro.js | Optional | Mostly English voices. Downloads model files on first use. |
 | OS speech | Fallback | Uses macOS `say`, Windows `System.Speech`, or Linux `espeak`. |
+
+## Important Notes
+
+- The Pet character shown in the demo recording is from the author's local environment. This repository does not include Pet images, Live2D assets, avatar assets, or character artwork.
+- Talking Pets is an MVP that reads local `state_5.sqlite` and rollout JSONL files. It does not use a public Codex API. Future Codex updates may change storage paths, database schema, JSONL shape, or Pet overlay behavior, which can break this add-on.
+- If you suspect a Codex compatibility change, first run `./check.command` and `./scripts/pet-rollout-monitor.command --once --dry-run` to confirm whether the latest assistant reply can still be found.
 
 ## Requirements
 
