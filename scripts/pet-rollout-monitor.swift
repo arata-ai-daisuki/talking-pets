@@ -431,7 +431,7 @@ func speechStyle(for language: String) -> SpeechStyle {
             fallback: "新しいメッセージがあります。",
             templates: ["{text}"],
             stripPrefixes: [],
-            stripTerms: ["マスター"]
+            stripTerms: []
         )
     case "en":
         return SpeechStyle(

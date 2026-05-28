@@ -1,0 +1,35 @@
+name: TTS provider request
+description: Suggest a local TTS provider or voice integration
+title: "[TTS]: "
+labels:
+  - enhancement
+  - tts
+body:
+  - type: input
+    id: provider
+    attributes:
+      label: Provider or voice library
+      placeholder: "VOICEVOX style, local API, CLI, OS voice..."
+    validations:
+      required: true
+  - type: textarea
+    id: platform
+    attributes:
+      label: Supported platforms
+      placeholder: "macOS, Windows, Linux..."
+    validations:
+      required: true
+  - type: textarea
+    id: api
+    attributes:
+      label: Local API or command
+      description: Describe how Talking Pets would call it locally.
+    validations:
+      required: true
+  - type: textarea
+    id: terms
+    attributes:
+      label: License and credit requirements
+      description: Link to usage terms and required credit notation.
+    validations:
+      required: true

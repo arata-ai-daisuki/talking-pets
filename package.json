@@ -1,12 +1,28 @@
 {
   "name": "talking-pets",
   "version": "0.1.0",
+  "description": "Read Codex Pet bubbles and Codex assistant replies aloud with local TTS.",
   "private": true,
+  "license": "MIT",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/arata-ai-daisuki/talking-pets.git"
+  },
+  "keywords": [
+    "codex",
+    "tts",
+    "voicevox",
+    "kokoro",
+    "local-tts",
+    "pet"
+  ],
   "engines": {
     "node": ">=22"
   },
   "scripts": {
+    "check:syntax": "node --check scripts/pet-rollout-monitor.mjs && node --check scripts/tts-kokoro.mjs && node --check scripts/tts-voicebox.mjs",
+    "test:dry-run": "node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --rollout test/fixtures/assistant-rollout.jsonl",
     "monitor:node": "node --no-warnings scripts/pet-rollout-monitor.mjs",
     "tts:kokoro": "node scripts/tts-kokoro.mjs",
     "tts:voicebox": "node scripts/tts-voicebox.mjs",

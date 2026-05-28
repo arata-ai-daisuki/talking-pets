@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  node:
+    name: Node checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check JavaScript syntax
+        run: npm run check:syntax
+
+      - name: Run safe dry-run fixture
+        run: |
+          npm run test:dry-run | tee /tmp/talking-pets-dry-run.log
+          grep -F "[pet] CI dry run ready." /tmp/talking-pets-dry-run.log

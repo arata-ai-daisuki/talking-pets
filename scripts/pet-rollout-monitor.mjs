@@ -14,6 +14,11 @@ if (options.listVoices) {
   process.exit(0);
 }
 
+if (options.version) {
+  printVersion();
+  process.exit(0);
+}
+
 let lastThread = null;
 let lastSpokenKey = null;
 let didSkipExisting = false;
@@ -35,7 +40,8 @@ while (true) {
     didSkipExisting = false;
   }
 
-  const candidate = readLatestSpeechCandidate(thread.rolloutPath, options.maxSourceCharacters);
+  const speechResult = readLatestSpeechCandidate(thread.rolloutPath, options.maxSourceCharacters);
+  const candidate = speechResult.candidate;
   if (candidate) {
     const key = normalizedKey(candidate.text);
     if (options.skipExisting && !didSkipExisting) {
@@ -52,7 +58,7 @@ while (true) {
       }
     }
   } else {
-    console.log("[wait] speech candidate not found");
+    console.log(`[wait] ${speechResult.message}`);
   }
 
   if (options.once) break;
@@ -78,6 +84,7 @@ function parseOptions(argv) {
     rate: 185,
     dryRun: false,
     listVoices: false,
+    version: false,
     once: false,
     summarizeSpeech: true,
     skipExisting: false,
@@ -102,6 +109,10 @@ function parseOptions(argv) {
       case "-h":
         printUsage();
         process.exit(0);
+      case "--version":
+      case "-v":
+        result.version = true;
+        break;
       case "--voice":
         result.voice = takeValue();
         break;
@@ -192,7 +203,49 @@ function printUsage() {
   console.log(`Usage:
   node scripts/pet-rollout-monitor.mjs [options]
 
-Options match pet-rollout-monitor.swift. This Node monitor is experimental and intended for Windows/Linux portability.`);
+Common:
+  --once                         Check once and exit
+  --dry-run                      Print the spoken line without playing audio
+  --skip-existing                Do not speak the current existing latest message
+  --interval SECONDS             Polling interval (default: 1)
+  --help                         Show this help
+  --version                      Print package version
+
+Codex source:
+  --thread-id ID                 Select a Codex thread
+  --cwd PATH                     Select the latest thread for a workspace path
+  --rollout PATH                 Read a rollout JSONL file directly
+  --state-db PATH                Read a custom state_5.sqlite
+  --max-source-chars N           Ignore source messages longer than N (default: 4000)
+
+Speech:
+  --no-summary                   Speak the full source text
+  --speech-language LANG         auto, ja, en, ko, or other
+  --speech-style PATH            JSON style config for spoken phrasing
+
+TTS:
+  --tts auto|voicevox|kokoro|say Select TTS engine (default: auto)
+  --language-route               Route by detected language
+  --no-language-route            Use the selected TTS without language routing
+  --list-voices                  List voices for the selected TTS
+  --voice NAME                   macOS say voice (default: Kyoko)
+  --voicebox-url URL             VOICEVOX or compatible local endpoint
+  --voicebox-speaker ID          VOICEVOX speaker/style id (default: 3)
+  --kokoro-voice ID              Kokoro voice id (default: af_heart)
+
+Examples:
+  node scripts/pet-rollout-monitor.mjs --once --dry-run
+  node scripts/pet-rollout-monitor.mjs --tts auto --skip-existing
+  node scripts/pet-rollout-monitor.mjs --rollout test/fixtures/assistant-rollout.jsonl --once --dry-run`);
+}
+
+function printVersion() {
+  try {
+    const pkg = JSON.parse(readFileSync(join(dirname(scriptDir), "package.json"), "utf8"));
+    console.log(pkg.version ?? "0.0.0");
+  } catch {
+    console.log("0.0.0");
+  }
 }
 
 async function resolveThread(opts) {
@@ -237,21 +290,53 @@ function readLatestSpeechCandidate(rolloutPath, maxSourceCharacters) {
   let text;
   try {
     text = readFileSync(rolloutPath, "utf8");
-  } catch {
-    return null;
+  } catch (error) {
+    const detail = error?.code ? `${error.code}: ${rolloutPath}` : error?.message ?? String(error);
+    return speechMiss(`rollout unreadable (${detail})`);
   }
 
   const lines = text.split(/\r?\n/).filter(Boolean);
+  if (lines.length === 0) {
+    return speechMiss("rollout is empty");
+  }
+
+  let parseErrors = 0;
+  let nonSpeechLines = 0;
+  let oversizedCandidates = 0;
+  let latestOversizedLength = 0;
+
   for (let i = lines.length - 1; i >= 0; i -= 1) {
     try {
       const object = JSON.parse(lines[i]);
       const candidate = speechCandidate(object);
-      if (candidate && candidate.text.length <= maxSourceCharacters) return candidate;
+      if (candidate && candidate.text.length <= maxSourceCharacters) {
+        return { candidate, message: "ok" };
+      }
+      if (candidate) {
+        oversizedCandidates += 1;
+        latestOversizedLength = Math.max(latestOversizedLength, candidate.text.length);
+      } else {
+        nonSpeechLines += 1;
+      }
     } catch {
-      continue;
+      parseErrors += 1;
     }
   }
-  return null;
+
+  if (oversizedCandidates > 0) {
+    return speechMiss(`speech candidate too long (${latestOversizedLength} chars, max ${maxSourceCharacters}); use --max-source-chars to raise the limit`);
+  }
+  if (parseErrors === lines.length) {
+    return speechMiss(`rollout has no parseable JSON lines (${parseErrors} parse errors)`);
+  }
+  if (parseErrors > 0) {
+    return speechMiss(`speech candidate not found (${parseErrors} JSON parse errors skipped, ${nonSpeechLines} non-speech lines skipped)`);
+  }
+  return speechMiss(`speech candidate not found (${nonSpeechLines} non-speech lines skipped)`);
+}
+
+function speechMiss(message) {
+  return { candidate: null, message };
 }
 
 function speechCandidate(object) {
@@ -280,7 +365,7 @@ function candidate(timestamp, source, text) {
 }
 
 function textForSource(text) {
-  return result
+  return text
     .replaceAll("\uFFFC", "")
     .replaceAll("\r", "\n")
     .split("\n")
@@ -397,7 +482,7 @@ const DEFAULT_SPEECH_STYLE = {
       fallback: "新しいメッセージがあります。",
       templates: ["{text}"],
       stripPrefixes: [],
-      stripTerms: ["マスター"],
+      stripTerms: [],
     },
     en: {
       fallback: "New message.",
