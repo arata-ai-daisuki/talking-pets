@@ -1834,7 +1834,7 @@ function issueFieldBlock(content, fieldId) {
 }
 
 function issueTemplateHasLabel(content, label) {
-  const labelsBlock = content.split(/\n(?=body:)/)[0] ?? "";
+  const labelsBlock = content.replace(/\r\n/g, "\n").split(/\n(?=body:)/)[0] ?? "";
   return new RegExp(`\\n\\s+- ${escapeRegExp(label)}\\n`).test(`${labelsBlock}\n`);
 }
 
