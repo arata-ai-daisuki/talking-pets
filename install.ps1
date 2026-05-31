@@ -46,12 +46,12 @@ function Throw-Localized {
 }
 
 if (-not (Get-Command node -ErrorAction SilentlyContinue)) {
-  Throw-Localized "Node.js was not found. Windows support requires Node.js 22 or later." "Node.js が見つかりません。Windows版は Node.js 22 以上が必要です。"
+  Throw-Localized "Node.js was not found. Windows support requires Node.js 22 or later." "Node.js was not found. Windows support requires Node.js 22 or later."
 }
 
 $NodeMajor = [int](& node -p "Number(process.versions.node.split('.')[0])")
 if ($NodeMajor -lt 22) {
-  Throw-Localized "Node.js 22 or later is required. Current version: $(& node --version)" "Node.js 22 以上が必要です。現在のバージョン: $(& node --version)"
+  Throw-Localized "Node.js 22 or later is required. Current version: $(& node --version)" "Node.js 22 or later is required. Current version: $(& node --version)"
 }
 
 $ShouldInstallNpmDependencies = $false
@@ -63,7 +63,7 @@ if ($Tts -eq "kokoro") {
 }
 if ($ShouldInstallNpmDependencies) {
   if (-not (Get-Command npm -ErrorAction SilentlyContinue)) {
-    Throw-Localized "npm was not found. Kokoro requires npm." "npm が見つかりません。Kokoro を使うには npm が必要です。"
+    Throw-Localized "npm was not found. Kokoro requires npm." "npm was not found. Kokoro requires npm."
   }
   & npm ci
 }
@@ -78,9 +78,9 @@ if ($Tts -eq "voicevox") {
 if ($ShouldCheckVoicevox) {
   try {
     Invoke-RestMethod -Uri "$VoicevoxUrl/version" -Method Get | Out-Null
-    Write-Localized "VOICEVOX engine is reachable." "VOICEVOX engine を確認しました。"
+    Write-Localized "VOICEVOX engine is reachable." "VOICEVOX engine is reachable."
   } catch {
-    Write-Localized "VOICEVOX engine was not reachable. Start VOICEVOX and then run check.ps1." "VOICEVOX engine に接続できませんでした。VOICEVOXを起動してから check.ps1 を実行してください。"
+    Write-Localized "VOICEVOX engine was not reachable. Start VOICEVOX and then run check.ps1." "VOICEVOX engine was not reachable. Start VOICEVOX and then run check.ps1."
   }
 }
 
@@ -109,5 +109,5 @@ TALKING_PETS_LANGUAGE_ROUTE="$(if ($Tts -eq "auto") { "1" } else { "0" })"
 TALKING_PETS_SPEECH_LANGUAGE="$SpeechLanguage"
 "@ | Set-Content -Encoding UTF8 $Config
 
-Write-Localized "Saved config: .talking-pets.local.env" "設定を保存しました: .talking-pets.local.env"
-Write-Localized "Start: .\start-selected-tts.ps1" "起動: .\start-selected-tts.ps1"
+Write-Localized "Saved config: .talking-pets.local.env" "Saved config: .talking-pets.local.env"
+Write-Localized "Start: .\start-selected-tts.ps1" "Start: .\start-selected-tts.ps1"
