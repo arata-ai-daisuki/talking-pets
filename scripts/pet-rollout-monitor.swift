@@ -42,6 +42,37 @@ struct SpeechCandidate {
     let text: String
 }
 
+let optionFlags: Set<String> = [
+    "--help",
+    "-h",
+    "--voice",
+    "--tts",
+    "--kokoro-voice",
+    "--kokoro-dtype",
+    "--kokoro-device",
+    "--voicebox-url",
+    "--voicebox-mode",
+    "--voicebox-speaker",
+    "--voicebox-profile",
+    "--voicebox-language",
+    "--speech-language",
+    "--speech-style",
+    "--language-route",
+    "--no-language-route",
+    "--rate",
+    "--interval",
+    "--thread-id",
+    "--cwd",
+    "--rollout",
+    "--state-db",
+    "--max-source-chars",
+    "--skip-existing",
+    "--no-summary",
+    "--dry-run",
+    "--once",
+    "--list-voices",
+]
+
 func printUsage() {
     print("""
     Usage:
@@ -58,7 +89,7 @@ func printUsage() {
       --voicebox-speaker <id> VOICEVOX speaker/style id. Default: 3 (ずんだもん ノーマル)
       --voicebox-profile <id> Generic profile_id value. Also accepted as VOICEVOX speaker fallback
       --voicebox-language <l> Voicebox language value
-      --speech-language <l>   Speech language hint: auto, ja, en, other. Default: auto
+      --speech-language <l>   Speech language hint: auto, ja, en, ko, zh, other. Default: auto
       --speech-style <path>   Speech style JSON path. Default: presets/speech-style.json
       --language-route        Route ja/en to language-specific TTS. Default: on for --tts auto
       --no-language-route     Disable language-specific routing
@@ -89,69 +120,47 @@ func parseOptions() -> Options {
             printUsage()
             exit(0)
         case "--voice":
-            guard !args.isEmpty else { fatalError("--voice requires a value") }
-            options.voice = args.removeFirst()
+            options.voice = takeValue("--voice", from: &args)
         case "--tts":
-            guard !args.isEmpty else { fatalError("--tts requires a value") }
-            options.ttsEngine = args.removeFirst()
+            options.ttsEngine = choiceValue("--tts", takeValue("--tts", from: &args), allowed: ["auto", "kokoro", "say", "voicebox", "voicevox"])
         case "--kokoro-voice":
-            guard !args.isEmpty else { fatalError("--kokoro-voice requires a value") }
-            options.kokoroVoice = args.removeFirst()
+            options.kokoroVoice = takeValue("--kokoro-voice", from: &args)
         case "--kokoro-dtype":
-            guard !args.isEmpty else { fatalError("--kokoro-dtype requires a value") }
-            options.kokoroDtype = args.removeFirst()
+            options.kokoroDtype = takeValue("--kokoro-dtype", from: &args)
         case "--kokoro-device":
-            guard !args.isEmpty else { fatalError("--kokoro-device requires a value") }
-            options.kokoroDevice = args.removeFirst()
+            options.kokoroDevice = takeValue("--kokoro-device", from: &args)
         case "--voicebox-url":
-            guard !args.isEmpty else { fatalError("--voicebox-url requires a value") }
-            options.voiceboxURL = args.removeFirst()
+            options.voiceboxURL = takeValue("--voicebox-url", from: &args)
         case "--voicebox-mode":
-            guard !args.isEmpty else { fatalError("--voicebox-mode requires a value") }
-            options.voiceboxMode = args.removeFirst()
+            options.voiceboxMode = choiceValue("--voicebox-mode", takeValue("--voicebox-mode", from: &args), allowed: ["voicevox", "generic"])
         case "--voicebox-speaker":
-            guard !args.isEmpty else { fatalError("--voicebox-speaker requires a value") }
-            options.voiceboxSpeaker = args.removeFirst()
+            options.voiceboxSpeaker = takeValue("--voicebox-speaker", from: &args)
         case "--voicebox-profile":
-            guard !args.isEmpty else { fatalError("--voicebox-profile requires a value") }
-            options.voiceboxProfile = args.removeFirst()
+            options.voiceboxProfile = takeValue("--voicebox-profile", from: &args)
         case "--voicebox-language":
-            guard !args.isEmpty else { fatalError("--voicebox-language requires a value") }
-            options.voiceboxLanguage = args.removeFirst()
+            options.voiceboxLanguage = takeValue("--voicebox-language", from: &args)
         case "--speech-language":
-            guard !args.isEmpty else { fatalError("--speech-language requires a value") }
-            options.speechLanguage = args.removeFirst()
+            options.speechLanguage = choiceValue("--speech-language", takeValue("--speech-language", from: &args), allowed: ["auto", "ja", "en", "ko", "zh", "other"])
         case "--speech-style":
-            guard !args.isEmpty else { fatalError("--speech-style requires a value") }
-            options.speechStylePath = args.removeFirst()
+            options.speechStylePath = takeValue("--speech-style", from: &args)
         case "--language-route":
             options.languageRoute = true
         case "--no-language-route":
             options.languageRoute = false
         case "--rate":
-            guard let value = args.first, let rate = Int(value) else { fatalError("--rate requires a number") }
-            args.removeFirst()
-            options.rate = rate
+            options.rate = positiveIntValue("--rate", takeValue("--rate", from: &args))
         case "--interval":
-            guard let value = args.first, let interval = TimeInterval(value) else { fatalError("--interval requires a number") }
-            args.removeFirst()
-            options.interval = interval
+            options.interval = positiveTimeIntervalValue("--interval", takeValue("--interval", from: &args))
         case "--thread-id":
-            guard !args.isEmpty else { fatalError("--thread-id requires a value") }
-            options.threadId = args.removeFirst()
+            options.threadId = takeValue("--thread-id", from: &args)
         case "--cwd":
-            guard !args.isEmpty else { fatalError("--cwd requires a path") }
-            options.cwd = args.removeFirst()
+            options.cwd = takeValue("--cwd", from: &args, noun: "path")
         case "--rollout":
-            guard !args.isEmpty else { fatalError("--rollout requires a path") }
-            options.rolloutPath = args.removeFirst()
+            options.rolloutPath = takeValue("--rollout", from: &args, noun: "path")
         case "--state-db":
-            guard !args.isEmpty else { fatalError("--state-db requires a path") }
-            options.stateDB = args.removeFirst()
+            options.stateDB = takeValue("--state-db", from: &args, noun: "path")
         case "--max-source-chars":
-            guard let value = args.first, let maxSourceCharacters = Int(value) else { fatalError("--max-source-chars requires a number") }
-            args.removeFirst()
-            options.maxSourceCharacters = max(1, maxSourceCharacters)
+            options.maxSourceCharacters = positiveIntValue("--max-source-chars", takeValue("--max-source-chars", from: &args))
         case "--skip-existing":
             options.skipExisting = true
         case "--no-summary":
@@ -163,11 +172,46 @@ func parseOptions() -> Options {
         case "--list-voices":
             options.listVoices = true
         default:
-            fatalError("Unknown option: \(arg)")
+            die("Unknown option: \(arg)")
         }
     }
 
     return options
+}
+
+func takeValue(_ flag: String, from args: inout [String], noun: String = "value") -> String {
+    guard let value = args.first, !optionFlags.contains(value) else {
+        die("\(flag) requires a \(noun)")
+    }
+    args.removeFirst()
+    return value
+}
+
+func choiceValue(_ flag: String, _ value: String, allowed: [String]) -> String {
+    let normalized = value.lowercased()
+    guard allowed.contains(normalized) else {
+        die("\(flag) must be one of: \(allowed.joined(separator: ", "))")
+    }
+    return normalized
+}
+
+func positiveTimeIntervalValue(_ flag: String, _ value: String) -> TimeInterval {
+    guard let number = TimeInterval(value), number > 0 else {
+        die("\(flag) must be a positive number")
+    }
+    return number
+}
+
+func positiveIntValue(_ flag: String, _ value: String) -> Int {
+    guard let number = Int(value), number > 0 else {
+        die("\(flag) must be a positive integer")
+    }
+    return number
+}
+
+func die(_ message: String) -> Never {
+    FileHandle.standardError.write(Data("error: \(message)\n".utf8))
+    exit(2)
 }
 
 func shellQuoteForSQLite(_ value: String) -> String {
@@ -476,6 +520,20 @@ func speechStyle(for language: String) -> SpeechStyle {
             stripPrefixes: ["ok", "okay", "got it"],
             stripTerms: []
         )
+    case "zh":
+        return SpeechStyle(
+            fallback: "有新的消息。",
+            templates: ["{text}"],
+            stripPrefixes: [],
+            stripTerms: []
+        )
+    case "ko":
+        return SpeechStyle(
+            fallback: "새 메시지가 있습니다.",
+            templates: ["{text}"],
+            stripPrefixes: [],
+            stripTerms: []
+        )
     default:
         return SpeechStyle(fallback: "New message.", templates: ["{text}"], stripPrefixes: [], stripTerms: [])
     }
@@ -558,7 +616,7 @@ func cleanSpeechLine(_ text: String, language: String) -> String {
     )
     result = result.trimmingCharacters(in: CharacterSet(charactersIn: "、, \n\t"))
     if !result.hasSuffix("。") && !result.hasSuffix("！") && !result.hasSuffix("？") && !result.hasSuffix(".") && !result.hasSuffix("?") && !result.hasSuffix("!") {
-        result += language == "ja" ? "。" : "."
+        result += ["ja", "zh"].contains(language) ? "。" : "."
     }
     return result
 }
@@ -634,7 +692,7 @@ func resolvedSpeechLanguage(for text: String, options: Options) -> String {
 }
 
 func detectedLanguage(for text: String) -> String {
-    var japanese = 0
+    var kana = 0
     var latin = 0
     var hangul = 0
     var cjk = 0
@@ -642,7 +700,7 @@ func detectedLanguage(for text: String) -> String {
     for scalar in text.unicodeScalars {
         switch scalar.value {
         case 0x3040...0x30FF:
-            japanese += 1
+            kana += 1
         case 0x4E00...0x9FFF:
             cjk += 1
         case 0xAC00...0xD7AF:
@@ -654,11 +712,14 @@ func detectedLanguage(for text: String) -> String {
         }
     }
 
-    if japanese > 0 || cjk >= 2 {
+    if kana > 0 {
         return "ja"
     }
     if hangul > 0 {
         return "ko"
+    }
+    if cjk >= 2 {
+        return "zh"
     }
     if latin >= 4 {
         return "en"

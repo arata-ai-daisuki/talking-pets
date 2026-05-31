@@ -1,12 +1,18 @@
 param(
   [ValidateSet("en", "ja")]
   [string]$Language = "en",
-  [ValidateSet("auto", "voicevox", "kokoro", "say")]
+  [ValidateSet("auto", "voicevox", "voicebox", "kokoro", "say")]
   [string]$Tts = "auto",
   [string]$VoicevoxUrl = "http://127.0.0.1:50021",
   [string]$VoicevoxSpeaker = "3",
+  [ValidateSet("voicevox", "generic")]
+  [string]$VoiceboxMode = "voicevox",
+  [string]$VoiceboxProfile = "",
+  [string]$VoiceboxLanguage = "",
   [string]$KokoroVoice = "af_heart",
-  [string]$SayVoice = ""
+  [string]$SayVoice = "Kyoko",
+  [ValidateSet("auto", "ja", "en", "ko", "zh", "other")]
+  [string]$SpeechLanguage = "auto"
 )
 
 $ErrorActionPreference = "Stop"
@@ -52,7 +58,7 @@ if ($Tts -eq "auto" -or $Tts -eq "kokoro") {
   if (-not (Get-Command npm -ErrorAction SilentlyContinue)) {
     Throw-Localized "npm was not found. Kokoro requires npm." "npm が見つかりません。Kokoro を使うには npm が必要です。"
   }
-  npm install
+  npm ci
 }
 
 if ($Tts -eq "auto" -or $Tts -eq "voicevox") {
@@ -64,15 +70,30 @@ if ($Tts -eq "auto" -or $Tts -eq "voicevox") {
   }
 }
 
+$VoiceboxConfig = ""
+if ($Tts -eq "voicebox") {
+  $VoiceboxConfig = @"
+TALKING_PETS_VOICEBOX_MODE="$VoiceboxMode"
+"@
+  if ($VoiceboxProfile) {
+    $VoiceboxConfig += "`nTALKING_PETS_VOICEBOX_PROFILE=`"$VoiceboxProfile`""
+  }
+  if ($VoiceboxLanguage) {
+    $VoiceboxConfig += "`nTALKING_PETS_VOICEBOX_LANGUAGE=`"$VoiceboxLanguage`""
+  }
+}
+
 @"
 TALKING_PETS_UI_LANGUAGE="$Language"
 TALKING_PETS_TTS="$Tts"
 TALKING_PETS_VOICEVOX_URL="$VoicevoxUrl"
 TALKING_PETS_VOICEVOX_SPEAKER="$VoicevoxSpeaker"
+$VoiceboxConfig
 TALKING_PETS_KOKORO_VOICE="$KokoroVoice"
 TALKING_PETS_SAY_VOICE="$SayVoice"
 TALKING_PETS_LANGUAGE_ROUTE="$(if ($Tts -eq "auto") { "1" } else { "0" })"
+TALKING_PETS_SPEECH_LANGUAGE="$SpeechLanguage"
 "@ | Set-Content -Encoding UTF8 $Config
 
-Write-Localized "Saved config: $Config" "設定を保存しました: $Config"
+Write-Localized "Saved config: .talking-pets.local.env" "設定を保存しました: .talking-pets.local.env"
 Write-Localized "Start: .\start-selected-tts.ps1" "起動: .\start-selected-tts.ps1"

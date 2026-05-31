@@ -20,10 +20,26 @@ body:
     validations:
       required: true
   - type: textarea
+    id: languages
+    attributes:
+      label: Languages and voices
+      description: List supported languages, notable voices, and whether Japanese / English / Korean / Chinese are usable.
+      placeholder: "Japanese voice A, English voice B, Korean supported via ..., Chinese not supported..."
+    validations:
+      required: true
+  - type: textarea
+    id: requirements
+    attributes:
+      label: Install and runtime requirements
+      description: Note required apps, CLI packages, model downloads, local servers, GPU/CPU assumptions, and first-run setup.
+      placeholder: "Requires local server on port 50021, downloads model on first run, CPU-only works..."
+    validations:
+      required: true
+  - type: textarea
     id: api
     attributes:
       label: Local API or command
-      description: Describe how Talking Pets would call it locally.
+      description: Describe how Talking Pets would call it locally. Do not include credentials, API keys, private endpoint URLs, or private conversation text. You can pipe command output through `npm run sanitize:public-output` before pasting.
     validations:
       required: true
   - type: textarea
@@ -31,5 +47,13 @@ body:
     attributes:
       label: License and credit requirements
       description: Link to usage terms and required credit notation.
+    validations:
+      required: true
+  - type: textarea
+    id: privacy
+    attributes:
+      label: Offline and privacy behavior
+      description: Note whether speech runs fully local/offline, downloads model files, or sends conversation text to a local or remote endpoint. Do not include credentials, API keys, private endpoint URLs, or private conversation text. You can pipe command output through `npm run sanitize:public-output` before pasting.
+      placeholder: "Example: local HTTP endpoint only, downloads model on first use, no remote API..."
     validations:
       required: true

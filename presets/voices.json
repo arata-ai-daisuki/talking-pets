@@ -14,6 +14,16 @@
       "voice": "af_heart",
       "label": "Kokoro Heart"
     },
+    "zh": {
+      "engine": "say",
+      "voice": "Kyoko",
+      "label": "OS speech fallback for Chinese"
+    },
+    "ko": {
+      "engine": "say",
+      "voice": "Kyoko",
+      "label": "OS speech fallback for Korean"
+    },
     "fallback": {
       "engine": "say",
       "voice": "Kyoko",

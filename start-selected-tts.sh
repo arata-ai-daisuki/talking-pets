@@ -1,7 +1,7 @@
-#!/bin/zsh
+#!/usr/bin/env bash
 set -euo pipefail
 
-ROOT_DIR="$(cd "$(dirname "$0")" && pwd)"
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CONFIG_FILE="$ROOT_DIR/.talking-pets.local.env"
 
 cd "$ROOT_DIR"
@@ -25,40 +25,50 @@ load_config() {
   line_number=0
   clear_config
   while IFS= read -r line || [[ -n "$line" ]]; do
-    (( line_number += 1 ))
+    line_number=$((line_number + 1))
     line="${line%$'\r'}"
     [[ "$line_number" -eq 1 ]] && line="${line#$'\xef\xbb\xbf'}"
     [[ -z "$line" ]] && continue
-    if [[ "$line" =~ '^([A-Z0-9_]+)="([^"]*)"$' ]]; then
-      key="${match[1]}"
-      value="${match[2]}"
+    if [[ "$line" =~ ^([A-Z0-9_]+)=\"([^\"]*)\"$ ]]; then
+      key="${BASH_REMATCH[1]}"
+      value="${BASH_REMATCH[2]}"
       case "$key" in
         TALKING_PETS_UI_LANGUAGE|TALKING_PETS_TTS|TALKING_PETS_VOICEVOX_URL|TALKING_PETS_VOICEVOX_SPEAKER|TALKING_PETS_VOICEBOX_MODE|TALKING_PETS_VOICEBOX_PROFILE|TALKING_PETS_VOICEBOX_LANGUAGE|TALKING_PETS_KOKORO_VOICE|TALKING_PETS_SAY_VOICE|TALKING_PETS_LANGUAGE_ROUTE|TALKING_PETS_SPEECH_LANGUAGE) ;;
         *)
-          echo "未対応の設定キーです: $key"
+          echo "Unsupported config key: $key"
           clear_config
           exit 2
           ;;
       esac
       export "$key=$value"
     else
-      echo "設定ファイルの形式が不正です: .talking-pets.local.env"
-      echo "問題の行番号: $line_number"
+      echo "Invalid config format: .talking-pets.local.env"
+      echo "Invalid line number: $line_number"
       clear_config
       exit 2
     fi
   done < "$CONFIG_FILE"
 }
 
-if [[ -f "$CONFIG_FILE" ]]; then
-  if command -v node >/dev/null 2>&1; then
-    node --no-warnings "$ROOT_DIR/scripts/check-config-files.mjs" >/dev/null
-  fi
-  load_config
-else
-  echo "設定ファイルがありません。先に ./install.command を実行してください。"
+if [[ ! -f "$CONFIG_FILE" ]]; then
+  echo "Config file not found. Create one first, for example:"
+  echo "cp presets/examples/privacy-first-say.env .talking-pets.local.env"
   exit 2
 fi
+
+if ! command -v node >/dev/null 2>&1; then
+  echo "Node.js 22 or later is required for Linux support."
+  exit 2
+fi
+
+node_major="$(node -p "Number(process.versions.node.split('.')[0])" 2>/dev/null || echo 0)"
+if [[ "$node_major" -lt 22 ]]; then
+  echo "Node.js 22 or later is required for Linux support."
+  exit 2
+fi
+
+node --no-warnings "$ROOT_DIR/scripts/check-config-files.mjs" >/dev/null
+load_config
 
 tts="${TALKING_PETS_TTS:-auto}"
 language_route="${TALKING_PETS_LANGUAGE_ROUTE:-1}"
@@ -84,7 +94,7 @@ fi
 
 case "$tts" in
   auto)
-    exec "$ROOT_DIR/scripts/pet-rollout-monitor.command" \
+    exec node --no-warnings "$ROOT_DIR/scripts/pet-rollout-monitor.mjs" \
       --tts auto \
       "${voicebox_config_args[@]}" \
       --kokoro-voice "${TALKING_PETS_KOKORO_VOICE:-af_heart}" \
@@ -94,7 +104,7 @@ case "$tts" in
       --skip-existing
     ;;
   voicevox)
-    exec "$ROOT_DIR/scripts/pet-rollout-monitor.command" \
+    exec node --no-warnings "$ROOT_DIR/scripts/pet-rollout-monitor.mjs" \
       --tts voicevox \
       --voicebox-url "${TALKING_PETS_VOICEVOX_URL:-http://127.0.0.1:50021}" \
       --voicebox-mode "${TALKING_PETS_VOICEBOX_MODE:-voicevox}" \
@@ -104,7 +114,7 @@ case "$tts" in
       --skip-existing
     ;;
   voicebox)
-    exec "$ROOT_DIR/scripts/pet-rollout-monitor.command" \
+    exec node --no-warnings "$ROOT_DIR/scripts/pet-rollout-monitor.mjs" \
       --tts voicebox \
       "${voicebox_config_args[@]}" \
       "${speech_args[@]}" \
@@ -112,7 +122,7 @@ case "$tts" in
       --skip-existing
     ;;
   kokoro)
-    exec "$ROOT_DIR/scripts/pet-rollout-monitor.command" \
+    exec node --no-warnings "$ROOT_DIR/scripts/pet-rollout-monitor.mjs" \
       --tts kokoro \
       --kokoro-voice "${TALKING_PETS_KOKORO_VOICE:-af_heart}" \
       "${speech_args[@]}" \
@@ -120,7 +130,7 @@ case "$tts" in
       --skip-existing
     ;;
   say)
-    exec "$ROOT_DIR/scripts/pet-rollout-monitor.command" \
+    exec node --no-warnings "$ROOT_DIR/scripts/pet-rollout-monitor.mjs" \
       --tts say \
       --voice "${TALKING_PETS_SAY_VOICE:-Kyoko}" \
       "${speech_args[@]}" \
@@ -128,7 +138,7 @@ case "$tts" in
       --skip-existing
     ;;
   *)
-    echo "未対応のTTSです: $tts"
+    echo "Unsupported TTS: $tts"
     exit 2
     ;;
 esac

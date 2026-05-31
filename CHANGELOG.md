@@ -5,7 +5,276 @@
 - Added macOS Swift monitor for reading latest Codex assistant replies from local rollout JSONL files.
 - Added experimental Node monitor for portability.
 - Added local TTS routing for VOICEVOX, Kokoro.js, and OS speech fallback.
-- Added installer, starter, and check scripts for macOS and experimental Windows usage.
+- Added installer, starter, and check scripts for macOS, experimental Windows, and experimental Linux usage.
 - Added speech style presets and voice presets.
 - Added a browser demo page for Web Speech API voice controls.
 - Added public repo readiness docs, license, credits, CI, and troubleshooting guidance.
+- Aligned real-device and release-note TTS evidence labels with the `Voicebox-compatible endpoint` issue-template choice.
+- Aligned real-device and release-note TTS evidence labels with the Platform verification issue-template choices, including `Kokoro.js` and `Other local TTS`.
+- Aligned README Windows audio guidance with the same `Kokoro.js` and `Other local TTS` labels.
+- Aligned the real-device release-note snippet with the same OS-specific TTS evidence labels.
+- Added unit tests, Codex local storage compatibility checks, cross-platform CI matrix coverage, and example local config presets.
+- Added audio playback path diagnostics for macOS, Windows, and Linux.
+- Added a Node runtime check for `node:sqlite`, which the Codex local metadata reader needs.
+- Aligned Windows audio playback with diagnostics by falling back from `powershell.exe` to `pwsh.exe`.
+- Added real-device verification documentation and wired local check scripts into compatibility/audio diagnostics.
+- Added a short contributor request checklist for collecting Windows and Linux real-device evidence.
+- Added a GitHub Release notes template and expanded install-trouble issue reports with audio-path output.
+- Made the GitHub Release notes template point to the current verification status before publishing.
+- Expanded verification status graduation requirements to include TTS path, speech language hint, config source, and Codex Desktop / CLI version when known.
+- Added optional Codex Desktop / CLI version fields to bug and install-trouble issue templates.
+- Added release-note evidence links so each verified platform can point back to a sanitized Platform verification issue.
+- Replaced the generated README preview image with the real demo recording still frame.
+- Added a local Markdown link checker for README and docs.
+- Aligned public review evidence commands with Korean and Chinese OS speech fallback verification.
+- Added a release-readiness checker for required public files, package metadata, demo assets, and executable scripts.
+- Expanded the release-readiness checker to require all core monitor, TTS, diagnostic, and test entrypoints.
+- Added config and preset validation for speech style, voice presets, and example `.env` files.
+- Added config validation to the macOS and Windows check scripts.
+- Extended config validation to include `.talking-pets.local.env` when present.
+- Added startup config validation to macOS and Windows starter scripts.
+- Made release readiness require config validation in CI and `check:all`.
+- Made release readiness preserve Windows / Linux experimental platform status until real-device evidence exists.
+- Added release-readiness guards against local config, Codex DBs, private rollout JSONL, generated audio, logs, temp files, dependency folders, and local experimental files.
+- Added unit coverage for release-forbidden artifact classification.
+- Made release readiness require `.gitignore` and security guidance for private local artifacts.
+- Expanded docs link checking to cover local HTML `src` and `href` references.
+- Added unit coverage for Markdown and HTML document link extraction.
+- Added release-readiness checks for GitHub issue form and pull request template structure.
+- Added sanitized TTS process failure logs for OS speech fallback failures.
+- Added a platform verification issue template for real-device OS and audible TTS evidence.
+- Made platform verification issues require an explicit public-evidence sanitization confirmation before evidence is linked from release notes.
+- Clarified that unsanitized or inaudible platform verification issues are follow-up reports, not release evidence for graduating Windows or Linux.
+- Clarified Platform verification handling for machines that do not have local Codex state yet.
+- Added a pull request template for checks, documentation, safety, and real-device evidence.
+- Added a pull request checklist item for public evidence sanitization before release-note linking.
+- Added a pull request checklist item so platform status changes only count sanitized, audible evidence.
+- Strengthened public-output sanitization for quoted local paths with spaces before Platform verification evidence is shared.
+- Added CI sanitizer smoke coverage for quoted local paths with spaces.
+- Added unit coverage so CI sanitizer smoke checks keep quoted local path examples.
+- Aligned release-note Known Limits with the full Windows / Linux graduation evidence requirements.
+- Aligned contributor release-evidence guidance with the full Platform verification fields.
+- Aligned the public review checklist real-device report fields with the full Platform verification evidence set.
+- Clarified the pull request real-device evidence link as a sanitized Platform verification issue for release notes.
+- Clarified the Platform verification issue description to include platform check evidence.
+- Recorded the local macOS release evidence draft with Codex CLI 0.135.0 instead of an unknown Codex version.
+- Added config source placeholders to release evidence rows and snippets so the recorded config source is copied with platform evidence.
+- Aligned README and future-plan release evidence summaries with the full TTS path and Codex version fields.
+- Clarified that `npm run check:pack` is a package-scope audit while the project remains private, not npm publish preparation.
+- Updated README check-output examples to include the current public-evidence footer lines.
+- Clarified Windows and Linux check-script compatibility output as fixture-only public evidence, with stateful Codex verification kept in `npm run check:compat`.
+- Clarified Platform verification Yes/No answers as the source for release evidence `audible: yes` and `sanitized: yes` markers.
+- Aligned the real-device verification release-note snippet known limits with the full Windows / Linux graduation evidence requirements.
+- Aligned Known Limits with the full Windows / Linux graduation evidence fields, including TTS path, speech-language, config source, and Codex version.
+- Aligned contributor and public-review evidence prompts with Platform verification OS/version, CPU architecture, and Node/npm fields.
+- Aligned README, future-plan, and verification-status evidence rows with Node/npm and CPU architecture fields.
+- Aligned release-note and real-device copy snippets with Node/npm and CPU architecture evidence fields.
+- Aligned bug and install-trouble issue templates with the Node/npm version field used by platform verification.
+- Added language/voice and install/runtime requirement fields to the TTS provider request template.
+- Aligned remaining real-device evidence wording from speech language hint to speech-language value.
+- Aligned verification status wording with the shared `Node.js and npm versions` evidence label.
+- Added CPU architecture fields to bug and install-trouble issue templates for platform-specific triage.
+- Added optional speech-language and config-source fields to bug and install-trouble issue templates for audio-related triage.
+- Made release readiness treat the macOS `.command` launcher wrappers as required files as well as executable files.
+- Made release readiness require the monitor `.command` wrappers explicitly, not only their executable bits.
+- Made the Markdown link checker ignore links inside HTML comments to avoid false positives from commented examples.
+- Clarified the verification status when VOICEVOX is not running but the current macOS audible evidence uses `macOS say`.
+- Clarified that stateful dry-run verification output can contain local thread titles, rollout paths, and conversation text, so it is not public evidence without sanitization.
+- Strengthened release-readiness guards for PowerShell starter Voicebox profile and language forwarding.
+- Added regression tests so bug and install-trouble issue templates cannot silently lose speech-language or config-source fields.
+- Strengthened public-output sanitization for unquoted local env and credential values containing spaces.
+- Clarified that the first public release can ship as macOS stable with Windows and Linux experimental, collecting their audible TTS evidence after publication.
+- Replaced empty release-note template bullets with public-preview summary and upgrade-note text.
+- Added release-readiness scanning for maintainer-local path strings in public text files.
+- Clarified the public review checklist reminder so platform stability changes require installer, platform check, dry-run, and audible TTS evidence.
+- Guarded README demo recording links so the canonical video URL stays external while the packaged still frame remains local.
+- Added `npm run check:sanitize` so public-output redaction smoke testing is available locally and covered by `check:all`.
+- Added a pull request checklist item for running `npm run check:sanitize` when sanitizer, issue-template, or release-evidence output changes.
+- Clarified that `npm run check:pack` uses a temporary npm cache for its `npm pack --dry-run --json` audit.
+- Aligned check-script missing-dependency hints with the documented `npm ci` setup path.
+- Switched installer dependency setup for Auto / Kokoro paths from `npm install` to lockfile-reproducible `npm ci`.
+- Aligned the install-trouble issue template placeholder with the `npm ci` setup path.
+- Aligned Windows starter defaults with macOS for language routing and OS speech voice forwarding.
+- Made release readiness verify that `check:all` and `check:syntax` still cover every core local gate.
+- Updated public readiness notes to match the expanded CI gates and current single browser demo path.
+- Made Windows `check.ps1` read saved local config and continue through diagnostic sections instead of stopping at the first failed check.
+- Expanded release-readiness guards for local env files, macOS metadata, SQLite DBs, generated audio formats, and downloaded model files.
+- Made macOS launcher and check scripts parse local config as `KEY="value"` data instead of sourcing the file.
+- Restricted local config loading and validation to known `TALKING_PETS_*` keys.
+- Added the browser demo source file to syntax and release-readiness checks.
+- Made the config validator import-safe and added unit coverage for allowed env keys.
+- Expanded release readiness to verify the CI workflow OS matrix and required check commands.
+- Expanded real-device verification and release-note evidence requirements to include config, docs, release checks, and public evidence sanitization.
+- Updated README privacy and release-process notes to cover config validation and public evidence sanitization.
+- Updated README release-process notes to require sanitized Platform verification issue links in release evidence.
+- Clear known local config environment variables before loading config and after config parse failures.
+- Made Codex compatibility checks require both the basic assistant rollout fixture and the mixed Japanese / English fixture.
+- Added validation for Node monitor CLI option values such as TTS engine, speech language, interval, rate, and maximum source length.
+- Redacted spoken text from VOICEVOX / Voicebox error URLs before logging connection and HTTP failures.
+- Made the Kokoro TTS script import-safe, added CLI option validation coverage, and declared its direct Transformers dependency.
+- Strengthened local config validation for VOICEVOX URLs, numeric speaker/style ids, and non-empty Kokoro / OS voice names.
+- Aligned Node and Swift monitor CLI help and value validation for TTS engine, speech language, interval, rate, and maximum source length.
+- Replaced Swift monitor CLI parse stack dumps with concise `error:` messages and exit code 2.
+- Added a macOS Swift CLI error check to keep invalid-option output concise in CI.
+- Added unit coverage for release-readiness package and workflow drift checks.
+- Added experimental Linux check and start scripts for the Node monitor path.
+- Allowed Voicebox-compatible TTS settings in local config and forwarded them from macOS, Windows, and Linux start scripts.
+- Added a generic Voicebox-compatible example config and wired it into config and release checks.
+- Made config validation verify that every launcher recognizes the same known `TALKING_PETS_*` keys.
+- Added the Linux `check.sh` entrypoint to real-device verification, release notes, and platform verification evidence prompts.
+- Added `npm run check:platform-scripts` and included it in `check:all` so local release gates parse platform scripts too.
+- Added unit coverage for OS-specific platform script check selection.
+- Aligned Windows platform script parsing with the existing PowerShell fallback from `powershell.exe` to `pwsh.exe`.
+- Added release-readiness unit coverage for CI drift when `check:platform-scripts` is removed.
+- Tightened npm pack scope unit coverage so the complete public pack fixture includes verification status and fails on missing required files.
+- Strengthened GitHub issue templates and release-readiness tests so public reports keep private logs, env values, generated audio, model files, and credentials out of issues.
+- Added `Other local TTS` to the bug report TTS provider options for custom local voice integrations.
+- Strengthened release-readiness checks so bug report TTS provider options are validated within the `tts` field.
+- Added regression coverage for `Other local TTS` in the Platform verification TTS dropdown.
+- Aligned release evidence unit coverage with the verification status document.
+- Added Linux experimental check commands to the contributor guide and release-readiness coverage.
+- Aligned contributor manual checks with Korean and Chinese OS speech fallback verification.
+- Clarified contributor guidance for inaudible or failed audio reports as follow-up evidence, not Windows / Linux graduation evidence.
+- Added an explicit `.npmignore` so accidental npm tarballs omit GitHub templates, tests, implementation notes, demo videos, local env files, generated audio, and model artifacts.
+- Expanded the CI public-output sanitizer smoke test to cover local recording and archive artifact names.
+- Aligned future packaging notes with the expanded local recording and archive artifact guard.
+- Redacted `.mov` local recording names in the public-output sanitizer and CI smoke test.
+- Aligned pull request and contributor safety checklists with the expanded local recording, archive, and local env artifact guards.
+- Ignored local `.mov` recordings while keeping the official demo recording path explicit.
+- Expanded local SQLite DB protection across ignore files, sanitizer, public guidance, and release readiness checks.
+- Added a SQLite DB filename example to the CI public-output sanitizer smoke test and README sanitizer descriptions.
+- Made the npm package scope checker reject SQLite DB files directly.
+- Made the npm package scope checker reject local experimental and dependency folders directly.
+- Added a `package.json` `files` allowlist and release-readiness drift coverage for accidental npm tarball scope expansion.
+- Made `README.md` explicit in the package `files` allowlist instead of relying only on npm's automatic README inclusion.
+- Added release-readiness unit coverage so `README.md` cannot disappear from the package `files` allowlist unnoticed.
+- Added `npm run check:pack` to parse `npm pack --dry-run --json`, enforce package size and file scope, and preserve executable bits in release gates.
+- Added `npm run check:pack` to GitHub Actions and release-readiness workflow drift checks.
+- Added `check:pack` to README, contributor, release-note, real-device verification, and public-readiness checklists.
+- Strengthened `check:pack` required-file coverage for package metadata, diagnostic scripts, and `.command` launcher wrappers.
+- Made `check:pack` use a shell for Windows `npm.cmd` execution and added unit coverage for the platform-specific npm launcher behavior.
+- Made `check:pack` require every bundled preset example plus `presets/speech-style.json` and `presets/voices.json`.
+- Made `check:pack` skip Unix executable-bit assertions on Windows while keeping them active on macOS and Linux.
+- Aligned contributor and public-readiness command lists with config, docs, platform script, pack, and release checks.
+- Updated public readiness and future release notes to mention npm pack scope checks explicitly.
+- Added platform script and npm pack scope checks to the pull request template.
+- Added release-readiness and unit checks for `package-lock.json` root metadata drift.
+- Added `npm ci` to release evidence checklists so releases prove clean lockfile installation before local checks.
+- Added `npm ci` to the README release process and release-readiness guards.
+- Added `npm ci` to the pull request template so dependency lockfile reproducibility stays visible in review.
+- Fixed release-readiness scanning so `npm ci` can run before `check:release` without failing on the local `node_modules/` install tree.
+- Made release readiness require `node_modules/` to stay ignored.
+- Split Han-only Chinese text from Japanese language detection and added `zh` as a supported `--speech-language` hint that falls back to OS speech.
+- Added Swift CLI coverage for `--speech-language zh` acceptance and invalid speech-language errors.
+- Added explicit Korean `ko` speech style and voice presets that route to OS speech fallback.
+- Added a Korean / Chinese rollout fixture to the default Codex compatibility check.
+- Added `TALKING_PETS_SPEECH_LANGUAGE` for saved local config and Korean / Chinese OS speech fallback example configs.
+- Made installers write `TALKING_PETS_SPEECH_LANGUAGE="auto"` for new local configs.
+- Added the Windows installer `-SpeechLanguage auto|ja|en|ko|zh|other` option and documented it in README.
+- Expanded platform verification and release note evidence to record speech language hints and config sources.
+- Added Voicebox-compatible endpoint setup to the macOS and Windows installers, plus generated-config checks for installer output.
+- Added `npm run check:installers` to verify macOS, Windows, and Linux installer-generated local configs in CI and release gates.
+- Added an experimental Linux `install.sh` so Linux users can create `.talking-pets.local.env` without manually copying a preset.
+- Added Linux installer packaging, syntax, npm pack, release-readiness, and real-device verification coverage.
+- Added `npm run sanitize:public-output` so public issue and release evidence logs can redact conversation text, paths, env values, endpoint URLs, generated audio, and model filenames before sharing.
+- Clarified release-gate sanitizer examples so contributors pass actual check output into the sanitizer instead of running it as a standalone check.
+- Added macOS, Windows, and Linux sanitizer pipe examples to real-device and release-note evidence docs.
+- Added a CI smoke check and contributor guidance for `npm run sanitize:public-output`.
+- Aligned macOS and Linux starter scripts so `auto` and Voicebox-compatible paths forward saved Voicebox mode, profile, and language settings consistently.
+- Made npm pack scope checks require `scripts/sanitize-public-output.mjs` explicitly.
+- Made Voicebox / VOICEVOX error URL logging redact URL fragments as well as query strings.
+- Added the public-output sanitizer hint to the bug report issue template.
+- Added Voicebox-compatible endpoint as an explicit TTS choice in bug reports and platform verification issues.
+- Aligned final README notes so Windows and Linux experimental status are stated together.
+- Added Windows and Linux sanitizer examples to the public review release gate.
+- Added Markdown anchor validation to local docs and npm package link checks.
+- Expanded the public-output sanitizer to redact `$HOME`, `${HOME}`, `~`, and `%USERPROFILE%` path forms.
+- Aligned Japanese and English README status wording around a public-review-ready MVP.
+- Aligned manual README dependency setup guidance on `npm ci` for lockfile-reproducible installs.
+- Expanded local artifact guards for extra generated audio, screen recordings, and archive files.
+- Aligned public privacy guidance with the expanded recording and archive sanitizer scope.
+- Split the public review release gate into common, macOS, Windows, and Linux evidence command blocks.
+- Added an optional Codex Desktop / CLI version field to platform verification evidence.
+- Added Codex version placeholders to release-note platform evidence snippets.
+- Split platform verification OS speech choices into macOS say, Windows OS speech, and Linux espeak.
+- Aligned macOS release-note TTS evidence placeholders with the `macOS say` platform verification choice.
+- Strengthened release-readiness tests so OS-specific TTS choices must remain in the platform verification TTS dropdown.
+- Aligned pull request and public review evidence checklists with TTS path and Codex version evidence fields.
+- Aligned Windows and Linux release-note TTS evidence placeholders with platform verification choices.
+- Made release readiness verify required labels on each GitHub issue template.
+- Added Windows and Linux sanitizer examples to the contributor guide.
+- Added issue-template selection guidance to the contributor guide.
+- Linked README release-process notes to the contributor issue guide for reports and requests.
+- Pointed README issue-guide links directly at the CONTRIBUTING Issues section.
+- Made npm pack scope checks reject macOS `.DS_Store` metadata and private rollout JSONL files directly.
+- Aligned install-trouble audio check guidance with the shared public-evidence privacy checklist.
+- Made the public-output sanitizer redact macOS `.DS_Store` metadata names.
+- Made the public-output sanitizer redact unquoted `TALKING_PETS_*=` env values.
+- Aligned release-note Windows and Linux evidence commands with the normal OS speech TTS check used in real-device verification.
+- Aligned platform check-script public-sharing warnings with the expanded privacy checklist.
+- Updated README check-output examples to match the current fixture, audio-path, and dry-run sections.
+- Clarified Windows audio options and made contributor direct dry-run examples use fixture rollout input.
+- Aligned GitHub issue privacy guidance with macOS metadata redaction.
+- Made release-readiness checks explicit in the pull request checklist.
+- Added credentials to public evidence privacy guidance and release-readiness drift checks.
+- Added a CI step that runs the aggregate `npm run check:all` gate directly.
+- Clarified README and contributor guidance that credentials still need manual review before public posting.
+- Clarified that every public evidence command output, not only platform check output, should be sanitized.
+- Expanded the public-output sanitizer to redact common credential env and authorization header patterns.
+- Added sanitizer smoke coverage for API-key headers and password-like env values.
+- Added `TALKING_PETS_UI_LANGUAGE` to the root local env example and config drift checks.
+- Included safe rollout fixtures in the npm pack allowlist because packaged scripts and docs use fixture dry-runs.
+- Aligned platform check-script public-sharing warnings with credential guidance.
+- Restricted fixture JSONL allowlists to the known public rollout fixtures only.
+- Clarified the public review checklist so the only packaged `test/` files are the three known public rollout fixtures.
+- Kept known public fixture rollout paths visible in sanitized output while still redacting private rollout JSONL paths.
+- Aligned public privacy guidance to forbid private rollout JSONL while allowing known public fixture paths to remain visible as evidence.
+- Added CI sanitizer smoke coverage for public fixture rollout paths and private rollout JSONL redaction.
+- Clarified the public review checklist so every public check, dry-run, installer, or TTS command output is sanitized before posting.
+- Added audible fixture TTS commands to contributor OS check snippets.
+- Added dry-run and audible fixture TTS commands to public review evidence blocks.
+- Aligned platform check-script public-sharing warnings with the private-rollout/public-fixture evidence policy.
+- Added a verification status document that separates current macOS evidence from pending Windows and Linux real-device evidence.
+- Added verification status drift checks for release gate commands and platform graduation rules.
+- Added the verification status document to the pull request documentation checklist.
+- Strengthened package and npm pack regression tests so `docs/verification-status.md` cannot silently drop from the public artifact set.
+- Added public-output sanitizer guidance and release-readiness coverage to TTS provider request issues.
+- Expanded pull request safety checks to cover macOS metadata and downloaded model files.
+- Expanded the security policy sanitizer guidance to match the public issue privacy checklist.
+- Added conversation-text privacy guidance and regression coverage to install trouble issues.
+- Made the fixture dry-run release check explicit in README and public review guidance.
+- Added speech-language, config-source, and Codex-version prompts to contributor issue guidance.
+- Aligned contributor pull request safety guidance with downloaded model file and macOS metadata protections.
+- Strengthened config validation for the generic Voicebox-compatible example profile, language, and speech-language values.
+- Added unit regression coverage for the generic Voicebox-compatible example expected values.
+- Added unit coverage for the actual generic Voicebox-compatible example env values.
+- Expanded example env unit coverage across all shipped preset examples.
+- Documented the purpose of each shipped example env in both READMEs.
+- Mirrored key example env purpose notes into the public review checklist.
+- Added the explicit fixture dry-run command to the verification status snapshot.
+- Added workflow regression coverage for the CI fixture dry-run step.
+- Added explicit `npm run test:dry-run` evidence prompts to real-device verification, release notes, and Platform verification issues.
+- Added a pull request checklist guard for fixture dry-run evidence when monitor extraction or rollout fixtures change.
+- Added installer commands to the public review OS evidence blocks so install evidence is not skipped.
+- Added contributor sanitizer examples for installer output used in platform verification evidence.
+- Added sanitizer regression coverage for installer-style local config output.
+- Added installer-output sanitizer examples to the real-device verification guide.
+- Added `sanitized: yes|no` placeholders to release-note platform evidence rows.
+- Added explicit `audible: yes` and `sanitized: yes` graduation markers to verification status.
+- Added the same `audible: yes` / `sanitized: yes` evidence markers to the README release process.
+- Added `audible: yes` / `sanitized: yes` markers to the pull request real-device evidence checklist.
+- Aligned the real-device release-note snippet with explicit speech-language, audible, and sanitized fields.
+- Added `audible: yes` / `sanitized: yes` markers to the public review real-device checklist.
+- Clarified public review handling for real-device reports with no local Codex state yet.
+- Clarified release-note handling for real-device reports with no local Codex state yet.
+- Added a macOS release-evidence draft row to the current verification status.
+- Added sanitizer pipe examples for public dry-run and audible TTS evidence commands.
+- Added a copy-paste real-device verification request for Windows and Linux contributors.
+- Added a received-evidence review checklist before Windows or Linux platform graduation.
+- Added Windows and Linux release-evidence row templates for reviewed Platform verification issues.
+- Clarified that CI, fixture-only dry-runs, package checks, and `--no-state` compatibility are release gates, not Windows or Linux graduation evidence.
+- Aligned README release process and future-plan graduation notes with the stricter real-device evidence requirements.
+- Added the same CI/fixture/package graduation boundary to the Platform verification issue form and pull request template.
+- Made the pull request real-device evidence checklist require install, platform check, dry-run, and one audible TTS command output.
+- Added the macOS audible fixture TTS command to the current verification status evidence list.
+- Aligned CONTRIBUTING platform verification guidance with the stricter install, platform check, dry-run, audible TTS, and release-gate boundary rules.
