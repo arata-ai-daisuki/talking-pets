@@ -25,7 +25,7 @@ function Clear-LocalConfig {
 }
 
 if (-not (Test-Path $Config)) {
-  throw "設定ファイルがありません。先に .\install.ps1 を実行してください。"
+  throw "Config file is missing. Run .\install.ps1 first."
 }
 
 if (-not (Get-Command node -ErrorAction SilentlyContinue)) {
@@ -51,12 +51,12 @@ Get-Content $Config | ForEach-Object {
   if ($Line -match '^([A-Z0-9_]+)="([^"]*)"$') {
     if ($AllowedConfigKeys -notcontains $Matches[1]) {
       Clear-LocalConfig
-      throw "未対応の設定キーです: $($Matches[1])"
+      throw "Unsupported config key: $($Matches[1])"
     }
     [Environment]::SetEnvironmentVariable($Matches[1], $Matches[2], "Process")
   } elseif ($Line.Trim()) {
     Clear-LocalConfig
-    throw "設定ファイルの形式が不正です: .talking-pets.local.env (line $LineNumber)"
+    throw "Invalid config format: .talking-pets.local.env (line $LineNumber)"
   }
 }
 

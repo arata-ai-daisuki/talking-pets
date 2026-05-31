@@ -1761,11 +1761,11 @@ function localConfigFailureLogIssues(scripts) {
     {
       file: "start-selected-tts.ps1",
       required: [
-        "設定ファイルの形式が不正です: .talking-pets.local.env",
+        "Invalid config format: .talking-pets.local.env",
         "line $LineNumber",
       ],
       forbidden: [
-        "設定ファイルの形式が不正です: $Config",
+        "Invalid config format: $Config",
       ],
     },
     {
