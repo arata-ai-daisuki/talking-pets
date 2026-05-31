@@ -1117,6 +1117,7 @@ function assertExecutable(file) {
     fail(`missing executable file: ${file}`);
     return;
   }
+  if (process.platform === "win32") return;
   const mode = statSync(path).mode;
   if ((mode & 0o111) === 0) {
     fail(`not executable: ${file}`);
@@ -1863,7 +1864,7 @@ function checkTextDoesNotContain(file, text) {
 function readText(file) {
   const path = join(root, file);
   if (!existsSync(path)) return "";
-  return readFileSync(path, "utf8");
+  return readFileSync(path, "utf8").replace(/\r\n/g, "\n");
 }
 
 function fail(message) {
