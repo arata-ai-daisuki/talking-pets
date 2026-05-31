@@ -2,7 +2,7 @@
 
 import { mkdtempSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { dirname, join, normalize, sep } from "node:path";
+import { dirname, join, normalize } from "node:path";
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { documentAnchors, documentLinks, shouldSkip, splitTarget } from "./check-markdown-links.mjs";
@@ -173,6 +173,7 @@ function packIssues(pack, opts = {}) {
 
 function packageDocumentLinkIssues(files) {
   const issues = [];
+  const normalizedFiles = new Map([...files.keys()].map(path => [normalizePackagePath(path), path]));
   for (const path of files.keys()) {
     if (!path.endsWith(".md") && !path.endsWith(".html")) continue;
     let text;
@@ -187,18 +188,18 @@ function packageDocumentLinkIssues(files) {
       const { targetPath, fragment } = splitTarget(link.target);
       if (!targetPath && !fragment) continue;
       const resolved = targetPath ? normalize(join(dirname(path), safeDecodeURIComponent(targetPath))) : path;
-      const normalized = resolved.split(sep).join("/");
-      if ((resolved.startsWith("..") || resolved.startsWith(sep)) && !files.has(normalized)) {
+      const normalized = normalizePackagePath(resolved);
+      if (linkEscapesPackage(targetPath, normalized) && !normalizedFiles.has(normalized)) {
         issues.push(`npm package document link escapes package: ${path}:${link.line} -> ${link.target}`);
         continue;
       }
-      if (!files.has(normalized)) {
+      if (!normalizedFiles.has(normalized)) {
         issues.push(`npm package document link missing packaged target: ${path}:${link.line} -> ${link.target}`);
         continue;
       }
       if (fragment) {
         try {
-          if (!documentAnchors(readFileSync(normalized, "utf8")).has(safeDecodeURIComponent(fragment))) {
+          if (!documentAnchors(readFileSync(normalizedFiles.get(normalized), "utf8")).has(safeDecodeURIComponent(fragment))) {
             issues.push(`npm package document link missing packaged anchor: ${path}:${link.line} -> ${link.target}`);
           }
         } catch (error) {
@@ -208,6 +209,19 @@ function packageDocumentLinkIssues(files) {
     }
   }
   return issues;
+}
+
+function normalizePackagePath(path) {
+  return normalize(path).replace(/\\/g, "/");
+}
+
+function linkEscapesPackage(targetPath, normalized) {
+  if (!targetPath) return false;
+  return normalized === ".."
+    || normalized.startsWith("../")
+    || normalized.startsWith("/")
+    || /^[A-Za-z]:\//.test(normalized)
+    || safeDecodeURIComponent(targetPath).replace(/\\/g, "/").startsWith("../");
 }
 
 function safeDecodeURIComponent(value) {

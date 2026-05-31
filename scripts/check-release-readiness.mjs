@@ -1828,7 +1828,7 @@ function npmRunScriptNamesInText(content) {
 }
 
 function issueFieldBlock(content, fieldId) {
-  return content
+  return content.replace(/\r\n/g, "\n")
     .split(/\n(?=\s+- type: )/)
     .find(block => new RegExp(`\\n\\s+id: ${escapeRegExp(fieldId)}\\n`).test(block)) ?? "";
 }

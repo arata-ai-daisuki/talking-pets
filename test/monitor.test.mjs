@@ -670,21 +670,21 @@ test("detects issue template privacy guidance drift", () => {
   const templatesWithoutLinuxEspeakOption = new Map(templateFiles.map(file => [file, readFileSync(file, "utf8")]));
   templatesWithoutLinuxEspeakOption.set(
     ".github/ISSUE_TEMPLATE/platform_verification.yml",
-    templatesWithoutLinuxEspeakOption.get(".github/ISSUE_TEMPLATE/platform_verification.yml").replace("        - Linux espeak\n", ""),
+    removeLine(templatesWithoutLinuxEspeakOption.get(".github/ISSUE_TEMPLATE/platform_verification.yml"), "        - Linux espeak"),
   );
   assert.match(githubTemplateIssues(templatesWithoutLinuxEspeakOption, pr).join("\n"), /tts option: Linux espeak/);
 
   const templatesWithoutPlatformOtherTTSOption = new Map(templateFiles.map(file => [file, readFileSync(file, "utf8")]));
   templatesWithoutPlatformOtherTTSOption.set(
     ".github/ISSUE_TEMPLATE/platform_verification.yml",
-    templatesWithoutPlatformOtherTTSOption.get(".github/ISSUE_TEMPLATE/platform_verification.yml").replace("        - Other local TTS\n", ""),
+    removeLine(templatesWithoutPlatformOtherTTSOption.get(".github/ISSUE_TEMPLATE/platform_verification.yml"), "        - Other local TTS"),
   );
   assert.match(githubTemplateIssues(templatesWithoutPlatformOtherTTSOption, pr).join("\n"), /platform_verification\.yml missing tts option: Other local TTS/);
 
   const templatesWithoutBugOtherTTSOption = new Map(templateFiles.map(file => [file, readFileSync(file, "utf8")]));
   templatesWithoutBugOtherTTSOption.set(
     ".github/ISSUE_TEMPLATE/bug_report.yml",
-    templatesWithoutBugOtherTTSOption.get(".github/ISSUE_TEMPLATE/bug_report.yml").replace("        - Other local TTS\n", ""),
+    removeLine(templatesWithoutBugOtherTTSOption.get(".github/ISSUE_TEMPLATE/bug_report.yml"), "        - Other local TTS"),
   );
   assert.match(githubTemplateIssues(templatesWithoutBugOtherTTSOption, pr).join("\n"), /bug_report\.yml missing tts option: Other local TTS/);
 });
@@ -771,7 +771,7 @@ test("detects release evidence command drift", () => {
   const withoutStatusReleaseGate = new Map(docs);
   withoutStatusReleaseGate.set(
     "docs/verification-status.md",
-    withoutStatusReleaseGate.get("docs/verification-status.md").replace("- `npm run check:release`\n", ""),
+    removeLine(withoutStatusReleaseGate.get("docs/verification-status.md"), "- `npm run check:release`"),
   );
   assert.match(releaseEvidenceIssues(withoutStatusReleaseGate).join("\n"), /verification-status\.md missing release evidence command: npm run check:release/);
 
@@ -785,7 +785,7 @@ test("detects release evidence command drift", () => {
   const withoutSwiftCli = new Map(docs);
   withoutSwiftCli.set(
     "docs/release-notes-template.md",
-    withoutSwiftCli.get("docs/release-notes-template.md").replaceAll("npm run check:swift-cli\n", ""),
+    withoutSwiftCli.get("docs/release-notes-template.md").replaceAll(/npm run check:swift-cli\r?\n/g, ""),
   );
   assert.match(releaseEvidenceIssues(withoutSwiftCli).join("\n"), /check:swift-cli/);
 
@@ -1279,4 +1279,12 @@ function tempRollout(objects) {
   const path = join(dir, "rollout.jsonl");
   writeFileSync(path, `${objects.map(object => JSON.stringify(object)).join("\n")}\n`);
   return path;
+}
+
+function removeLine(text, line) {
+  return text.replace(new RegExp(`${escapeRegExp(line)}\\r?\\n`, "g"), "");
+}
+
+function escapeRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
