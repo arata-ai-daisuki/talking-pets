@@ -12,6 +12,18 @@
       "stripPrefixes": ["ok", "okay", "got it"],
       "stripTerms": []
     },
+    "zh": {
+      "fallback": "有新的消息。",
+      "templates": ["{text}"],
+      "stripPrefixes": [],
+      "stripTerms": []
+    },
+    "ko": {
+      "fallback": "새 메시지가 있습니다.",
+      "templates": ["{text}"],
+      "stripPrefixes": [],
+      "stripTerms": []
+    },
     "fallback": {
       "fallback": "New message.",
       "templates": ["{text}"],

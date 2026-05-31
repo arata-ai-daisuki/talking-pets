@@ -3,24 +3,25 @@
 Talking Pets is a small add-on that reads Codex Pet bubbles or the latest Codex assistant reply aloud with local TTS.
 
 It reads local conversation logs and sends short spoken lines to VOICEVOX, Kokoro, or OS speech without patching Codex or modifying a signed app bundle.
+It does not replace your existing Codex Pet. It adds a local voice layer to the pet experience you already use.
 
 ![Talking Pets demo preview](assets/demo-preview.png)
 
 ## Demo Recording
 
-<video controls width="100%" src="docs/demo/talking-pets-overlay-2026-05-28.mov">
-  <a href="docs/demo/talking-pets-overlay-2026-05-28.mov">Watch the demo recording</a>
+<video controls width="100%" src="https://github.com/arata-ai-daisuki/talking-pets/raw/main/docs/demo/talking-pets-overlay-2026-05-28.mov">
+  <a href="https://github.com/arata-ai-daisuki/talking-pets/blob/main/docs/demo/talking-pets-overlay-2026-05-28.mov">Watch the demo recording</a>
 </video>
 
-[![Talking Pets demo recording](docs/demo/talking-pets-overlay-2026-05-28-frame.png)](docs/demo/talking-pets-overlay-2026-05-28.mov)
+[![Talking Pets demo recording](docs/demo/talking-pets-overlay-2026-05-28-frame.png)](https://github.com/arata-ai-daisuki/talking-pets/blob/main/docs/demo/talking-pets-overlay-2026-05-28.mov)
 
-If GitHub does not render the video player in your environment, click the still frame above or open the [demo recording](docs/demo/talking-pets-overlay-2026-05-28.mov) directly.
+If GitHub does not render the video player in your environment, click the still frame above or open the [demo recording](https://github.com/arata-ai-daisuki/talking-pets/blob/main/docs/demo/talking-pets-overlay-2026-05-28.mov) directly.
 
 Japanese: [README.md](README.md)
 
 ## Status
 
-This repository is a public-ready MVP. The macOS Swift monitor is the stable path. Windows and Linux are experimental paths through the Node monitor.
+This repository is a public-review-ready MVP. The macOS Swift monitor is the stable path. Windows and Linux are experimental paths through the Node monitor.
 
 | Environment / Feature | Status | Notes |
 | --- | --- | --- |
@@ -36,7 +37,19 @@ This repository is a public-ready MVP. The macOS Swift monitor is the stable pat
 
 - The Pet character shown in the demo recording is from the author's local environment. This repository does not include Pet images, Live2D assets, avatar assets, or character artwork.
 - Talking Pets is an MVP that reads local `state_5.sqlite` and rollout JSONL files. It does not use a public Codex API. Future Codex updates may change storage paths, database schema, JSONL shape, or Pet overlay behavior, which can break this add-on.
-- If you suspect a Codex compatibility change, first run `./check.command` and `./scripts/pet-rollout-monitor.command --once --dry-run` to confirm whether the latest assistant reply can still be found.
+- If you suspect a Codex compatibility change, first run `npm run check:compat` to verify the local Codex storage shape, then use `./scripts/pet-rollout-monitor.command --once --dry-run` only when you need to debug latest-assistant extraction. Remove private paths, conversation text, and credentials before sharing output publicly.
+
+## Safety Model
+
+| Target | Behavior |
+| --- | --- |
+| Codex Desktop app | Does not patch Codex or modify signed app bundles. |
+| Codex local metadata | Reads thread and rollout paths from `state_5.sqlite`. |
+| Codex rollout JSONL | Reads local files to find the latest assistant reply. |
+| OpenAI API / external LLMs | Not called by default. No extra API billing is needed for the MVP formatter. |
+| VOICEVOX | Sends spoken text only to your locally running VOICEVOX Engine when selected. |
+| Kokoro.js | Downloads model files on first use and generates speech locally. |
+| Custom TTS endpoint | May receive conversation text if you configure one. |
 
 ## Requirements
 
@@ -71,6 +84,13 @@ Windows experimental:
 - VOICEVOX Engine or Kokoro
 - Codex `state_5.sqlite` available under the user home directory
 
+Linux experimental:
+
+- Node.js 22 or later
+- bash
+- `aplay`, `paplay`, or `ffplay` for audio playback, or `espeak` for OS speech
+- Matching local TTS setup when using VOICEVOX Engine or Kokoro
+
 ## Quick Start
 
 Fast macOS path:
@@ -82,21 +102,31 @@ cd /path/to/talking-pets
 ./start-selected-tts.command
 ```
 
+For a reproducible no-extra-install macOS say setup, feed the installer choices directly:
+
+```bash
+printf 'en\n4\nKyoko\n' | ./install.command
+```
+
 The macOS installer first asks for a display language (`en` / `ja`), then lets you choose a local TTS provider. If unsure, choose `1` for automatic routing.
 
 | Choice | Best for | Extra setup |
 | --- | --- | --- |
-| Auto routing | Mixed Japanese and English | VOICEVOX Engine and npm install |
+| Auto routing | Mixed Japanese and English | VOICEVOX Engine and npm ci |
 | VOICEVOX | Natural Japanese voices | VOICEVOX Engine |
-| Kokoro.js | Local English-oriented voices | npm install and first model download |
+| Kokoro.js | Local English-oriented voices | npm ci and first model download |
 | macOS say | Fastest no-extra-install check | None |
+| Voicebox-compatible endpoint | Custom or generic local voice endpoints | endpoint URL and any required profile/language |
 
 If you choose VOICEVOX, start VOICEVOX Engine first and make sure it is listening at `http://127.0.0.1:50021`.
+If you choose a Voicebox-compatible endpoint, the installer can save the endpoint URL, mode, profile, and language.
 Kokoro.js downloads model files on first use. The default cache path is `~/.cache/talking-pets/transformers`. The default q8 model is about 92 MB, so the first run can take a little while.
 
 ## Distribution
 
 Talking Pets is not published as an npm package yet. It is intended to be cloned from GitHub, so `package.json` intentionally remains `private: true`.
+`npm run check:pack` is a package-scope audit, not npm publish preparation. It checks that private rollouts, local config, generated audio, recordings, archives, model files, `.github/`, and similar local artifacts do not enter an accidental tarball.
+This check runs `npm pack --dry-run --json` with a temporary npm cache, so it is less likely to be blocked by local `~/.npm` cache permission problems.
 
 ## Verify
 
@@ -111,18 +141,71 @@ Expected successful shape:
 ```text
 Talking Pets check
 ==================
-config: .../.talking-pets.local.env
-tts: auto
-node: v22.x.x
-npm: x.x.x
+platform: macOS 26.5 / arm64
+config: not found
+config source: none
+tts: unset
+speech language: auto
+node: ok (v22.x.x)
+npm: ok (x.x.x)
+node runtime: ok
 node_modules: found
+VOICEVOX: ok (http://127.0.0.1:50021)
 macOS say: ok (Kyoko)
+compat:
+[ok] fixture rollout readable: test/fixtures/assistant-rollout.jsonl (event_msg:agent_message)
+[ok] fixture rollout readable: test/fixtures/mixed-ja-en-rollout.jsonl (event_msg:agent_message)
+[ok] fixture rollout readable: test/fixtures/ko-zh-rollout.jsonl (event_msg:agent_message)
+[ok] state DB check skipped (--no-state)
+compat: ok
+audio path:
+[ok] macOS afplay: needed for generated WAV playback
+[ok] macOS say: needed for OS speech fallback
+config files:
+config files: ok
 dry run:
-[source] ...
-[pet] ...
+[thread] manual rollout / manual-rollout
+[rollout] test/fixtures/assistant-rollout.jsonl
+[source] CI dry run ready.
+[pet] CI dry run ready.
+
+This check skips local Codex state paths. Run npm run check:compat separately for stateful local Codex verification, then sanitize before sharing.
+For manual local dry-run debugging, pass --cwd, --thread-id, --rollout, or --state-db to the monitor directly.
+Before sharing this output publicly, remove private paths, conversation text, local env values, credentials, credential env/header values, local SQLite DBs such as state_5.sqlite, private rollout JSONL, generated audio, local recordings, archives, macOS metadata, and downloaded model files. Known public fixture rollout paths may remain visible as evidence.
 ```
 
-If you use VOICEVOX, `VOICEVOX: ok` means the local engine is reachable. If you see `not reachable`, check that VOICEVOX Engine is running and that the URL is correct.
+If you use VOICEVOX, `VOICEVOX: ok` means the local engine is reachable. If VOICEVOX Engine is not running, or you only use another TTS path, `not reachable` is okay to continue.
+The normal `./check.command` reads fixtures and skips local Codex state paths so its output is easier to sanitize for public evidence. Run `npm run check:compat` separately for real local Codex compatibility.
+If `.talking-pets.local.env` is invalid, `./check.command` still prints the remaining diagnostics, then exits non-zero with `check: failed -> fix .talking-pets.local.env ...`. Re-run `./install.command` or fix the `npm run check:config` errors first.
+Before pasting logs into a public issue, you can run them through the sanitizer. It redacts `[source]` / `[pet]` text, absolute paths, local env values, external endpoint URLs, common credential env/header patterns, private rollout JSONL, generated audio names, recording names, archive names, macOS metadata names, local SQLite DB names, and model filenames. It keeps the public fixture paths `test/fixtures/assistant-rollout.jsonl`, `test/fixtures/mixed-ja-en-rollout.jsonl`, and `test/fixtures/ko-zh-rollout.jsonl` visible for evidence. Review manually too, because credentials cannot always be detected automatically.
+
+```bash
+./check.command 2>&1 | npm run sanitize:public-output
+```
+
+Check compatibility with the current Codex local storage shape:
+
+```bash
+npm run check:compat
+```
+
+Check required Node.js runtime features:
+
+```bash
+npm run check:runtime
+```
+
+Check local commands used for audio playback:
+
+```bash
+npm run check:audio
+```
+
+Check preset, example config, and local config files when present:
+
+```bash
+npm run check:config
+```
 
 ## Start
 
@@ -131,6 +214,8 @@ Start with the saved installer config:
 ```bash
 ./start-selected-tts.command
 ```
+
+When Node.js is available, `start-selected-tts.command` validates config files before starting. If you use macOS say without Node.js, check `./check.command` output first.
 
 Manual start:
 
@@ -169,6 +254,8 @@ CODEX_HOME=/path/to/codex-home ./scripts/pet-rollout-monitor.command --once --dr
 ./scripts/pet-rollout-monitor.command --state-db /path/to/state_5.sqlite --once --dry-run
 ```
 
+Monitor diagnostics redact absolute paths as `<redacted path>` by default. Use `--show-private-paths` only for local debugging when you need full paths.
+
 ## Stop / Restart / Change Config
 
 - Stop: press `Ctrl-C` in the terminal running the monitor.
@@ -178,8 +265,6 @@ CODEX_HOME=/path/to/codex-home ./scripts/pet-rollout-monitor.command --once --dr
 
 ## Windows Experimental
 
-Windows experimental:
-
 ```powershell
 .\install.ps1
 .\check.ps1
@@ -187,6 +272,8 @@ Windows experimental:
 ```
 
 Use `.\install.ps1 -Language ja` for Japanese installer messages.
+To pin the spoken language during install, pass `.\install.ps1 -SpeechLanguage ja` with `auto|ja|en|ko|zh|other`.
+For a Voicebox-compatible endpoint, save config with a command such as `.\install.ps1 -Tts voicebox -VoiceboxMode generic -VoicevoxUrl http://127.0.0.1:8080 -VoiceboxProfile default -VoiceboxLanguage en`.
 
 If PowerShell blocks script execution, allow scripts for the current shell and run the command again:
 
@@ -194,18 +281,25 @@ If PowerShell blocks script execution, allow scripts for the current shell and r
 Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 ```
 
-Windows support uses the experimental Node monitor. Confirm that Codex `state_5.sqlite` exists under your user home and that VOICEVOX or Kokoro is available.
+Windows support uses the experimental Node monitor. For stateful local Codex compatibility, also confirm that Codex `state_5.sqlite` exists under your user home. Audio can use Windows OS speech, VOICEVOX, Kokoro.js, a Voicebox-compatible endpoint, or Other local TTS.
+`check.ps1` reads the saved `.talking-pets.local.env` and reports runtime, compatibility, audio, config, and dry-run diagnostics in sequence. If one diagnostic fails, it still prints the remaining sections.
+`check.ps1` compatibility output is fixture-only for public evidence. Run `npm run check:compat` separately for stateful Codex verification, then pass public output through the sanitizer before sharing.
+`start-selected-tts.ps1` checks for Node.js 22 or later and validates config before startup, then stops with a short error if either prerequisite is missing.
 
 ## Linux Experimental
 
 Linux support uses the experimental Node monitor.
 
 ```bash
-npm install
-npm run monitor:node -- --tts auto --skip-existing
-npm run monitor:node -- --once --dry-run
+npm ci
+./install.sh
+./check.sh
+./start-selected-tts.sh
 ```
 
+If you want to avoid prompts, create the minimal config with `cp presets/examples/privacy-first-say.env .talking-pets.local.env`.
+Use `npm run monitor:node -- --once --dry-run --rollout test/fixtures/assistant-rollout.jsonl` for a direct fixture dry run without a saved config file.
+`check.sh` compatibility output is fixture-only for public evidence. Run `npm run check:compat` separately for stateful Codex verification, then pass public output through the sanitizer before sharing.
 Audio playback depends on `aplay`, `paplay`, `ffplay`, or `espeak`. Kokoro.js needs network access for the first model download.
 
 ## TTS Options
@@ -213,30 +307,32 @@ Audio playback depends on `aplay`, `paplay`, `ffplay`, or `espeak`. Kokoro.js ne
 VOICEVOX:
 
 ```bash
-./scripts/pet-rollout-monitor.command --tts voicevox --voicebox-speaker 3 --skip-existing
-./scripts/pet-rollout-monitor.command --tts voicevox --list-voices
+npm run monitor:node -- --tts voicevox --voicebox-speaker 3 --skip-existing
+npm run monitor:node -- --tts voicevox --list-voices
 ```
 
 Kokoro:
 
 ```bash
-./scripts/pet-rollout-monitor.command --tts kokoro --kokoro-voice af_heart --skip-existing
-./scripts/pet-rollout-monitor.command --tts kokoro --list-voices
+npm run monitor:node -- --tts kokoro --kokoro-voice af_heart --skip-existing
+npm run monitor:node -- --tts kokoro --list-voices
 ```
 
-macOS say:
+OS speech:
 
 ```bash
-./scripts/pet-rollout-monitor.command --tts say --voice Kyoko --skip-existing
+npm run monitor:node -- --tts say --voice Kyoko --skip-existing
 ```
 
 Multilingual auto routing:
 
 ```bash
-./scripts/pet-rollout-monitor.command --tts auto --skip-existing
-./scripts/pet-rollout-monitor.command --tts auto --speech-language ja --skip-existing
-./scripts/pet-rollout-monitor.command --tts kokoro --no-language-route --skip-existing
+npm run monitor:node -- --tts auto --skip-existing
+npm run monitor:node -- --tts auto --speech-language ja --skip-existing
+npm run monitor:node -- --tts kokoro --no-language-route --skip-existing
 ```
+
+For the stable macOS Swift monitor, use `./scripts/pet-rollout-monitor.command` instead of `npm run monitor:node --`.
 
 Initial voice presets live in [presets/voices.json](presets/voices.json).
 
@@ -247,34 +343,46 @@ Excerpt:
   "languages": {
     "ja": { "engine": "voicevox", "speaker": "3", "label": "ずんだもん ノーマル" },
     "en": { "engine": "kokoro", "voice": "af_heart", "label": "Kokoro Heart" },
+    "ko": { "engine": "say", "voice": "Kyoko", "label": "OS speech fallback for Korean" },
+    "zh": { "engine": "say", "voice": "Kyoko", "label": "OS speech fallback for Chinese" },
     "fallback": { "engine": "say", "voice": "Kyoko", "label": "macOS say fallback" }
   }
 }
 ```
 
 An example local config file is available at [.talking-pets.local.env.example](.talking-pets.local.env.example).
+If you use `TALKING_PETS_TTS="voicebox"`, you can also set `TALKING_PETS_VOICEBOX_MODE="voicevox"` or `"generic"`, `TALKING_PETS_VOICEBOX_PROFILE`, and `TALKING_PETS_VOICEBOX_LANGUAGE` as needed.
+To force a spoken language from saved config, set `TALKING_PETS_SPEECH_LANGUAGE="ja|en|ko|zh|other"`.
+`TALKING_PETS_SAY_VOICE` is a macOS `say` voice name. Windows `System.Speech` and Linux `espeak` currently do not use this value for voice selection.
 
 ## Troubleshooting
 
 - `node: not found`: install Node.js 22 or later. If you only want to try macOS say, choose `4` in the installer.
-- `node_modules: not found`: run `npm install` if you use Kokoro.js.
+- `node_modules: not found`: run `npm ci` if you use Kokoro.js.
 - `VOICEVOX: not reachable`: start VOICEVOX Engine and confirm the URL is `http://127.0.0.1:50021`.
 - `[wait] Codex thread not found`: confirm Codex Desktop or Codex CLI is saving local conversation logs.
 - `[wait] rollout unreadable`: confirm the rollout JSONL path exists and whether `CODEX_HOME` points somewhere custom.
+- `--interval` / `--rate` / `--max-source-chars` errors: pass positive numeric values. `--max-source-chars` accepts only positive integers.
+- `--tts` / `--speech-language` errors: use `--tts auto|voicevox|voicebox|kokoro|say` and `--speech-language auto|ja|en|ko|zh|other`.
+- `npm run check:config` URL / speaker / voice errors: `TALKING_PETS_VOICEVOX_URL` must be an `http://` or `https://` URL, `TALKING_PETS_VOICEVOX_SPEAKER` must be numeric, `TALKING_PETS_VOICEBOX_MODE` must be `voicevox` or `generic`, and Kokoro / say / Voicebox profile / language values must not be empty.
 - No sound: check OS volume, selected TTS, VOICEVOX/Kokoro state, and macOS output device.
+- Missing audio command: run `npm run check:audio` and check `afplay` / `say` on macOS, PowerShell / `System.Speech` on Windows, or `aplay` / `paplay` / `ffplay` / `espeak` on Linux.
 - First Kokoro run is slow: model download is running. The default q8 model is about 92 MB, and the cache path is `~/.cache/talking-pets/transformers`.
 
 ## Language And Device Limits
 
-- Language support prioritizes Japanese and English. Japanese routes to VOICEVOX, English routes to Kokoro.js, and other languages fall back to OS speech.
-- Language detection is a short character-based heuristic. Mixed Japanese-English text, Korean, Chinese, or symbol-only short text may route to a different TTS than expected.
-- Use `--speech-language ja|en|ko|other` to force the spoken language.
+- Language support prioritizes Japanese and English. Japanese routes to VOICEVOX, English routes to Kokoro.js, and Korean, Chinese, and other languages fall back to OS speech.
+- Language detection is a short character-based heuristic. Text with kana is treated as Japanese, text with Hangul is treated as Korean, and CJK text with only Han characters is treated as Chinese. Japanese kanji-only short text or symbol-only short text may route to a different TTS than expected.
+- Use `--speech-language ja|en|ko|zh|other` to force the spoken language.
 - OS speech quality varies by platform. Talking Pets uses macOS `say`, Windows `System.Speech`, or Linux `espeak`.
-- Windows and Linux use the experimental Node monitor path. PowerShell execution and real Linux audio playback were not verified in this macOS environment.
+- `TALKING_PETS_SAY_VOICE` / `--voice` selects a macOS `say` voice. It is not used by the Windows / Linux OS speech fallback.
+- Windows and Linux use the experimental Node monitor path. PowerShell execution on a real Windows device and real Linux audio playback were not verified in this macOS environment.
 
 Experimental Node monitor:
 
 ```bash
+./check.sh
+./start-selected-tts.sh
 ./scripts/pet-rollout-monitor-node.command --tts auto --skip-existing
 npm run monitor:node -- --once --dry-run
 ```
@@ -314,6 +422,24 @@ Use a custom file:
 ```
 
 Currently `--speech-style` is read by the Node monitor. The stable macOS Swift monitor embeds the same neutral default style.
+
+If you want to replace the local config by hand, minimal examples live in `presets/examples/`.
+
+- `ja-voicevox-zundamon.env`: VOICEVOX / Japanese / Japanese UI.
+- `en-kokoro-heart.env`: Kokoro.js / English.
+- `ko-say-fallback.env`: OS speech fallback / Korean speech-language value.
+- `zh-say-fallback.env`: OS speech fallback / Chinese speech-language value.
+- `privacy-first-say.env`: OS speech fallback / `auto` speech-language, no model download.
+- `generic-voicebox.env`: Voicebox-compatible endpoint / generic mode / profile `default` / language `en`.
+
+```bash
+cp presets/examples/ja-voicevox-zundamon.env .talking-pets.local.env
+cp presets/examples/en-kokoro-heart.env .talking-pets.local.env
+cp presets/examples/ko-say-fallback.env .talking-pets.local.env
+cp presets/examples/zh-say-fallback.env .talking-pets.local.env
+cp presets/examples/privacy-first-say.env .talking-pets.local.env
+cp presets/examples/generic-voicebox.env .talking-pets.local.env
+```
 
 ## LLM Summaries
 
@@ -392,35 +518,57 @@ window.dispatchEvent(new CustomEvent("codex-pet:message", {
 - By default it does not call the OpenAI API or an external LLM summarizer.
 - VOICEVOX sends text to the locally running VOICEVOX Engine.
 - Kokoro.js downloads model files on first use.
+- `.talking-pets.local.env` is parsed as `KEY="value"` data, and only known `TALKING_PETS_*` keys are accepted.
+- Do not attach local env files, credentials, local SQLite DBs such as `state_5.sqlite`, private rollout JSONL, generated audio, local recordings, archives, or downloaded model files to public issues or release evidence.
 - If you configure a custom TTS endpoint, conversation text may be sent to that endpoint.
 
 ## Roadmap
 
 Detailed planning notes live in [FUTURE_PLAN.md](FUTURE_PLAN.md).
+The continuing public-readiness checklist lives in [docs/public-repo-review-checklist.md](docs/public-repo-review-checklist.md).
 
 - Add more real-device validation for Windows and Linux.
-- Add a settings UI or a lightweight example config file.
+- Consider a settings UI. First, expand the lightweight examples in `presets/examples/`.
 - Make TTS providers easier to add.
+- Expand compatibility checks for Codex local storage changes.
 - If optional LLM summarization is added, keep it off by default and provider-agnostic.
-- Replace `assets/demo-preview.png` with a real GIF or real-device screenshot.
+- If a real GIF is added later, replace the current real-device screenshot at `assets/demo-preview.png`.
 
 ## Release Process
 
 - Update `CHANGELOG.md`.
-- Run `npm run check:syntax` and `npm run test:dry-run`.
+- Run `npm ci` to verify clean lockfile installation.
+- Run `npm run check:all`.
+- Run `npm run test:dry-run` directly when touching monitor extraction or fixture behavior.
+- Run `npm run check:config` to validate presets, example config files, and local config when present.
+- Run `npm run check:installers` to validate the local config generated by the macOS, Windows, and Linux installers.
+- If only docs changed, still run `npm run check:docs` to verify Markdown links and local HTML `src` / `href` references.
+- Run `npm run check:platform-scripts` to parse `.command`, `.sh`, `.ps1`, and Swift scripts for the current platform.
+- Run `npm run check:swift-cli` to keep Swift monitor CLI error output concise.
+- Run `npm run check:pack` to verify the npm tarball file scope.
+- Run `npm run check:release` to verify required public files and executable bits.
+- Run `npm run check:sanitize` to smoke-test public log redaction.
+- The first public release can ship as a macOS stable / Windows and Linux experimental public preview. Collect Windows and Linux audible TTS evidence after publication through Platform verification issues.
+- Before a real-device release, run `npm run check:compat`, `npm run check:audio:strict`, install, platform check, dry-run, verify at least one audible TTS path, and record the evidence with OS/version, CPU architecture, Node.js and npm versions, TTS path tested, speech-language value, config source, Codex Desktop / CLI version if known, Platform verification issue link, `audible: yes`, and `sanitized: yes`.
+- Treat CI-only, fixture-only, `--no-state`, and package-check evidence as release gates, not evidence for graduating Windows or Linux from experimental.
+- After changing Node.js versions or machines, run `npm run check:runtime` to confirm `node:sqlite` is available.
+- Record per-OS evidence with [docs/real-device-verification.md](docs/real-device-verification.md).
+- Keep the current verification state in [docs/verification-status.md](docs/verification-status.md).
+- Keep external real-device evidence in a sanitized Platform verification issue, then paste that URL into the GitHub Release `Evidence link` column.
+- For bug reports, install help, TTS provider requests, and platform verification, see the [Issues guide in CONTRIBUTING.md](CONTRIBUTING.md#issues).
 - Create a semver tag such as `v0.1.0`.
-- In GitHub Releases, include supported OS notes, known limitations, VOICEVOX / Kokoro notices, and verified commands.
+- Use [docs/release-notes-template.md](docs/release-notes-template.md) for GitHub Releases, including supported OS notes, known limitations, VOICEVOX / Kokoro notices, and verified commands.
 
 ## Notes
 
 - VOICEVOX itself is not bundled.
 - Follow VOICEVOX and voice-library terms. See [CREDITS.md](CREDITS.md) for details.
 - Kokoro downloads model files on first run.
-- Windows support is still experimental.
+- Windows and Linux support are still experimental.
 
 ## Credits
 
-See [CREDITS.md](CREDITS.md) for third-party notices covering VOICEVOX, Kokoro, Codex, and voice/model usage.
+See [CREDITS.md](CREDITS.md) for third-party notices covering VOICEVOX, Kokoro, Voicebox-compatible endpoints, Codex, and voice/model usage.
 
 ## License
 

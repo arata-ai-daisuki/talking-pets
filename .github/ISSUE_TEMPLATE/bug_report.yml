@@ -12,12 +12,48 @@ body:
     validations:
       required: true
   - type: input
-    id: node
+    id: arch
     attributes:
-      label: Node.js version
-      placeholder: "v22.x.x"
+      label: CPU architecture
+      placeholder: "arm64 / x64"
     validations:
       required: true
+  - type: input
+    id: node
+    attributes:
+      label: Node.js and npm versions
+      placeholder: "node v22.x.x, npm x.x.x"
+    validations:
+      required: true
+  - type: input
+    id: codex_version
+    attributes:
+      label: Codex Desktop / CLI version if known
+      placeholder: "Codex Desktop x.y.z / Codex CLI x.y.z / unknown"
+    validations:
+      required: false
+  - type: dropdown
+    id: speech_language
+    attributes:
+      label: Speech-language value if audio-related
+      description: Use the value passed with `--speech-language` or saved as `TALKING_PETS_SPEECH_LANGUAGE`.
+      options:
+        - auto
+        - ja
+        - en
+        - ko
+        - zh
+        - other
+        - not audio-related
+    validations:
+      required: false
+  - type: input
+    id: config_source
+    attributes:
+      label: Config source if audio-related
+      placeholder: "installer default / presets/examples/privacy-first-say.env / custom / none"
+    validations:
+      required: false
   - type: dropdown
     id: tts
     attributes:
@@ -26,6 +62,8 @@ body:
         - auto
         - VOICEVOX
         - Kokoro.js
+        - Voicebox-compatible endpoint
+        - Other local TTS
         - OS speech
         - browser demo
     validations:
@@ -34,7 +72,7 @@ body:
     id: commands
     attributes:
       label: Commands and output
-      description: Paste the command you ran and relevant check output. Remove private conversation text first.
+      description: Paste the command you ran and relevant check output. Remove private conversation text, private paths, local env values, credentials, local SQLite DBs such as `state_5.sqlite`, private rollout JSONL, generated audio, local recordings, archives, macOS metadata, and downloaded model files first. Known public fixture rollout paths may remain visible as evidence. You can pipe check output through `npm run sanitize:public-output` before pasting.
       render: shell
     validations:
       required: true

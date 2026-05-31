@@ -4,18 +4,11 @@ import { spawnSync } from "node:child_process";
 import { mkdirSync, mkdtempSync } from "node:fs";
 import { homedir, tmpdir } from "node:os";
 import { join } from "node:path";
-import { env } from "@huggingface/transformers";
+import { fileURLToPath } from "node:url";
 
-const args = parseArgs(process.argv.slice(2));
+import { windowsPowerShellCommand } from "./audio-platform.mjs";
 
-const model = args.model ?? process.env.KOKORO_MODEL ?? "onnx-community/Kokoro-82M-v1.0-ONNX";
-const voice = args.voice ?? process.env.KOKORO_VOICE ?? "af_heart";
-const dtype = args.dtype ?? process.env.KOKORO_DTYPE ?? "q8";
-const device = args.device ?? process.env.KOKORO_DEVICE ?? "cpu";
-const cacheDir =
-  args.cache ??
-  process.env.TALKING_PETS_TTS_CACHE ??
-  join(homedir(), ".cache", "talking-pets", "transformers");
+const scriptPath = fileURLToPath(import.meta.url);
 
 const KOKORO_VOICES = {
   af_heart: { name: "Heart", language: "en-us", gender: "Female", targetQuality: "A", overallGrade: "A" },
@@ -48,13 +41,25 @@ const KOKORO_VOICES = {
   bm_fable: { name: "Fable", language: "en-gb", gender: "Male", targetQuality: "B", overallGrade: "C" },
 };
 
-try {
+async function main(argv = process.argv.slice(2)) {
+  const args = parseArgs(argv);
+
   if (args["list-voices"]) {
     console.log(JSON.stringify(KOKORO_VOICES, null, 2));
-    process.exit(0);
+    return;
   }
 
+  const model = args.model ?? process.env.KOKORO_MODEL ?? "onnx-community/Kokoro-82M-v1.0-ONNX";
+  const voice = args.voice ?? process.env.KOKORO_VOICE ?? "af_heart";
+  const dtype = args.dtype ?? process.env.KOKORO_DTYPE ?? "q8";
+  const device = args.device ?? process.env.KOKORO_DEVICE ?? "cpu";
+  const cacheDir =
+    args.cache ??
+    process.env.TALKING_PETS_TTS_CACHE ??
+    join(homedir(), ".cache", "talking-pets", "transformers");
+
   mkdirSync(cacheDir, { recursive: true });
+  const { env } = await import("@huggingface/transformers");
   env.cacheDir = cacheDir;
 
   const { KokoroTTS } = await import("kokoro-js");
@@ -62,8 +67,7 @@ try {
 
   const text = args.text ?? (await readStdin());
   if (text.trim().length === 0) {
-    console.error("tts-kokoro: text is empty");
-    process.exit(2);
+    throw Object.assign(new Error("text is empty"), { exitCode: 2 });
   }
 
   const out = args.out ?? join(mkdtempSync(join(tmpdir(), "talking-pets-kokoro-")), "speech.wav");
@@ -75,28 +79,37 @@ try {
   if (args.play) {
     process.exit(playAudio(out));
   }
-} catch (error) {
-  const message = error?.message ?? String(error);
-  console.error(`tts-kokoro: ${message}`);
-  process.exit(1);
+}
+
+if (process.argv[1] === scriptPath) {
+  main().catch(error => {
+    console.error(`tts-kokoro: ${error?.message ?? String(error)}`);
+    process.exit(error?.exitCode ?? 1);
+  });
 }
 
 function parseArgs(argv) {
   const result = {};
+  const booleanFlags = new Set(["--play", "--list-voices"]);
+  const valueFlags = new Set(["--model", "--voice", "--dtype", "--device", "--cache", "--text", "--out"]);
   for (let i = 0; i < argv.length; i += 1) {
     const arg = argv[i];
-    if (arg === "--play" || arg === "--list-voices") {
+    if (booleanFlags.has(arg)) {
       result[arg.slice(2)] = true;
       continue;
     }
 
     if (!arg.startsWith("--")) {
-      continue;
+      throw new Error(`Unexpected positional argument: ${arg}`);
+    }
+
+    if (!valueFlags.has(arg)) {
+      throw new Error(`Unknown option: ${arg}`);
     }
 
     const key = arg.slice(2);
     const value = argv[i + 1];
-    if (value == null) {
+    if (value == null || booleanFlags.has(value) || valueFlags.has(value)) {
       throw new Error(`${arg} requires a value`);
     }
     result[key] = value;
@@ -112,9 +125,14 @@ function playAudio(path) {
   }
 
   if (process.platform === "win32") {
+    const command = windowsPowerShellCommand();
+    if (!command) {
+      console.error("tts-kokoro: PowerShell was not found");
+      return 1;
+    }
     const escaped = path.replaceAll("'", "''");
     const script = `$p = New-Object System.Media.SoundPlayer '${escaped}'; $p.PlaySync()`;
-    return spawnSync("powershell.exe", ["-NoProfile", "-Command", script], { stdio: "inherit" }).status ?? 1;
+    return spawnSync(command, ["-NoProfile", "-Command", script], { stdio: "inherit" }).status ?? 1;
   }
 
   for (const command of ["aplay", "paplay", "ffplay"]) {
@@ -143,3 +161,5 @@ function readStdin() {
     process.stdin.on("error", reject);
   });
 }
+
+export { KOKORO_VOICES, main, parseArgs };

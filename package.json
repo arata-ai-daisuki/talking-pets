@@ -5,6 +5,7 @@
   "private": true,
   "license": "MIT",
   "type": "module",
+  "packageManager": "npm@11.6.4",
   "repository": {
     "type": "git",
     "url": "https://github.com/arata-ai-daisuki/talking-pets.git"
@@ -20,15 +21,64 @@
   "engines": {
     "node": ">=22"
   },
+  "files": [
+    ".talking-pets.local.env.example",
+    "assets/demo-preview.png",
+    "check.command",
+    "check.ps1",
+    "check.sh",
+    "demo/index.html",
+    "docs/demo/talking-pets-overlay-2026-05-28-frame.png",
+    "docs/public-repo-review-checklist.md",
+    "docs/real-device-verification.md",
+    "docs/release-notes-template.md",
+    "docs/verification-status.md",
+    "install.command",
+    "install.ps1",
+    "install.sh",
+    "presets/",
+    "scripts/",
+    "src/",
+    "start-selected-tts.command",
+    "start-selected-tts.ps1",
+    "start-selected-tts.sh",
+    "test/fixtures/assistant-rollout.jsonl",
+    "test/fixtures/mixed-ja-en-rollout.jsonl",
+    "test/fixtures/ko-zh-rollout.jsonl",
+    "CHANGELOG.md",
+    "CONTRIBUTING.md",
+    "CREDITS.md",
+    "FUTURE_PLAN.md",
+    "LICENSE",
+    "README.md",
+    "README.en.md",
+    "SECURITY.md"
+  ],
   "scripts": {
-    "check:syntax": "node --check scripts/pet-rollout-monitor.mjs && node --check scripts/tts-kokoro.mjs && node --check scripts/tts-voicebox.mjs",
+    "check:syntax": "node --check src/talking-pet-mvp.js && node --check scripts/audio-platform.mjs && node --check scripts/pet-rollout-monitor.mjs && node --check scripts/tts-kokoro.mjs && node --check scripts/tts-voicebox.mjs && node --check scripts/check-node-runtime.mjs && node --check scripts/check-codex-compat.mjs && node --check scripts/check-audio-path.mjs && node --check scripts/check-config-files.mjs && node --check scripts/check-installer-configs.mjs && node --check scripts/check-markdown-links.mjs && node --check scripts/check-public-output-sanitizer.mjs && node --check scripts/check-release-readiness.mjs && node --check scripts/check-swift-cli.mjs && node --check scripts/check-platform-scripts.mjs && node --check scripts/check-npm-pack.mjs && node --check scripts/sanitize-public-output.mjs",
+    "check:runtime": "node --no-warnings scripts/check-node-runtime.mjs",
+    "check:compat": "node --no-warnings scripts/check-codex-compat.mjs",
+    "check:audio": "node --no-warnings scripts/check-audio-path.mjs",
+    "check:audio:strict": "node --no-warnings scripts/check-audio-path.mjs --strict",
+    "check:config": "node --no-warnings scripts/check-config-files.mjs",
+    "check:installers": "node --no-warnings scripts/check-installer-configs.mjs",
+    "check:docs": "node --no-warnings scripts/check-markdown-links.mjs",
+    "check:release": "node --no-warnings scripts/check-release-readiness.mjs",
+    "check:swift-cli": "node --no-warnings scripts/check-swift-cli.mjs",
+    "check:platform-scripts": "node --no-warnings scripts/check-platform-scripts.mjs",
+    "check:pack": "node --no-warnings scripts/check-npm-pack.mjs",
+    "check:sanitize": "node --no-warnings scripts/check-public-output-sanitizer.mjs",
+    "check:all": "npm run check:syntax && npm run check:runtime && npm test && npm run check:compat -- --no-state && npm run check:audio && npm run check:config && npm run check:installers && npm run check:docs && npm run check:platform-scripts && npm run check:swift-cli && npm run check:pack && npm run check:release && npm run check:sanitize && npm run test:dry-run",
+    "test": "node --no-warnings --test",
     "test:dry-run": "node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --rollout test/fixtures/assistant-rollout.jsonl",
+    "sanitize:public-output": "node --no-warnings scripts/sanitize-public-output.mjs",
     "monitor:node": "node --no-warnings scripts/pet-rollout-monitor.mjs",
     "tts:kokoro": "node scripts/tts-kokoro.mjs",
     "tts:voicebox": "node scripts/tts-voicebox.mjs",
     "tts:voicevox": "node scripts/tts-voicebox.mjs --mode voicevox"
   },
   "dependencies": {
+    "@huggingface/transformers": "^3.8.1",
     "kokoro-js": "^1.2.1"
   }
 }

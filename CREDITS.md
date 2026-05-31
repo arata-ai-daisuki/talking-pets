@@ -32,6 +32,14 @@ Model files are downloaded on first use by the underlying tooling and are not bu
 
 Check the package and model pages for the current license, attribution, and usage requirements before redistributing generated audio or packaged model files.
 
+## Voicebox-Compatible And Custom Local TTS Endpoints
+
+Talking Pets can call a locally configured Voicebox-compatible or custom TTS endpoint when you set `TALKING_PETS_TTS="voicebox"` or pass `--tts voicebox`.
+This repository does not bundle that endpoint, its voice data, or its generated audio.
+
+Before publishing audio generated through a custom endpoint, confirm the endpoint software terms, the selected voice/model terms, and any required credit notation.
+Custom endpoints may receive conversation text, so review their privacy behavior before using them with private Codex conversations.
+
 ## Codex
 
 Talking Pets reads local Codex conversation metadata and rollout JSONL files.

@@ -1,0 +1,2 @@
+{"type":"event_msg","timestamp":"2026-05-28T00:00:00Z","payload":{"type":"agent_message","message":"한국어 확인입니다. OS 음성 fallback 경로를 확인합니다."}}
+{"type":"event_msg","timestamp":"2026-05-28T00:00:01Z","payload":{"type":"agent_message","message":"中文语音确认。检查 OS speech fallback 路径。"}}
