@@ -54,7 +54,13 @@ if ($NodeMajor -lt 22) {
   Throw-Localized "Node.js 22 or later is required. Current version: $(& node --version)" "Node.js 22 以上が必要です。現在のバージョン: $(& node --version)"
 }
 
-$ShouldInstallNpmDependencies = (($Tts -eq "auto") -or ($Tts -eq "kokoro"))
+$ShouldInstallNpmDependencies = $false
+if ($Tts -eq "auto") {
+  $ShouldInstallNpmDependencies = $true
+}
+if ($Tts -eq "kokoro") {
+  $ShouldInstallNpmDependencies = $true
+}
 if ($ShouldInstallNpmDependencies) {
   if (-not (Get-Command npm -ErrorAction SilentlyContinue)) {
     Throw-Localized "npm was not found. Kokoro requires npm." "npm が見つかりません。Kokoro を使うには npm が必要です。"
@@ -62,7 +68,13 @@ if ($ShouldInstallNpmDependencies) {
   & npm ci
 }
 
-$ShouldCheckVoicevox = (($Tts -eq "auto") -or ($Tts -eq "voicevox"))
+$ShouldCheckVoicevox = $false
+if ($Tts -eq "auto") {
+  $ShouldCheckVoicevox = $true
+}
+if ($Tts -eq "voicevox") {
+  $ShouldCheckVoicevox = $true
+}
 if ($ShouldCheckVoicevox) {
   try {
     Invoke-RestMethod -Uri "$VoicevoxUrl/version" -Method Get | Out-Null
