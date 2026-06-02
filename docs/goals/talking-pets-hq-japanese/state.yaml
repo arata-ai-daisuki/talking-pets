@@ -2644,6 +2644,37 @@ tasks:
         - cmd: "rg -n \"T084|PR #10|merge ready|ubuntu-latest|macos-latest|windows-latest|pr10_merge_ready|T071|T061\" docs/goals/talking-pets-hq-japanese/notes/T084-pr10-final-ci-green.md docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
 
+  - id: T085
+    type: pm
+    assignee: PM
+    owner_role: "相庭 愛"
+    status: done
+    reasoning_hint: default
+    objective: "Master指示でPR #10をmainへmergeしたことをHQに記録し、次のoutreach/T061判断へ戻す。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "outreach送信、返信送信しない。"
+      - "Issue作成しない。"
+      - "npm install、model download、API callはしない。"
+      - "active_taskはT061のままにする。"
+    receipt:
+      result: done
+      decision: pr10_merged_next_outreach_or_t061
+      full_outcome_complete: false
+      summary: "Master指示でPR #10をmainへsquash mergeした。merge commitは287d979。次はT071の手動outreach送信後にT007記録、またはT061でlocal TTS install-only/outreach優先の判断へ戻る。"
+      note: "notes/T085-pr10-merged-next-outreach.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T085-pr10-merged-next-outreach.md"
+      commands:
+        - cmd: "gh pr view 10 --json number,state,mergedAt,mergeCommit,url,headRefName,baseRefName"
+          status: pass
+        - cmd: "node <goalbuddy-check> docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+        - cmd: "rg -n \"T085|PR #10|287d9793b3f2993059ffcf78c224befb87aa44dd|pr10_merged_next_outreach_or_t061|T071|T007|T061\" docs/goals/talking-pets-hq-japanese/notes/T085-pr10-merged-next-outreach.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
   - id: T007
     type: worker
     assignee: Worker
