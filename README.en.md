@@ -380,7 +380,7 @@ To force a spoken language from saved config, set `TALKING_PETS_SPEECH_LANGUAGE=
 - `[wait] Codex thread not found`: confirm Codex Desktop or Codex CLI is saving local conversation logs.
 - `[wait] rollout unreadable`: confirm the rollout JSONL path exists and whether `CODEX_HOME` points somewhere custom.
 - `--interval` / `--rate` / `--max-source-chars` errors: pass positive numeric values. `--max-source-chars` accepts only positive integers.
-- `--tts` / `--speech-language` errors: use `--tts auto|voicevox|voicebox|kokoro|say` and `--speech-language auto|ja|en|ko|zh|other`.
+- `--tts` / `--speech-language` errors: use `--tts auto|voicevox|voicebox|kokoro|irodori|say` and `--speech-language auto|ja|en|ko|zh|other`.
 - `npm run check:config` URL / speaker / voice errors: `TALKING_PETS_VOICEVOX_URL` must be an `http://` or `https://` URL, `TALKING_PETS_VOICEVOX_SPEAKER` must be numeric, `TALKING_PETS_VOICEBOX_MODE` must be `voicevox` or `generic`, and Kokoro / say / Voicebox profile / language values must not be empty.
 - No sound: check OS volume, selected TTS, VOICEVOX/Kokoro state, and macOS output device.
 - Missing audio command: run `npm run check:audio` and check `afplay` / `say` on macOS, PowerShell / `System.Speech` on Windows, or `aplay` / `paplay` / `ffplay` / `espeak` on Linux.

@@ -393,7 +393,7 @@ macOS安定版のSwift monitorで同じ確認をする場合は、`npm run monit
 - `[wait] Codex thread not found`: Codex Desktop / Codex CLI がローカル会話ログを保存しているか確認してください。
 - `[wait] rollout unreadable`: rollout JSONL のパスが存在するか、`CODEX_HOME` が通常と違わないか確認してください。
 - `--interval` / `--rate` / `--max-source-chars` のエラー: 数値には正の値を指定してください。`--max-source-chars` は正の整数だけ受け付けます。
-- `--tts` / `--speech-language` のエラー: `--tts auto|voicevox|voicebox|kokoro|say`、`--speech-language auto|ja|en|ko|zh|other` のいずれかを指定してください。
+- `--tts` / `--speech-language` のエラー: `--tts auto|voicevox|voicebox|kokoro|irodori|say`、`--speech-language auto|ja|en|ko|zh|other` のいずれかを指定してください。
 - `npm run check:config` のURL / speaker / voiceエラー: `TALKING_PETS_VOICEVOX_URL` は `http://` または `https://` のURL、`TALKING_PETS_VOICEVOX_SPEAKER` は数値、`TALKING_PETS_VOICEBOX_MODE` は `voicevox` または `generic`、Kokoro / say / Voicebox profile / language は空でない値にしてください。
 - 音が出ない: OSの音量、選択したTTS、VOICEVOX/Kokoroの状態、macOSの出力先を確認してください。
 - 音声再生コマンドが見つからない: `npm run check:audio` を実行し、macOSなら `afplay` / `say`、Windowsなら PowerShell / `System.Speech`、Linuxなら `aplay` / `paplay` / `ffplay` / `espeak` の状態を確認してください。

@@ -12,6 +12,8 @@ $AllowedConfigKeys = @(
   "TALKING_PETS_VOICEBOX_PROFILE",
   "TALKING_PETS_VOICEBOX_LANGUAGE",
   "TALKING_PETS_KOKORO_VOICE",
+  "TALKING_PETS_IRODORI_URL",
+  "TALKING_PETS_IRODORI_VOICE",
   "TALKING_PETS_SAY_VOICE",
   "TALKING_PETS_LANGUAGE_ROUTE",
   "TALKING_PETS_SPEECH_LANGUAGE"
@@ -95,18 +97,6 @@ if (-not (Test-Path $Config)) {
   Write-Host "config source: invalid local file (.talking-pets.local.env)"
   Write-Host "tts: unset"
   Write-Host "speech language: auto"
-}
-
-if (Test-Path $Config) {
-  Get-Content $Config | ForEach-Object {
-    if ($_ -match '^([^=]+)="(.*)"$') {
-      [Environment]::SetEnvironmentVariable($Matches[1], $Matches[2], "Process")
-    }
-  }
-  Write-Host "config: $Config"
-  Write-Host "tts: $($env:TALKING_PETS_TTS)"
-} else {
-  Write-Host "config: not found"
 }
 
 if (Get-Command node -ErrorAction SilentlyContinue) {

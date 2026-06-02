@@ -52,7 +52,12 @@ try {
 
 async function health() {
   const response = await request(`${baseURL}/health`);
-  console.log(JSON.stringify(await response.json(), null, 2));
+  const contentType = response.headers.get("content-type") ?? "";
+  if (contentType.includes("application/json")) {
+    console.log(JSON.stringify(await response.json(), null, 2));
+  } else {
+    console.log(await response.text());
+  }
 }
 
 async function synthesize() {
