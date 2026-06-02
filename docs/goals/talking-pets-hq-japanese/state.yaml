@@ -1,0 +1,1590 @@
+version: 2
+
+goal:
+  title: "Talking Pets 日本語HQ"
+  slug: "talking-pets-hq-japanese"
+  kind: existing_plan
+  tranche: "継続運用: 完了済みの波を履歴化し、次の作業とMaster判断を日本語で追う。"
+  status: active
+  oracle:
+    signal: "看板上で、現在のactive task、完了済みreceipt、次のMaster判断が日本語で分かる。"
+    cadence: "各作業カード完了時と、Master判断が必要になった時"
+    final_proof: "初期公開、ユーザー獲得、レイテンシ改善、provider方針の一区切りをMasterが承認する。"
+  intake:
+    original_request: "全部をゴールにして、GoalBuddy看板を日本語で追いたい。"
+    interpreted_outcome: "短期ボードを完了で閉じても、HQ看板は継続activeとして次作業を示す。"
+    input_shape: existing_plan
+    audience: "ARATA"
+    authority: requested
+    proof_type: artifact
+    completion_proof: "日本語HQ看板がactiveで、次の作業と判断ゲートが見える。"
+    likely_misfire: "小さな波の完了を、全体ゴール完了と誤解させる。"
+    blind_spots_considered:
+      - "GoalBuddy表示が英語中心で追いづらい"
+      - "完了済みボードが多く、現在地が分かりにくい"
+      - "公開outreachを自動化してしまうリスク"
+      - "sherpa-onnx実装に依存追加やmodel downloadが必要なこと"
+
+rules:
+  pm_owns_state: true
+  one_active_task: true
+  max_write_workers: 1
+  no_implementation_without_worker_or_pm_task: true
+  no_completion_without_judge_or_pm_audit: true
+  planning_is_not_completion: true
+  queued_required_worker_blocks_completion: true
+  continuous_until_full_outcome: true
+  missing_input_or_credentials_do_not_stop_goal: true
+  preserve_and_validate_existing_plan: true
+  intake_misfire_must_be_audited: true
+  goal_pressure_requires_oracle: true
+  no_completion_on_weak_proof: true
+
+agents:
+  scout: installed
+  worker: installed
+  judge: installed
+
+visual_board:
+  selected: local
+  local:
+    status: generated
+    url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
+    command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
+
+active_task: T045
+
+tasks:
+  - id: T001
+    type: worker
+    assignee: Worker
+    owner_role: "星宮 未来"
+    status: done
+    reasoning_hint: default
+    objective: "outreach day-1でMasterが手動送信できる最終文面を準備する。"
+    allowed_files:
+      - "docs/research/x-outreach-targets.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    verify:
+      - "test -f docs/goals/talking-pets-hq-japanese/notes/T001-outreach-send-prep.md"
+      - "rg -n \"送信しない|手動|DM禁止|Star依頼なし|OpenClaw|V1GPT|V1R4\" docs/goals/talking-pets-hq-japanese/notes/T001-outreach-send-prep.md"
+    stop_if:
+      - "自動投稿や自動DMが必要になった場合。"
+      - "private contact収集が必要になった場合。"
+    receipt:
+      result: done
+      summary: "day-1手動outreach用に、OpenClaw/Sogni Voice、V1GPT、V1R4向けの最終文面と送信チェックリストを作成した。"
+      note: "notes/T001-outreach-send-prep.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T001-outreach-send-prep.md"
+      commands:
+        - cmd: "test -f docs/goals/talking-pets-hq-japanese/notes/T001-outreach-send-prep.md"
+          status: pass
+        - cmd: "rg -n \"送信しない|手動|DM禁止|Star依頼なし|OpenClaw|V1GPT|V1R4\" docs/goals/talking-pets-hq-japanese/notes/T001-outreach-send-prep.md"
+          status: pass
+
+  - id: T002
+    type: pm
+    assignee: PM
+    owner_role: "歌澄 音羽"
+    status: done
+    reasoning_hint: default
+    objective: "sherpa-onnx-nodeの依存追加とmodel download実験を許可するかMaster判断を受ける。"
+    expected_output:
+      - "許可する | まだ設計のみ | 別provider優先"
+    receipt:
+      result: done
+      decision: waiting_for_master
+      full_outcome_complete: false
+      summary: "sherpa-onnx-node実験は依存追加/model downloadを含む可能性があるため、Master承認待ちとして保留し、安全に進められるT003へ移行した。"
+      note: "notes/T002-sherpa-decision-gate.md"
+
+  - id: T003
+    type: worker
+    assignee: Worker
+    owner_role: "言守 詞葉"
+    status: done
+    reasoning_hint: default
+    objective: "routing診断を使い、READMEの多言語claimが強すぎないか追加fixtureで確認する。"
+    allowed_files:
+      - "test/fixtures/**"
+      - "README.md"
+      - "README.en.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    verify:
+      - "npm run test:dry-run"
+      - "node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --rollout test/fixtures/zh-rollout.jsonl"
+    receipt:
+      result: done
+      summary: "ja/en/ko/zh/繁体字/記号のみfixtureでrouting診断を行い、READMEの多言語claimが現実に合っていることを確認した。"
+      note: "notes/T003-multilingual-fixture-check.md"
+      changed_files:
+        - "test/fixtures/ja-rollout.jsonl"
+        - "test/fixtures/en-rollout.jsonl"
+        - "test/fixtures/zh-traditional-rollout.jsonl"
+        - "test/fixtures/symbol-only-rollout.jsonl"
+        - "README.md"
+        - "README.en.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T003-multilingual-fixture-check.md"
+      commands:
+        - cmd: "npm run test:dry-run"
+          status: pass
+        - cmd: "node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --rollout test/fixtures/ja-rollout.jsonl"
+          status: pass
+        - cmd: "node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --rollout test/fixtures/en-rollout.jsonl"
+          status: pass
+        - cmd: "node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --rollout test/fixtures/ko-rollout.jsonl"
+          status: pass
+        - cmd: "node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --rollout test/fixtures/zh-rollout.jsonl"
+          status: pass
+
+  - id: T013
+    type: worker
+    assignee: Worker
+    owner_role: "文月 栞里"
+    status: done
+    reasoning_hint: default
+    objective: "PR 2のstage候補を精査し、多言語fallback claimとfixturesを小さく切れるか確認する。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "stage/commit/pushはしない。"
+      - "レイテンシ実装、outreach docs、GoalBuddy docsをPR 2へ混ぜない。"
+      - "ko/zhを専用TTS品質保証として書かない。"
+    expected_output:
+      - "PR 2 stage候補"
+      - "PR 2に入れないもの"
+      - "Star導線の扱い"
+      - "zh-traditional caveat"
+      - "検証コマンド"
+    receipt:
+      result: done
+      decision: ready_to_stage_after_master_approval
+      full_outcome_complete: false
+      summary: "PR 2は README/README.en/FUTURE_PLAN/presets/多言語fixtures の束で切れる。READMEのStar導線はrepo内導線として扱い、outreach初手Star依頼は禁止のまま。zh-traditionalのsummary caveatも残した。"
+      note: "notes/T013-pr2-stage-readiness.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T013-pr2-stage-readiness.md"
+      commands:
+        - cmd: "git diff --stat -- README.md README.en.md FUTURE_PLAN.md presets/speech-style.json presets/voices.json test/fixtures/ja-rollout.jsonl test/fixtures/en-rollout.jsonl test/fixtures/ko-rollout.jsonl test/fixtures/zh-rollout.jsonl test/fixtures/zh-traditional-rollout.jsonl test/fixtures/symbol-only-rollout.jsonl"
+          status: pass
+        - cmd: "git ls-files --others --exclude-standard -- test/fixtures/ja-rollout.jsonl test/fixtures/en-rollout.jsonl test/fixtures/ko-rollout.jsonl test/fixtures/zh-rollout.jsonl test/fixtures/zh-traditional-rollout.jsonl test/fixtures/symbol-only-rollout.jsonl"
+          status: pass
+        - cmd: "test -f docs/goals/talking-pets-hq-japanese/notes/T013-pr2-stage-readiness.md"
+          status: pass
+        - cmd: "node <goalbuddy-check> docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+        - cmd: "npm run check:syntax"
+          status: pass
+        - cmd: "npm run test:dry-run"
+          status: pass
+        - cmd: "node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --rollout test/fixtures/ko-rollout.jsonl"
+          status: pass
+        - cmd: "node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --rollout test/fixtures/zh-traditional-rollout.jsonl"
+          status: pass
+        - cmd: "node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --rollout test/fixtures/symbol-only-rollout.jsonl"
+          status: pass
+
+  - id: T022
+    type: judge
+    assignee: Judge
+    owner_role: "白瀬 怜奈"
+    status: done
+    reasoning_hint: high
+    objective: "PR 3実行前に、GoalBuddy正本、生成物除外、outreach/sherpa guardrail、赤信号をpreflightとして確認する。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "stage/commit/push/PR作成はしない。"
+      - ".goalbuddy-board、.DS_Store、demo mp4/pngをPR 3対象として扱わない。"
+      - "outreach送信やsherpa実験を実行済みとして扱わない。"
+    expected_output:
+      - "PR 3候補"
+      - "除外対象"
+      - "stage前チェック"
+      - "stage後の期待"
+      - "guardrail検証"
+      - "赤信号"
+    receipt:
+      result: done
+      decision: ready_after_pr1_pr2
+      full_outcome_complete: false
+      summary: "PR 3のpreflightを作成し、GoalBuddy正本55ファイル、.goalbuddy-board生成物24ファイル、.DS_Store、demo素材の除外、outreach/sherpa guardrailを明記した。"
+      note: "notes/T022-pr3-preflight.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T022-pr3-preflight.md"
+      commands:
+        - cmd: "test -f docs/goals/talking-pets-hq-japanese/notes/T022-pr3-preflight.md"
+          status: pass
+        - cmd: "rg -n \"PR 3候補|GoalBuddy正本|\\.goalbuddy-board|\\.DS_Store|demo mp4|赤信号|ready\" docs/goals/talking-pets-hq-japanese/notes/T022-pr3-preflight.md"
+          status: pass
+        - cmd: "node <goalbuddy-check> docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+        - cmd: "find docs/goals -type f ! -path '*/.goalbuddy-board/*' ! -name '.DS_Store' | wc -l && find docs/goals -type f -path '*/.goalbuddy-board/*' | wc -l && find docs/goals -type f -name '.DS_Store'"
+          status: pass
+        - cmd: "rg -n -i \"star|自動返信|自動dm|dm policy|first week plan|watch only|手動|do not automate|do not dm|do not ask\" docs/research/x-outreach-targets.md docs/research/sns-outreach-strategy.md"
+          status: pass
+        - cmd: "rg -n \"sherpa|onnx|Master|承認|依存追加|model download|API call|PR 1|PR 2|PR 3\" implementation-notes.md docs/research/sherpa-onnx-design.md docs/goals/talking-pets-hq-japanese/notes/T006-stage-manifest.md"
+          status: pass
+
+  - id: T023
+    type: judge
+    assignee: Judge
+    owner_role: "相庭 愛"
+    status: done
+    reasoning_hint: high
+    objective: "T006がactiveのままでよいか、判断材料が十分か、次に何を待っているかを監査する。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "stage/commit/push/PR作成はしない。"
+      - "outreach送信、dependency install、model download、paid/API TTSはしない。"
+      - "全体ゴールを完了扱いにしない。"
+    expected_output:
+      - "T006の現在状態"
+      - "判断材料の準備状況"
+      - "あいちゃん推奨"
+      - "T006を閉じられる条件"
+      - "監査結果"
+    receipt:
+      result: done
+      decision: keep_t006_active
+      full_outcome_complete: false
+      summary: "T006は判断材料が揃っているが、Master選択待ちのためactive維持が正しいと監査した。推奨はPR1保存点。"
+      note: "notes/T023-t006-readiness-audit.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T023-t006-readiness-audit.md"
+      commands:
+        - cmd: "test -f docs/goals/talking-pets-hq-japanese/notes/T023-t006-readiness-audit.md"
+          status: pass
+        - cmd: "rg -n \"T006 remains active|判断材料は十分|PR1から進めて|prepared_not_sent|prepared_not_executed|verified_as_fallback_only\" docs/goals/talking-pets-hq-japanese/notes/T023-t006-readiness-audit.md"
+          status: pass
+
+  - id: T024
+    type: worker
+    assignee: Worker
+    owner_role: "文月 栞里"
+    status: done
+    reasoning_hint: default
+    objective: "別スレッドや未来の再開時に、現在地、次手、確認コマンド、停止線を最短で把握できるhandoffを作る。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "stage/commit/push/PR作成はしない。"
+      - "outreach送信、dependency install、model download、paid/API TTSはしない。"
+    expected_output:
+      - "現在地"
+      - "次にやるなら"
+      - "確認コマンド"
+      - "参照メモ"
+      - "停止線"
+      - "状態ラベル"
+    receipt:
+      result: done
+      decision: handoff_ready
+      full_outcome_complete: false
+      summary: "再開時にPR1へ進む最短手順、確認コマンド、参照メモ、停止線をまとめたhandoffを作成した。"
+      note: "notes/T024-resume-handoff.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T024-resume-handoff.md"
+      commands:
+        - cmd: "test -f docs/goals/talking-pets-hq-japanese/notes/T024-resume-handoff.md"
+          status: pass
+        - cmd: "rg -n \"現在地|次にやるなら|確認コマンド|停止線|状態ラベル|T006: waiting_for_master\" docs/goals/talking-pets-hq-japanese/notes/T024-resume-handoff.md"
+          status: pass
+
+  - id: T025
+    type: judge
+    assignee: Judge
+    owner_role: "白瀬 怜奈"
+    status: done
+    reasoning_hint: default
+    objective: "GoalBuddy local hubと日本語HQ stateが一致しているか確認し、board healthを監査する。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "stage/commit/push/PR作成はしない。"
+      - "outreach送信、dependency install、model download、paid/API TTSはしない。"
+    expected_output:
+      - "state check結果"
+      - "local hub登録状況"
+      - "日本語HQ URL"
+      - "次に見る場所"
+      - "監査結果"
+    receipt:
+      result: done
+      decision: board_health_ok
+      full_outcome_complete: false
+      summary: "GoalBuddy local hubに日本語HQが登録済みで、state checkもactive_task T006のまま正常であることを確認した。"
+      note: "notes/T025-goalbuddy-board-health.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T025-goalbuddy-board-health.md"
+      commands:
+        - cmd: "test -f docs/goals/talking-pets-hq-japanese/notes/T025-goalbuddy-board-health.md"
+          status: pass
+        - cmd: "rg -n \"board_health: ok|hq_registered: true|state_active: true|active_task: T006|waiting_for_master\" docs/goals/talking-pets-hq-japanese/notes/T025-goalbuddy-board-health.md"
+          status: pass
+        - cmd: "node <goalbuddy-check> docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+        - cmd: "curl -s http://goalbuddy.localhost:41737/api/boards | rg -n \"talking-pets-hq-japanese|Talking Pets 日本語HQ|goalbuddy.localhost:41737/talking-pets-hq-japanese\""
+          status: pass
+
+  - id: T026
+    type: worker
+    assignee: Worker
+    owner_role: "星宮 未来"
+    status: done
+    reasoning_hint: default
+    objective: "Talking Petsの固定ポスト/告知ポスト下書きを英語と日本語に分けて作る。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "投稿しない。"
+      - "自動投稿、自動DM、自動follow、自動likeはしない。"
+      - "性能保証や専用TTS対応済みclaimをしない。"
+      - "英語ポストと日本語ポストを混ぜない。"
+    expected_output:
+      - "English pinned post drafts"
+      - "Japanese support post drafts"
+      - "Star導線"
+      - "投稿前チェック"
+      - "あいちゃん推奨"
+    receipt:
+      result: done
+      decision: drafts_prepared_not_posted
+      full_outcome_complete: false
+      summary: "英語固定ポスト3案、日本語補足ポスト3案、控えめなStar導線、投稿前チェックを作成した。投稿はしていない。"
+      note: "notes/T026-pinned-post-drafts.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T026-pinned-post-drafts.md"
+      commands:
+        - cmd: "test -f docs/goals/talking-pets-hq-japanese/notes/T026-pinned-post-drafts.md"
+          status: pass
+        - cmd: "rg -n \"English pinned post draft|Japanese quote|Star導線|投稿前チェック|under 1s|ko|zh|自動投稿\" docs/goals/talking-pets-hq-japanese/notes/T026-pinned-post-drafts.md"
+          status: pass
+        - cmd: "node <goalbuddy-check> docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+        - cmd: "rg -n \"under 1s|under one second|専用TTS対応済み|自動投稿|自動DM|GitHub Star|Please star\" docs/goals/talking-pets-hq-japanese/notes/T026-pinned-post-drafts.md"
+          status: pass
+
+  - id: T027
+    type: worker
+    assignee: Worker
+    owner_role: "星宮 未来"
+    status: done
+    reasoning_hint: default
+    objective: "固定ポスト/告知ポストの投稿前に、demo素材、repo/demo link、claim、Star導線、PR混入注意を確認できるチェックリストを作る。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "投稿しない。"
+      - "自動投稿、自動DM、自動follow、自動likeはしない。"
+      - "PR stageはしない。"
+      - "性能保証や専用TTS対応済みclaimをしない。"
+    expected_output:
+      - "利用できる素材"
+      - "link候補"
+      - "投稿claimチェック"
+      - "Star導線"
+      - "投稿前チェック"
+      - "あいちゃん推奨"
+    receipt:
+      result: done
+      decision: social_assets_checked_not_posted
+      full_outcome_complete: false
+      summary: "README標準demoとX向け候補素材、repo/demo link、投稿claim、控えめなStar導線、PR混入注意を整理した。投稿はしていない。"
+      note: "notes/T027-social-asset-checklist.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T027-social-asset-checklist.md"
+      commands:
+        - cmd: "test -f docs/goals/talking-pets-hq-japanese/notes/T027-social-asset-checklist.md"
+          status: pass
+        - cmd: "rg -n \"利用できる素材|X向け候補|under 1s|専用TTS|Star導線|投稿前チェック|PR stage\" docs/goals/talking-pets-hq-japanese/notes/T027-social-asset-checklist.md"
+          status: pass
+
+  - id: T028
+    type: worker
+    assignee: Worker
+    owner_role: "言守 詞葉"
+    status: done
+    reasoning_hint: default
+    objective: "README / README.en / FUTURE_PLAN / ROADMAP / implementation-notes の多言語説明が、現在の ko / zh first-class fallback 実装と矛盾しないようにする。"
+    allowed_files:
+      - "docs/ROADMAP.md"
+      - "implementation-notes.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "専用TTS対応済みとは書かない。"
+      - "production-readyとは書かない。"
+      - "PR stage、commit、pushはしない。"
+    expected_output:
+      - "古い多言語表現の検出"
+      - "ROADMAPの現状表現修正"
+      - "implementation-notesのspeech-language表記修正"
+      - "claim boundary"
+    receipt:
+      result: done
+      decision: multilingual_docs_aligned
+      full_outcome_complete: false
+      summary: "ROADMAPの韓国語/中国語表現を ko/zh first-class fallback に合わせ、implementation-notesの古い speech-language 表記を ja|en|ko|zh|other に更新した。"
+      note: "notes/T028-multilingual-doc-consistency.md"
+      changed_files:
+        - "docs/ROADMAP.md"
+        - "implementation-notes.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T028-multilingual-doc-consistency.md"
+      commands:
+        - cmd: "rg -n \"中国語|韓国語|Korean|Chinese|zh|ko|未実装|専用TTS|fallback|フォールバック\" docs/ROADMAP.md README.md README.en.md FUTURE_PLAN.md docs/research docs/performance.md implementation-notes.md"
+          status: pass
+        - cmd: "node <goalbuddy-check> docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T029
+    type: scout
+    assignee: Scout
+    owner_role: "歌澄 音羽"
+    status: done
+    reasoning_hint: high
+    objective: "Masterがlocal TTS実験を許可した時に、どの候補から試すかを迷わないよう、sherpa-onnx-node、MeloTTS、Piper/API TTSの優先順位と判断基準を整理する。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "依存追加しない。"
+      - "model downloadしない。"
+      - "音声生成しない。"
+      - "API TTSを有効化しない。"
+      - "PR stage、commit、pushはしない。"
+    expected_output:
+      - "local TTS候補比較表"
+      - "実験順"
+      - "判断基準"
+      - "Master承認後の最初の確認コマンド"
+      - "出典メモ"
+    receipt:
+      result: done
+      decision: sherpa_first_melotts_second_piper_followup
+      full_outcome_complete: false
+      summary: "local TTS候補として sherpa-onnx-node を第一候補、MeloTTSを多言語品質の第二候補、Piper系を軽量性比較の後続候補、API TTSをP2 opt-inとして整理した。依存追加、model download、音声生成はしていない。"
+      note: "notes/T029-local-tts-shortlist.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T029-local-tts-shortlist.md"
+      commands:
+        - cmd: "test -f docs/goals/talking-pets-hq-japanese/notes/T029-local-tts-shortlist.md"
+          status: pass
+        - cmd: "rg -n \"sherpa-onnx-node|MeloTTS|Piper|API TTS|依存追加|model download|音声生成|判断基準|Master承認後\" docs/goals/talking-pets-hq-japanese/notes/T029-local-tts-shortlist.md"
+          status: pass
+
+  - id: T030
+    type: worker
+    assignee: Worker
+    owner_role: "星宮 未来"
+    status: done
+    reasoning_hint: default
+    objective: "Masterが時間のある時に最大2件だけ手動返信できるよう、Day 1 outreach候補を最新確認前提で絞り直す。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "送信しない。"
+      - "自動投稿、自動DM、自動follow、自動likeはしない。"
+      - "初回でStar依頼しない。"
+      - "private contactを探さない。"
+      - "PR stage、commit、pushはしない。"
+    expected_output:
+      - "今日の推奨2件"
+      - "送る条件"
+      - "送らない条件"
+      - "推奨文"
+      - "送信後の記録先"
+    receipt:
+      result: done
+      decision: day1_queue_openclaw_v1gpt_v1r4_backup
+      full_outcome_complete: false
+      summary: "Day 1はOpenClaw/Sogni VoiceへのX public replyとV1GPTへのReddit public commentを推奨し、V1R4を予備にした。短い文面、送る/送らない条件、送信後の記録先を整理した。送信はしていない。"
+      note: "notes/T030-outreach-day1-latest-queue.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T030-outreach-day1-latest-queue.md"
+      commands:
+        - cmd: "test -f docs/goals/talking-pets-hq-japanese/notes/T030-outreach-day1-latest-queue.md"
+          status: pass
+        - cmd: "rg -n \"OpenClaw|Sogni Voice|V1GPT|V1R4|送る条件|送らない条件|推奨文|自動DM|Star依頼|2週間\" docs/goals/talking-pets-hq-japanese/notes/T030-outreach-day1-latest-queue.md"
+          status: pass
+
+  - id: T031
+    type: worker
+    assignee: Worker
+    owner_role: "言守 詞葉"
+    status: done
+    reasoning_hint: default
+    objective: "PR 2前に、README / README.en の多言語fallback claimが現在のfixture実行結果と一致しているかを一括で確認する。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "専用TTS対応済みとは書かない。"
+      - "production-readyとは書かない。"
+      - "PR stage、commit、pushはしない。"
+    expected_output:
+      - "一括検証コマンド"
+      - "fixture別結果表"
+      - "README claimとの対応"
+      - "claim boundary"
+    receipt:
+      result: done
+      decision: multilingual_batch_verification_passed
+      full_outcome_complete: false
+      summary: "ja/en/ko/zh/zh-traditional/symbol-only の6fixtureを --diagnose-routing で一括確認し、READMEの日本語=VOICEVOX、英語=Kokoro、ko/zh/other=OS speech fallbackというclaimと一致することを記録した。"
+      note: "notes/T031-multilingual-batch-verification.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T031-multilingual-batch-verification.md"
+      commands:
+        - cmd: "test -f docs/goals/talking-pets-hq-japanese/notes/T031-multilingual-batch-verification.md"
+          status: pass
+        - cmd: "for f in test/fixtures/ja-rollout.jsonl test/fixtures/en-rollout.jsonl test/fixtures/ko-rollout.jsonl test/fixtures/zh-rollout.jsonl test/fixtures/zh-traditional-rollout.jsonl test/fixtures/symbol-only-rollout.jsonl; do node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --rollout \"$f\" >/dev/null || exit 1; done"
+          status: pass
+        - cmd: "rg -n \"ja-rollout|en-rollout|ko-rollout|zh-rollout|zh-traditional|symbol-only|voicevox|kokoro|OS speech fallback|専用TTS|production-ready\" docs/goals/talking-pets-hq-japanese/notes/T031-multilingual-batch-verification.md"
+          status: pass
+
+  - id: T032
+    type: pm
+    assignee: PM
+    owner_role: "相庭 愛"
+    status: done
+    reasoning_hint: default
+    objective: "T029 / T030 / T031 までの追加進捗を含め、GoalBuddy日本語HQでいま何が完了し、何がMaster判断待ちかを一枚で追えるようにする。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "stage、commit、push、PR作成はしない。"
+      - "outreach送信、DM送信はしない。"
+      - "dependency install、model downloadはしない。"
+      - "T006判断待ちは継続する。"
+    expected_output:
+      - "現在状態"
+      - "最新の完了成果"
+      - "Masterが選べる次手"
+      - "停止線"
+      - "状態ラベル"
+    receipt:
+      result: done
+      decision: latest_hq_rollup_updated
+      full_outcome_complete: false
+      summary: "T029 local TTS候補、T030 outreach Day 1最新キュー、T031多言語fixture一括検証を含む最新HQロールアップを作成した。T006はMaster判断待ちのまま維持した。"
+      note: "notes/T032-latest-hq-rollup.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T032-latest-hq-rollup.md"
+      commands:
+        - cmd: "test -f docs/goals/talking-pets-hq-japanese/notes/T032-latest-hq-rollup.md"
+          status: pass
+        - cmd: "rg -n \"Task count: 36|T029|T030|T031|PR1保存点|prepared_not_sent|prepared_not_executed|verified_as_fallback_only|Master判断: waiting|T006\" docs/goals/talking-pets-hq-japanese/notes/T032-latest-hq-rollup.md"
+          status: pass
+
+  - id: T033
+    type: judge
+    assignee: Judge
+    owner_role: "白瀬 怜奈"
+    status: done
+    reasoning_hint: high
+    objective: "T032時点の最新差分を見て、PR1 / PR2 / PR3 の分割境界がまだ崩れていないか確認する。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "git add、commit、push、PR作成はしない。"
+      - "demo mp4/pngをPR候補へ混ぜない。"
+      - ".goalbuddy-board生成物をstage候補にしない。"
+      - "T006判断待ちは継続する。"
+    expected_output:
+      - "現在の差分"
+      - "PR1境界"
+      - "PR2境界"
+      - "PR3境界"
+      - "最新リスク"
+      - "stage前チェック"
+    receipt:
+      result: done
+      decision: pr_split_boundaries_still_valid
+      full_outcome_complete: false
+      summary: "最新差分を監査し、PR1候補6ファイル、PR2多言語docs/fixtures、PR3roadmap/GoalBuddy/docsの境界がまだ有効であることを確認した。未追跡のPR1候補2ファイル、GoalBuddy生成物24ファイル、demo素材誤stageをリスクとして明記した。"
+      note: "notes/T033-pr-split-latest-risk-audit.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T033-pr-split-latest-risk-audit.md"
+      commands:
+        - cmd: "test -f docs/goals/talking-pets-hq-japanese/notes/T033-pr-split-latest-risk-audit.md"
+          status: pass
+        - cmd: "rg -n \"PR1境界|PR2境界|PR3境界|untracked|\\.goalbuddy-board生成物: 24|GoalBuddy正本候補: 66|demo素材|stage漏れ|T006\" docs/goals/talking-pets-hq-japanese/notes/T033-pr-split-latest-risk-audit.md"
+          status: pass
+        - cmd: "for f in package.json scripts/pet-rollout-monitor.mjs scripts/tts-kokoro.mjs scripts/tts-voicebox.mjs scripts/latency-benchmark.mjs docs/performance.md; do test -f \"$f\" || exit 1; done"
+          status: pass
+
+  - id: T034
+    type: pm
+    assignee: PM
+    owner_role: "相庭 愛"
+    status: done
+    reasoning_hint: default
+    objective: "T032 / T033 時点の最新状態を踏まえて、Masterが次の一手をコピペで選べるようにする。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "stage、commit、push、PR作成はしない。"
+      - "outreach送信、DM送信はしない。"
+      - "dependency install、model downloadはしない。"
+      - "T006判断待ちは継続する。"
+    expected_output:
+      - "現在状態"
+      - "あいちゃん推奨"
+      - "選択肢"
+      - "一番短い返事"
+      - "停止線"
+    receipt:
+      result: done
+      decision: latest_master_decision_card_ready
+      full_outcome_complete: false
+      summary: "T032/T033時点の最新状態を反映し、PR1保存点、outreach優先、local TTS実験、別優先度の4択と、Masterがそのまま使える承認文を整理した。"
+      note: "notes/T034-master-decision-card-latest.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T034-master-decision-card-latest.md"
+      commands:
+        - cmd: "test -f docs/goals/talking-pets-hq-japanese/notes/T034-master-decision-card-latest.md"
+          status: pass
+        - cmd: "rg -n \"Task count: 36|PR1から進めて|outreachを優先|sherpa-onnx実験|別の優先度|stage|commit|model download|T006\" docs/goals/talking-pets-hq-japanese/notes/T034-master-decision-card-latest.md"
+          status: pass
+
+  - id: T035
+    type: judge
+    assignee: Judge
+    owner_role: "白瀬 怜奈"
+    status: done
+    reasoning_hint: default
+    objective: "T034追加後、GoalBuddy日本語HQの task_count と主要ロールアップ内の Task count 表記が矛盾していないか確認する。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "stage、commit、push、PR作成はしない。"
+      - "T006判断待ちは継続する。"
+      - "過去receiptとして残すべき古い観測値は無理に書き換えない。"
+    expected_output:
+      - "現在のGoalBuddy checker結果"
+      - "見つけたズレ"
+      - "修正"
+      - "履歴として残すもの"
+      - "検証"
+    receipt:
+      result: done
+      decision: hq_task_count_consistency_restored
+      full_outcome_complete: false
+      summary: "T032-latest-hq-rollup.md とT034-master-decision-card-latest.md の Task count を36へ更新し、state.yaml内のT032/T034/T035確認コマンドも現在値に合わせた。T025の古いtask_countは当時のhealth receiptとして維持した。"
+      note: "notes/T035-hq-count-consistency-audit.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T032-latest-hq-rollup.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T035-hq-count-consistency-audit.md"
+      commands:
+        - cmd: "test -f docs/goals/talking-pets-hq-japanese/notes/T035-hq-count-consistency-audit.md"
+          status: pass
+        - cmd: "rg -n \"Task count: 36|active_task: T006|task_count: 36|T006\" docs/goals/talking-pets-hq-japanese/notes/T032-latest-hq-rollup.md docs/goals/talking-pets-hq-japanese/notes/T034-master-decision-card-latest.md docs/goals/talking-pets-hq-japanese/notes/T035-hq-count-consistency-audit.md"
+          status: pass
+
+  - id: T036
+    type: judge
+    assignee: Judge
+    owner_role: "白瀬 怜奈"
+    status: done
+    reasoning_hint: high
+    objective: "PR1保存点を作る前に、最新の作業ツリーでPR1候補ファイルと検証コマンドがまだ通るか確認する。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "git add、commit、push、PR作成はしない。"
+      - "PR1候補以外をstage候補に混ぜない。"
+      - "benchmark結果を実音声生成の性能保証として扱わない。"
+      - "T006判断待ちは継続する。"
+    expected_output:
+      - "PR1候補"
+      - "存在確認"
+      - "検証結果"
+      - "最新git状態"
+      - "判断"
+    receipt:
+      result: done
+      decision: pr1_live_verification_passed
+      full_outcome_complete: false
+      summary: "PR1候補6ファイルの存在確認、npm run check:syntax、npm run test:dry-run、npm run benchmark:latency -- --runs 5、zh-rollout diagnostics が最新作業ツリーで通ることを確認した。stage/commit/pushはしていない。"
+      note: "notes/T036-pr1-live-verification.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T036-pr1-live-verification.md"
+      commands:
+        - cmd: "test -f docs/goals/talking-pets-hq-japanese/notes/T036-pr1-live-verification.md"
+          status: pass
+        - cmd: "rg -n \"PR1候補|npm run check:syntax|npm run test:dry-run|benchmark:latency|zh-rollout|stage後の期待値|PR1から進めて|T006\" docs/goals/talking-pets-hq-japanese/notes/T036-pr1-live-verification.md"
+          status: pass
+
+  - id: T039
+    type: judge
+    assignee: Judge
+    owner_role: "白瀬 怜奈"
+    status: done
+    reasoning_hint: high
+    objective: "PR #6 作成後の conflict を解消し、GitHub CI が通ることを確認する。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "元の作業ツリーのPR2/PR3差分を壊さない。"
+      - "outreach送信、dependency install、model downloadはしない。"
+    expected_output:
+      - "mergeable"
+      - "解消方針"
+      - "ローカル検証"
+      - "GitHub CI"
+      - "片付け"
+    receipt:
+      result: done
+      decision: pr1_mergeable_and_ci_green
+      full_outcome_complete: false
+      summary: "PR #6 の conflict を一時worktreeで解消し、merge commit f0b6af4 をpushした。PRはMERGEABLEになり、macOS/Ubuntu/WindowsのNode checksがすべてpassした。"
+      note: "notes/T039-pr1-conflict-resolution-ci.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T039-pr1-conflict-resolution-ci.md"
+      commands:
+        - cmd: "test -f docs/goals/talking-pets-hq-japanese/notes/T039-pr1-conflict-resolution-ci.md"
+          status: pass
+        - cmd: "gh pr view 6 --json number,title,state,url,headRefName,baseRefName,mergeable,reviewDecision,statusCheckRollup"
+          status: pass
+        - cmd: "gh pr checks 6 --watch"
+          status: pass
+
+  - id: T014
+    type: worker
+    assignee: Worker
+    owner_role: "文月 栞里"
+    status: done
+    reasoning_hint: default
+    objective: "PR 3のstage候補を精査し、Roadmap、GoalBuddy、outreach docsを小さく切れるか確認する。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "stage/commit/pushはしない。"
+      - ".goalbuddy-board生成物、.DS_Store、demo mp4/pngをPR 3へ混ぜない。"
+      - "outreachを自動投稿や初手Star依頼として扱わない。"
+      - "sherpa-onnx実験を承認済みとして扱わない。"
+    expected_output:
+      - "PR 3 stage候補"
+      - "PR 3に入れないもの"
+      - "GoalBuddy生成物の扱い"
+      - "outreach guardrail"
+      - "sherpa-onnx caveat"
+    receipt:
+      result: done
+      decision: ready_to_stage_after_master_approval
+      full_outcome_complete: false
+      summary: "PR 3は docs/ROADMAP.md、docs/research、GoalBuddy正本、implementation-notes の束で切れる。重い .goalbuddy-board 生成物、.DS_Store、demo mp4/pngは入れない方針にした。"
+      note: "notes/T014-pr3-stage-readiness.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T014-pr3-stage-readiness.md"
+      commands:
+        - cmd: "git status --short -- docs/ROADMAP.md docs/research docs/goals implementation-notes.md"
+          status: pass
+        - cmd: "find docs/goals -type f -path '*/.goalbuddy-board/*' | wc -l"
+          status: pass
+        - cmd: "find docs/goals -type f ! -path '*/.goalbuddy-board/*' ! -name '.DS_Store' | wc -l"
+          status: pass
+        - cmd: "du -sh docs/goals docs/research docs/ROADMAP.md implementation-notes.md"
+          status: pass
+        - cmd: "test -f docs/goals/talking-pets-hq-japanese/notes/T014-pr3-stage-readiness.md"
+          status: pass
+        - cmd: "node <goalbuddy-check> docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+        - cmd: "rg -n -i \"star|自動返信|自動dm|dm policy|first week plan|watch only|手動|do not automate|do not dm|do not ask\" docs/research/x-outreach-targets.md docs/research/sns-outreach-strategy.md"
+          status: pass
+        - cmd: "rg -n \"sherpa|onnx|Master|承認|依存追加|model download|API call|PR 1|PR 2|PR 3\" implementation-notes.md docs/research/sherpa-onnx-design.md docs/goals/talking-pets-hq-japanese/notes/T006-stage-manifest.md"
+          status: pass
+
+  - id: T015
+    type: pm
+    assignee: PM
+    owner_role: "相庭 愛"
+    status: done
+    reasoning_hint: default
+    objective: "PR 1からPR 3までの実行順、stage候補、commit/PR文案、除外対象を統合したリハーサルを作る。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "stage/commit/push/PR作成はしない。"
+      - "Master承認が必要な実行操作は開始しない。"
+    expected_output:
+      - "PR 1実行案"
+      - "PR 2実行案"
+      - "PR 3実行案"
+      - "stage前の赤信号"
+      - "Master確認事項"
+    receipt:
+      result: done
+      decision: waiting_for_master_to_execute
+      full_outcome_complete: false
+      summary: "PR 1からPR 3までのbranch、stage、commit、verification、PR body最新版を統合した。PR 3では .goalbuddy-board 生成物、.DS_Store、demo mp4/pngを除外する方針を明記した。"
+      note: "notes/T015-pr-split-execution-rehearsal.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T015-pr-split-execution-rehearsal.md"
+      commands:
+        - cmd: "test -f docs/goals/talking-pets-hq-japanese/notes/T015-pr-split-execution-rehearsal.md"
+          status: pass
+        - cmd: "rg -n \"PR 1実行案|PR 2実行案|PR 3実行案|stage前の赤信号|Master確認\" docs/goals/talking-pets-hq-japanese/notes/T015-pr-split-execution-rehearsal.md"
+          status: pass
+        - cmd: "node <goalbuddy-check> docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+        - cmd: "for f in package.json scripts/pet-rollout-monitor.mjs scripts/tts-kokoro.mjs scripts/tts-voicebox.mjs scripts/latency-benchmark.mjs docs/performance.md README.md README.en.md FUTURE_PLAN.md presets/speech-style.json presets/voices.json test/fixtures/ja-rollout.jsonl test/fixtures/en-rollout.jsonl test/fixtures/ko-rollout.jsonl test/fixtures/zh-rollout.jsonl test/fixtures/zh-traditional-rollout.jsonl test/fixtures/symbol-only-rollout.jsonl docs/ROADMAP.md docs/research/sns-outreach-strategy.md docs/research/x-outreach-targets.md docs/research/sherpa-onnx-design.md implementation-notes.md; do test -f \"$f\" || exit 1; done"
+          status: pass
+        - cmd: "find docs/goals -type f ! -path '*/.goalbuddy-board/*' ! -name '.DS_Store' | wc -l && find docs/goals -type f -path '*/.goalbuddy-board/*' | wc -l"
+          status: pass
+
+  - id: T016
+    type: pm
+    assignee: PM
+    owner_role: "相庭 愛"
+    status: done
+    reasoning_hint: default
+    objective: "Masterが次の優先度を即決できるよう、選択肢、推奨、リスク、許可文言を日本語で整理する。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "stage/commit/push/PR作成はしない。"
+      - "outreach送信、dependency install、model download、paid/API TTSはしない。"
+    expected_output:
+      - "推奨選択肢"
+      - "代替選択肢"
+      - "Masterが言えばよい文"
+      - "あいちゃんの停止線"
+    receipt:
+      result: done
+      decision: waiting_for_master_to_choose
+      full_outcome_complete: false
+      summary: "Master向けに、PR1から保存点を作る案、outreach優先案、sherpa-onnx実験許可案、docs追加磨き案を整理した。推奨はPR1からbranch/stage/検証/commitまで進めること。"
+      note: "notes/T016-master-decision-card.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T016-master-decision-card.md"
+      commands:
+        - cmd: "test -f docs/goals/talking-pets-hq-japanese/notes/T016-master-decision-card.md"
+          status: pass
+        - cmd: "rg -n \"PR1から進めて|outreachを優先|sherpa-onnx実験|あいちゃんの停止線|Masterが言えばよい文\" docs/goals/talking-pets-hq-japanese/notes/T016-master-decision-card.md"
+          status: pass
+
+  - id: T017
+    type: worker
+    assignee: Worker
+    owner_role: "星宮 未来"
+    status: done
+    reasoning_hint: default
+    objective: "Masterが手動でDay 1 outreachを最大2件送れるよう、候補、短文版、送信前確認、記録方法を整理する。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "自動投稿、自動DM、自動follow、自動likeはしない。"
+      - "初回でStar依頼しない。"
+      - "送信済みとして記録しない。"
+      - "最新投稿文脈は送信直前にMasterが手動確認する。"
+    expected_output:
+      - "Day 1推奨2件"
+      - "短い送信文"
+      - "送信前確認"
+      - "送信後の記録方法"
+      - "禁止事項"
+    receipt:
+      result: done
+      decision: prepared_not_sent
+      full_outcome_complete: false
+      summary: "Day 1 outreach候補をOpenClaw/Sogni VoiceとV1GPTに絞り、短文版、送信前確認、T007への記録方法を用意した。送信はしていない。"
+      note: "notes/T017-outreach-day1-send-pack.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T017-outreach-day1-send-pack.md"
+      commands:
+        - cmd: "test -f docs/goals/talking-pets-hq-japanese/notes/T017-outreach-day1-send-pack.md"
+          status: pass
+        - cmd: "rg -n \"OpenClaw|V1GPT|短い版|自動投稿しない|初回でStar依頼しない|送信済み\" docs/goals/talking-pets-hq-japanese/notes/T017-outreach-day1-send-pack.md"
+          status: pass
+        - cmd: "node <goalbuddy-check> docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+        - cmd: "rg -n \"送信済み|未送信|自動投稿|自動DM|Star依頼|2週間\" docs/goals/talking-pets-hq-japanese/notes/T007-outreach-tracking-template.md docs/goals/talking-pets-hq-japanese/notes/T017-outreach-day1-send-pack.md"
+          status: pass
+
+  - id: T018
+    type: worker
+    assignee: Worker
+    owner_role: "歌澄 音羽"
+    status: done
+    reasoning_hint: default
+    objective: "sherpa-onnx local TTS実験をMaster承認後に安全に開始できるよう、事前確認、helper仕様、成功条件、中止条件を整理する。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "dependency installはしない。"
+      - "model downloadはしない。"
+      - "音声生成はしない。"
+      - "READMEで対応済みclaimをしない。"
+    expected_output:
+      - "実験前チェック"
+      - "model確認"
+      - "helper最小仕様"
+      - "成功条件"
+      - "中止条件"
+      - "Master承認文"
+    receipt:
+      result: done
+      decision: prepared_not_executed
+      full_outcome_complete: false
+      summary: "sherpa-onnx-node実験の事前確認、model/license確認、helper最小仕様、成功条件、中止条件、Master承認文を整理した。依存追加、model download、音声生成はしていない。"
+      note: "notes/T018-local-tts-experiment-pack.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T018-local-tts-experiment-pack.md"
+      commands:
+        - cmd: "test -f docs/goals/talking-pets-hq-japanese/notes/T018-local-tts-experiment-pack.md"
+          status: pass
+        - cmd: "rg -n \"sherpa-onnx-node|npm install|model download|helperの最小仕様|中止条件|Master承認文|まだ実験しない\" docs/goals/talking-pets-hq-japanese/notes/T018-local-tts-experiment-pack.md"
+          status: pass
+        - cmd: "node <goalbuddy-check> docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+        - cmd: "test ! -f scripts/tts-sherpa-onnx.mjs"
+          status: pass
+
+  - id: T019
+    type: pm
+    assignee: PM
+    owner_role: "相庭 愛"
+    status: done
+    reasoning_hint: default
+    objective: "HQ看板の全体状態を整理し、完了済みの波、未実行事項、次の3手、停止線を1枚で追えるようにする。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "stage/commit/push/PR作成はしない。"
+      - "outreach送信、dependency install、model download、paid/API TTSはしない。"
+      - "全体ゴールを完了扱いにしない。"
+    expected_output:
+      - "全体状態"
+      - "完了済みの波"
+      - "まだ実行していないこと"
+      - "次の3手"
+      - "停止線"
+      - "状態ラベル"
+    receipt:
+      result: done
+      decision: continue
+      full_outcome_complete: false
+      summary: "HQ全体のrollupを作成し、PR準備、outreach準備、local TTS実験準備、多言語fallback検証、Master判断待ちを1枚で追えるようにした。"
+      note: "notes/T019-hq-status-rollup.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T019-hq-status-rollup.md"
+      commands:
+        - cmd: "test -f docs/goals/talking-pets-hq-japanese/notes/T019-hq-status-rollup.md"
+          status: pass
+        - cmd: "rg -n \"全体状態|完了済みの波|まだ実行していないこと|次の3手|状態ラベル|waiting\" docs/goals/talking-pets-hq-japanese/notes/T019-hq-status-rollup.md"
+          status: pass
+
+  - id: T020
+    type: judge
+    assignee: Judge
+    owner_role: "白瀬 怜奈"
+    status: done
+    reasoning_hint: high
+    objective: "PR 1実行前に、stage候補、除外対象、検証コマンド、赤信号をpreflightとして確認する。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "stage/commit/push/PR作成はしない。"
+      - "PR 1候補外のファイルを触らない。"
+    expected_output:
+      - "PR 1候補"
+      - "stage前チェック"
+      - "stage後の期待値"
+      - "検証コマンド"
+      - "赤信号"
+    receipt:
+      result: done
+      decision: ready_to_execute_after_master_approval
+      full_outcome_complete: false
+      summary: "PR 1のpreflightを作成し、stage対象6ファイル、除外対象、stage後の期待値、検証コマンド、赤信号を明記した。"
+      note: "notes/T020-pr1-preflight.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T020-pr1-preflight.md"
+      commands:
+        - cmd: "test -f docs/goals/talking-pets-hq-japanese/notes/T020-pr1-preflight.md"
+          status: pass
+        - cmd: "rg -n \"PR 1候補|stage前チェック|stage後の確認|期待値|赤信号|ready\" docs/goals/talking-pets-hq-japanese/notes/T020-pr1-preflight.md"
+          status: pass
+        - cmd: "node <goalbuddy-check> docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+        - cmd: "npm run check:syntax"
+          status: pass
+        - cmd: "npm run test:dry-run"
+          status: pass
+        - cmd: "npm run benchmark:latency -- --runs 5"
+          status: pass
+        - cmd: "node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --rollout test/fixtures/zh-rollout.jsonl"
+          status: pass
+
+  - id: T021
+    type: judge
+    assignee: Judge
+    owner_role: "白瀬 怜奈"
+    status: done
+    reasoning_hint: high
+    objective: "PR 2実行前に、stage候補、除外対象、検証コマンド、赤信号をpreflightとして確認する。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "stage/commit/push/PR作成はしない。"
+      - "PR 2候補外のファイルを触らない。"
+      - "ko/zhを専用TTS provider対応済みとして扱わない。"
+    expected_output:
+      - "PR 2候補"
+      - "stage前チェック"
+      - "stage後の期待値"
+      - "検証コマンド"
+      - "赤信号"
+    receipt:
+      result: done
+      decision: ready_after_pr1
+      full_outcome_complete: false
+      summary: "PR 2のpreflightを作成し、stage対象11ファイル、除外対象、stage後の期待値、検証コマンド、赤信号を明記した。PR 2はPR 1保存点後に進めるのが自然。"
+      note: "notes/T021-pr2-preflight.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T021-pr2-preflight.md"
+      commands:
+        - cmd: "test -f docs/goals/talking-pets-hq-japanese/notes/T021-pr2-preflight.md"
+          status: pass
+        - cmd: "rg -n \"PR 2候補|stage前チェック|stage後の確認|期待値|赤信号|ready\" docs/goals/talking-pets-hq-japanese/notes/T021-pr2-preflight.md"
+          status: pass
+        - cmd: "node <goalbuddy-check> docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+        - cmd: "npm run check:syntax"
+          status: pass
+        - cmd: "npm run test:dry-run"
+          status: pass
+        - cmd: "node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --rollout test/fixtures/ko-rollout.jsonl"
+          status: pass
+        - cmd: "node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --rollout test/fixtures/zh-traditional-rollout.jsonl"
+          status: pass
+        - cmd: "node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --rollout test/fixtures/symbol-only-rollout.jsonl"
+          status: pass
+        - cmd: "node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --rollout test/fixtures/zh-traditional-rollout.jsonl"
+          status: pass
+
+  - id: T011
+    type: judge
+    assignee: Judge
+    owner_role: "白瀬 怜奈"
+    status: done
+    reasoning_hint: high
+    objective: "PR 3を切る前に、Roadmap、GoalBuddy、outreach docsのセルフレビュー観点を整理する。"
+    constraints:
+      - "stage/commit/pushはしない。"
+      - "自動投稿、自動DM、自動follow、自動likeはしない。"
+      - "private contactや非公開情報を集めない。"
+    expected_output:
+      - "outreach安全性"
+      - "ターゲット根拠とメッセージの対応"
+      - "roadmap claim境界"
+      - "GoalBuddy生成物のPR方針"
+      - "implementation-notesの扱い"
+    receipt:
+      result: done
+      decision: pass
+      full_outcome_complete: false
+      summary: "PR 3向けに、outreach安全性、target/message対応、roadmap claim境界、GoalBuddy生成物の扱い、implementation-notesのセルフレビューchecklistを作成した。"
+      note: "notes/T011-pr3-outreach-docs-review.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T011-pr3-outreach-docs-review.md"
+      commands:
+        - cmd: "test -f docs/goals/talking-pets-hq-japanese/notes/T011-pr3-outreach-docs-review.md"
+          status: pass
+        - cmd: "rg -n \"outreach|自動DM|Star|watch-only|GoalBuddy|implementation-notes|赤信号\" docs/goals/talking-pets-hq-japanese/notes/T011-pr3-outreach-docs-review.md"
+          status: pass
+        - cmd: "node <goalbuddy-check> docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+        - cmd: "rg -n -i \"star|自動返信|自動dm|dm policy|first week plan|watch only|手動|do not automate|do not dm|do not ask\" docs/research/x-outreach-targets.md docs/research/sns-outreach-strategy.md"
+          status: pass
+        - cmd: "rg -n \"sherpa|onnx|Master|承認|PR 1|PR 2|PR 3|demo素材\" implementation-notes.md docs/goals/talking-pets-hq-japanese/notes/T006-stage-manifest.md"
+          status: pass
+
+  - id: T012
+    type: worker
+    assignee: Worker
+    owner_role: "文月 栞里"
+    status: done
+    reasoning_hint: default
+    objective: "PR 1のstage候補を精査し、小さく切れるかを確認する。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "stage/commit/pushはしない。"
+      - "README、outreach docs、GoalBuddy docsをPR 1へ混ぜない。"
+    expected_output:
+      - "PR 1 stage候補"
+      - "PR 1に入れないもの"
+      - "stage前の注意点"
+      - "検証コマンド"
+    receipt:
+      result: done
+      decision: ready_to_stage_after_master_approval
+      full_outcome_complete: false
+      summary: "PR 1は package.json、monitor、TTS helpers、latency benchmark、performance docs の小さな束で切れる。未追跡の scripts/latency-benchmark.mjs と docs/performance.md をstage忘れしない注意を残した。"
+      note: "notes/T012-pr1-stage-readiness.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T012-pr1-stage-readiness.md"
+      commands:
+        - cmd: "git diff --stat -- package.json scripts/pet-rollout-monitor.mjs scripts/tts-kokoro.mjs scripts/tts-voicebox.mjs scripts/latency-benchmark.mjs docs/performance.md"
+          status: pass
+        - cmd: "git ls-files --others --exclude-standard -- scripts/latency-benchmark.mjs docs/performance.md"
+          status: pass
+        - cmd: "test -f docs/goals/talking-pets-hq-japanese/notes/T012-pr1-stage-readiness.md"
+          status: pass
+        - cmd: "node <goalbuddy-check> docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+        - cmd: "npm run check:syntax"
+          status: pass
+        - cmd: "npm run test:dry-run"
+          status: pass
+        - cmd: "npm run benchmark:latency -- --runs 5"
+          status: pass
+        - cmd: "node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --rollout test/fixtures/zh-rollout.jsonl"
+          status: pass
+        - cmd: "node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --rollout test/fixtures/symbol-only-rollout.jsonl"
+          status: pass
+
+  - id: T004
+    type: scout
+    assignee: Scout
+    owner_role: "文月 栞里"
+    status: done
+    reasoning_hint: low
+    objective: "README/ROADMAP/GoalBuddy各boardの日本語表示を点検し、英語で追いづらい箇所を洗い出す。"
+    constraints:
+      - "読み取り中心。"
+      - "実装変更はPMまたはWorker taskへ渡す。"
+    receipt:
+      result: done
+      summary: "主要GoalBuddy boardと完了済み波のgoal/state表示を日本語化し、HQで追いやすい状態にした。"
+      note: "notes/T004-japanese-board-audit.md"
+      changed_files:
+        - "docs/goals/talking-pets-growth-latency-wave/goal.md"
+        - "docs/goals/talking-pets-growth-latency-wave/state.yaml"
+        - "docs/goals/talking-pets-routing-diagnostics/goal.md"
+        - "docs/goals/talking-pets-routing-diagnostics/state.yaml"
+        - "docs/goals/talking-pets-sherpa-onnx-design/goal.md"
+        - "docs/goals/talking-pets-sherpa-onnx-design/state.yaml"
+        - "docs/goals/*/.goalbuddy-board/index.html"
+        - "docs/goals/*/.goalbuddy-board/app.js"
+        - "docs/goals/talking-pets-hq-japanese/notes/T004-japanese-board-audit.md"
+
+  - id: T999
+    type: judge
+    assignee: Judge
+    owner_role: "白瀬 怜奈"
+    status: done
+    reasoning_hint: high
+    objective: "HQ看板が継続activeとして機能しているか監査する。"
+    constraints:
+      - "短期ボード完了を全体完了として扱わない。"
+      - "Master判断が必要なものを勝手に実行しない。"
+    receipt:
+      result: done
+      decision: continue
+      full_outcome_complete: false
+      summary: "HQ看板は継続activeとして機能している。短期波は履歴化し、次は差分整理とPR/handoff方針へ進める。"
+      note: "notes/T999-hq-continuation-audit.md"
+
+  - id: T005
+    type: worker
+    assignee: Worker
+    owner_role: "文月 栞里"
+    status: done
+    reasoning_hint: default
+    objective: "ここまでの差分を整理し、PR/commit/handoff向けの日本語まとめを作る。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      - "implementation-notes.md"
+    verify:
+      - "test -f docs/goals/talking-pets-hq-japanese/notes/T005-diff-handoff.md"
+      - "rg -n \"実装|docs|GoalBuddy|outreach|多言語|レイテンシ|未追跡demo|次の判断\" docs/goals/talking-pets-hq-japanese/notes/T005-diff-handoff.md"
+    stop_if:
+      - "commitやstageが必要になった場合。"
+      - "Master承認なしに依存追加やmodel downloadが必要になった場合。"
+    receipt:
+      result: done
+      summary: "実装、docs、GoalBuddy、outreach、多言語、未追跡demo素材、次の判断をPR/handoff向けに整理した。"
+      note: "notes/T005-diff-handoff.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T005-diff-handoff.md"
+      commands:
+        - cmd: "git diff --stat"
+          status: pass
+
+  - id: T006
+    type: pm
+    assignee: PM
+    owner_role: "相庭 愛"
+    status: done
+    reasoning_hint: default
+    objective: "Master判断待ち: 次にsherpa-onnx実験、outreach手動送信、PR分割のどれを優先するか決める。"
+    expected_output:
+      - "sherpa-onnx実験を許可"
+      - "outreach送信を優先"
+      - "PR分割/commitを優先"
+      - "別の優先度へ変更"
+    receipt:
+      result: done
+      decision: pr1_approved_and_executed
+      full_outcome_complete: false
+      summary: "MasterがPR1保存点を承認し、branch作成、PR1候補6ファイルのstage、検証、commit、push、PR #6作成まで完了した。次はPR2保存点、outreach、local TTS実験の判断へ進む。"
+      note: "notes/T006-pr-split-plan.md"
+      artifacts:
+        - "notes/T006-stage-manifest.md"
+        - "notes/T006-pr-message-drafts.md"
+        - "notes/T016-master-decision-card.md"
+        - "notes/T017-outreach-day1-send-pack.md"
+        - "notes/T018-local-tts-experiment-pack.md"
+        - "notes/T019-hq-status-rollup.md"
+        - "notes/T020-pr1-preflight.md"
+        - "notes/T021-pr2-preflight.md"
+        - "notes/T022-pr3-preflight.md"
+        - "notes/T037-pr1-execution-receipt.md"
+        - "notes/T038-next-after-pr1-decision.md"
+
+  - id: T037
+    type: pm
+    assignee: PM
+    owner_role: "相庭 愛"
+    status: done
+    reasoning_hint: default
+    objective: "Master承認に従って、PR1保存点を branch / stage / verification / commit / push / PR作成まで実行したことを記録する。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "PR1以外の差分をPR #6へ混ぜない。"
+      - "outreach送信、dependency install、model downloadはしない。"
+    expected_output:
+      - "branch"
+      - "commit"
+      - "PR URL"
+      - "stageしたファイル"
+      - "検証"
+      - "残っている作業ツリー差分"
+    receipt:
+      result: done
+      decision: pr1_created
+      full_outcome_complete: false
+      summary: "PR1として codex/talking-pets-latency-routing-diagnostics を作成し、commit 42d2249 をpushして PR #6 を作成した。検証4コマンドはpass。"
+      note: "notes/T037-pr1-execution-receipt.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T037-pr1-execution-receipt.md"
+      commands:
+        - cmd: "gh pr view 6 --json number,title,state,url,headRefName,baseRefName"
+          status: pass
+        - cmd: "git log -1 --oneline"
+          status: pass
+
+  - id: T038
+    type: pm
+    assignee: PM
+    owner_role: "相庭 愛"
+    status: done
+    reasoning_hint: default
+    objective: "PR1保存点ができた後、次にPR2保存点、outreach手動送信、local TTS実験のどれへ進むかをMasterに確認する。"
+    expected_output:
+      - "PR2から進める"
+      - "outreachを優先する"
+      - "sherpa-onnx実験を許可する"
+    receipt:
+      result: done
+      decision: pr1_merged_move_to_pr2_gate
+      full_outcome_complete: false
+      summary: "PR1保存点は PR #6 として main にマージ済み。次はPR2保存点へ進みREADME/多言語fallback/fixturesを外部に見せられる状態へ進める判断待ち。"
+      note: "notes/T038-next-after-pr1-decision.md"
+
+  - id: T040
+    type: pm
+    assignee: PM
+    owner_role: "相庭 愛"
+    status: done
+    reasoning_hint: default
+    objective: "PR #6 が main にmergeされた後、次にPR2保存点をbranch/stage/検証/commit/push/PR作成まで進めるかMasterに確認する。"
+    expected_output:
+      - "PR2から進める"
+      - "commitまでで止める"
+      - "outreachを優先する"
+      - "local TTS実験を許可する"
+    receipt:
+      result: done
+      decision: pr2_approved_and_executed
+      full_outcome_complete: false
+      summary: "PR #6 は MERGED。MasterがPR2保存点を承認し、branch/stage/検証/commit/push/PR作成まで完了した。"
+      note: "notes/T040-pr1-merged-next-pr2.md"
+
+  - id: T041
+    type: pm
+    assignee: PM
+    owner_role: "相庭 愛"
+    status: done
+    reasoning_hint: default
+    objective: "Master承認に従って、PR2保存点を branch / stage / verification / commit / push / PR作成まで実行したことを記録する。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "PR2以外の差分をPR #7へ混ぜない。"
+      - "outreach送信、dependency install、model downloadはしない。"
+    expected_output:
+      - "branch"
+      - "commit"
+      - "PR URL"
+      - "stageしたファイル"
+      - "検証"
+      - "CI"
+    receipt:
+      result: done
+      decision: pr2_created_and_ci_green
+      full_outcome_complete: false
+      summary: "PR2として codex/talking-pets-multilingual-readme-fallback を作成し、commit 20bf354 をpushして PR #7 を作成した。npm run check:all と macOS/Ubuntu/Windows CI がpass。"
+      note: "notes/T041-pr2-execution-receipt.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T041-pr2-execution-receipt.md"
+      commands:
+        - cmd: "npm run check:all"
+          status: pass
+        - cmd: "gh pr checks 7 --watch"
+          status: pass
+
+  - id: T042
+    type: pm
+    assignee: PM
+    owner_role: "相庭 愛"
+    status: done
+    reasoning_hint: default
+    objective: "PR2保存点ができた後、次にPR3保存点、outreach手動送信、local TTS実験のどれへ進むかをMasterに確認する。"
+    expected_output:
+      - "PR3から進める"
+      - "outreach手動送信用のリストと文面を出す"
+      - "sherpa-onnx実験を許可する"
+    receipt:
+      result: done
+      decision: pr2_merged_move_to_pr3_gate
+      full_outcome_complete: false
+      summary: "PR1/PR2保存点は完了し、PR #7 も main にマージ済み。次はPR3保存点へ進み、Roadmap、GoalBuddy正本、outreach docsをrepoへ保存する判断待ち。"
+      note: "notes/T042-next-after-pr2-decision.md"
+
+  - id: T043
+    type: pm
+    assignee: PM
+    owner_role: "相庭 愛"
+    status: done
+    reasoning_hint: default
+    objective: "PR #7 が main にmergeされた後、次にPR3保存点をbranch/stage/検証/commit/push/PR作成まで進めるかMasterに確認する。"
+    expected_output:
+      - "PR3から進める"
+      - "outreach手動送信用のリストと文面を出す"
+      - "sherpa-onnx実験を許可する"
+    receipt:
+      result: done
+      decision: pr3_approved_and_executed
+      full_outcome_complete: false
+      summary: "PR #7 は MERGED。MasterがPR3保存点を承認し、branch/stage/検証/commit/push/PR作成まで完了した。"
+      note: "notes/T043-pr2-merged-next-pr3.md"
+
+  - id: T044
+    type: pm
+    assignee: PM
+    owner_role: "相庭 愛"
+    status: done
+    reasoning_hint: default
+    objective: "Master承認に従って、PR3保存点を branch / stage / verification / commit / push / PR作成まで実行したことを記録する。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "PR3以外の差分をPR #8へ混ぜない。"
+      - "outreach送信、dependency install、model downloadはしない。"
+    expected_output:
+      - "branch"
+      - "commit"
+      - "PR URL"
+      - "stageしたファイル"
+      - "検証"
+    receipt:
+      result: done
+      decision: pr3_created
+      full_outcome_complete: false
+      summary: "PR3として codex/talking-pets-roadmap-goalbuddy-outreach を作成し、commit 2037eb3 をpushして PR #8 を作成した。GoalBuddy state、docs links、syntax、outreach/sherpa guardrailはpass。"
+      note: "notes/T044-pr3-execution-receipt.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T044-pr3-execution-receipt.md"
+      commands:
+        - cmd: "node <goalbuddy-check> docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+        - cmd: "npm run check:docs"
+          status: pass
+        - cmd: "npm run check:syntax"
+          status: pass
+
+  - id: T045
+    type: pm
+    assignee: PM
+    owner_role: "相庭 愛"
+    status: active
+    reasoning_hint: default
+    objective: "PR3保存点ができた後、次にoutreach手動送信準備、local TTS実験、多言語追加検証のどれへ進むかをMasterに確認する。"
+    expected_output:
+      - "outreach手動送信用のリストと文面を出す"
+      - "sherpa-onnx実験を許可する"
+      - "多言語追加検証を進める"
+    receipt:
+      result: active
+      decision: waiting_for_master_after_pr3
+      full_outcome_complete: false
+      summary: "PR1/PR2/PR3保存点は完了。次はoutreach手動送信準備、local TTS実験、多言語追加検証の判断待ち。"
+      note: "notes/T044-pr3-execution-receipt.md"
+
+  - id: T007
+    type: worker
+    assignee: Worker
+    owner_role: "星宮 未来"
+    status: done
+    reasoning_hint: default
+    objective: "outreach手動送信後に反応や次アクションを追える記録テンプレを作る。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    verify:
+      - "test -f docs/goals/talking-pets-hq-japanese/notes/T007-outreach-tracking-template.md"
+      - "rg -n \"送信ログ|反応ログ|2週間ルール|自動投稿|Star依頼|未送信|返信あり\" docs/goals/talking-pets-hq-japanese/notes/T007-outreach-tracking-template.md"
+    stop_if:
+      - "自動投稿や自動DMが必要になった場合。"
+      - "private contact収集が必要になった場合。"
+    receipt:
+      result: done
+      summary: "手動outreach後の送信ログ、反応ログ、2週間ルール、返信テンプレを用意した。"
+      note: "notes/T007-outreach-tracking-template.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T007-outreach-tracking-template.md"
+      commands:
+        - cmd: "test -f docs/goals/talking-pets-hq-japanese/notes/T007-outreach-tracking-template.md"
+          status: pass
+        - cmd: "rg -n \"送信ログ|反応ログ|2週間ルール|自動投稿|Star依頼|未送信|返信あり\" docs/goals/talking-pets-hq-japanese/notes/T007-outreach-tracking-template.md"
+          status: pass
+
+  - id: T008
+    type: worker
+    assignee: Worker
+    owner_role: "文月 栞里"
+    status: done
+    reasoning_hint: default
+    objective: "PR分割前に不要ファイルが混ざらないかhygiene確認を行う。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    verify:
+      - "test -f docs/goals/talking-pets-hq-japanese/notes/T008-pr-hygiene-check.md"
+      - "rg -n \"\\.DS_Store|ignored|git add -f|demo素材|含めない\" docs/goals/talking-pets-hq-japanese/notes/T008-pr-hygiene-check.md"
+    stop_if:
+      - "削除やstageが必要になった場合。"
+    receipt:
+      result: done
+      summary: ".DS_Storeは既にignore済みで、demo素材はPRに含めるか別判断が必要なことを確認した。"
+      note: "notes/T008-pr-hygiene-check.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T008-pr-hygiene-check.md"
+      commands:
+        - cmd: "sed -n '1,220p' .gitignore"
+          status: pass
+        - cmd: "git status --short --ignored"
+          status: pass
+
+  - id: T009
+    type: judge
+    assignee: Judge
+    owner_role: "白瀬 怜奈"
+    status: done
+    reasoning_hint: high
+    objective: "PR 1を切る前に、レイテンシ計測とrouting diagnosticsのセルフレビュー観点を整理する。"
+    constraints:
+      - "stage/commit/pushはしない。"
+      - "実装変更はしない。"
+    expected_output:
+      - "通常出力互換性"
+      - "diagnostics modeの安全性"
+      - "benchmark claimの境界"
+    receipt:
+      result: done
+      decision: pass
+      full_outcome_complete: false
+      summary: "PR 1向けに、stdout互換性、diagnostics安全性、benchmark比較可能性、claim境界のセルフレビューchecklistを作成した。"
+      note: "notes/T009-pr1-review-checklist.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T009-pr1-review-checklist.md"
+      commands:
+        - cmd: "test -f docs/goals/talking-pets-hq-japanese/notes/T009-pr1-review-checklist.md"
+          status: pass
+        - cmd: "rg -n \"通常出力|diagnostics|benchmark|stdout|fallbackReason|赤信号\" docs/goals/talking-pets-hq-japanese/notes/T009-pr1-review-checklist.md"
+          status: pass
+
+  - id: T010
+    type: judge
+    assignee: Judge
+    owner_role: "白瀬 怜奈"
+    status: done
+    reasoning_hint: high
+    objective: "PR 2を切る前に、README、多言語fallback、fixturesのセルフレビュー観点を整理する。"
+    constraints:
+      - "stage/commit/pushはしない。"
+      - "実装変更はしない。"
+      - "外部TTS API、model download、依存追加を含めない。"
+    expected_output:
+      - "README claim境界"
+      - "ko/zh fallback説明"
+      - "fixture coverage"
+      - "diagnostics verification"
+    receipt:
+      result: done
+      decision: pass
+      full_outcome_complete: false
+      summary: "PR 2向けに、READMEの過大claim防止、ko/zh fallback説明、fixture coverage、diagnostics証明のセルフレビューchecklistを作成した。"
+      note: "notes/T010-pr2-review-checklist.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T010-pr2-review-checklist.md"
+      commands:
+        - cmd: "test -f docs/goals/talking-pets-hq-japanese/notes/T010-pr2-review-checklist.md"
+          status: pass
+        - cmd: "rg -n \"README|ko|zh|fixture|fallback|過大|diagnostics|赤信号\" docs/goals/talking-pets-hq-japanese/notes/T010-pr2-review-checklist.md"
+          status: pass
+        - cmd: "npm run check:syntax"
+          status: pass
+        - cmd: "npm run test:dry-run"
+          status: pass
+        - cmd: "node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --rollout test/fixtures/ko-rollout.jsonl"
+          status: pass
+        - cmd: "node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --rollout test/fixtures/zh-traditional-rollout.jsonl"
+          status: pass

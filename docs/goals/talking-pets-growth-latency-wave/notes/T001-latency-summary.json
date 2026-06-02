@@ -1,0 +1,30 @@
+{
+  "runs": 20,
+  "command": "/opt/homebrew/Cellar/node/24.2.0/bin/node --no-warnings ./scripts/pet-rollout-monitor.mjs --once --dry-run --profile-latency --rollout ./test/fixtures/assistant-rollout.jsonl",
+  "metrics": {
+    "total": {
+      "minMs": 2.4,
+      "p50Ms": 3.3,
+      "p95Ms": 6,
+      "maxMs": 6.1
+    },
+    "resolveThread": {
+      "minMs": 0.1,
+      "p50Ms": 0.1,
+      "p95Ms": 0.1,
+      "maxMs": 0.1
+    },
+    "readLatestSpeechCandidate": {
+      "minMs": 0.3,
+      "p50Ms": 0.4,
+      "p95Ms": 0.8,
+      "maxMs": 1.1
+    },
+    "speechText": {
+      "minMs": 0.7,
+      "p50Ms": 0.8,
+      "p95Ms": 2.2,
+      "maxMs": 2.7
+    }
+  }
+}

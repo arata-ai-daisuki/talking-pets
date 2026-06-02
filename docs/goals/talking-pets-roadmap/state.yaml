@@ -1,0 +1,329 @@
+version: 2
+
+goal:
+  title: "Talking Pets Roadmap HQ"
+  slug: "talking-pets-roadmap"
+  kind: existing_plan
+  tranche: "Create the initial roadmap, priority model, STELLAVOX ownership model, progress-management format, and next PR candidates before implementation."
+  status: done
+  oracle:
+    signal: "A roadmap and operating board exist that map each major Talking Pets growth theme to priority, owner role, proof, next action, and master-confirmation checkpoints."
+    cadence: "after each Scout receipt, after roadmap draft, and at final audit"
+    final_proof: "Master can approve the roadmap/owner model and the next 3 PR candidates from local artifacts and receipts."
+  intake:
+    original_request: "ロードマップを一緒に作り、あいちゃんが進捗管理と担当管理をする。サブエージェントにはアイドルグループ風の設定を付け、HQが指揮する体制にする。"
+    interpreted_outcome: "Talking Pets roadmap work becomes a managed HQ process with named specialist agents, clear priorities, progress states, and proof-backed next actions."
+    input_shape: existing_plan
+    audience: "ARATA, future contributors, and Talking Pets users"
+    authority: requested
+    proof_type: artifact
+    completion_proof: "docs/ROADMAP.md or equivalent roadmap draft, a role/owner model, a progress-management format, and the next 3 PR candidates are clear enough for the master to approve."
+    likely_misfire: "Creating cute role names or broad idea lists without an actionable roadmap, owner/proof model, and next PR candidates."
+    blind_spots_considered:
+      - "API billing and secret handling"
+      - "Privacy when using API TTS"
+      - "TTS provider license and terms"
+      - "Multilingual quality beyond Japanese/English"
+      - "Scope creep from roadmap into premature implementation"
+      - "GitHub Star/SNS strategy becoming disconnected from actual proof"
+    existing_plan_facts:
+      - "HQ is あいちゃん / 相庭 愛."
+      - "Team name is STELLAVOX / 星声機構 for now."
+      - "Initial member names are fixed for now and can be expanded later."
+      - "The roadmap must include TTS provider expansion, API support, multilingual support, latency, onboarding, GitHub visibility, SNS, and community growth."
+
+rules:
+  pm_owns_state: true
+  one_active_task: true
+  max_write_workers: 1
+  no_implementation_without_worker_or_pm_task: true
+  no_completion_without_judge_or_pm_audit: true
+  planning_is_not_completion: true
+  queued_required_worker_blocks_completion: true
+  continuous_until_full_outcome: true
+  missing_input_or_credentials_do_not_stop_goal: true
+  preserve_and_validate_existing_plan: true
+  intake_misfire_must_be_audited: true
+  goal_pressure_requires_oracle: true
+  no_completion_on_weak_proof: true
+  slice_policy:
+    max_consecutive_tiny_tasks: 2
+    prefer_vertical_slices: true
+    judge_picks_largest_safe_slice: true
+    worker_completes_whole_slice: true
+
+agents:
+  scout: installed
+  worker: installed
+  judge: installed
+
+visual_board:
+  selected: local
+  local:
+    status: generated
+    url: "http://goalbuddy.localhost:41737/talking-pets-roadmap/"
+    command: "npx goalbuddy board docs/goals/talking-pets-roadmap"
+    note: "Static .goalbuddy-board generated. Live server attempted but failed with EMFILE: too many open files, watch."
+
+team:
+  unit: "STELLAVOX / 星声機構"
+  hq:
+    name: "相庭 愛"
+    nickname: "あいちゃん"
+    role: "Producer / Headquarter / PM"
+    owns:
+      - "master-facing dialogue"
+      - "priority decisions"
+      - "assignment management"
+      - "progress management"
+      - "artifact integration"
+  members:
+    - name: "歌澄 音羽"
+      role: "Voice Provider Lead"
+      domain: "TTS provider comparison and voice quality"
+    - name: "言守 詞葉"
+      role: "Multilingual Strategy Lead"
+      domain: "language detection, routing, and fallback"
+    - name: "速水 光莉"
+      role: "Latency & Benchmark Lead"
+      domain: "measurement, benchmark, and optimization candidates"
+    - name: "星宮 未来"
+      role: "Product Growth & SNS Lead"
+      domain: "GitHub Star, README, demo, X, and community"
+    - name: "文月 栞里"
+      role: "Documentation & Operations Lead"
+      domain: "ROADMAP, decision log, progress board, and implementation notes"
+    - name: "白瀬 怜奈"
+      role: "Quality Judge & Risk Officer"
+      domain: "scope, privacy, billing, release risk, and overengineering"
+
+progress_states:
+  - Backlog
+  - Scouting
+  - Ready
+  - Doing
+  - Review
+  - Blocked
+  - Done
+
+active_task: null
+
+tasks:
+  - id: T001
+    type: scout
+    assignee: Scout
+    owner_role: "STELLAVOX Scouts"
+    status: done
+    reasoning_hint: default
+    objective: "Collect roadmap inputs across TTS providers, multilingual support, latency, product/SNS growth, docs/ops, and risk without editing implementation files."
+    inputs:
+      - "README.md"
+      - "README.en.md"
+      - "FUTURE_PLAN.md"
+      - "implementation-notes.md"
+      - "package.json"
+      - "scripts/"
+      - "presets/"
+    constraints:
+      - "Read-only except task receipts."
+      - "Do not implement features."
+      - "Do not run paid API paths."
+      - "Do not handle API keys or secrets."
+      - "Prefer source-backed or repo-backed findings over vibes."
+    expected_output:
+      - "TTS provider opportunities and constraints"
+      - "Multilingual roadmap opportunities and constraints"
+      - "Latency measurement and optimization opportunities"
+      - "Product/SNS/community growth opportunities"
+      - "Risk and decision checkpoints"
+    receipt:
+      result: done
+      summary: "Collected roadmap inputs across TTS providers, multilingual support, latency, product/SNS growth, and risk guardrails."
+      note: "notes/T001-scout.md"
+
+  - id: T002
+    type: worker
+    assignee: Worker
+    owner_role: "文月 栞里"
+    status: done
+    reasoning_hint: default
+    objective: "Draft docs/ROADMAP.md with priorities, owner roles, proof, master-confirmation points, and next PR candidates from T001 receipts."
+    allowed_files:
+      - "docs/ROADMAP.md"
+      - "docs/goals/talking-pets-roadmap/state.yaml"
+      - "docs/goals/talking-pets-roadmap/notes/**"
+      - "implementation-notes.md"
+    verify:
+      - "rg -n \"STELLAVOX|P0|P1|Owner|Proof|Next PR|API|TTS|multilingual|latency|SNS|community\" docs/ROADMAP.md"
+      - "node <goalbuddy-check> docs/goals/talking-pets-roadmap/state.yaml"
+    stop_if:
+      - "Need implementation changes."
+      - "Need paid API execution."
+      - "Need master decision on public positioning, billing, privacy, or scope."
+    receipt:
+      result: done
+      summary: "Drafted docs/ROADMAP.md with priorities, owners, proof, Master gates, and next PR candidates."
+      note: "notes/T002-roadmap-draft.md"
+      changed_files:
+        - "docs/ROADMAP.md"
+        - "docs/goals/talking-pets-roadmap/notes/T001-scout.md"
+        - "docs/goals/talking-pets-roadmap/notes/T002-roadmap-draft.md"
+        - "docs/goals/talking-pets-roadmap/notes/T003-risk-review.md"
+        - "docs/goals/talking-pets-roadmap/state.yaml"
+      commands:
+        - cmd: "rg -n \"STELLAVOX|P0|P1|Owner|Proof|Next PR|API|TTS|multilingual|latency|SNS|community\" docs/ROADMAP.md"
+          status: pass
+        - cmd: "node <goalbuddy-check> docs/goals/talking-pets-roadmap/state.yaml"
+          status: pass
+
+  - id: T003
+    type: judge
+    assignee: Judge
+    owner_role: "白瀬 怜奈"
+    status: done
+    reasoning_hint: default
+    objective: "Review roadmap draft for scope creep, privacy/API billing risk, vague priorities, weak proof, and missing master-confirmation checkpoints."
+    inputs:
+      - "T001 receipt"
+      - "T002 roadmap draft"
+    constraints:
+      - "Do not implement."
+      - "Do not expand scope beyond the roadmap-operating tranche."
+    expected_output:
+      - "approve | revise"
+      - "risk notes"
+      - "missing proof"
+      - "recommended next 3 PR candidates"
+    receipt:
+      result: done
+      decision: "not_complete"
+      summary: "Reviewed roadmap risks and required guardrails. Final completion still needs Master approval."
+      note: "notes/T003-risk-review.md"
+
+  - id: T004
+    type: worker
+    assignee: Worker
+    owner_role: "PM / 相庭 愛"
+    status: done
+    reasoning_hint: default
+    objective: "Apply Judge-approved roadmap revisions and prepare the master-facing summary for approval."
+    allowed_files:
+      - "docs/ROADMAP.md"
+      - "docs/goals/talking-pets-roadmap/state.yaml"
+      - "docs/goals/talking-pets-roadmap/notes/**"
+      - "implementation-notes.md"
+    verify:
+      - "node <goalbuddy-check> docs/goals/talking-pets-roadmap/state.yaml"
+      - "git diff -- docs/ROADMAP.md docs/goals/talking-pets-roadmap implementation-notes.md"
+    stop_if:
+      - "Master approval is needed."
+      - "Roadmap requires implementation before approval."
+    receipt:
+      result: done
+      summary: "Translated docs/ROADMAP.md into Japanese, reflected Master approval for modest README Star guidance, and prepared the roadmap for continued execution."
+      changed_files:
+        - "docs/ROADMAP.md"
+        - "implementation-notes.md"
+        - "docs/goals/talking-pets-roadmap/state.yaml"
+      commands:
+        - cmd: "rg -n \"STELLAVOX|P0|P1|Owner|Proof|Next PR|API|TTS|multilingual|latency|SNS|community\" docs/ROADMAP.md"
+          status: pass
+        - cmd: "node <goalbuddy-check> docs/goals/talking-pets-roadmap/state.yaml"
+          status: pass
+
+  - id: T005
+    type: worker
+    assignee: Worker
+    owner_role: "速水 光莉"
+    status: done
+    reasoning_hint: default
+    objective: "Add the first latency visibility slice by implementing Node monitor --profile-latency without optimizing behavior."
+    allowed_files:
+      - "scripts/pet-rollout-monitor.mjs"
+      - "package.json"
+      - "docs/goals/talking-pets-roadmap/notes/**"
+      - "docs/goals/talking-pets-roadmap/state.yaml"
+    verify:
+      - "node --check scripts/pet-rollout-monitor.mjs"
+      - "npm run test:dry-run"
+      - "npm run benchmark:dry-run"
+    stop_if:
+      - "Need paid API execution."
+      - "Need changes outside allowed_files."
+      - "Latency optimization becomes larger than measurement-only."
+    receipt:
+      result: done
+      summary: "Added --profile-latency to the Node rollout monitor and a benchmark:dry-run script. Latency prints to stderr; normal stdout remains compatible."
+      note: "notes/T004-profile-latency-receipt.md"
+      changed_files:
+        - "scripts/pet-rollout-monitor.mjs"
+        - "package.json"
+        - "docs/goals/talking-pets-roadmap/notes/T004-profile-latency-receipt.md"
+      commands:
+        - cmd: "node --check scripts/pet-rollout-monitor.mjs"
+          status: pass
+        - cmd: "npm run test:dry-run"
+          status: pass
+        - cmd: "npm run benchmark:dry-run"
+          status: pass
+
+  - id: T006
+    type: worker
+    assignee: Worker
+    owner_role: "星宮 未来"
+    status: done
+    reasoning_hint: default
+    objective: "Add modest first-viewport README paths for demo, Quick Start, Issue, and Star without hype claims."
+    allowed_files:
+      - "README.md"
+      - "README.en.md"
+      - "docs/goals/talking-pets-roadmap/state.yaml"
+    verify:
+      - "rg -n \"Star|スター|Issue|Quick Start|Demo|デモ|困ったら\" README.md README.en.md package.json"
+    stop_if:
+      - "Need public positioning beyond modest CTA."
+      - "Need changes outside allowed_files."
+    receipt:
+      result: done
+      summary: "Added modest README / README.en first-viewport links to demo, Quick Start, issues, and Star motivation."
+      changed_files:
+        - "README.md"
+        - "README.en.md"
+      commands:
+        - cmd: "rg -n \"Star|スター|Issue|Quick Start|Demo|デモ|困ったら\" README.md README.en.md package.json"
+          status: pass
+
+  - id: T999
+    type: judge
+    assignee: Judge
+    owner_role: "白瀬 怜奈"
+    status: done
+    reasoning_hint: default
+    objective: "Final audit: decide whether the roadmap-operating tranche satisfies the original outcome."
+    inputs:
+      - "All task receipts"
+      - "docs/ROADMAP.md"
+      - "state.yaml"
+    constraints:
+      - "Do not implement."
+      - "Reject completion if next PR candidates, owner roles, proof, or master-confirmation checkpoints are unclear."
+    expected_output:
+      - "complete | not_complete"
+      - "full_outcome_complete: true | false"
+      - "missing evidence"
+      - "next task if not complete"
+    receipt:
+      result: done
+      decision: complete
+      full_outcome_complete: true
+      summary: "Final audit passed. The Japanese roadmap, STELLAVOX ownership model, progress management, first latency slice, and modest README growth path are in place."
+      note: "notes/T999-final-audit.md"
+
+checks:
+  dirty_fingerprint: unknown
+  last_verification:
+    result: pass
+    task: "T999"
+    commands:
+      - "node <goalbuddy-check> docs/goals/talking-pets-roadmap/state.yaml"
+      - "node <goalbuddy-board-helper> --goal docs/goals/talking-pets-roadmap --once --json"
