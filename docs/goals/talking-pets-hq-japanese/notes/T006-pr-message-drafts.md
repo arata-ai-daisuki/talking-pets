@@ -121,7 +121,7 @@ Add roadmap, GoalBuddy HQ, and outreach planning
 
 ## Verification
 
-- `node /Users/tsukuyomi/.codex/plugins/cache/goalbuddy/goalbuddy/0.3.8/skills/goalbuddy/scripts/check-goal-state.mjs docs/goals/talking-pets-hq-japanese/state.yaml`
+- `node <goalbuddy-check> docs/goals/talking-pets-hq-japanese/state.yaml`
 - `curl -s http://goalbuddy.localhost:41737/api/boards`
 
 ## Notes

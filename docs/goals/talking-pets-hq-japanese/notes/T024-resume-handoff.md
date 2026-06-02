@@ -62,7 +62,7 @@ docs/goals/talking-pets-hq-japanese/notes/T020-pr1-preflight.md
 再開直後にまずこれ:
 
 ```bash
-node /Users/tsukuyomi/.codex/plugins/cache/goalbuddy/goalbuddy/0.3.8/skills/goalbuddy/scripts/check-goal-state.mjs docs/goals/talking-pets-hq-japanese/state.yaml
+node <goalbuddy-check> docs/goals/talking-pets-hq-japanese/state.yaml
 git status --short
 ```
 

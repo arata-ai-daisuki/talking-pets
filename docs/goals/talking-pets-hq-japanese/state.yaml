@@ -50,7 +50,7 @@ visual_board:
   local:
     status: generated
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
-    command: "npx goalbuddy board /Users/tsukuyomi/Documents/Projects/talking-pets/docs/goals/talking-pets-hq-japanese"
+    command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
 active_task: T045
 
@@ -175,7 +175,7 @@ tasks:
           status: pass
         - cmd: "test -f docs/goals/talking-pets-hq-japanese/notes/T013-pr2-stage-readiness.md"
           status: pass
-        - cmd: "node /Users/tsukuyomi/.codex/plugins/cache/goalbuddy/goalbuddy/0.3.8/skills/goalbuddy/scripts/check-goal-state.mjs docs/goals/talking-pets-hq-japanese/state.yaml"
+        - cmd: "node <goalbuddy-check> docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
         - cmd: "npm run check:syntax"
           status: pass
@@ -222,7 +222,7 @@ tasks:
           status: pass
         - cmd: "rg -n \"PR 3候補|GoalBuddy正本|\\.goalbuddy-board|\\.DS_Store|demo mp4|赤信号|ready\" docs/goals/talking-pets-hq-japanese/notes/T022-pr3-preflight.md"
           status: pass
-        - cmd: "node /Users/tsukuyomi/.codex/plugins/cache/goalbuddy/goalbuddy/0.3.8/skills/goalbuddy/scripts/check-goal-state.mjs docs/goals/talking-pets-hq-japanese/state.yaml"
+        - cmd: "node <goalbuddy-check> docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
         - cmd: "find docs/goals -type f ! -path '*/.goalbuddy-board/*' ! -name '.DS_Store' | wc -l && find docs/goals -type f -path '*/.goalbuddy-board/*' | wc -l && find docs/goals -type f -name '.DS_Store'"
           status: pass
@@ -331,7 +331,7 @@ tasks:
           status: pass
         - cmd: "rg -n \"board_health: ok|hq_registered: true|state_active: true|active_task: T006|waiting_for_master\" docs/goals/talking-pets-hq-japanese/notes/T025-goalbuddy-board-health.md"
           status: pass
-        - cmd: "node /Users/tsukuyomi/.codex/plugins/cache/goalbuddy/goalbuddy/0.3.8/skills/goalbuddy/scripts/check-goal-state.mjs docs/goals/talking-pets-hq-japanese/state.yaml"
+        - cmd: "node <goalbuddy-check> docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
         - cmd: "curl -s http://goalbuddy.localhost:41737/api/boards | rg -n \"talking-pets-hq-japanese|Talking Pets 日本語HQ|goalbuddy.localhost:41737/talking-pets-hq-japanese\""
           status: pass
@@ -370,7 +370,7 @@ tasks:
           status: pass
         - cmd: "rg -n \"English pinned post draft|Japanese quote|Star導線|投稿前チェック|under 1s|ko|zh|自動投稿\" docs/goals/talking-pets-hq-japanese/notes/T026-pinned-post-drafts.md"
           status: pass
-        - cmd: "node /Users/tsukuyomi/.codex/plugins/cache/goalbuddy/goalbuddy/0.3.8/skills/goalbuddy/scripts/check-goal-state.mjs docs/goals/talking-pets-hq-japanese/state.yaml"
+        - cmd: "node <goalbuddy-check> docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
         - cmd: "rg -n \"under 1s|under one second|専用TTS対応済み|自動投稿|自動DM|GitHub Star|Please star\" docs/goals/talking-pets-hq-japanese/notes/T026-pinned-post-drafts.md"
           status: pass
@@ -445,7 +445,7 @@ tasks:
       commands:
         - cmd: "rg -n \"中国語|韓国語|Korean|Chinese|zh|ko|未実装|専用TTS|fallback|フォールバック\" docs/ROADMAP.md README.md README.en.md FUTURE_PLAN.md docs/research docs/performance.md implementation-notes.md"
           status: pass
-        - cmd: "node /Users/tsukuyomi/.codex/plugins/cache/goalbuddy/goalbuddy/0.3.8/skills/goalbuddy/scripts/check-goal-state.mjs docs/goals/talking-pets-hq-japanese/state.yaml"
+        - cmd: "node <goalbuddy-check> docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
 
   - id: T029
@@ -808,7 +808,7 @@ tasks:
           status: pass
         - cmd: "test -f docs/goals/talking-pets-hq-japanese/notes/T014-pr3-stage-readiness.md"
           status: pass
-        - cmd: "node /Users/tsukuyomi/.codex/plugins/cache/goalbuddy/goalbuddy/0.3.8/skills/goalbuddy/scripts/check-goal-state.mjs docs/goals/talking-pets-hq-japanese/state.yaml"
+        - cmd: "node <goalbuddy-check> docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
         - cmd: "rg -n -i \"star|自動返信|自動dm|dm policy|first week plan|watch only|手動|do not automate|do not dm|do not ask\" docs/research/x-outreach-targets.md docs/research/sns-outreach-strategy.md"
           status: pass
@@ -847,7 +847,7 @@ tasks:
           status: pass
         - cmd: "rg -n \"PR 1実行案|PR 2実行案|PR 3実行案|stage前の赤信号|Master確認\" docs/goals/talking-pets-hq-japanese/notes/T015-pr-split-execution-rehearsal.md"
           status: pass
-        - cmd: "node /Users/tsukuyomi/.codex/plugins/cache/goalbuddy/goalbuddy/0.3.8/skills/goalbuddy/scripts/check-goal-state.mjs docs/goals/talking-pets-hq-japanese/state.yaml"
+        - cmd: "node <goalbuddy-check> docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
         - cmd: "for f in package.json scripts/pet-rollout-monitor.mjs scripts/tts-kokoro.mjs scripts/tts-voicebox.mjs scripts/latency-benchmark.mjs docs/performance.md README.md README.en.md FUTURE_PLAN.md presets/speech-style.json presets/voices.json test/fixtures/ja-rollout.jsonl test/fixtures/en-rollout.jsonl test/fixtures/ko-rollout.jsonl test/fixtures/zh-rollout.jsonl test/fixtures/zh-traditional-rollout.jsonl test/fixtures/symbol-only-rollout.jsonl docs/ROADMAP.md docs/research/sns-outreach-strategy.md docs/research/x-outreach-targets.md docs/research/sherpa-onnx-design.md implementation-notes.md; do test -f \"$f\" || exit 1; done"
           status: pass
@@ -920,7 +920,7 @@ tasks:
           status: pass
         - cmd: "rg -n \"OpenClaw|V1GPT|短い版|自動投稿しない|初回でStar依頼しない|送信済み\" docs/goals/talking-pets-hq-japanese/notes/T017-outreach-day1-send-pack.md"
           status: pass
-        - cmd: "node /Users/tsukuyomi/.codex/plugins/cache/goalbuddy/goalbuddy/0.3.8/skills/goalbuddy/scripts/check-goal-state.mjs docs/goals/talking-pets-hq-japanese/state.yaml"
+        - cmd: "node <goalbuddy-check> docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
         - cmd: "rg -n \"送信済み|未送信|自動投稿|自動DM|Star依頼|2週間\" docs/goals/talking-pets-hq-japanese/notes/T007-outreach-tracking-template.md docs/goals/talking-pets-hq-japanese/notes/T017-outreach-day1-send-pack.md"
           status: pass
@@ -960,7 +960,7 @@ tasks:
           status: pass
         - cmd: "rg -n \"sherpa-onnx-node|npm install|model download|helperの最小仕様|中止条件|Master承認文|まだ実験しない\" docs/goals/talking-pets-hq-japanese/notes/T018-local-tts-experiment-pack.md"
           status: pass
-        - cmd: "node /Users/tsukuyomi/.codex/plugins/cache/goalbuddy/goalbuddy/0.3.8/skills/goalbuddy/scripts/check-goal-state.mjs docs/goals/talking-pets-hq-japanese/state.yaml"
+        - cmd: "node <goalbuddy-check> docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
         - cmd: "test ! -f scripts/tts-sherpa-onnx.mjs"
           status: pass
@@ -1032,7 +1032,7 @@ tasks:
           status: pass
         - cmd: "rg -n \"PR 1候補|stage前チェック|stage後の確認|期待値|赤信号|ready\" docs/goals/talking-pets-hq-japanese/notes/T020-pr1-preflight.md"
           status: pass
-        - cmd: "node /Users/tsukuyomi/.codex/plugins/cache/goalbuddy/goalbuddy/0.3.8/skills/goalbuddy/scripts/check-goal-state.mjs docs/goals/talking-pets-hq-japanese/state.yaml"
+        - cmd: "node <goalbuddy-check> docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
         - cmd: "npm run check:syntax"
           status: pass
@@ -1076,7 +1076,7 @@ tasks:
           status: pass
         - cmd: "rg -n \"PR 2候補|stage前チェック|stage後の確認|期待値|赤信号|ready\" docs/goals/talking-pets-hq-japanese/notes/T021-pr2-preflight.md"
           status: pass
-        - cmd: "node /Users/tsukuyomi/.codex/plugins/cache/goalbuddy/goalbuddy/0.3.8/skills/goalbuddy/scripts/check-goal-state.mjs docs/goals/talking-pets-hq-japanese/state.yaml"
+        - cmd: "node <goalbuddy-check> docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
         - cmd: "npm run check:syntax"
           status: pass
@@ -1121,7 +1121,7 @@ tasks:
           status: pass
         - cmd: "rg -n \"outreach|自動DM|Star|watch-only|GoalBuddy|implementation-notes|赤信号\" docs/goals/talking-pets-hq-japanese/notes/T011-pr3-outreach-docs-review.md"
           status: pass
-        - cmd: "node /Users/tsukuyomi/.codex/plugins/cache/goalbuddy/goalbuddy/0.3.8/skills/goalbuddy/scripts/check-goal-state.mjs docs/goals/talking-pets-hq-japanese/state.yaml"
+        - cmd: "node <goalbuddy-check> docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
         - cmd: "rg -n -i \"star|自動返信|自動dm|dm policy|first week plan|watch only|手動|do not automate|do not dm|do not ask\" docs/research/x-outreach-targets.md docs/research/sns-outreach-strategy.md"
           status: pass
@@ -1161,7 +1161,7 @@ tasks:
           status: pass
         - cmd: "test -f docs/goals/talking-pets-hq-japanese/notes/T012-pr1-stage-readiness.md"
           status: pass
-        - cmd: "node /Users/tsukuyomi/.codex/plugins/cache/goalbuddy/goalbuddy/0.3.8/skills/goalbuddy/scripts/check-goal-state.mjs docs/goals/talking-pets-hq-japanese/state.yaml"
+        - cmd: "node <goalbuddy-check> docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
         - cmd: "npm run check:syntax"
           status: pass
@@ -1443,7 +1443,7 @@ tasks:
       changed_files:
         - "docs/goals/talking-pets-hq-japanese/notes/T044-pr3-execution-receipt.md"
       commands:
-        - cmd: "node /Users/tsukuyomi/.codex/plugins/cache/goalbuddy/goalbuddy/0.3.8/skills/goalbuddy/scripts/check-goal-state.mjs docs/goals/talking-pets-hq-japanese/state.yaml"
+        - cmd: "node <goalbuddy-check> docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
         - cmd: "npm run check:docs"
           status: pass

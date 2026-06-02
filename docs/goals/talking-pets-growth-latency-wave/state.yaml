@@ -55,7 +55,7 @@ visual_board:
   selected: local
   local:
     status: generated
-    url: "file:///Users/tsukuyomi/Documents/Projects/talking-pets/docs/goals/talking-pets-growth-latency-wave/.goalbuddy-board/index.html"
+    url: "file://<repo>/docs/goals/talking-pets-growth-latency-wave/.goalbuddy-board/index.html"
     command: "npx goalbuddy board docs/goals/talking-pets-growth-latency-wave"
 
 active_task: null

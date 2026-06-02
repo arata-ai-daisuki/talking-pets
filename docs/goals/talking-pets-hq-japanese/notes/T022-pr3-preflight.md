@@ -103,7 +103,7 @@ git diff --cached --name-only
 ## PR 3検証コマンド
 
 ```bash
-node /Users/tsukuyomi/.codex/plugins/cache/goalbuddy/goalbuddy/0.3.8/skills/goalbuddy/scripts/check-goal-state.mjs docs/goals/talking-pets-hq-japanese/state.yaml
+node <goalbuddy-check> docs/goals/talking-pets-hq-japanese/state.yaml
 find docs/goals -type f ! -path '*/.goalbuddy-board/*' ! -name '.DS_Store' | wc -l
 find docs/goals -type f -path '*/.goalbuddy-board/*' | wc -l
 find docs/goals -type f -name '.DS_Store'

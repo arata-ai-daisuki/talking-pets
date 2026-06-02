@@ -155,7 +155,7 @@ tasks:
       - "implementation-notes.md"
     verify:
       - "rg -n \"STELLAVOX|P0|P1|Owner|Proof|Next PR|API|TTS|multilingual|latency|SNS|community\" docs/ROADMAP.md"
-      - "node /Users/tsukuyomi/.codex/plugins/cache/goalbuddy/goalbuddy/0.3.8/skills/goalbuddy/scripts/check-goal-state.mjs docs/goals/talking-pets-roadmap/state.yaml"
+      - "node <goalbuddy-check> docs/goals/talking-pets-roadmap/state.yaml"
     stop_if:
       - "Need implementation changes."
       - "Need paid API execution."
@@ -173,7 +173,7 @@ tasks:
       commands:
         - cmd: "rg -n \"STELLAVOX|P0|P1|Owner|Proof|Next PR|API|TTS|multilingual|latency|SNS|community\" docs/ROADMAP.md"
           status: pass
-        - cmd: "node /Users/tsukuyomi/.codex/plugins/cache/goalbuddy/goalbuddy/0.3.8/skills/goalbuddy/scripts/check-goal-state.mjs docs/goals/talking-pets-roadmap/state.yaml"
+        - cmd: "node <goalbuddy-check> docs/goals/talking-pets-roadmap/state.yaml"
           status: pass
 
   - id: T003
@@ -213,7 +213,7 @@ tasks:
       - "docs/goals/talking-pets-roadmap/notes/**"
       - "implementation-notes.md"
     verify:
-      - "node /Users/tsukuyomi/.codex/plugins/cache/goalbuddy/goalbuddy/0.3.8/skills/goalbuddy/scripts/check-goal-state.mjs docs/goals/talking-pets-roadmap/state.yaml"
+      - "node <goalbuddy-check> docs/goals/talking-pets-roadmap/state.yaml"
       - "git diff -- docs/ROADMAP.md docs/goals/talking-pets-roadmap implementation-notes.md"
     stop_if:
       - "Master approval is needed."
@@ -228,7 +228,7 @@ tasks:
       commands:
         - cmd: "rg -n \"STELLAVOX|P0|P1|Owner|Proof|Next PR|API|TTS|multilingual|latency|SNS|community\" docs/ROADMAP.md"
           status: pass
-        - cmd: "node /Users/tsukuyomi/.codex/plugins/cache/goalbuddy/goalbuddy/0.3.8/skills/goalbuddy/scripts/check-goal-state.mjs docs/goals/talking-pets-roadmap/state.yaml"
+        - cmd: "node <goalbuddy-check> docs/goals/talking-pets-roadmap/state.yaml"
           status: pass
 
   - id: T005
@@ -325,5 +325,5 @@ checks:
     result: pass
     task: "T999"
     commands:
-      - "node /Users/tsukuyomi/.codex/plugins/cache/goalbuddy/goalbuddy/0.3.8/skills/goalbuddy/scripts/check-goal-state.mjs docs/goals/talking-pets-roadmap/state.yaml"
-      - "node /Users/tsukuyomi/.codex/plugins/cache/goalbuddy/goalbuddy/0.3.8/skills/goalbuddy/surfaces/local-goal-board/scripts/local-goal-board.mjs --goal docs/goals/talking-pets-roadmap --once --json"
+      - "node <goalbuddy-check> docs/goals/talking-pets-roadmap/state.yaml"
+      - "node <goalbuddy-board-helper> --goal docs/goals/talking-pets-roadmap --once --json"

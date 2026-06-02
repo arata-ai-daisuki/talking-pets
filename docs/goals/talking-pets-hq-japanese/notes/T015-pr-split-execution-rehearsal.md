@@ -158,7 +158,7 @@ git commit -m "Add roadmap, GoalBuddy receipts, and outreach notes"
 verification:
 
 ```bash
-node /Users/tsukuyomi/.codex/plugins/cache/goalbuddy/goalbuddy/0.3.8/skills/goalbuddy/scripts/check-goal-state.mjs docs/goals/talking-pets-hq-japanese/state.yaml
+node <goalbuddy-check> docs/goals/talking-pets-hq-japanese/state.yaml
 find docs/goals -type f -path '*/.goalbuddy-board/*' | wc -l
 find docs/goals -type f ! -path '*/.goalbuddy-board/*' ! -name '.DS_Store' | wc -l
 rg -n -i "star|自動返信|自動dm|dm policy|first week plan|watch only|手動|do not automate|do not dm|do not ask" docs/research/x-outreach-targets.md docs/research/sns-outreach-strategy.md
@@ -183,7 +183,7 @@ PR body:
 
 ## Verification
 
-- `node /Users/tsukuyomi/.codex/plugins/cache/goalbuddy/goalbuddy/0.3.8/skills/goalbuddy/scripts/check-goal-state.mjs docs/goals/talking-pets-hq-japanese/state.yaml`
+- `node <goalbuddy-check> docs/goals/talking-pets-hq-japanese/state.yaml`
 - `find docs/goals -type f -path '*/.goalbuddy-board/*' | wc -l`
 - `find docs/goals -type f ! -path '*/.goalbuddy-board/*' ! -name '.DS_Store' | wc -l`
 - `rg -n -i "star|自動返信|自動dm|dm policy|first week plan|watch only|手動|do not automate|do not dm|do not ask" docs/research/x-outreach-targets.md docs/research/sns-outreach-strategy.md`

@@ -18,7 +18,7 @@ Run after editing:
 
 ```bash
 rg -n "STELLAVOX|P0|P1|Owner|Proof|Next PR|API|TTS|multilingual|latency|SNS|community" docs/ROADMAP.md
-node /Users/tsukuyomi/.codex/plugins/cache/goalbuddy/goalbuddy/0.3.8/skills/goalbuddy/scripts/check-goal-state.mjs docs/goals/talking-pets-roadmap/state.yaml
+node <goalbuddy-check> docs/goals/talking-pets-roadmap/state.yaml
 ```
 
 ## Follow-Up

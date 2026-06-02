@@ -64,7 +64,7 @@ implementation-notes.md
 ## 推奨検証コマンド
 
 ```bash
-node /Users/tsukuyomi/.codex/plugins/cache/goalbuddy/goalbuddy/0.3.8/skills/goalbuddy/scripts/check-goal-state.mjs docs/goals/talking-pets-hq-japanese/state.yaml
+node <goalbuddy-check> docs/goals/talking-pets-hq-japanese/state.yaml
 rg -n "自動返信|自動DM|Star|DM Policy|First Week Plan|watch only|手動" docs/research/x-outreach-targets.md docs/research/sns-outreach-strategy.md
 rg -n "sherpa|onnx|Master|承認|PR 1|PR 2|PR 3|demo素材" implementation-notes.md docs/goals/talking-pets-hq-japanese/notes/T006-stage-manifest.md
 ```

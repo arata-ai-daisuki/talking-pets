@@ -48,7 +48,7 @@ Task count: 36
 ## 検証
 
 ```bash
-node /Users/tsukuyomi/.codex/plugins/cache/goalbuddy/goalbuddy/0.3.8/skills/goalbuddy/scripts/check-goal-state.mjs docs/goals/talking-pets-hq-japanese/state.yaml
+node <goalbuddy-check> docs/goals/talking-pets-hq-japanese/state.yaml
 rg -n "Task count: 36|active_task: T006|task_count: 36|T006" docs/goals/talking-pets-hq-japanese/notes/T032-latest-hq-rollup.md docs/goals/talking-pets-hq-japanese/notes/T034-master-decision-card-latest.md
 ```
 

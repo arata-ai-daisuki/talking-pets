@@ -49,7 +49,7 @@ visual_board:
   selected: local
   local:
     status: static_snapshot
-    url: "file:///Users/tsukuyomi/Documents/Projects/talking-pets/docs/goals/talking-pets-sherpa-onnx-design/.goalbuddy-board/index.html"
+    url: "file://<repo>/docs/goals/talking-pets-sherpa-onnx-design/.goalbuddy-board/index.html"
     command: "static snapshot because npx goalbuddy board is blocked by npm cache permissions"
 
 active_task: null

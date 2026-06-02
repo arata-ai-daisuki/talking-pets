@@ -33,7 +33,7 @@ PR3 保存点を branch / stage / verification / commit / push / PR 作成まで
 
 ## Verification
 
-- `node /Users/tsukuyomi/.codex/plugins/cache/goalbuddy/goalbuddy/0.3.8/skills/goalbuddy/scripts/check-goal-state.mjs docs/goals/talking-pets-hq-japanese/state.yaml`: pass
+- `node <goalbuddy-check> docs/goals/talking-pets-hq-japanese/state.yaml`: pass
 - `npm run check:docs`: pass
 - `npm run check:syntax`: pass
 - staged exclusion grep for `.goalbuddy-board`, `.DS_Store`, demo assets, README, scripts, fixtures: no matches
