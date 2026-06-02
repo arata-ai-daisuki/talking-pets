@@ -2612,6 +2612,38 @@ tasks:
         - cmd: "rg -n \"T083|PR #10|codex/talking-pets-hq-after-pr9-followups|pr10_open|T071|T061|outreach送信|npm install|model download\" docs/goals/talking-pets-hq-japanese/notes/T083-pr10-execution-receipt.md docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
 
+  - id: T084
+    type: pm
+    assignee: PM
+    owner_role: "相庭 愛"
+    status: done
+    reasoning_hint: default
+    objective: "PR #10のGitHub CIがubuntu/macOS/Windowsすべてsuccessでmerge readyになったことをHQに記録する。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "PR #10をmergeしない。"
+      - "outreach送信、返信送信しない。"
+      - "Issue作成しない。"
+      - "npm install、model download、API callはしない。"
+      - "active_taskはT061のままにする。"
+    receipt:
+      result: done
+      decision: pr10_merge_ready
+      full_outcome_complete: false
+      summary: "PR #10はOPEN/MERGEABLEで、GitHub CI ubuntu/macOS/Windows がすべてsuccess。mergeはMaster明示指示待ち。"
+      note: "notes/T084-pr10-final-ci-green.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T084-pr10-final-ci-green.md"
+      commands:
+        - cmd: "gh pr view 10 --json number,state,mergeable,statusCheckRollup,url,title,headRefName,baseRefName"
+          status: pass
+        - cmd: "node <goalbuddy-check> docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+        - cmd: "rg -n \"T084|PR #10|merge ready|ubuntu-latest|macos-latest|windows-latest|pr10_merge_ready|T071|T061\" docs/goals/talking-pets-hq-japanese/notes/T084-pr10-final-ci-green.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
   - id: T007
     type: worker
     assignee: Worker
