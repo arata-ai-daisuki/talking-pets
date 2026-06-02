@@ -15,6 +15,8 @@ clear_config() {
   unset TALKING_PETS_VOICEBOX_PROFILE
   unset TALKING_PETS_VOICEBOX_LANGUAGE
   unset TALKING_PETS_KOKORO_VOICE
+  unset TALKING_PETS_IRODORI_URL
+  unset TALKING_PETS_IRODORI_VOICE
   unset TALKING_PETS_SAY_VOICE
   unset TALKING_PETS_LANGUAGE_ROUTE
   unset TALKING_PETS_SPEECH_LANGUAGE
@@ -33,7 +35,7 @@ load_config() {
       key="${BASH_REMATCH[1]}"
       value="${BASH_REMATCH[2]}"
       case "$key" in
-        TALKING_PETS_UI_LANGUAGE|TALKING_PETS_TTS|TALKING_PETS_VOICEVOX_URL|TALKING_PETS_VOICEVOX_SPEAKER|TALKING_PETS_VOICEBOX_MODE|TALKING_PETS_VOICEBOX_PROFILE|TALKING_PETS_VOICEBOX_LANGUAGE|TALKING_PETS_KOKORO_VOICE|TALKING_PETS_SAY_VOICE|TALKING_PETS_LANGUAGE_ROUTE|TALKING_PETS_SPEECH_LANGUAGE) ;;
+        TALKING_PETS_UI_LANGUAGE|TALKING_PETS_TTS|TALKING_PETS_VOICEVOX_URL|TALKING_PETS_VOICEVOX_SPEAKER|TALKING_PETS_VOICEBOX_MODE|TALKING_PETS_VOICEBOX_PROFILE|TALKING_PETS_VOICEBOX_LANGUAGE|TALKING_PETS_KOKORO_VOICE|TALKING_PETS_IRODORI_URL|TALKING_PETS_IRODORI_VOICE|TALKING_PETS_SAY_VOICE|TALKING_PETS_LANGUAGE_ROUTE|TALKING_PETS_SPEECH_LANGUAGE) ;;
         *)
           echo "Unsupported config key: $key"
           clear_config
@@ -125,6 +127,15 @@ case "$tts" in
     exec node --no-warnings "$ROOT_DIR/scripts/pet-rollout-monitor.mjs" \
       --tts kokoro \
       --kokoro-voice "${TALKING_PETS_KOKORO_VOICE:-af_heart}" \
+      "${speech_args[@]}" \
+      "${route_args[@]}" \
+      --skip-existing
+    ;;
+  irodori)
+    exec node --no-warnings "$ROOT_DIR/scripts/pet-rollout-monitor.mjs" \
+      --tts irodori \
+      --irodori-url "${TALKING_PETS_IRODORI_URL:-http://127.0.0.1:8088}" \
+      --irodori-voice "${TALKING_PETS_IRODORI_VOICE:-none}" \
       "${speech_args[@]}" \
       "${route_args[@]}" \
       --skip-existing
