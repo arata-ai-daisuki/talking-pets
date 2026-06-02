@@ -30,6 +30,8 @@ case "$tts" in
       --voicebox-url "${TALKING_PETS_VOICEVOX_URL:-http://127.0.0.1:50021}" \
       --voicebox-speaker "${TALKING_PETS_VOICEVOX_SPEAKER:-3}" \
       --kokoro-voice "${TALKING_PETS_KOKORO_VOICE:-af_heart}" \
+      --irodori-url "${TALKING_PETS_IRODORI_URL:-http://127.0.0.1:8088}" \
+      --irodori-voice "${TALKING_PETS_IRODORI_VOICE:-none}" \
       --voice "${TALKING_PETS_SAY_VOICE:-Kyoko}" \
       "${route_args[@]}" \
       --skip-existing
@@ -46,6 +48,14 @@ case "$tts" in
     exec "$ROOT_DIR/scripts/pet-rollout-monitor.command" \
       --tts kokoro \
       --kokoro-voice "${TALKING_PETS_KOKORO_VOICE:-af_heart}" \
+      "${route_args[@]}" \
+      --skip-existing
+    ;;
+  irodori)
+    exec "$ROOT_DIR/scripts/pet-rollout-monitor.command" \
+      --tts irodori \
+      --irodori-url "${TALKING_PETS_IRODORI_URL:-http://127.0.0.1:8088}" \
+      --irodori-voice "${TALKING_PETS_IRODORI_VOICE:-none}" \
       "${route_args[@]}" \
       --skip-existing
     ;;

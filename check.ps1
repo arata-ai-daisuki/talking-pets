@@ -1,9 +1,22 @@
 $ErrorActionPreference = "Stop"
 $Root = Split-Path -Parent $MyInvocation.MyCommand.Path
+$Config = Join-Path $Root ".talking-pets.local.env"
 Set-Location $Root
 
 Write-Host "Talking Pets check"
 Write-Host "=================="
+
+if (Test-Path $Config) {
+  Get-Content $Config | ForEach-Object {
+    if ($_ -match '^([^=]+)="(.*)"$') {
+      [Environment]::SetEnvironmentVariable($Matches[1], $Matches[2], "Process")
+    }
+  }
+  Write-Host "config: $Config"
+  Write-Host "tts: $($env:TALKING_PETS_TTS)"
+} else {
+  Write-Host "config: not found"
+}
 
 if (Get-Command node -ErrorAction SilentlyContinue) {
   $NodeVersion = & node --version
@@ -34,6 +47,16 @@ try {
   Write-Host "VOICEVOX: ok"
 } catch {
   Write-Host "VOICEVOX: not reachable -> start VOICEVOX Engine or choose another TTS"
+}
+
+if ($env:TALKING_PETS_TTS -eq "irodori") {
+  $IrodoriUrl = if ($env:TALKING_PETS_IRODORI_URL) { $env:TALKING_PETS_IRODORI_URL } else { "http://127.0.0.1:8088" }
+  try {
+    Invoke-RestMethod -Uri "$IrodoriUrl/health" -Method Get | Out-Null
+    Write-Host "Irodori-TTS Server: ok ($IrodoriUrl)"
+  } catch {
+    Write-Host "Irodori-TTS Server: not reachable ($IrodoriUrl) -> start Irodori-TTS-Server or choose another TTS"
+  }
 }
 
 Write-Host ""

@@ -1,7 +1,7 @@
 # Credits And Third-Party Notices
 
 Talking Pets connects local Codex conversation logs to local text-to-speech providers.
-This repository does not bundle VOICEVOX, VOICEVOX voice libraries, Kokoro model files, or Codex.
+This repository does not bundle VOICEVOX, VOICEVOX voice libraries, Kokoro model files, Irodori-TTS-Server, Irodori model files, reference voices, or Codex.
 
 ## VOICEVOX
 
@@ -31,6 +31,17 @@ Talking Pets uses `kokoro-js` as an optional local English-oriented TTS provider
 Model files are downloaded on first use by the underlying tooling and are not bundled in this repository.
 
 Check the package and model pages for the current license, attribution, and usage requirements before redistributing generated audio or packaged model files.
+
+## Irodori-TTS / Irodori-TTS-Server
+
+- Irodori-TTS repository: https://github.com/Aratako/Irodori-TTS
+- Irodori-TTS-Server repository: https://github.com/Aratako/Irodori-TTS-Server
+- Default model family: https://huggingface.co/Aratako/Irodori-TTS-500M-v3
+
+Talking Pets can call a locally running Irodori-TTS-Server as an experimental optional provider.
+The server, model weights, codec assets, and reference voices are not included in this repository.
+
+Check the current Irodori model cards and server documentation for license, attribution, ethical restrictions, and voice cloning requirements before publishing generated audio.
 
 ## Codex
 

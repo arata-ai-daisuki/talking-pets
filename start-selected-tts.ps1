@@ -23,6 +23,8 @@ $args = @(
   "--voicebox-url", $(if ($env:TALKING_PETS_VOICEVOX_URL) { $env:TALKING_PETS_VOICEVOX_URL } else { "http://127.0.0.1:50021" }),
   "--voicebox-speaker", $(if ($env:TALKING_PETS_VOICEVOX_SPEAKER) { $env:TALKING_PETS_VOICEVOX_SPEAKER } else { "3" }),
   "--kokoro-voice", $(if ($env:TALKING_PETS_KOKORO_VOICE) { $env:TALKING_PETS_KOKORO_VOICE } else { "af_heart" }),
+  "--irodori-url", $(if ($env:TALKING_PETS_IRODORI_URL) { $env:TALKING_PETS_IRODORI_URL } else { "http://127.0.0.1:8088" }),
+  "--irodori-voice", $(if ($env:TALKING_PETS_IRODORI_VOICE) { $env:TALKING_PETS_IRODORI_VOICE } else { "none" }),
   $routeArg,
   "--skip-existing"
 )

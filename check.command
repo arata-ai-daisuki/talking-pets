@@ -49,6 +49,15 @@ else
   echo "VOICEVOX: not reachable ($voicevox_url) -> start VOICEVOX Engine or choose another TTS"
 fi
 
+irodori_url="${TALKING_PETS_IRODORI_URL:-http://127.0.0.1:8088}"
+if [[ "${TALKING_PETS_TTS:-}" == "irodori" ]]; then
+  if curl -fsS "$irodori_url/health" >/dev/null 2>&1; then
+    echo "Irodori-TTS Server: ok ($irodori_url)"
+  else
+    echo "Irodori-TTS Server: not reachable ($irodori_url) -> start Irodori-TTS-Server or choose another TTS"
+  fi
+fi
+
 if /usr/bin/say -v "${TALKING_PETS_SAY_VOICE:-Kyoko}" "Talking Pets の確認です。" >/dev/null 2>&1; then
   echo "macOS say: ok (${TALKING_PETS_SAY_VOICE:-Kyoko})"
 else

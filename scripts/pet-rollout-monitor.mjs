@@ -80,6 +80,10 @@ function parseOptions(argv) {
     kokoroVoice: "af_heart",
     kokoroDtype: "q8",
     kokoroDevice: "cpu",
+    irodoriURL: "http://127.0.0.1:8088",
+    irodoriVoice: "none",
+    irodoriModel: "irodori-tts",
+    irodoriFormat: "wav",
     voiceboxURL: "http://127.0.0.1:50021",
     voiceboxMode: "voicevox",
     voiceboxSpeaker: "3",
@@ -136,6 +140,18 @@ function parseOptions(argv) {
         break;
       case "--kokoro-device":
         result.kokoroDevice = takeValue();
+        break;
+      case "--irodori-url":
+        result.irodoriURL = takeValue();
+        break;
+      case "--irodori-voice":
+        result.irodoriVoice = takeValue();
+        break;
+      case "--irodori-model":
+        result.irodoriModel = takeValue();
+        break;
+      case "--irodori-format":
+        result.irodoriFormat = takeValue();
         break;
       case "--voicebox-url":
         result.voiceboxURL = takeValue();
@@ -242,7 +258,7 @@ Speech:
   --speech-style PATH            JSON style config for spoken phrasing
 
 TTS:
-  --tts auto|voicevox|kokoro|say Select TTS engine (default: auto)
+  --tts auto|voicevox|kokoro|irodori|say Select TTS engine (default: auto)
   --language-route               Route by detected language
   --no-language-route            Use the selected TTS without language routing
   --list-voices                  List voices for the selected TTS
@@ -250,6 +266,8 @@ TTS:
   --voicebox-url URL             VOICEVOX or compatible local endpoint
   --voicebox-speaker ID          VOICEVOX speaker/style id (default: 3)
   --kokoro-voice ID              Kokoro voice id (default: af_heart)
+  --irodori-url URL              Irodori-TTS-Server URL (default: http://127.0.0.1:8088)
+  --irodori-voice ID             Irodori voice id (default: none)
 
 Examples:
   node scripts/pet-rollout-monitor.mjs --once --dry-run
@@ -553,6 +571,8 @@ function speak(text, opts) {
   const engine = resolvedTTSEngine(text, opts);
   if (engine === "kokoro") {
     if (!speakWithKokoro(text, opts)) speakWithFallback(text, opts, "Kokoro");
+  } else if (engine === "irodori") {
+    if (!speakWithIrodori(text, opts)) speakWithFallback(text, opts, "Irodori");
   } else if (engine === "voicebox" || engine === "voicevox") {
     if (!speakWithVoicebox(text, opts)) speakWithFallback(text, opts, "VOICEVOX");
   } else if (engine === "say") {
@@ -643,6 +663,19 @@ function speakWithKokoro(text, opts) {
   ]);
 }
 
+function speakWithIrodori(text, opts) {
+  const scriptPath = join(scriptDir, "tts-irodori.mjs");
+  return runProcess(process.execPath, [
+    scriptPath,
+    "--text", text,
+    "--url", opts.irodoriURL,
+    "--voice", opts.irodoriVoice,
+    "--model", opts.irodoriModel,
+    "--format", opts.irodoriFormat,
+    "--play",
+  ]);
+}
+
 function speakWithVoicebox(text, opts) {
   const scriptPath = join(scriptDir, "tts-voicebox.mjs");
   const args = [
@@ -675,6 +708,8 @@ function speakWithSay(text, opts) {
 function listVoices(opts) {
   if (opts.ttsEngine === "kokoro") {
     runAndPrint(process.execPath, [join(scriptDir, "tts-kokoro.mjs"), "--list-voices", "--dtype", opts.kokoroDtype, "--device", opts.kokoroDevice]);
+  } else if (opts.ttsEngine === "irodori") {
+    runAndPrint(process.execPath, [join(scriptDir, "tts-irodori.mjs"), "--health", "--url", opts.irodoriURL]);
   } else if (opts.ttsEngine === "voicebox" || opts.ttsEngine === "voicevox") {
     runAndPrint(process.execPath, [join(scriptDir, "tts-voicebox.mjs"), "--list-voices", "--mode", opts.voiceboxMode, "--url", opts.voiceboxURL]);
   } else if (process.platform === "darwin") {
