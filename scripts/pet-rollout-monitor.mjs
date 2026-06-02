@@ -4,72 +4,120 @@ import { spawnSync } from "node:child_process";
 import { readFileSync, existsSync } from "node:fs";
 import { homedir } from "node:os";
 import { performance } from "node:perf_hooks";
-import { dirname, join } from "node:path";
+import { dirname, isAbsolute, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
-const scriptDir = dirname(fileURLToPath(import.meta.url));
-const options = parseOptions(process.argv.slice(2));
+import { windowsPowerShellCommand } from "./audio-platform.mjs";
 
-if (options.listVoices) {
-  listVoices(options);
-  process.exit(0);
-}
+const scriptPath = fileURLToPath(import.meta.url);
+const scriptDir = dirname(scriptPath);
+const optionFlags = new Set([
+  "--help",
+  "-h",
+  "--version",
+  "-v",
+  "--voice",
+  "--tts",
+  "--kokoro-voice",
+  "--kokoro-dtype",
+  "--kokoro-device",
+  "--voicebox-url",
+  "--voicebox-mode",
+  "--voicebox-speaker",
+  "--voicebox-profile",
+  "--voicebox-language",
+  "--speech-language",
+  "--speech-style",
+  "--language-route",
+  "--no-language-route",
+  "--rate",
+  "--interval",
+  "--thread-id",
+  "--cwd",
+  "--rollout",
+  "--state-db",
+  "--max-source-chars",
+  "--skip-existing",
+  "--no-summary",
+  "--dry-run",
+  "--once",
+  "--list-voices",
+  "--profile-latency",
+  "--diagnose-routing",
+  "--show-private-paths",
+]);
 
-if (options.version) {
-  printVersion();
-  process.exit(0);
-}
+async function main(argv = process.argv.slice(2)) {
+  const options = parseOptions(argv);
 
-let lastThread = null;
-let lastSpokenKey = null;
-let didSkipExisting = false;
+  if (options.listVoices) {
+    listVoices(options);
+    return;
+  }
 
-while (true) {
-  const latencyProfile = startLatencyProfile(options.profileLatency);
-  const thread = await measureLatency(latencyProfile, "resolveThread", () => resolveThread(options));
-  if (!thread) {
-    console.log("[wait] Codex thread not found");
-    printLatencyProfile(latencyProfile, { candidate: false, dryRun: options.dryRun, thread: false });
+  if (options.version) {
+    printVersion();
+    return;
+  }
+
+  let lastThread = null;
+  let lastSpokenKey = null;
+  let didSkipExisting = false;
+
+  while (true) {
+    const latencyProfile = startLatencyProfile(options.profileLatency);
+    const thread = await measureLatency(latencyProfile, "resolveThread", () => resolveThread(options));
+    if (!thread) {
+      console.log("[wait] Codex thread not found");
+      printLatencyProfile(latencyProfile, { candidate: false, dryRun: options.dryRun, thread: false });
+      if (options.once) break;
+      await sleep(options.interval * 1000);
+      continue;
+    }
+
+    if (!lastThread || thread.id !== lastThread.id || thread.rolloutPath !== lastThread.rolloutPath) {
+      console.log(`[thread] ${thread.title} / ${thread.id}`);
+      console.log(`[rollout] ${displayPrivatePath(thread.rolloutPath, options)}`);
+      lastThread = thread;
+      lastSpokenKey = null;
+      didSkipExisting = false;
+    }
+
+    const speechResult = measureLatency(latencyProfile, "readLatestSpeechCandidate", () => readLatestSpeechCandidate(thread.rolloutPath, options.maxSourceCharacters, options));
+    const candidate = speechResult.candidate;
+    if (candidate) {
+      const key = normalizedKey(candidate.text);
+      if (options.skipExisting && !didSkipExisting) {
+        lastSpokenKey = key;
+        didSkipExisting = true;
+        console.log(`[skip-existing] ${candidate.source} / ${candidate.timestamp}`);
+      } else if (key !== lastSpokenKey) {
+        const speech = measureLatency(latencyProfile, "speechText", () => speechText(candidate.text, options));
+        console.log(`[source] ${candidate.text}`);
+        console.log(`[pet] ${speech}`);
+        if (options.diagnoseRouting) {
+          console.log(JSON.stringify(routingDiagnostic(candidate.text, speech, options), null, 2));
+        }
+        lastSpokenKey = key;
+        if (!options.dryRun) {
+          measureLatency(latencyProfile, "speak", () => speak(speech, options));
+        }
+      }
+    } else {
+      console.log(`[wait] ${speechResult.message}`);
+    }
+
+    printLatencyProfile(latencyProfile, { candidate: Boolean(candidate), dryRun: options.dryRun, thread: true });
     if (options.once) break;
     await sleep(options.interval * 1000);
-    continue;
   }
+}
 
-  if (!lastThread || thread.id !== lastThread.id || thread.rolloutPath !== lastThread.rolloutPath) {
-    console.log(`[thread] ${thread.title} / ${thread.id}`);
-    console.log(`[rollout] ${thread.rolloutPath}`);
-    lastThread = thread;
-    lastSpokenKey = null;
-    didSkipExisting = false;
-  }
-
-  const speechResult = measureLatency(latencyProfile, "readLatestSpeechCandidate", () => readLatestSpeechCandidate(thread.rolloutPath, options.maxSourceCharacters));
-  const candidate = speechResult.candidate;
-  if (candidate) {
-    const key = normalizedKey(candidate.text);
-    if (options.skipExisting && !didSkipExisting) {
-      lastSpokenKey = key;
-      didSkipExisting = true;
-      console.log(`[skip-existing] ${candidate.source} / ${candidate.timestamp}`);
-    } else if (key !== lastSpokenKey) {
-      const speech = measureLatency(latencyProfile, "speechText", () => speechText(candidate.text, options));
-      console.log(`[source] ${candidate.text}`);
-      console.log(`[pet] ${speech}`);
-      if (options.diagnoseRouting) {
-        console.log(JSON.stringify(routingDiagnostic(candidate.text, speech, options), null, 2));
-      }
-      lastSpokenKey = key;
-      if (!options.dryRun) {
-        measureLatency(latencyProfile, "speak", () => speak(speech, options));
-      }
-    }
-  } else {
-    console.log(`[wait] ${speechResult.message}`);
-  }
-
-  printLatencyProfile(latencyProfile, { candidate: Boolean(candidate), dryRun: options.dryRun, thread: true });
-  if (options.once) break;
-  await sleep(options.interval * 1000);
+if (process.argv[1] === scriptPath) {
+  main().catch(error => {
+    console.error(error?.message ?? String(error));
+    process.exit(1);
+  });
 }
 
 function parseOptions(argv) {
@@ -102,13 +150,14 @@ function parseOptions(argv) {
     rolloutPath: null,
     threadId: null,
     cwd: null,
+    showPrivatePaths: false,
   };
 
   for (let i = 0; i < argv.length; i += 1) {
     const arg = argv[i];
     const takeValue = () => {
       const value = argv[i + 1];
-      if (value == null) throw new Error(`${arg} requires a value`);
+      if (value == null || optionFlags.has(value)) throw new Error(`${arg} requires a value`);
       i += 1;
       return value;
     };
@@ -126,7 +175,7 @@ function parseOptions(argv) {
         result.voice = takeValue();
         break;
       case "--tts":
-        result.ttsEngine = takeValue();
+        result.ttsEngine = choiceValue("--tts", takeValue(), ["auto", "voicevox", "voicebox", "kokoro", "say"]);
         break;
       case "--kokoro-voice":
         result.kokoroVoice = takeValue();
@@ -141,7 +190,7 @@ function parseOptions(argv) {
         result.voiceboxURL = takeValue();
         break;
       case "--voicebox-mode":
-        result.voiceboxMode = takeValue();
+        result.voiceboxMode = choiceValue("--voicebox-mode", takeValue(), ["voicevox", "generic"]);
         break;
       case "--voicebox-speaker":
         result.voiceboxSpeaker = takeValue();
@@ -153,7 +202,7 @@ function parseOptions(argv) {
         result.voiceboxLanguage = takeValue();
         break;
       case "--speech-language":
-        result.speechLanguage = takeValue();
+        result.speechLanguage = choiceValue("--speech-language", takeValue(), ["auto", "ja", "en", "ko", "zh", "other"]);
         break;
       case "--speech-style":
         result.speechStylePath = takeValue();
@@ -165,10 +214,10 @@ function parseOptions(argv) {
         result.languageRoute = false;
         break;
       case "--rate":
-        result.rate = Number(takeValue());
+        result.rate = positiveNumberValue("--rate", takeValue());
         break;
       case "--interval":
-        result.interval = Number(takeValue());
+        result.interval = positiveNumberValue("--interval", takeValue());
         break;
       case "--thread-id":
         result.threadId = takeValue();
@@ -183,17 +232,10 @@ function parseOptions(argv) {
         result.stateDB = takeValue();
         break;
       case "--max-source-chars":
-        result.maxSourceCharacters = Math.max(1, Number(takeValue()));
+        result.maxSourceCharacters = positiveIntegerValue("--max-source-chars", takeValue());
         break;
       case "--skip-existing":
         result.skipExisting = true;
-        break;
-      case "--profile-latency":
-        result.profileLatency = true;
-        break;
-      case "--diagnose-routing":
-        result.diagnoseRouting = true;
-        result.dryRun = true;
         break;
       case "--no-summary":
         result.summarizeSpeech = false;
@@ -207,12 +249,46 @@ function parseOptions(argv) {
       case "--list-voices":
         result.listVoices = true;
         break;
+      case "--profile-latency":
+        result.profileLatency = true;
+        break;
+      case "--diagnose-routing":
+        result.diagnoseRouting = true;
+        result.dryRun = true;
+        break;
+      case "--show-private-paths":
+        result.showPrivatePaths = true;
+        break;
       default:
         throw new Error(`Unknown option: ${arg}`);
     }
   }
 
   return result;
+}
+
+function choiceValue(flag, value, allowed) {
+  const normalized = value.toLowerCase();
+  if (!allowed.includes(normalized)) {
+    throw new Error(`${flag} must be one of: ${allowed.join(", ")}`);
+  }
+  return normalized;
+}
+
+function positiveNumberValue(flag, value) {
+  const number = Number(value);
+  if (!Number.isFinite(number) || number <= 0) {
+    throw new Error(`${flag} must be a positive number`);
+  }
+  return number;
+}
+
+function positiveIntegerValue(flag, value) {
+  const number = Number(value);
+  if (!Number.isInteger(number) || number < 1) {
+    throw new Error(`${flag} must be a positive integer`);
+  }
+  return number;
 }
 
 function printUsage() {
@@ -222,9 +298,9 @@ function printUsage() {
 Common:
   --once                         Check once and exit
   --dry-run                      Print the spoken line without playing audio
-  --skip-existing                Do not speak the current existing latest message
-  --profile-latency              Print monitor latency timings to stderr
+  --profile-latency              Print timing details to stderr
   --diagnose-routing             Print routing diagnostics as JSON and force dry-run
+  --skip-existing                Do not speak the current existing latest message
   --interval SECONDS             Polling interval (default: 1)
   --help                         Show this help
   --version                      Print package version
@@ -235,6 +311,7 @@ Codex source:
   --rollout PATH                 Read a rollout JSONL file directly
   --state-db PATH                Read a custom state_5.sqlite
   --max-source-chars N           Ignore source messages longer than N (default: 4000)
+  --show-private-paths           Print full local paths in diagnostics
 
 Speech:
   --no-summary                   Speak the full source text
@@ -242,7 +319,7 @@ Speech:
   --speech-style PATH            JSON style config for spoken phrasing
 
 TTS:
-  --tts auto|voicevox|kokoro|say Select TTS engine (default: auto)
+  --tts auto|voicevox|voicebox|kokoro|say Select TTS engine (default: auto)
   --language-route               Route by detected language
   --no-language-route            Use the selected TTS without language routing
   --list-voices                  List voices for the selected TTS
@@ -254,6 +331,7 @@ TTS:
 Examples:
   node scripts/pet-rollout-monitor.mjs --once --dry-run
   node scripts/pet-rollout-monitor.mjs --tts auto --skip-existing
+  node scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --rollout test/fixtures/ko-zh-rollout.jsonl
   node scripts/pet-rollout-monitor.mjs --rollout test/fixtures/assistant-rollout.jsonl --once --dry-run`);
 }
 
@@ -304,12 +382,13 @@ function defaultStateDBPath() {
   return join(homedir(), ".codex", "state_5.sqlite");
 }
 
-function readLatestSpeechCandidate(rolloutPath, maxSourceCharacters) {
+function readLatestSpeechCandidate(rolloutPath, maxSourceCharacters, opts = {}) {
   let text;
   try {
     text = readFileSync(rolloutPath, "utf8");
   } catch (error) {
-    const detail = error?.code ? `${error.code}: ${rolloutPath}` : error?.message ?? String(error);
+    const displayPath = displayPrivatePath(rolloutPath, opts);
+    const detail = error?.code ? `${error.code}: ${displayPath}` : redactPrivatePaths(error?.message ?? String(error), [rolloutPath], opts);
     return speechMiss(`rollout unreadable (${detail})`);
   }
 
@@ -357,6 +436,20 @@ function speechMiss(message) {
   return { candidate: null, message };
 }
 
+function displayPrivatePath(path, opts = {}) {
+  if (opts.showPrivatePaths) return path;
+  return path && isAbsolute(path) ? "<redacted path>" : path;
+}
+
+function redactPrivatePaths(message, paths = [], opts = {}) {
+  if (opts.showPrivatePaths) return String(message ?? "");
+  let result = String(message ?? "");
+  for (const path of paths.filter(Boolean)) {
+    if (isAbsolute(path)) result = result.split(path).join("<redacted path>");
+  }
+  return result;
+}
+
 function speechCandidate(object) {
   const payload = object?.payload;
   const timestamp = object?.timestamp ?? "";
@@ -395,16 +488,16 @@ function textForSource(text) {
 }
 
 function speechText(sourceText, opts) {
-  return opts.summarizeSpeech ? cuteSpeechSummary(sourceText) : sourceText;
+  return opts.summarizeSpeech ? cuteSpeechSummary(sourceText, opts) : sourceText;
 }
 
-function cuteSpeechSummary(text) {
+function cuteSpeechSummary(text, opts = parseOptions([])) {
   const prose = proseForSummary(text);
   if (!prose) return "New message.";
   const sentence = summarySegment(prose);
   const limit = isMixedJapaneseEnglish(prose) ? 160 : (prose.length <= 80 ? 72 : 64);
   const language = detectedLanguage(prose);
-  const style = speechStyleFor(language, options);
+  const style = speechStyleFor(language, opts);
   const core = speechCore(trimmedPhrase(sentence, limit), style);
   if (!core) return style.fallback ?? "New message.";
   return cleanSpeechLine(variedSpeechLine(core, prose, style), language);
@@ -493,7 +586,7 @@ function cleanSpeechLine(text, language) {
     .trim()
     .replace(/^[、,\s]+|[、,\s]+$/g, "");
   if (!/[。！？!?.?]$/.test(result)) {
-    result += language === "ja" || language === "zh" ? "。" : ".";
+    result += ["ja", "zh"].includes(language) ? "。" : ".";
   }
   return result;
 }
@@ -530,6 +623,18 @@ const DEFAULT_SPEECH_STYLE = {
       stripPrefixes: ["ok", "okay", "got it"],
       stripTerms: [],
     },
+    zh: {
+      fallback: "有新的消息。",
+      templates: ["{text}"],
+      stripPrefixes: [],
+      stripTerms: [],
+    },
+    ko: {
+      fallback: "새 메시지가 있습니다.",
+      templates: ["{text}"],
+      stripPrefixes: [],
+      stripTerms: [],
+    },
     fallback: {
       fallback: "New message.",
       templates: ["{text}"],
@@ -546,7 +651,7 @@ function stableIndex(text, count) {
 }
 
 function normalizedKey(text) {
-  return text.toLowerCase().replace(/\s+/g, "").replace(/[`*_#>\-・、。，．.。！？!?「」『』[\]()（）:：]/g, "");
+  return text.toLowerCase().replace(/\s+/g, "").replace(/[`*_#>\-・、,。，．.。！？!?「」『』[\]()（）:：]/g, "");
 }
 
 function speak(text, opts) {
@@ -556,46 +661,16 @@ function speak(text, opts) {
   } else if (engine === "voicebox" || engine === "voicevox") {
     if (!speakWithVoicebox(text, opts)) speakWithFallback(text, opts, "VOICEVOX");
   } else if (engine === "say") {
-    speakWithSay(text, opts);
+    if (!speakWithSay(text, opts)) console.error("[tts-error] OS speech failed");
   } else {
     console.log(`[tts-fallback] Unknown TTS engine '${engine}'; using OS speech`);
-    speakWithSay(text, opts);
+    if (!speakWithSay(text, opts)) console.error("[tts-error] OS speech failed");
   }
-}
-
-function routingDiagnostic(sourceText, spokenText, opts) {
-  const detected = detectedLanguage(sourceText);
-  const effectiveLanguage = resolvedSpeechLanguage(sourceText, opts);
-  const engine = resolvedTTSEngine(sourceText, opts);
-  return {
-    sourceText,
-    spokenText,
-    detectedLanguage: detected,
-    speechLanguageHint: opts.speechLanguage,
-    effectiveLanguage,
-    ttsEngineConfigured: opts.ttsEngine,
-    languageRoute: opts.languageRoute,
-    chosenEngine: engine,
-    fallbackReason: routingFallbackReason(engine, effectiveLanguage, opts),
-    summary: opts.summarizeSpeech ? "enabled" : "disabled",
-    sourceCharacters: sourceText.length,
-  };
-}
-
-function routingFallbackReason(engine, language, opts) {
-  const configured = opts.ttsEngine.toLowerCase();
-  if (engine === "say" && configured === "auto" && language !== "ja" && language !== "en") {
-    return `${language} uses OS speech fallback; no dedicated provider is configured.`;
-  }
-  if (configured !== "auto" && !opts.languageRoute) {
-    return "explicit TTS engine selected; language routing is disabled.";
-  }
-  return null;
 }
 
 function speakWithFallback(text, opts, name) {
   console.log(`[tts-fallback] ${name} failed; using OS speech`);
-  speakWithSay(text, opts);
+  if (!speakWithSay(text, opts)) console.error("[tts-error] OS speech fallback failed");
 }
 
 function resolvedTTSEngine(text, opts) {
@@ -607,24 +682,52 @@ function resolvedTTSEngine(text, opts) {
   return configured === "auto" ? "say" : configured;
 }
 
+function routingDiagnostic(sourceText, spokenText, opts) {
+  const detected = detectedLanguage(sourceText);
+  const effective = resolvedSpeechLanguage(sourceText, opts);
+  const chosen = resolvedTTSEngine(sourceText, opts);
+  return {
+    sourceText,
+    spokenText,
+    detectedLanguage: detected,
+    speechLanguageHint: opts.speechLanguage,
+    effectiveLanguage: effective,
+    ttsEngineConfigured: opts.ttsEngine,
+    languageRoute: opts.languageRoute,
+    chosenEngine: chosen,
+    fallbackReason: routingFallbackReason(chosen, effective, opts),
+    summary: opts.summarizeSpeech ? "enabled" : "disabled",
+    sourceCharacters: sourceText.length,
+  };
+}
+
+function routingFallbackReason(chosenEngine, language, opts) {
+  if (opts.ttsEngine !== "auto" && !opts.languageRoute) return null;
+  if (chosenEngine !== "say") return null;
+  if (language === "ko") return "ko uses OS speech fallback; no dedicated provider is configured.";
+  if (language === "zh") return "zh uses OS speech fallback; no dedicated provider is configured.";
+  if (language === "other") return "other uses OS speech fallback; no dedicated provider is configured.";
+  return null;
+}
+
 function resolvedSpeechLanguage(text, opts) {
   const hint = opts.speechLanguage.toLowerCase();
   return hint === "auto" ? detectedLanguage(text) : hint;
 }
 
 function detectedLanguage(text) {
-  let japanese = 0;
+  let kana = 0;
   let latin = 0;
   let hangul = 0;
   let cjk = 0;
   for (const char of text) {
     const value = char.codePointAt(0);
-    if (value >= 0x3040 && value <= 0x30ff) japanese += 1;
+    if (value >= 0x3040 && value <= 0x30ff) kana += 1;
     else if (value >= 0x4e00 && value <= 0x9fff) cjk += 1;
     else if (value >= 0xac00 && value <= 0xd7af) hangul += 1;
     else if ((value >= 0x41 && value <= 0x5a) || (value >= 0x61 && value <= 0x7a)) latin += 1;
   }
-  if (japanese > 0) return "ja";
+  if (kana > 0) return "ja";
   if (hangul > 0) return "ko";
   if (cjk >= 2) return "zh";
   if (latin >= 4) return "en";
@@ -660,16 +763,19 @@ function speakWithVoicebox(text, opts) {
 
 function speakWithSay(text, opts) {
   if (process.platform === "darwin") {
-    runProcess("/usr/bin/say", ["-v", opts.voice, "-r", String(opts.rate), text]);
-    return;
+    return runProcess("/usr/bin/say", ["-v", opts.voice, "-r", String(opts.rate), text], { label: "macOS say" });
   }
   if (process.platform === "win32") {
+    const command = windowsPowerShellCommand();
+    if (!command) {
+      console.error("[tts-fallback] PowerShell was not found; OS speech is unavailable");
+      return false;
+    }
     const escaped = text.replaceAll("'", "''");
     const script = `Add-Type -AssemblyName System.Speech; $s = New-Object System.Speech.Synthesis.SpeechSynthesizer; $s.Rate = 0; $s.Speak('${escaped}')`;
-    runProcess("powershell.exe", ["-NoProfile", "-Command", script]);
-    return;
+    return runProcess(command, ["-NoProfile", "-Command", script], { label: "Windows System.Speech" });
   }
-  runProcess("espeak", [text]);
+  return runProcess("espeak", [text], { label: "Linux espeak" });
 }
 
 function listVoices(opts) {
@@ -684,14 +790,28 @@ function listVoices(opts) {
   }
 }
 
-function runProcess(command, args) {
-  const result = spawnSync(command, args, { stdio: "ignore" });
-  return result.status === 0;
+function runProcess(command, args, opts = {}) {
+  const result = spawnSync(command, args, { stdio: opts.stdio ?? "ignore" });
+  if (result.status === 0) return true;
+  console.error(processFailureMessage(command, result, opts.label));
+  return false;
+}
+
+function processFailureMessage(command, result, label = command) {
+  const prefix = `[tts-error] ${label} failed`;
+  if (result.error?.code) return `${prefix}: ${result.error.code} (${command})`;
+  if (result.signal) return `${prefix}: signal ${result.signal} (${command})`;
+  if (result.status != null) return `${prefix}: exit ${result.status} (${command})`;
+  return `${prefix}: unknown error (${command})`;
 }
 
 function runAndPrint(command, args) {
   const result = spawnSync(command, args, { stdio: "inherit" });
   process.exit(result.status ?? 1);
+}
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 function startLatencyProfile(enabled) {
@@ -725,7 +845,6 @@ function measureLatency(profile, name, operation) {
 
 function printLatencyProfile(profile, fields) {
   if (!profile) return;
-
   const totalMs = performance.now() - profile.startedAt;
   const steps = profile.steps.map(step => `${step.name}=${formatLatencyMs(step.ms)}`).join(" ");
   const metadata = Object.entries(fields).map(([key, value]) => `${key}=${value}`).join(" ");
@@ -736,6 +855,21 @@ function formatLatencyMs(ms) {
   return `${ms.toFixed(1)}ms`;
 }
 
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
+export {
+  main,
+  parseOptions,
+  readLatestSpeechCandidate,
+  speechCandidate,
+  textForSource,
+  speechText,
+  cuteSpeechSummary,
+  proseForSummary,
+  summarySegment,
+  detectedLanguage,
+  resolvedTTSEngine,
+  routingDiagnostic,
+  normalizedKey,
+  processFailureMessage,
+  displayPrivatePath,
+  redactPrivatePaths,
+};

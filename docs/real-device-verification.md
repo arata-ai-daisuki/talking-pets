@@ -1,0 +1,205 @@
+# Real Device Verification
+
+Use this page when graduating a platform from experimental or preparing a release note. CI can prove syntax, dry-run extraction, and command availability. Real audio still needs a person on the target OS.
+
+If the verification is done by a contributor or on another machine, capture it with the GitHub "Platform verification" issue template so the result can be linked from release notes. The issue must confirm that public evidence was sanitized before it is linked.
+
+When preparing a GitHub Release, copy the sanitized Platform verification issue URL into the `Evidence link` column in `docs/release-notes-template.md`.
+
+Reports with `Public evidence sanitized? = No` or `Was one spoken line audible? = No` are useful follow-up data, but they do not count as release evidence for graduating Windows or Linux from experimental.
+
+CI, fixture rollouts, `npm run check:compat -- --no-state`, and sanitized dry-run output prove packaging, parser, and public-log safety. They do not prove real-device audio or stateful Codex compatibility on Windows or Linux, and they must not be used by themselves to graduate a platform.
+
+## Quick Contributor Request
+
+When asking someone else to verify Windows or Linux, send them this short checklist:
+
+1. Run the matching OS command block below, including install, check, dry-run, and one audible TTS command.
+2. Sanitize every command output you plan to paste publicly with the matching `npm run sanitize:public-output` pipe example.
+3. Open a GitHub "Platform verification" issue.
+4. Paste sanitized command output, mark whether one spoken line was audible, and include the speech-language value plus config source.
+5. If anything failed or audio was not audible, still open the issue as follow-up evidence; it just does not count toward platform graduation.
+
+Copy-paste request:
+
+```text
+Could you verify Talking Pets on a real Windows or Linux device?
+
+Please run the matching OS command block in docs/real-device-verification.md, including install, check, dry-run, and one audible TTS command. Before pasting any output publicly, pipe each command output through npm run sanitize:public-output and manually review it for private paths, conversation text, local env values, credentials, local SQLite DBs, private rollout JSONL, generated audio, recordings, archives, macOS metadata, and downloaded model files.
+
+Then open a GitHub "Platform verification" issue and include OS/version, CPU architecture, Node.js and npm versions, Codex Desktop or CLI version if known, TTS path tested, speech-language value, config source, sanitized command output, whether one spoken line was audible, and any limitation such as no local Codex state yet.
+
+Only evidence marked audible: yes and sanitized: yes can be used to graduate Windows or Linux from experimental. Failed or inaudible reports are still useful follow-up reports.
+```
+
+## Evidence To Record
+
+- OS and version:
+- CPU architecture:
+- Node.js version:
+- npm version:
+- Codex Desktop / CLI version if known:
+- TTS path tested: `macOS say`, `Windows OS speech`, `Linux espeak`, `VOICEVOX`, `Kokoro.js`, `Voicebox-compatible endpoint`, or `Other local TTS`:
+- Speech-language value: `auto`, `ja`, `en`, `ko`, `zh`, or `other`:
+- Config source: installer default, `.talking-pets.local.env.example`, `presets/examples/<name>.env`, or custom:
+- Commands run:
+- Sanitization check: confirm private paths, conversation text, local env values, credentials, local SQLite DBs such as `state_5.sqlite`, private rollout JSONL, generated audio, local recordings, archives, macOS metadata, and downloaded model files are not attached publicly. Known public fixture rollout paths may remain visible as evidence.
+- Audible result:
+- Known limitation or follow-up:
+
+Before sharing command output publicly, run any pasted check, dry-run, installer, or TTS logs through the matching platform sanitizer example:
+
+```bash
+./install.command 2>&1 | npm run sanitize:public-output
+./check.command 2>&1 | npm run sanitize:public-output
+./scripts/pet-rollout-monitor.command --once --dry-run 2>&1 | npm run sanitize:public-output
+./scripts/pet-rollout-monitor.command --tts say --voice Kyoko --once --rollout test/fixtures/assistant-rollout.jsonl 2>&1 | npm run sanitize:public-output
+```
+
+```powershell
+.\install.ps1 2>&1 | npm run sanitize:public-output
+.\check.ps1 2>&1 | npm run sanitize:public-output
+npm run monitor:node -- --once --dry-run --rollout test/fixtures/assistant-rollout.jsonl 2>&1 | npm run sanitize:public-output
+npm run monitor:node -- --tts say --once --rollout test/fixtures/assistant-rollout.jsonl 2>&1 | npm run sanitize:public-output
+npm run monitor:node -- --tts say --speech-language ko --once --rollout test/fixtures/ko-zh-rollout.jsonl 2>&1 | npm run sanitize:public-output
+```
+
+```bash
+./install.sh 2>&1 | npm run sanitize:public-output
+./check.sh 2>&1 | npm run sanitize:public-output
+npm run monitor:node -- --once --dry-run --rollout test/fixtures/assistant-rollout.jsonl 2>&1 | npm run sanitize:public-output
+npm run monitor:node -- --tts say --once --rollout test/fixtures/assistant-rollout.jsonl 2>&1 | npm run sanitize:public-output
+npm run monitor:node -- --tts say --speech-language zh --once --rollout test/fixtures/ko-zh-rollout.jsonl 2>&1 | npm run sanitize:public-output
+```
+
+## macOS Stable Path
+
+```bash
+npm ci
+npm run check:all
+npm run check:compat
+npm run check:runtime
+npm run check:audio:strict
+npm run check:config
+npm run check:installers
+npm run check:docs
+npm run check:platform-scripts
+npm run check:swift-cli
+npm run check:pack
+npm run check:release
+npm run check:sanitize
+npm run test:dry-run
+./install.command
+./check.command
+./scripts/pet-rollout-monitor.command --once --dry-run
+./scripts/pet-rollout-monitor.command --tts say --voice Kyoko --once --rollout test/fixtures/assistant-rollout.jsonl
+```
+
+Pass criteria:
+
+- `check:all` passes.
+- `check:compat` checks the real local Codex state DB, unless the machine has no Codex state yet and that limitation is recorded.
+- `check:runtime` reports `node:sqlite` as ok.
+- `check:audio:strict` reports `macOS afplay` and `macOS say` as ok.
+- `check:config`, `check:installers`, `check:docs`, `check:platform-scripts`, `check:swift-cli`, `check:pack`, and `check:release` pass.
+- `test:dry-run` prints public fixture `[source]` and `[pet]` lines.
+- `./install.command` creates `.talking-pets.local.env`, or a documented manual config fallback is recorded.
+- `./check.command` uses fixture-only compatibility and dry-run output suitable for public evidence after sanitization.
+- If local config is present, the platform check script must not end with `check: failed -> fix .talking-pets.local.env`.
+- Dry-run prints both `[source]` and `[pet]`.
+- One audible spoken line is heard through `say` or another selected local TTS.
+- Public evidence is sanitized before attaching or linking.
+
+## Windows Experimental Path
+
+Run in PowerShell:
+
+```powershell
+npm ci
+npm run check:all
+npm run check:compat
+npm run check:runtime
+npm run check:audio:strict
+npm run check:config
+npm run check:installers
+npm run check:docs
+npm run check:platform-scripts
+npm run check:swift-cli
+npm run check:pack
+npm run check:release
+npm run check:sanitize
+npm run test:dry-run
+.\install.ps1
+.\check.ps1
+npm run monitor:node -- --once --dry-run --rollout test/fixtures/assistant-rollout.jsonl
+npm run monitor:node -- --tts say --once --rollout test/fixtures/assistant-rollout.jsonl
+npm run monitor:node -- --tts say --speech-language ko --once --rollout test/fixtures/ko-zh-rollout.jsonl
+```
+
+Pass criteria:
+
+- `check:all` passes.
+- `check:compat` checks the real local Codex state DB, unless the machine has no Codex state yet and that limitation is recorded.
+- `check:runtime` reports `node:sqlite` as ok.
+- `check:audio:strict` reports PowerShell and `System.Speech` as ok.
+- `check:config`, `check:installers`, `check:docs`, `check:platform-scripts`, `check:swift-cli`, `check:pack`, and `check:release` pass.
+- `test:dry-run` prints public fixture `[source]` and `[pet]` lines.
+- `.\install.ps1` creates `.talking-pets.local.env`, or a documented manual config fallback is recorded.
+- `.\check.ps1` uses fixture-only compatibility and dry-run output suitable for public evidence after sanitization.
+- If local config is present, the platform check script must not end with `check: failed -> fix .talking-pets.local.env`.
+- Dry-run prints both `[source]` and `[pet]`.
+- One audible spoken line is heard through Windows OS speech or another selected local TTS.
+- If Korean / Chinese fallback is claimed, the speech-language value and fixture or source text are recorded.
+- Public evidence is sanitized before attaching or linking.
+
+## Linux Experimental Path
+
+```bash
+npm ci
+npm run check:all
+npm run check:compat
+npm run check:runtime
+npm run check:audio:strict
+npm run check:config
+npm run check:installers
+npm run check:docs
+npm run check:platform-scripts
+npm run check:swift-cli
+npm run check:pack
+npm run check:release
+npm run check:sanitize
+npm run test:dry-run
+./install.sh
+./check.sh
+npm run monitor:node -- --once --dry-run --rollout test/fixtures/assistant-rollout.jsonl
+npm run monitor:node -- --tts say --once --rollout test/fixtures/assistant-rollout.jsonl
+npm run monitor:node -- --tts say --speech-language zh --once --rollout test/fixtures/ko-zh-rollout.jsonl
+```
+
+Pass criteria:
+
+- `check:all` passes.
+- `check:compat` checks the real local Codex state DB, unless the machine has no Codex state yet and that limitation is recorded.
+- `check:runtime` reports `node:sqlite` as ok.
+- `check:audio:strict` reports either a WAV player (`aplay`, `paplay`, or `ffplay`) or `espeak` as ok.
+- `check:config`, `check:installers`, `check:docs`, `check:platform-scripts`, `check:swift-cli`, `check:pack`, and `check:release` pass.
+- `test:dry-run` prints public fixture `[source]` and `[pet]` lines.
+- `./install.sh` creates `.talking-pets.local.env`, or the manual `cp presets/examples/privacy-first-say.env .talking-pets.local.env` fallback is recorded.
+- `./check.sh` reports runtime, fixture-only compatibility, audio path, config, and fixture dry-run diagnostics.
+- If local config is present, the platform check script must not end with `check: failed -> fix .talking-pets.local.env`.
+- Dry-run prints both `[source]` and `[pet]`.
+- One audible spoken line is heard through `espeak`, Kokoro.js plus a WAV player, VOICEVOX plus a WAV player, or another selected local TTS.
+- If Korean / Chinese fallback is claimed, the speech-language value and fixture or source text are recorded.
+- Public evidence is sanitized before attaching or linking.
+
+## Release Note Snippet
+
+```text
+Verified on:
+- macOS: <version>, <arch>, Node.js <version>, npm <version>, Codex: <version|unknown>, TTS: macOS say|VOICEVOX|Kokoro.js|Voicebox-compatible endpoint|Other local TTS, speech-language: auto|ja|en|ko|zh|other, config source: <installer default|preset|custom|none>, audible: yes|no, sanitized: yes|no
+- Windows: <version>, <arch>, Node.js <version>, npm <version>, Codex: <version|unknown>, TTS: Windows OS speech|VOICEVOX|Kokoro.js|Voicebox-compatible endpoint|Other local TTS, speech-language: auto|ja|en|ko|zh|other, config source: <installer default|preset|custom|none>, audible: yes|no, sanitized: yes|no
+- Linux: <distro/version>, <arch>, Node.js <version>, npm <version>, Codex: <version|unknown>, TTS: Linux espeak|VOICEVOX|Kokoro.js|Voicebox-compatible endpoint|Other local TTS, speech-language: auto|ja|en|ko|zh|other, config source: <installer default|preset|custom|none>, audible: yes|no, sanitized: yes|no
+
+Known limits:
+- Windows / Linux remain experimental until OS/version, CPU architecture, Node.js and npm versions, install, platform check, dry-run, one audible TTS path, TTS path tested, speech-language value, config source, Codex Desktop / CLI version if known, `audible: yes`, `sanitized: yes`, and a sanitized Platform verification issue link are recorded on real hardware.
+```

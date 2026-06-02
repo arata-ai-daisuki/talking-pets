@@ -70,14 +70,35 @@ need_npm() {
 }
 
 write_config() {
+  local voicebox_mode="${9:-}"
+  local voicebox_profile="${10:-}"
+  local voicebox_language="${11:-}"
   cat > "$CONFIG_FILE" <<EOF
 TALKING_PETS_UI_LANGUAGE="$7"
 TALKING_PETS_TTS="$1"
 TALKING_PETS_VOICEVOX_URL="$2"
 TALKING_PETS_VOICEVOX_SPEAKER="$3"
+EOF
+  if [[ -n "$voicebox_mode" ]]; then
+    cat >> "$CONFIG_FILE" <<EOF
+TALKING_PETS_VOICEBOX_MODE="$voicebox_mode"
+EOF
+  fi
+  if [[ -n "$voicebox_profile" ]]; then
+    cat >> "$CONFIG_FILE" <<EOF
+TALKING_PETS_VOICEBOX_PROFILE="$voicebox_profile"
+EOF
+  fi
+  if [[ -n "$voicebox_language" ]]; then
+    cat >> "$CONFIG_FILE" <<EOF
+TALKING_PETS_VOICEBOX_LANGUAGE="$voicebox_language"
+EOF
+  fi
+  cat >> "$CONFIG_FILE" <<EOF
 TALKING_PETS_KOKORO_VOICE="$4"
 TALKING_PETS_SAY_VOICE="$5"
 TALKING_PETS_LANGUAGE_ROUTE="$6"
+TALKING_PETS_SPEECH_LANGUAGE="$8"
 EOF
 }
 
@@ -96,6 +117,7 @@ say_line "1) Auto routing (Japanese=VOICEVOX / English=Kokoro / other=say)" "1) 
 say_line "2) VOICEVOX / Zundamon Normal (recommended for Japanese)" "2) VOICEVOX / ずんだもん ノーマル（日本語おすすめ）"
 say_line "3) Kokoro.js (local, mostly English voices)" "3) Kokoro.js（ローカル、英語系ボイス中心）"
 say_line "4) macOS say (no extra install)" "4) macOS say（追加インストールなし）"
+say_line "5) Voicebox-compatible endpoint" "5) Voicebox互換endpoint"
 prompt_line "Choice [1]: " "選択 [1]: "
 read choice
 choice="${choice:-1}"
@@ -105,6 +127,9 @@ voicevox_speaker="3"
 kokoro_voice="af_heart"
 say_voice="Kyoko"
 language_route="1"
+voicebox_mode="generic"
+voicebox_profile="default"
+voicebox_language="en"
 
 case "$choice" in
   1)
@@ -120,8 +145,8 @@ case "$choice" in
     read input
     kokoro_voice="${input:-$kokoro_voice}"
 
-    say_line "Running npm install. The first run may take a little while." "npm install を実行します。初回は少し時間がかかることがあります。"
-    npm install
+    say_line "Running npm ci. The first run may take a little while." "npm ci を実行します。初回は少し時間がかかることがあります。"
+    npm ci
 
     if curl -fsS "$voicevox_url/version" >/dev/null 2>&1; then
       say_line "VOICEVOX engine is reachable." "VOICEVOX engine を確認しました。"
@@ -130,7 +155,7 @@ case "$choice" in
       say_line "For Japanese speech, start VOICEVOX and then run ./check.command." "日本語読み上げを使う場合は、VOICEVOXを起動してから ./check.command を実行してください。"
     fi
 
-    write_config "auto" "$voicevox_url" "$voicevox_speaker" "$kokoro_voice" "$say_voice" "$language_route" "$ui_lang"
+    write_config "auto" "$voicevox_url" "$voicevox_speaker" "$kokoro_voice" "$say_voice" "$language_route" "$ui_lang" "auto"
     ;;
   2)
     need_node
@@ -148,7 +173,7 @@ case "$choice" in
       say_line "Start VOICEVOX and run ./check.command later." "VOICEVOXを起動してから、あとで ./check.command を実行してください。"
     fi
 
-    write_config "voicevox" "$voicevox_url" "$voicevox_speaker" "$kokoro_voice" "$say_voice" "0" "$ui_lang"
+    write_config "voicevox" "$voicevox_url" "$voicevox_speaker" "$kokoro_voice" "$say_voice" "0" "$ui_lang" "auto"
     ;;
   3)
     need_node
@@ -156,9 +181,9 @@ case "$choice" in
     printf "Kokoro voice [%s]: " "$kokoro_voice"
     read input
     kokoro_voice="${input:-$kokoro_voice}"
-    say_line "Running npm install. The first run may take a little while." "npm install を実行します。初回は少し時間がかかることがあります。"
-    npm install
-    write_config "kokoro" "$voicevox_url" "$voicevox_speaker" "$kokoro_voice" "$say_voice" "0" "$ui_lang"
+    say_line "Running npm ci. The first run may take a little while." "npm ci を実行します。初回は少し時間がかかることがあります。"
+    npm ci
+    write_config "kokoro" "$voicevox_url" "$voicevox_speaker" "$kokoro_voice" "$say_voice" "0" "$ui_lang" "auto"
     ;;
   4)
     printf "macOS say voice [%s]: " "$say_voice"
@@ -167,7 +192,30 @@ case "$choice" in
     if ! /usr/bin/say -v "$say_voice" "Talking Pets の音声テストです。" >/dev/null 2>&1; then
       say_line "The selected say voice may not be available. Run ./check.command later." "指定した say voice が使えない可能性があります。あとで ./check.command で確認してください。"
     fi
-    write_config "say" "$voicevox_url" "$voicevox_speaker" "$kokoro_voice" "$say_voice" "0" "$ui_lang"
+    write_config "say" "$voicevox_url" "$voicevox_speaker" "$kokoro_voice" "$say_voice" "0" "$ui_lang" "auto"
+    ;;
+  5)
+    need_node
+    printf "Voicebox endpoint URL [%s]: " "http://127.0.0.1:8080"
+    read input
+    voicevox_url="${input:-http://127.0.0.1:8080}"
+    printf "Voicebox mode [generic/voicevox] [%s]: " "$voicebox_mode"
+    read input
+    voicebox_mode="${input:-$voicebox_mode}"
+    case "$voicebox_mode" in
+      generic|voicevox) ;;
+      *)
+        say_line "Voicebox mode must be generic or voicevox." "Voicebox mode は generic または voicevox を指定してください。"
+        exit 2
+        ;;
+    esac
+    printf "Voicebox profile [%s]: " "$voicebox_profile"
+    read input
+    voicebox_profile="${input:-$voicebox_profile}"
+    printf "Voicebox language [%s]: " "$voicebox_language"
+    read input
+    voicebox_language="${input:-$voicebox_language}"
+    write_config "voicebox" "$voicevox_url" "$voicevox_speaker" "$kokoro_voice" "$say_voice" "0" "$ui_lang" "auto" "$voicebox_mode" "$voicebox_profile" "$voicebox_language"
     ;;
   *)
     say_line "Unknown choice: $choice" "不明な選択です: $choice"
@@ -180,7 +228,7 @@ chmod +x "$ROOT_DIR/start-selected-tts.command" 2>/dev/null || true
 chmod +x "$ROOT_DIR/check.command" 2>/dev/null || true
 
 echo
-say_line "Saved config: $CONFIG_FILE" "設定を保存しました: $CONFIG_FILE"
+say_line "Saved config: .talking-pets.local.env" "設定を保存しました: .talking-pets.local.env"
 say_line "Start Talking Pets with:" "起動するには次を実行してください。"
 echo
 echo "  ./start-selected-tts.command"

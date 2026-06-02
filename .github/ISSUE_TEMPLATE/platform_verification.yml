@@ -1,0 +1,114 @@
+name: Platform verification
+description: Share real-device install, platform check, dry-run, and audible TTS evidence
+title: "[Verify]: "
+labels:
+  - verification
+body:
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      options:
+        - macOS
+        - Windows
+        - Linux
+    validations:
+      required: true
+  - type: input
+    id: os
+    attributes:
+      label: OS and version
+      placeholder: "macOS 15.5 / Windows 11 / Ubuntu 24.04"
+    validations:
+      required: true
+  - type: input
+    id: arch
+    attributes:
+      label: CPU architecture
+      placeholder: "arm64 / x64"
+    validations:
+      required: true
+  - type: input
+    id: node
+    attributes:
+      label: Node.js and npm versions
+      placeholder: "node v22.x.x, npm x.x.x"
+    validations:
+      required: true
+  - type: input
+    id: codex_version
+    attributes:
+      label: Codex Desktop / CLI version if known
+      placeholder: "Codex Desktop x.y.z / Codex CLI x.y.z / unknown"
+    validations:
+      required: false
+  - type: dropdown
+    id: tts
+    attributes:
+      label: Audible TTS path tested
+      options:
+        - macOS say
+        - Windows OS speech
+        - Linux espeak
+        - VOICEVOX
+        - Kokoro.js
+        - Voicebox-compatible endpoint
+        - Other local TTS
+    validations:
+      required: true
+  - type: dropdown
+    id: speech_language
+    attributes:
+      label: Speech-language value
+      description: Use the value passed with `--speech-language` or saved as `TALKING_PETS_SPEECH_LANGUAGE`.
+      options:
+        - auto
+        - ja
+        - en
+        - ko
+        - zh
+        - other
+    validations:
+      required: true
+  - type: input
+    id: config_source
+    attributes:
+      label: Config source
+      placeholder: "installer default / presets/examples/privacy-first-say.env / custom"
+    validations:
+      required: true
+  - type: textarea
+    id: commands
+    attributes:
+      label: Commands and output
+      description: Paste `npm ci`, `npm run check:all`, `npm run check:compat`, `npm run check:runtime`, `npm run check:audio:strict`, `npm run check:config`, `npm run check:installers`, `npm run check:docs`, `npm run check:platform-scripts`, `npm run check:swift-cli`, `npm run check:pack`, `npm run check:release`, `npm run check:sanitize`, `npm run test:dry-run`, installer command (`./install.command`, `.\install.ps1`, or `./install.sh`), platform check script (`./check.command`, `.\check.ps1`, or `./check.sh`), dry-run, and audible TTS output. Include the `--speech-language` value or `TALKING_PETS_SPEECH_LANGUAGE` value used, plus the Codex Desktop / CLI version when known. If the machine has no local Codex state yet, paste the `npm run check:compat` result and record that limitation in notes; use `npm run check:compat -- --no-state` only as supplemental fixture evidence. CI-only, fixture-only, `--no-state`, and package-check output are release gates only; they are not evidence for graduating Windows or Linux from experimental without audible, sanitized real-device output. Remove private paths, conversation text, local env values, credentials, local SQLite DBs such as `state_5.sqlite`, private rollout JSONL, generated audio, local recordings, archives, macOS metadata, and downloaded model files first. Known public fixture rollout paths may remain visible as evidence. You can pipe check output through `npm run sanitize:public-output` before pasting.
+      render: shell
+    validations:
+      required: true
+  - type: dropdown
+    id: sanitized
+    attributes:
+      label: Public evidence sanitized?
+      description: Confirm every pasted command output was piped through `npm run sanitize:public-output` or manually reviewed before sharing. Choose "Yes" only when this can be copied into release evidence as `sanitized: yes`. Choose "No" for useful follow-up reports that still need cleanup; do not link unsanitized evidence from release notes.
+      options:
+        - "Yes, no private paths, conversation text, local env values, credentials, local SQLite DBs such as state_5.sqlite, private rollout JSONL, generated audio, local recordings, archives, macOS metadata, or downloaded model files are attached"
+        - "No, this evidence needs cleanup before it can be linked publicly"
+    validations:
+      required: true
+  - type: dropdown
+    id: audible
+    attributes:
+      label: Was one spoken line audible?
+      description: Choose "Yes" only when this can be copied into release evidence as `audible: yes`. Choose "No" for useful failure reports. A "No" result can track follow-up work, but it does not count as release evidence for graduating Windows or Linux from experimental. A "Yes" result must correspond to audible real-device output, not CI-only or fixture-only output.
+      options:
+        - "Yes"
+        - "No"
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: Known limitation or follow-up
+      placeholder: "Example: VOICEVOX worked, Kokoro first model download was slow, Linux espeak needed ffplay for generated WAV playback, ko/zh fallback used Linux espeak, no local Codex state yet so check:compat was recorded as a limitation..."
+    validations:
+      required: false

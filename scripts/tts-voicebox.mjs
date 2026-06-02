@@ -5,44 +5,52 @@ import { mkdtempSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { performance } from "node:perf_hooks";
 import { join } from "node:path";
+import { fileURLToPath } from "node:url";
 
-const args = parseArgs(process.argv.slice(2));
-const latencyProfile = startLatencyProfile(args["profile-latency"]);
-const baseURL = (args.url ?? process.env.VOICEBOX_URL ?? "http://127.0.0.1:50021").replace(/\/$/, "");
-const mode = args.mode ?? process.env.VOICEBOX_MODE ?? (baseURL.includes(":50021") ? "voicevox" : "generic");
-const endpoint = args.endpoint ?? process.env.VOICEBOX_ENDPOINT ?? "/speak";
-const text = args.text ?? (args["list-voices"] ? "" : await readStdin());
+import { windowsPowerShellCommand } from "./audio-platform.mjs";
 
-if (args["list-voices"]) {
-  await measureLatency(latencyProfile, "list_voices", () => listVoices());
-  printLatencyProfile(latencyProfile, { provider: mode, success: true, listVoices: true });
-  process.exit(0);
-}
+const scriptPath = fileURLToPath(import.meta.url);
 
-if (text.trim().length === 0) {
-  console.error("tts-voicebox: text is empty");
-  printLatencyProfile(latencyProfile, { provider: mode, success: false, reason: "empty_text" });
-  process.exit(2);
-}
+async function main(argv = process.argv.slice(2)) {
+  const args = parseArgs(argv);
+  const latencyProfile = startLatencyProfile(args["profile-latency"]);
+  const baseURL = (args.url ?? process.env.VOICEBOX_URL ?? "http://127.0.0.1:50021").replace(/\/$/, "");
+  const mode = args.mode ?? process.env.VOICEBOX_MODE ?? (baseURL.includes(":50021") ? "voicevox" : "generic");
+  const endpoint = args.endpoint ?? process.env.VOICEBOX_ENDPOINT ?? "/speak";
+  const text = args.text ?? (args["list-voices"] ? "" : await readStdin());
 
-try {
+  if (args["list-voices"]) {
+    await measureLatency(latencyProfile, "list_voices", () => listVoices(baseURL));
+    printLatencyProfile(latencyProfile, { provider: mode, success: true, listVoices: true });
+    return;
+  }
+
+  if (text.trim().length === 0) {
+    printLatencyProfile(latencyProfile, { provider: mode, success: false, reason: "empty_text" });
+    throw Object.assign(new Error("text is empty"), { exitCode: 2 });
+  }
+
   if (mode === "voicevox") {
-    await speakWithVoicevox();
+    await speakWithVoicevox({ args, baseURL, text, latencyProfile, mode });
   } else {
-    await speakWithGenericEndpoint();
+    await speakWithGenericEndpoint({ args, baseURL, endpoint, text, latencyProfile });
   }
   printLatencyProfile(latencyProfile, { provider: mode, success: true, play: Boolean(args.play) });
-} catch (error) {
-  printLatencyProfile(latencyProfile, { provider: mode, success: false });
-  throw error;
 }
 
-async function listVoices() {
+if (process.argv[1] === scriptPath) {
+  main().catch(error => {
+    console.error(`tts-voicebox: ${error?.message ?? String(error)}`);
+    process.exit(error?.exitCode ?? 1);
+  });
+}
+
+async function listVoices(baseURL) {
   const response = await request(`${baseURL}/speakers`);
   console.log(JSON.stringify(await response.json(), null, 2));
 }
 
-async function speakWithVoicevox() {
+async function speakWithVoicevox({ args, baseURL, text, latencyProfile, mode }) {
   const speaker = args.speaker ?? args["speaker-id"] ?? args["profile-id"] ?? process.env.VOICEBOX_SPEAKER ?? "3";
   const queryURL = `${baseURL}/audio_query?text=${encodeURIComponent(text)}&speaker=${encodeURIComponent(speaker)}`;
   const synthesisURL = `${baseURL}/synthesis?speaker=${encodeURIComponent(speaker)}`;
@@ -77,7 +85,7 @@ async function speakWithVoicevox() {
   }
 }
 
-async function speakWithGenericEndpoint() {
+async function speakWithGenericEndpoint({ args, baseURL, endpoint, text, latencyProfile }) {
   const payload = {
     text,
     ...(args.profile ? { profile: args.profile } : {}),
@@ -94,8 +102,7 @@ async function speakWithGenericEndpoint() {
 
   const contentType = response.headers.get("content-type") ?? "";
   if (contentType.includes("application/json")) {
-    const body = await measureLatency(latencyProfile, "parse_json_response", () => response.json());
-    console.log(JSON.stringify(body, null, 2));
+    console.log(JSON.stringify(await measureLatency(latencyProfile, "parse_json_response", () => response.json()), null, 2));
   } else {
     console.log(await measureLatency(latencyProfile, "read_text_response", () => response.text()));
   }
@@ -106,35 +113,63 @@ async function request(url, init) {
   try {
     response = await fetch(url, init);
   } catch (error) {
-    console.error(`tts-voicebox: unable to connect to ${url}: ${error.message}`);
-    process.exit(1);
+    throw new Error(`unable to connect to ${safeURLForLog(url)}: ${error.message}`);
   }
 
   if (!response.ok) {
-    const body = await response.text().catch(() => "");
-    console.error(`tts-voicebox: ${response.status} ${response.statusText} ${body}`);
-    process.exit(1);
+    throw new Error(`${response.status} ${response.statusText} (${safeURLForLog(url)})`);
   }
 
   return response;
 }
 
+function safeURLForLog(url) {
+  try {
+    const parsed = new URL(url);
+    parsed.search = "";
+    parsed.hash = "";
+    return parsed.toString();
+  } catch {
+    return String(url).replace(/[?#].*$/, "?[redacted]");
+  }
+}
+
 function parseArgs(argv) {
   const result = {};
+  const booleanFlags = new Set(["--personality", "--play", "--list-voices", "--profile-latency"]);
+  const valueFlags = new Set([
+    "--url",
+    "--mode",
+    "--endpoint",
+    "--text",
+    "--speaker",
+    "--speaker-id",
+    "--profile",
+    "--profile-id",
+    "--language",
+    "--speed",
+    "--pitch",
+    "--intonation",
+    "--out",
+  ]);
   for (let i = 0; i < argv.length; i += 1) {
     const arg = argv[i];
-    if (arg === "--personality" || arg === "--play" || arg === "--list-voices" || arg === "--profile-latency") {
+    if (booleanFlags.has(arg)) {
       result[arg.slice(2)] = true;
       continue;
     }
 
     if (!arg.startsWith("--")) {
-      continue;
+      throw new Error(`Unexpected positional argument: ${arg}`);
+    }
+
+    if (!valueFlags.has(arg)) {
+      throw new Error(`Unknown option: ${arg}`);
     }
 
     const key = arg.slice(2);
     const value = argv[i + 1];
-    if (value == null) {
+    if (value == null || booleanFlags.has(value) || valueFlags.has(value)) {
       throw new Error(`${arg} requires a value`);
     }
     result[key] = value;
@@ -191,9 +226,14 @@ function playAudio(path) {
   }
 
   if (process.platform === "win32") {
+    const command = windowsPowerShellCommand();
+    if (!command) {
+      console.error("tts-voicebox: PowerShell was not found");
+      return 1;
+    }
     const escaped = path.replaceAll("'", "''");
     const script = `$p = New-Object System.Media.SoundPlayer '${escaped}'; $p.PlaySync()`;
-    return spawnSync("powershell.exe", ["-NoProfile", "-Command", script], { stdio: "inherit" }).status ?? 1;
+    return spawnSync(command, ["-NoProfile", "-Command", script], { stdio: "inherit" }).status ?? 1;
   }
 
   for (const command of ["aplay", "paplay", "ffplay"]) {
@@ -222,3 +262,5 @@ function readStdin() {
     process.stdin.on("error", reject);
   });
 }
+
+export { main, parseArgs, safeURLForLog };

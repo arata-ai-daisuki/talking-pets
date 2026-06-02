@@ -1,4 +1,12 @@
-node_modules/
+.github/
+test/*
+!test/fixtures/
+!test/fixtures/assistant-rollout.jsonl
+!test/fixtures/mixed-ja-en-rollout.jsonl
+!test/fixtures/ko-zh-rollout.jsonl
+implementation-notes.md
+*.mov
+
 .talking-pets.local.env
 .env
 .env.*
@@ -15,8 +23,6 @@ node_modules/
 *.mp4
 *.webm
 *.mkv
-*.mov
-!docs/demo/talking-pets-overlay-2026-05-28.mov
 *.zip
 *.tgz
 *.tar
@@ -28,5 +34,4 @@ node_modules/
 *.onnx
 *.safetensors
 *.gguf
-PUBLIC_REPO_REVIEW_CHECKLIST.md
 local-experimental/
