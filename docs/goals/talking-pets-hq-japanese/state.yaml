@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board /Users/tsukuyomi/Documents/Projects/talking-pets/docs/goals/talking-pets-hq-japanese"
 
-active_task: T043
+active_task: T045
 
 tasks:
   - id: T001
@@ -1401,7 +1401,7 @@ tasks:
     type: pm
     assignee: PM
     owner_role: "相庭 愛"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "PR #7 が main にmergeされた後、次にPR3保存点をbranch/stage/検証/commit/push/PR作成まで進めるかMasterに確認する。"
     expected_output:
@@ -1409,11 +1409,64 @@ tasks:
       - "outreach手動送信用のリストと文面を出す"
       - "sherpa-onnx実験を許可する"
     receipt:
-      result: active
-      decision: waiting_for_master_after_pr2_merge
+      result: done
+      decision: pr3_approved_and_executed
       full_outcome_complete: false
-      summary: "PR #7 は MERGED。merge commit 4b95fba。あいちゃん推奨はPR3保存点へ進み、Roadmap、GoalBuddy正本、outreach docsをrepoへ保存すること。stage/commit/push/PR作成はMasterの明示承認待ち。"
+      summary: "PR #7 は MERGED。MasterがPR3保存点を承認し、branch/stage/検証/commit/push/PR作成まで完了した。"
       note: "notes/T043-pr2-merged-next-pr3.md"
+
+  - id: T044
+    type: pm
+    assignee: PM
+    owner_role: "相庭 愛"
+    status: done
+    reasoning_hint: default
+    objective: "Master承認に従って、PR3保存点を branch / stage / verification / commit / push / PR作成まで実行したことを記録する。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "PR3以外の差分をPR #8へ混ぜない。"
+      - "outreach送信、dependency install、model downloadはしない。"
+    expected_output:
+      - "branch"
+      - "commit"
+      - "PR URL"
+      - "stageしたファイル"
+      - "検証"
+    receipt:
+      result: done
+      decision: pr3_created
+      full_outcome_complete: false
+      summary: "PR3として codex/talking-pets-roadmap-goalbuddy-outreach を作成し、commit 2037eb3 をpushして PR #8 を作成した。GoalBuddy state、docs links、syntax、outreach/sherpa guardrailはpass。"
+      note: "notes/T044-pr3-execution-receipt.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T044-pr3-execution-receipt.md"
+      commands:
+        - cmd: "node /Users/tsukuyomi/.codex/plugins/cache/goalbuddy/goalbuddy/0.3.8/skills/goalbuddy/scripts/check-goal-state.mjs docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+        - cmd: "npm run check:docs"
+          status: pass
+        - cmd: "npm run check:syntax"
+          status: pass
+
+  - id: T045
+    type: pm
+    assignee: PM
+    owner_role: "相庭 愛"
+    status: active
+    reasoning_hint: default
+    objective: "PR3保存点ができた後、次にoutreach手動送信準備、local TTS実験、多言語追加検証のどれへ進むかをMasterに確認する。"
+    expected_output:
+      - "outreach手動送信用のリストと文面を出す"
+      - "sherpa-onnx実験を許可する"
+      - "多言語追加検証を進める"
+    receipt:
+      result: active
+      decision: waiting_for_master_after_pr3
+      full_outcome_complete: false
+      summary: "PR1/PR2/PR3保存点は完了。次はoutreach手動送信準備、local TTS実験、多言語追加検証の判断待ち。"
+      note: "notes/T044-pr3-execution-receipt.md"
 
   - id: T007
     type: worker
