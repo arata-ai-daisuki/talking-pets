@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T045
+active_task: T061
 
 tasks:
   - id: T001
@@ -1454,7 +1454,7 @@ tasks:
     type: pm
     assignee: PM
     owner_role: "相庭 愛"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "PR3保存点ができた後、次にoutreach手動送信準備、local TTS実験、多言語追加検証のどれへ進むかをMasterに確認する。"
     expected_output:
@@ -1462,11 +1462,737 @@ tasks:
       - "sherpa-onnx実験を許可する"
       - "多言語追加検証を進める"
     receipt:
-      result: active
-      decision: waiting_for_master_after_pr3
+      result: done
+      decision: outreach_send_prep_refreshed
       full_outcome_complete: false
-      summary: "PR1/PR2/PR3保存点は完了。次はoutreach手動送信準備、local TTS実験、多言語追加検証の判断待ち。"
-      note: "notes/T044-pr3-execution-receipt.md"
+      summary: "PR1/PR2/PR3保存点は完了。PR #8 はopenだがmergeable/CI green。outreach手動送信準備を更新し、次はlocal TTS実験の承認判断へ進む。"
+      note: "notes/T046-outreach-send-ready-after-pr3.md"
+
+  - id: T046
+    type: worker
+    assignee: Worker
+    owner_role: "星宮 未来"
+    status: done
+    reasoning_hint: default
+    objective: "PR3後の状態を踏まえ、Masterが手動で送れるoutreach Day 1文面を最新化する。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "自動投稿、自動DM、自動follow、自動like、自動mentionはしない。"
+      - "初手でStar依頼しない。"
+      - "private contactを探さない。"
+    expected_output:
+      - "送信候補"
+      - "送信用文面"
+      - "送らない条件"
+      - "送信後の記録先"
+    receipt:
+      result: done
+      decision: send_ready_manual_only
+      full_outcome_complete: false
+      summary: "V1GPT、OpenClaw/Sogni Voice、予備V1R4向けの手動outreach文面を更新した。送信・DM・follow・like・mention・Star依頼はしていない。"
+      note: "notes/T046-outreach-send-ready-after-pr3.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T046-outreach-send-ready-after-pr3.md"
+      commands:
+        - cmd: "rg -n \"V1GPT|OpenClaw|V1R4|自動投稿しない|自動DMしない|初手でStar依頼しない|送信、DM\" docs/goals/talking-pets-hq-japanese/notes/T046-outreach-send-ready-after-pr3.md"
+          status: pass
+
+  - id: T047
+    type: pm
+    assignee: PM
+    owner_role: "歌澄 音羽"
+    status: done
+    reasoning_hint: default
+    objective: "outreach送信準備後、local TTS実験としてsherpa-onnx-nodeのpackage確認、install、model downloadのどこまで許可するかMasterに確認する。"
+    expected_output:
+      - "package確認だけ許可"
+      - "package確認後npm installまで許可"
+      - "licenseとサイズ確認後model downloadまで許可"
+      - "まだ実験しない"
+    receipt:
+      result: done
+      decision: package_check_approved_and_completed
+      full_outcome_complete: false
+      summary: "Masterからpackage確認だけ許可されたため、npm公開metadataのみ確認した。npm install、model download、音声生成、README claim追加はまだ実行していない。"
+      note: "notes/T052-sherpa-onnx-package-check.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T052-sherpa-onnx-package-check.md"
+      commands:
+        - cmd: "npm --cache /private/tmp/talking-pets-npm-cache view sherpa-onnx-node version license dist.unpackedSize dist.tarball dist.integrity"
+          status: pass
+        - cmd: "npm --cache /private/tmp/talking-pets-npm-cache view sherpa-onnx-node dependencies optionalDependencies peerDependencies --json"
+          status: pass
+
+  - id: T048
+    type: worker
+    assignee: Worker
+    owner_role: "言守 詞葉"
+    status: done
+    reasoning_hint: default
+    objective: "local TTS実験の承認待ち中に、承認なしで進められる多言語追加検証の候補を整理する。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "外部TTS API、model download、依存追加を含めない。"
+      - "専用Korean/Chinese TTS対応済みとは書かない。"
+      - "検証コマンドを実行済みとして扱わない。"
+    expected_output:
+      - "追加検証候補"
+      - "実行候補コマンド"
+      - "追加しないclaim"
+      - "次の保存先案"
+    receipt:
+      result: done
+      decision: multilingual_next_plan_ready
+      full_outcome_complete: false
+      summary: "mixed ja/en、speech-language override、Latin text forced to Japanese の追加検証候補を整理した。まだ追加検証コマンドは実行していない。"
+      note: "notes/T048-multilingual-next-verification-plan.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T048-multilingual-next-verification-plan.md"
+      commands:
+        - cmd: "rg -n \"mixed ja/en|speech-language override|Latin text forced to Japanese|追加しないもの|まだ追加検証コマンドは実行していない\" docs/goals/talking-pets-hq-japanese/notes/T048-multilingual-next-verification-plan.md"
+          status: pass
+
+  - id: T049
+    type: worker
+    assignee: Worker
+    owner_role: "言守 詞葉"
+    status: done
+    reasoning_hint: default
+    objective: "T048で整理した多言語追加検証を、dry-run diagnosticsとして実行し証跡を残す。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "音声再生しない。"
+      - "外部TTS API、model download、依存追加を含めない。"
+      - "専用Korean/Chinese TTS対応済みとは書かない。"
+    expected_output:
+      - "実行結果表"
+      - "確認できたこと"
+      - "claimにしないこと"
+      - "実行コマンド"
+    receipt:
+      result: done
+      decision: multilingual_override_verification_passed
+      full_outcome_complete: false
+      summary: "mixed ja/en、ko override、zh override、ja overrideのdry-run routing diagnosticsを実行し、speech-language overrideがauto detectionより優先されることと、ko/zhがOS speech fallbackとして動くことを確認した。"
+      note: "notes/T049-multilingual-override-verification.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T049-multilingual-override-verification.md"
+      commands:
+        - cmd: "node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --rollout test/fixtures/mixed-ja-en-rollout.jsonl"
+          status: pass
+        - cmd: "node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --speech-language ko --rollout test/fixtures/ko-zh-rollout.jsonl"
+          status: pass
+        - cmd: "node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --speech-language zh --rollout test/fixtures/ko-zh-rollout.jsonl"
+          status: pass
+        - cmd: "node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --speech-language ja --rollout test/fixtures/en-rollout.jsonl"
+          status: pass
+
+  - id: T050
+    type: judge
+    assignee: Judge
+    owner_role: "相庭 愛"
+    status: done
+    reasoning_hint: default
+    objective: "HQの現在地を監査し、完了済みの波、PR #8状態、未完了の判断待ちをMasterが見て分かるようにする。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "active_task T047は維持する。"
+      - "outreach送信、依存追加、model download、音声生成はしない。"
+      - "stage、commit、pushはしない。"
+    expected_output:
+      - "現在の外部状態"
+      - "完了済み"
+      - "未完了"
+      - "次にMasterが選べる短文"
+    receipt:
+      result: done
+      decision: hq_open_items_audited
+      full_outcome_complete: false
+      summary: "PR #8はopen/mergeable/CI green、outreach準備と多言語追加検証は完了、local TTSはT047でMaster承認待ちであることを整理した。"
+      note: "notes/T050-hq-open-items-audit.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T050-hq-open-items-audit.md"
+      commands:
+        - cmd: "rg -n \"PR #8|OPEN|MERGEABLE|完了済み|未完了|package確認だけ|まだ実行していない|送信、依存追加、model download\" docs/goals/talking-pets-hq-japanese/notes/T050-hq-open-items-audit.md"
+          status: pass
+
+  - id: T051
+    type: pm
+    assignee: PM
+    owner_role: "相庭 愛"
+    status: done
+    reasoning_hint: default
+    objective: "PR #8 merge後にHQ看板をPR3 merge完了状態へ進めるためのfollow-up手順を準備する。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "PR #8はまだmerge済みとして扱わない。"
+      - "active_task T047は維持する。"
+      - "outreach送信、npm view、npm install、model downloadはしない。"
+    expected_output:
+      - "merge後の確認コマンド"
+      - "merge後のreceipt案"
+      - "active方針"
+      - "merge後にやらないこと"
+    receipt:
+      result: done
+      decision: pr8_merge_followup_ready
+      full_outcome_complete: false
+      summary: "PR #8 merge後に確認するgh/gitコマンド、T052 receipt案、active方針、禁止事項を整理した。PR #8はまだmerge済みとして扱っていない。"
+      note: "notes/T051-pr8-merge-followup-checklist.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T051-pr8-merge-followup-checklist.md"
+      commands:
+        - cmd: "rg -n \"OPEN|MERGEABLE|gh pr view 8|T052|active|npm view|PR #8はまだmergeされていない\" docs/goals/talking-pets-hq-japanese/notes/T051-pr8-merge-followup-checklist.md"
+          status: pass
+
+  - id: T052
+    type: worker
+    assignee: Worker
+    owner_role: "歌澄 音羽"
+    status: done
+    reasoning_hint: default
+    objective: "Masterが許可した範囲内で、sherpa-onnx-nodeのnpm package公開情報だけ確認し、依存追加前の判断材料を残す。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "npm installしない。"
+      - "model downloadしない。"
+      - "package.json、package-lock.jsonを変更しない。"
+      - "音声生成しない。"
+      - "READMEに対応済みclaimを追加しない。"
+    expected_output:
+      - "package version/license"
+      - "platform package sizes"
+      - "依存追加前の注意点"
+      - "次のMaster判断候補"
+    receipt:
+      result: done
+      decision: sherpa_onnx_node_package_metadata_checked
+      full_outcome_complete: false
+      summary: "sherpa-onnx-node 1.13.2はApache-2.0で、platform別packageをdependenciesに持つ。macOS arm64 packageはunpacked約75.7MB。model license/size、install時lockfile、CI差分は未確認。"
+      note: "notes/T052-sherpa-onnx-package-check.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T052-sherpa-onnx-package-check.md"
+      commands:
+        - cmd: "npm --cache /private/tmp/talking-pets-npm-cache view sherpa-onnx-node version license dist.unpackedSize dist.tarball dist.integrity"
+          status: pass
+        - cmd: "npm --cache /private/tmp/talking-pets-npm-cache view sherpa-onnx-node dependencies optionalDependencies peerDependencies --json"
+          status: pass
+        - cmd: "npm --cache /private/tmp/talking-pets-npm-cache view sherpa-onnx-node name description homepage repository keywords maintainers time.modified versions --json"
+          status: pass
+        - cmd: "npm --cache /private/tmp/talking-pets-npm-cache view sherpa-onnx-darwin-arm64 version license dist.unpackedSize dist.tarball --json"
+          status: pass
+
+  - id: T053
+    type: pm
+    assignee: PM
+    owner_role: "相庭 愛"
+    status: done
+    reasoning_hint: default
+    objective: "sherpa-onnx-node package確認後、次にnpm installへ進むか、model license/sizeの公開情報調査に留めるか、local TTS実験を止めるかMaster判断を受ける。"
+    expected_output:
+      - "package確認後npm installまで許可。package-lockの差分とcheck:allまで確認して。"
+      - "まだinstallしない。model licenseとサイズの公開情報だけ調べて。"
+      - "local TTS実験はいったん止めて、outreachやREADME改善を優先して。"
+    receipt:
+      result: done
+      decision: license_public_info_route_completed
+      full_outcome_complete: false
+      summary: "package metadata、model/vocoder size、license公開情報調査、PR #8 merge反映まで完了した。次はnpm installだけ試すか、local TTSを保留してoutreach/README改善を優先するかの判断に絞った。"
+      note: "notes/T061-local-tts-next-scope-after-license.md"
+
+  - id: T054
+    type: pm
+    assignee: PM
+    owner_role: "相庭 愛"
+    status: done
+    reasoning_hint: default
+    objective: "PR #8をmergeし、PR3の波がmainに入ったことをHQ看板へ反映する。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "outreach送信しない。"
+      - "npm installしない。"
+      - "model downloadしない。"
+      - "READMEにsherpa対応済みclaimを追加しない。"
+    expected_output:
+      - "PR #8 merge情報"
+      - "origin/main更新確認"
+      - "次のactive task"
+      - "まだやらないこと"
+    receipt:
+      result: done
+      decision: pr8_merged_next_local_tts_scope
+      full_outcome_complete: false
+      summary: "PR #8をmergeし、merge commit f12b2a191e65f34958b1516f1e70fba3278e5003 と origin/main 更新を確認した。次のactiveはT053のlocal TTS範囲判断。"
+      note: "notes/T054-pr8-merged-next-local-tts.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T054-pr8-merged-next-local-tts.md"
+      commands:
+        - cmd: "gh pr merge 8 --merge --delete-branch=false"
+          status: pass
+        - cmd: "gh pr view 8 --json state,mergedAt,mergeCommit,url,title,headRefName,baseRefName"
+          status: pass
+        - cmd: "git fetch origin main"
+          status: pass
+
+  - id: T055
+    type: worker
+    assignee: Worker
+    owner_role: "歌澄 音羽"
+    status: done
+    reasoning_hint: default
+    objective: "sherpa-onnx-node実験前に、model downloadなしで公式docsとGitHub release APIからmodel/vocoder公開metadataを確認する。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "npm installしない。"
+      - "model downloadしない。"
+      - "archiveを展開しない。"
+      - "音声生成しない。"
+      - "READMEにsherpa対応済みclaimを追加しない。"
+    expected_output:
+      - "公式exampleの必要file"
+      - "asset size"
+      - "license判断の境界"
+      - "次のMaster判断候補"
+    receipt:
+      result: done
+      decision: sherpa_model_public_metadata_checked_without_download
+      full_outcome_complete: false
+      summary: "Matcha English exampleのmodel/vocoder公開asset sizeを確認した。最小構成は約130.6MB以上。model/vocoder/espeak-ng dataのlicenseはasset metadataだけでは断言せず、次の停止線として残した。"
+      note: "notes/T055-sherpa-model-public-metadata-check.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T055-sherpa-model-public-metadata-check.md"
+      commands:
+        - cmd: "curl -s 'https://api.github.com/repos/k2-fsa/sherpa-onnx/releases/130612623/assets?per_page=100' | jq -r '.[] | select(.name==\"matcha-icefall-en_US-ljspeech.tar.bz2\" or .name==\"matcha-icefall-zh-baker.tar.bz2\" or .name==\"espeak-ng-data.tar.bz2\") | [.name, .size, .digest, .browser_download_url] | @tsv'"
+          status: pass
+        - cmd: "curl -s 'https://api.github.com/repos/k2-fsa/sherpa-onnx/releases/192661565/assets?per_page=100' | jq -r '.[] | select(.name==\"vocos-22khz-univ.onnx\" or .name==\"vocos-16khz-univ.onnx\" or .name==\"vocos_24khz.onnx\") | [.name, .size, .digest, .browser_download_url] | @tsv'"
+          status: pass
+
+  - id: T056
+    type: worker
+    assignee: Worker
+    owner_role: "星宮 未来"
+    status: done
+    reasoning_hint: default
+    objective: "PR #8 merge後の状態に合わせて、Masterが手動で送るDay 1 outreachパックを最新版として整理する。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "outreachを送信しない。"
+      - "DMしない。"
+      - "follow、like、mentionを実行しない。"
+      - "Star依頼を初手に入れない。"
+      - "private contactを探さない。"
+    expected_output:
+      - "PR #8 merge後の公開状態"
+      - "Day 1最大2件の送信順"
+      - "送信文"
+      - "送信前チェック"
+      - "送信後記録先"
+    receipt:
+      result: done
+      decision: outreach_day1_post_merge_pack_ready
+      full_outcome_complete: false
+      summary: "PR #8 merge後の状態に合わせて、V1GPT、OpenClaw/Sogni Voice、予備V1R4の手動送信用Day 1パックを更新した。送信、DM、follow、like、mention、Star依頼はしていない。"
+      note: "notes/T056-outreach-day1-post-merge-send-pack.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T056-outreach-day1-post-merge-send-pack.md"
+      commands:
+        - cmd: "rg -n \"T056|PR #8|MERGED|V1GPT|OpenClaw|V1R4|自動投稿しない|Star依頼|送信、DM、follow\" docs/goals/talking-pets-hq-japanese/state.yaml docs/goals/talking-pets-hq-japanese/notes/T056-outreach-day1-post-merge-send-pack.md"
+          status: pass
+
+  - id: T057
+    type: judge
+    assignee: Judge
+    owner_role: "言守 詞葉"
+    status: done
+    reasoning_hint: default
+    objective: "現行worktreeのfixtureで多言語routing claimを再確認し、READMEに書いてよい範囲と書かない範囲を整理する。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "音声再生しない。"
+      - "外部TTS APIを使わない。"
+      - "依存追加しない。"
+      - "model downloadしない。"
+      - "専用Korean/Chinese TTS対応済みとは書かない。"
+    expected_output:
+      - "現行fixture"
+      - "dry-run diagnostics結果"
+      - "READMEへ書いてよいclaim"
+      - "READMEへ書かないclaim"
+    receipt:
+      result: done
+      decision: multilingual_current_claims_verified
+      full_outcome_complete: false
+      summary: "現行fixtureでko、zh、zh-traditionalのdry-run diagnosticsを再実行し、韓国語/中国語はOS speech fallbackとして動くことを確認した。専用TTS対応済みclaimはしない。"
+      note: "notes/T057-multilingual-current-claim-audit.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T057-multilingual-current-claim-audit.md"
+      commands:
+        - cmd: "node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --rollout test/fixtures/ko-rollout.jsonl"
+          status: pass
+        - cmd: "node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --rollout test/fixtures/zh-rollout.jsonl"
+          status: pass
+        - cmd: "node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --rollout test/fixtures/zh-traditional-rollout.jsonl"
+          status: pass
+        - cmd: "rg -n \"multilingual|language|speech-language|Korean|Chinese|VOICEVOX|claim|fallback|dry-run\" README.md README.en.md FUTURE_PLAN.md implementation-notes.md"
+          status: pass
+
+  - id: T058
+    type: pm
+    assignee: PM
+    owner_role: "相庭 愛"
+    status: done
+    reasoning_hint: default
+    objective: "PR #8 merge後のHQ現在地を、outreach、local TTS、多言語、次のMaster判断に分けて1枚で追えるようにする。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "outreach送信しない。"
+      - "npm installしない。"
+      - "model downloadしない。"
+      - "音声生成しない。"
+      - "commit、pushしない。"
+    expected_output:
+      - "完了済みの波"
+      - "outreach現在地"
+      - "local TTS現在地"
+      - "multilingual現在地"
+      - "次のMaster判断"
+    receipt:
+      result: done
+      decision: hq_current_rollup_after_pr8_ready
+      full_outcome_complete: false
+      summary: "PR #6/#7/#8 merge済み、outreach手動送信待ち、local TTSはpackage/model公開metadata確認済み、多言語claimは現行fixtureで再検証済み、次はT053のMaster判断であることを整理した。"
+      note: "notes/T058-hq-current-rollup-after-pr8.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T058-hq-current-rollup-after-pr8.md"
+
+  - id: T059
+    type: pm
+    assignee: PM
+    owner_role: "相庭 愛"
+    status: done
+    reasoning_hint: default
+    objective: "T053のMaster判断をしやすくするため、npm install、model license公開情報深掘り、local TTS保留の3ルートを比較する。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "npm installしない。"
+      - "model downloadしない。"
+      - "archive展開しない。"
+      - "音声生成しない。"
+      - "commit、pushしない。"
+    expected_output:
+      - "選択肢A/B/C"
+      - "各選択肢でできること"
+      - "各選択肢でまだやらないこと"
+      - "Masterがそのまま使える許可文"
+      - "あいちゃん推奨"
+    receipt:
+      result: done
+      decision: local_tts_decision_matrix_ready
+      full_outcome_complete: false
+      summary: "T053向けに、npm installだけ試す、model licenseを公開情報だけで深掘りする、local TTS実験を保留する、の3ルートを比較した。推奨は公開情報でlicenseを深掘りするB。"
+      note: "notes/T059-local-tts-decision-matrix.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T059-local-tts-decision-matrix.md"
+
+  - id: T060
+    type: worker
+    assignee: Worker
+    owner_role: "歌澄 音羽"
+    status: done
+    reasoning_hint: default
+    objective: "T059の推奨Bとして、model downloadなしでsherpa-onnx TTS候補のmodel/vocoder/data license公開情報を深掘りする。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "npm installしない。"
+      - "model downloadしない。"
+      - "archive展開しない。"
+      - "音声生成しない。"
+      - "licenseを確定しすぎない。"
+    expected_output:
+      - "LJSpeech license/public domain情報"
+      - "Vocos license情報"
+      - "eSpeak NG license情報"
+      - "downloadなしで未確定の範囲"
+      - "次のMaster判断候補"
+    receipt:
+      result: done
+      decision: sherpa_license_public_info_checked_without_download
+      full_outcome_complete: false
+      summary: "LJSpeechはpublic domain、VocosはMIT、eSpeak NGはGPLv3-or-later中心と公開情報で確認した。ただしsherpa release asset内のlicense/noticeはdownloadなしでは最終確認できない。"
+      note: "notes/T060-sherpa-model-license-public-info.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T060-sherpa-model-license-public-info.md"
+      commands:
+        - cmd: "web search/open: sherpa-onnx matcha-icefall/vocos/espeak license public pages"
+          status: pass
+
+  - id: T061
+    type: pm
+    assignee: PM
+    owner_role: "相庭 愛"
+    status: active
+    reasoning_hint: default
+    objective: "sherpa-onnx-nodeのpackage確認、model公開metadata、license公開情報調査後に、npm installだけ試すか、local TTSを保留してoutreach/README改善を優先するかMaster判断を受ける。"
+    expected_output:
+      - "package確認とlicense公開情報はOK。npm installだけ試して。model downloadはまだしない。"
+      - "model downloadはまだしない。local TTSは保留してoutreachを優先して。"
+    receipt:
+      result: active
+      decision: waiting_for_install_or_outreach_priority
+      full_outcome_complete: false
+      summary: "T053の公開情報調査ルートは完了。次はnpm installだけ試すか、local TTSを保留してoutreach/README改善を優先するかの2択。"
+      note: "notes/T061-local-tts-next-scope-after-license.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T061-local-tts-next-scope-after-license.md"
+
+  - id: T062
+    type: worker
+    assignee: Worker
+    owner_role: "星宮 未来"
+    status: done
+    reasoning_hint: default
+    objective: "T056のDay 1 outreachをMasterが手動送信した後、T007へ記録しやすいように具体的な記入行を用意する。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "outreachを送信しない。"
+      - "DMしない。"
+      - "follow、like、mentionを実行しない。"
+      - "Star依頼を初手に入れない。"
+      - "private contactを探さない。"
+    expected_output:
+      - "T007記録先"
+      - "V1GPT記入行"
+      - "OpenClaw/Sogni Voice記入行"
+      - "V1R4記入行"
+      - "返信ログ記入例"
+    receipt:
+      result: done
+      decision: outreach_day1_recording_guide_ready
+      full_outcome_complete: false
+      summary: "V1GPT、OpenClaw/Sogni Voice、V1R4を手動送信した後にT007へ貼れる記入行と、返信ログの記入例を用意した。送信、DM、follow、like、mention、Star依頼はしていない。"
+      note: "notes/T062-outreach-day1-recording-guide.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T062-outreach-day1-recording-guide.md"
+      commands:
+        - cmd: "rg -n \"T062|V1GPT|OpenClaw|V1R4|送信済み|2026-06-16|自動投稿しない|Star依頼|まだ送信していない\" docs/goals/talking-pets-hq-japanese/state.yaml docs/goals/talking-pets-hq-japanese/notes/T062-outreach-day1-recording-guide.md"
+          status: pass
+
+  - id: T063
+    type: pm
+    assignee: PM
+    owner_role: "相庭 愛"
+    status: done
+    reasoning_hint: default
+    objective: "PR #8 merge後に進んだHQ receiptsを次の小PRとして保存する場合のstage manifest、除外範囲、検証、PR message案を整理する。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "branch作成しない。"
+      - "stageしない。"
+      - "commitしない。"
+      - "pushしない。"
+      - "PR作成しない。"
+      - "npm install、model download、outreach送信はしない。"
+    expected_output:
+      - "推奨branch"
+      - "入れる候補"
+      - "入れない候補"
+      - "検証コマンド"
+      - "PR message案"
+    receipt:
+      result: done
+      decision: next_pr_manifest_after_pr8_ready
+      full_outcome_complete: false
+      summary: "PR #8 merge後のHQ receiptsだけを保存する小PR案を作成した。local TTS install/model download、README/presets/fixtures、demo mp4は混ぜない方針。branch/stage/commit/push/PR作成はしていない。"
+      note: "notes/T063-next-pr-manifest-after-pr8.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T063-next-pr-manifest-after-pr8.md"
+
+  - id: T064
+    type: pm
+    assignee: PM
+    owner_role: "相庭 愛"
+    status: done
+    reasoning_hint: default
+    objective: "T063の次PR manifestを実行する前に、現在branchが古いPR1系であることと、main base worktreeで作業すべきことを明確にする。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "branch作成しない。"
+      - "stageしない。"
+      - "commitしない。"
+      - "pushしない。"
+      - "PR作成しない。"
+      - "npm install、model download、outreach送信はしない。"
+    expected_output:
+      - "現在branch"
+      - "origin/main側のtracked範囲"
+      - "main base worktreeで作業する理由"
+      - "入れるファイル"
+      - "入れないファイル"
+    receipt:
+      result: done
+      decision: next_pr_requires_main_base_worktree
+      full_outcome_complete: false
+      summary: "現在workspaceはPR #6系の古いbranchで、HQ filesは未tracked状態。次PRはorigin/mainベースの新worktreeにT054-T064だけを移して作る方針にした。branch/stage/commit/push/PR作成はしていない。"
+      note: "notes/T064-next-pr-main-base-preflight.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T064-next-pr-main-base-preflight.md"
+
+  - id: T065
+    type: pm
+    assignee: PM
+    owner_role: "相庭 愛"
+    status: done
+    reasoning_hint: default
+    objective: "T063/T064のHQ receipts保存PRを実行する時のworktree名、branch名、コピー対象、stage前停止線をチェックリスト化する。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "worktree作成しない。"
+      - "branch作成しない。"
+      - "stageしない。"
+      - "commitしない。"
+      - "pushしない。"
+      - "PR作成しない。"
+      - "npm install、model download、outreach送信はしない。"
+    expected_output:
+      - "推奨worktree"
+      - "推奨branch"
+      - "コピー対象"
+      - "コマンド案"
+      - "stage前の停止線"
+    receipt:
+      result: done
+      decision: main_base_pr_execution_checklist_ready
+      full_outcome_complete: false
+      summary: "HQ receipts保存PRをmain baseで実行するためのworktree/branch/コピー対象/stage前停止線を整理した。worktree作成、branch作成、stage、commit、push、PR作成はしていない。"
+      note: "notes/T065-main-base-pr-execution-checklist.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T065-main-base-pr-execution-checklist.md"
+
+  - id: T066
+    type: worker
+    assignee: Worker
+    owner_role: "歌澄 音羽"
+    status: done
+    reasoning_hint: default
+    objective: "T061でnpm installだけ試す選択をした場合に備え、optionalDependencies/dependencies方針、実行範囲、差分確認、停止条件を事前整理する。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "npm installしない。"
+      - "model downloadしない。"
+      - "archive展開しない。"
+      - "音声生成しない。"
+      - "branch作成しない。"
+      - "stageしない。"
+      - "commit、push、PR作成しない。"
+    expected_output:
+      - "現在のpackage状態"
+      - "optionalDependencies/dependencies方針"
+      - "Master許可文"
+      - "実行時の範囲"
+      - "停止条件"
+    receipt:
+      result: done
+      decision: sherpa_npm_install_only_preflight_ready
+      full_outcome_complete: false
+      summary: "sherpa-onnx-nodeをinstallだけ試す場合の事前設計を作成した。最初はoptionalDependencies寄りを推奨し、model download/helper/README claim/default routingは除外する。npm installはしていない。"
+      note: "notes/T066-sherpa-npm-install-only-preflight.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T066-sherpa-npm-install-only-preflight.md"
+      commands:
+        - cmd: "rg -n \"T066|optionalDependencies|dependencies案|npm install|model download|helper script|README|default routing|停止条件|していない\" docs/goals/talking-pets-hq-japanese/state.yaml docs/goals/talking-pets-hq-japanese/notes/T066-sherpa-npm-install-only-preflight.md"
+          status: pass
+
+  - id: T067
+    type: pm
+    assignee: PM
+    owner_role: "相庭 愛"
+    status: done
+    reasoning_hint: default
+    objective: "PR #9としてPR8後のHQ receipts保存点をmainベースで作成したことを記録する。"
+    constraints:
+      - "outreach送信、npm install、model downloadはしない。"
+      - "README、fixtures、presets、package、demo素材を混ぜない。"
+      - "全体ゴールを完了扱いにしない。"
+    receipt:
+      result: done
+      decision: pr9_open
+      full_outcome_complete: false
+      summary: "origin/mainベースのworktreeからHQ receipts T054-T066とstate.yamlだけをstageし、PR branch HEADをpushしてPR #9を作成した。T061は継続active。"
+      note: "notes/T067-pr9-execution-receipt.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T067-pr9-execution-receipt.md"
+      commands:
+        - cmd: "git diff --cached --name-only"
+          status: pass
+        - cmd: "node <goalbuddy-check> docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+        - cmd: "gh pr view 9 --json number,state,title,url,headRefName,baseRefName"
+          status: pass
+        - cmd: "rg -n \"PR #9|codex/talking-pets-hq-post-pr8-receipts|PR branch HEAD|npm install|model download|outreach送信|T061\" docs/goals/talking-pets-hq-japanese/notes/T067-pr9-execution-receipt.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T068
+    type: pm
+    assignee: PM
+    owner_role: "相庭 愛"
+    status: done
+    reasoning_hint: default
+    objective: "PR #9の初回CI失敗原因、修正内容、再実行中のchecks状態をHQに記録する。"
+    constraints:
+      - "PR #9をmergeしない。"
+      - "outreach送信、npm install、model downloadはしない。"
+      - "全体ゴールを完了扱いにしない。"
+    receipt:
+      result: done
+      decision: pr9_ci_green_merge_ready
+      full_outcome_complete: false
+      summary: "PR #9の初回CI失敗は公開文書内のローカル絶対パスが原因。パスを抽象化してpushし直し、local check:all、GoalBuddy checker、GitHub CI ubuntu/macOS/Windows がpass。"
+      note: "notes/T068-pr9-ci-followup.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T068-pr9-ci-followup.md"
+      commands:
+        - cmd: "npm run check:all"
+          status: pass
+        - cmd: "node <goalbuddy-check> docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+        - cmd: "gh pr view 9 --json number,state,mergeable,statusCheckRollup,commits,url"
+          status: pass
 
   - id: T007
     type: worker
