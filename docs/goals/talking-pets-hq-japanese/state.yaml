@@ -2194,6 +2194,391 @@ tasks:
         - cmd: "gh pr view 9 --json number,state,mergeable,statusCheckRollup,commits,url"
           status: pass
 
+  - id: T069
+    type: pm
+    assignee: PM
+    owner_role: "相庭 愛"
+    status: done
+    reasoning_hint: default
+    objective: "T061の次判断を1枚に圧縮し、npm install onlyとoutreach優先の実行範囲、停止条件、許可文を比較する。"
+    constraints:
+      - "outreach送信、npm install、model downloadはしない。"
+      - "PR #9をmergeしない。"
+      - "全体ゴールを完了扱いにしない。"
+    receipt:
+      result: done
+      decision: recommend_outreach_first
+      full_outcome_complete: false
+      summary: "T061の判断カードを1枚化した。あいちゃん推奨はoutreach優先。npm install onlyを選ぶ場合もoptionalDependencies案、model downloadなし、helper/default routingなしに限定する。"
+      note: "notes/T069-next-decision-one-pager.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T069-next-decision-one-pager.md"
+      commands:
+        - cmd: "rg -n \"T069|A: npm installだけ試す|B: outreach優先|optionalDependencies|model download|自動投稿|Star依頼|recommend_outreach_first\" docs/goals/talking-pets-hq-japanese/notes/T069-next-decision-one-pager.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T070
+    type: pm
+    assignee: PM
+    owner_role: "相庭 愛"
+    status: done
+    reasoning_hint: default
+    objective: "PR #9の最新commitでGitHub CI ubuntu/macOS/Windowsが全てsuccessになったことをHQに記録する。"
+    constraints:
+      - "PR #9をmergeしない。"
+      - "outreach送信、npm install、model downloadはしない。"
+      - "全体ゴールを完了扱いにしない。"
+    receipt:
+      result: done
+      decision: pr9_merge_ready
+      full_outcome_complete: false
+      summary: "PR #9は最新commit adbea25 で ubuntu/macOS/Windows CI がsuccess、mergeable。PR #9はmerge待ち。次はT061判断に戻る。"
+      note: "notes/T070-pr9-final-ci-green.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T070-pr9-final-ci-green.md"
+      commands:
+        - cmd: "gh pr view 9 --json number,state,mergeable,statusCheckRollup,url"
+          status: pass
+        - cmd: "node <goalbuddy-check> docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T071
+    type: worker
+    assignee: Worker
+    owner_role: "星宮 未来"
+    status: done
+    reasoning_hint: default
+    objective: "T056/T062を、Masterが今日手動送信しやすい最大2件のコピペ用outreach packに圧縮する。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "outreach送信しない。"
+      - "DM、follow、like、mentionをしない。"
+      - "初手Star依頼をしない。"
+      - "private contactを探さない。"
+      - "npm install、model downloadはしない。"
+    receipt:
+      result: done
+      decision: outreach_today_copy_pack_ready
+      full_outcome_complete: false
+      summary: "V1GPT、OpenClaw/Sogni Voice、差し替え予備V1R4の手動送信用文面とT007記録行を1枚にまとめた。送信、DM、follow、like、mention、Star依頼はしていない。"
+      note: "notes/T071-outreach-today-copy-pack.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T071-outreach-today-copy-pack.md"
+      commands:
+        - cmd: "rg -n \"T071|V1GPT|OpenClaw|V1R4|送信後、T007|Repo is here|自動投稿しない|初手でStar依頼しない|まだ送信していない\" docs/goals/talking-pets-hq-japanese/notes/T071-outreach-today-copy-pack.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T072
+    type: worker
+    assignee: Worker
+    owner_role: "言守 詞葉"
+    status: done
+    reasoning_hint: default
+    objective: "現在のREADME/ROADMAP多言語claimが、ko/zh/繁体字fixtureのrouting実挙動と整合しているか再検証する。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "README claim変更はしない。"
+      - "専用Korean/Chinese TTS対応済みとは書かない。"
+      - "model download、audio playback、依存追加はしない。"
+    receipt:
+      result: done
+      decision: multilingual_claim_still_accurate
+      full_outcome_complete: false
+      summary: "ko/zh/繁体字fixtureをdiagnose-routingで再検証し、すべてsay fallbackであることを確認した。README/README.en/FUTURE_PLAN/ROADMAPの表現は現行挙動と整合しているため、変更不要。"
+      note: "notes/T072-multilingual-fallback-recheck.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T072-multilingual-fallback-recheck.md"
+      commands:
+        - cmd: "node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --rollout test/fixtures/ko-rollout.jsonl"
+          status: pass
+        - cmd: "node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --rollout test/fixtures/zh-rollout.jsonl"
+          status: pass
+        - cmd: "node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --rollout test/fixtures/zh-traditional-rollout.jsonl"
+          status: pass
+        - cmd: "rg -n \"T072|Korean auto|Simplified Chinese auto|Traditional Chinese auto|say|専用 Korean|README claim変更はしない|multilingual_claim_still_accurate\" docs/goals/talking-pets-hq-japanese/notes/T072-multilingual-fallback-recheck.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T073
+    type: judge
+    assignee: Judge
+    owner_role: "白瀬 怜奈"
+    status: done
+    reasoning_hint: high
+    objective: "API TTSを将来検討する時のopt-in境界、privacy/billing warning、secret取り扱い、dry-run条件を整理する。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "API callしない。"
+      - "secretを作らない。"
+      - "依存追加、model download、実装変更はしない。"
+      - "OpenAI/ElevenLabs/Google/Azure/Polly対応済みとは書かない。"
+    receipt:
+      result: done
+      decision: api_tts_opt_in_boundary_ready
+      full_outcome_complete: false
+      summary: "API TTSはP2 opt-inとして、実装前のMaster確認、privacy/billing warning、secret/env、dry-run、README claim境界、停止条件を整理した。API callやsecret作成はしていない。"
+      note: "notes/T073-api-tts-opt-in-boundary.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T073-api-tts-opt-in-boundary.md"
+      commands:
+        - cmd: "rg -n \"T073|API TTS|明示opt-in|billing warning|privacy warning|secret|dry-run|API callしない|OpenAI TTS対応済み\" docs/goals/talking-pets-hq-japanese/notes/T073-api-tts-opt-in-boundary.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T074
+    type: pm
+    assignee: PM
+    owner_role: "相庭 愛"
+    status: done
+    reasoning_hint: default
+    objective: "PR #9 merge後にT069-T074を次のHQ receipts savepointとして小PR化するためのmanifest、除外範囲、検証を整理する。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "PR #9をmergeしない。"
+      - "branch作成、stage、commit、push、PR作成はしない。"
+      - "outreach送信、npm install、model download、API callはしない。"
+    receipt:
+      result: done
+      decision: next_savepoint_manifest_ready
+      full_outcome_complete: false
+      summary: "PR #9 merge後の次savepointはHQ receipts T069-T074 onlyとし、README/package/fixtures/demo/docs/researchを混ぜないmanifestを作成した。"
+      note: "notes/T074-next-savepoint-after-pr9.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T074-next-savepoint-after-pr9.md"
+      commands:
+        - cmd: "rg -n \"T074|HQ receipts T069-T074 only|codex/talking-pets-hq-after-pr9-followups|recommend_outreach_first|pr9_merge_ready|outreach_today_copy_pack_ready|multilingual_claim_still_accurate|api_tts_opt_in_boundary_ready|PR #9 merge、outreach送信、npm install\" docs/goals/talking-pets-hq-japanese/notes/T074-next-savepoint-after-pr9.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T075
+    type: worker
+    assignee: Worker
+    owner_role: "星宮 未来"
+    status: done
+    reasoning_hint: default
+    objective: "外部協力者が参加しやすいgood first issue候補を、既存issue templateに合わせて下書きする。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "GitHub Issueを作成しない。"
+      - "outreach送信しない。"
+      - "npm install、model download、API callはしない。"
+      - "private conversation textやprivate pathを要求しない。"
+    receipt:
+      result: done
+      decision: good_first_issue_drafts_ready
+      full_outcome_complete: false
+      summary: "Windows first-run、Linux audio playback、local multilingual TTS provider suggestionsの3件をgood first issue下書きとして整理した。Issue作成はしていない。"
+      note: "notes/T075-good-first-issue-drafts.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T075-good-first-issue-drafts.md"
+      commands:
+        - cmd: "rg -n \"T075|Windows first-run|Linux audio playback|Local TTS provider|good first issue|Issue作成しない|private conversation text|good_first_issue_drafts_ready\" docs/goals/talking-pets-hq-japanese/notes/T075-good-first-issue-drafts.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T076
+    type: pm
+    assignee: PM
+    owner_role: "相庭 愛"
+    status: done
+    reasoning_hint: default
+    objective: "T075追加後、PR #9 merge後の次savepoint manifestをT069-T076 onlyへ更新する。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "PR #9をmergeしない。"
+      - "Issue作成しない。"
+      - "branch作成、stage、commit、push、PR作成はしない。"
+      - "outreach送信、npm install、model download、API callはしない。"
+    receipt:
+      result: done
+      decision: next_savepoint_manifest_refreshed
+      full_outcome_complete: false
+      summary: "T075追加後の次savepoint正本をT069-T076 onlyに更新した。README/package/fixtures/demo/.github/docs/researchを混ぜない方針。"
+      note: "notes/T076-next-savepoint-refresh-after-issues.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T076-next-savepoint-refresh-after-issues.md"
+      commands:
+        - cmd: "rg -n \"T076|HQ receipts T069-T076 only|T075|\\.github|good_first_issue_drafts_ready|next_savepoint_manifest_refreshed|PR #9 merge、Issue作成、outreach送信\" docs/goals/talking-pets-hq-japanese/notes/T076-next-savepoint-refresh-after-issues.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T077
+    type: worker
+    assignee: Worker
+    owner_role: "星宮 未来"
+    status: done
+    reasoning_hint: default
+    objective: "T071の手動outreach後に返信が来た場合の、latency/repo/provider/avatar/negative別の返答案とT007記録行を用意する。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "返信送信しない。"
+      - "outreach送信しない。"
+      - "DM、follow、like、mentionをしない。"
+      - "初手Star依頼をしない。"
+      - "未検証のunder 1s claimをしない。"
+    receipt:
+      result: done
+      decision: outreach_reply_playbook_ready
+      full_outcome_complete: false
+      summary: "T071後の返信playbookとして、latency、repo/demo、provider提案、AI character/avatar、ネガティブ反応別の返答案とT007記録行を用意した。送信はしていない。"
+      note: "notes/T077-outreach-reply-playbook.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T077-outreach-reply-playbook.md"
+      commands:
+        - cmd: "rg -n \"T077|latencyに反応|repoやdemo|provider提案|AI character|ネガティブ|not reliably under 1s|Star依頼しない|outreach_reply_playbook_ready\" docs/goals/talking-pets-hq-japanese/notes/T077-outreach-reply-playbook.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T078
+    type: pm
+    assignee: PM
+    owner_role: "相庭 愛"
+    status: done
+    reasoning_hint: default
+    objective: "T077追加後、PR #9 merge後の次savepoint manifestをT069-T078 onlyへ更新する。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "PR #9をmergeしない。"
+      - "Issue作成しない。"
+      - "outreach送信、返信送信しない。"
+      - "branch作成、stage、commit、push、PR作成はしない。"
+      - "npm install、model download、API callはしない。"
+    receipt:
+      result: done
+      decision: next_savepoint_manifest_refreshed_after_reply_playbook
+      full_outcome_complete: false
+      summary: "T077追加後の次savepoint正本をT069-T078 onlyに更新した。README/package/fixtures/demo/.github/docs/researchを混ぜない方針。"
+      note: "notes/T078-next-savepoint-refresh-after-reply-playbook.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T078-next-savepoint-refresh-after-reply-playbook.md"
+      commands:
+        - cmd: "rg -n \"T078|HQ receipts T069-T078 only|T077|outreach_reply_playbook_ready|next_savepoint_manifest_refreshed_after_reply_playbook|PR #9 merge、Issue作成、outreach送信、返信送信\" docs/goals/talking-pets-hq-japanese/notes/T078-next-savepoint-refresh-after-reply-playbook.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T079
+    type: pm
+    assignee: PM
+    owner_role: "相庭 愛"
+    status: done
+    reasoning_hint: default
+    objective: "PR #9、T061、outreach、local TTS、多言語、API TTS、次savepointの現在地を1画面で見えるHQサマリーにする。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "PR #9をmergeしない。"
+      - "outreach送信、返信送信しない。"
+      - "Issue作成しない。"
+      - "npm install、model download、API callはしない。"
+      - "active_taskはT061のままにする。"
+    receipt:
+      result: done
+      decision: hq_one_screen_ready
+      full_outcome_complete: false
+      summary: "現在地を1画面化し、PR #9 merge後はoutreach優先を推奨、代替としてlocal TTS install-onlyを示した。active_taskはT061のまま。"
+      note: "notes/T079-hq-one-screen-current-state.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T079-hq-one-screen-current-state.md"
+      commands:
+        - cmd: "rg -n \"T079|PR #9|outreach優先|optionalDependencies案|T061|T071|T077|T078|hq_one_screen_ready|active_taskはT061\" docs/goals/talking-pets-hq-japanese/notes/T079-hq-one-screen-current-state.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T080
+    type: pm
+    assignee: PM
+    owner_role: "相庭 愛"
+    status: done
+    reasoning_hint: default
+    objective: "T079追加後、PR #9 merge後の次savepoint manifestをT069-T080 onlyへ更新する。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "PR #9をmergeしない。"
+      - "Issue作成しない。"
+      - "outreach送信、返信送信しない。"
+      - "branch作成、stage、commit、push、PR作成はしない。"
+      - "npm install、model download、API callはしない。"
+    receipt:
+      result: done
+      decision: next_savepoint_manifest_refreshed_after_one_screen
+      full_outcome_complete: false
+      summary: "T079追加後の次savepoint正本をT069-T080 onlyに更新した。README/package/fixtures/demo/.github/docs/researchを混ぜない方針。"
+      note: "notes/T080-next-savepoint-refresh-after-one-screen.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T080-next-savepoint-refresh-after-one-screen.md"
+      commands:
+        - cmd: "rg -n \"T080|HQ receipts T069-T080 only|T079|hq_one_screen_ready|next_savepoint_manifest_refreshed_after_one_screen|PR #9 merge、Issue作成、outreach送信、返信送信\" docs/goals/talking-pets-hq-japanese/notes/T080-next-savepoint-refresh-after-one-screen.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T081
+    type: pm
+    assignee: PM
+    owner_role: "相庭 愛"
+    status: done
+    reasoning_hint: default
+    objective: "PR #9 merge前にmanifest更新だけが増え続けないよう、T080を次savepoint正本としてmanifest churnの停止線を置く。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "PR #9をmergeしない。"
+      - "Issue作成しない。"
+      - "outreach送信、返信送信しない。"
+      - "branch作成、stage、commit、push、PR作成はしない。"
+      - "npm install、model download、API callはしない。"
+    receipt:
+      result: done
+      decision: stop_manifest_churn_until_pr9_merge
+      full_outcome_complete: false
+      summary: "PR #9 merge前のmanifest更新はT080で停止し、以後はPR #9状態変化、Master明示依頼、outreach送信/返信記録、install/API/model承認がある時だけ新noteを追加する方針にした。"
+      note: "notes/T081-hq-loop-stopline-before-pr9-merge.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T081-hq-loop-stopline-before-pr9-merge.md"
+      commands:
+        - cmd: "rg -n \"T081|manifest churn|T080|stop_manifest_churn_until_pr9_merge|PR #9 merge前|例外|outreach送信、返信送信\" docs/goals/talking-pets-hq-japanese/notes/T081-hq-loop-stopline-before-pr9-merge.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T082
+    type: pm
+    assignee: PM
+    owner_role: "相庭 愛"
+    status: done
+    reasoning_hint: default
+    objective: "PR #9がmainへmergeされたこと、local branch削除だけworktree使用中で残ったこと、次savepointが解禁されたことをHQに記録する。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "outreach送信、返信送信しない。"
+      - "Issue作成しない。"
+      - "npm install、model download、API callはしない。"
+      - "local worktree cleanupはしない。"
+      - "active_taskはT061のままにする。"
+    receipt:
+      result: done
+      decision: pr9_merged_next_savepoint_unlocked
+      full_outcome_complete: false
+      summary: "PR #9はmainへsquash merge済み。ローカルブランチ削除だけworktree使用中で失敗したが、merge状態には影響しない。T081の停止線は解除され、次はT069-T082 savepoint、T071手動outreach、またはT061判断へ進める。"
+      note: "notes/T082-pr9-merged-next-savepoint-unlocked.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T082-pr9-merged-next-savepoint-unlocked.md"
+      commands:
+        - cmd: "gh pr view 9 --json number,state,mergedAt,mergeCommit,url"
+          status: pass
+        - cmd: "rg -n \"T082|PR #9|mergedAt|351f1196027ec4e3a73135b6391716814f854ca7|worktree|pr9_merged_next_savepoint_unlocked\" docs/goals/talking-pets-hq-japanese/notes/T082-pr9-merged-next-savepoint-unlocked.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
   - id: T007
     type: worker
     assignee: Worker
