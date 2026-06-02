@@ -5,6 +5,10 @@ Codex Pet の吹き出しや Codex の最新 assistant 発話を、ローカルT
 Codex本体や署名済みアプリを改造せず、ローカルに保存された会話ログを読み取り、VOICEVOX / Kokoro / OS標準音声へ渡します。
 既存のCodex Petを置き換えるのではなく、いま使っているPet体験へ「声」を足すための補助ツールです。
 
+まず見る: [デモ録画](https://github.com/arata-ai-daisuki/talking-pets/blob/main/docs/demo/talking-pets-overlay-2026-05-28.mov) / [Quick Start](#quick-start) / [困ったらIssue](https://github.com/arata-ai-daisuki/talking-pets/issues)
+
+役に立ちそうなら、GitHubでStarしてもらえると今後のTTS・多言語・レイテンシ改善の励みになります。
+
 ![Talking Pets demo preview](assets/demo-preview.png)
 
 ## デモ録画
@@ -386,10 +390,16 @@ macOS安定版のSwift monitorで同じ確認をする場合は、`npm run monit
 
 - 言語対応は日本語と英語を優先しています。日本語は VOICEVOX、英語は Kokoro.js、韓国語・中国語・その他はOS標準音声へのfallbackが基本です。
 - 言語判定は短い文字種ベースです。かな文字を含む文は日本語、ハングルを含む文は韓国語、漢字だけのCJK文は中国語として扱います。日本語の漢字だけの短文や記号だけの短文では期待と違うTTSへ流れることがあります。
-- `--speech-language ja|en|ko|zh|other` で言語を手動指定できます。
+- `--speech-language ja|en|ko|zh|other` で言語を手動指定できます。`ko` / `zh` は現時点では専用TTS providerではなく、first-class fallback として扱います。
 - OS標準音声の品質は環境差があります。macOSは `say`、Windowsは `System.Speech`、Linuxは `espeak` を使います。
 - `TALKING_PETS_SAY_VOICE` / `--voice` はmacOS `say` のvoice指定です。Windows / Linux のOS音声fallbackでは未使用です。
 - Windows / Linux は Node monitor の experimental ルートです。このmacOS環境ではWindows実機でのPowerShell実行とLinux実機音声再生は未確認です。
+
+Routingだけを確認する場合は、音声を鳴らさずにJSON診断を出せます。
+
+```bash
+node --no-warnings scripts/pet-rollout-monitor.mjs --once --diagnose-routing --rollout test/fixtures/ko-rollout.jsonl
+```
 
 Node版 experimental:
 
