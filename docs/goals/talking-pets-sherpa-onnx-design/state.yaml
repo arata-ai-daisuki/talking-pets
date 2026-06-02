@@ -1,0 +1,108 @@
+version: 2
+
+goal:
+  title: "Talking Pets Sherpa ONNX設計"
+  slug: "talking-pets-sherpa-onnx-design"
+  kind: specific
+  tranche: "local sherpa-onnx TTS helper候補の設計だけを行うspike。"
+  status: done
+  oracle:
+    signal: "依存追加やmodel変更なしで、package/model/license/cache/command/benchmark判断が設計メモに残る。"
+    cadence: "設計メモ作成後と最終監査時"
+    final_proof: "check-goal-stateが通り、次の実装判断が明確になっている。"
+  intake:
+    original_request: "GoalBuddy看板で進め続ける。"
+    interpreted_outcome: "次のlocal TTS実験を、実装前に安全に準備する。"
+    input_shape: specific
+    audience: "ARATAと将来のcontributor"
+    authority: inferred
+    proof_type: artifact
+    completion_proof: "設計メモと最終監査が存在する。"
+    likely_misfire: "licenseやpackage選択が分かる前に依存やmodelを入れてしまう。"
+    blind_spots_considered:
+      - "model licenseと公開音声の利用条件"
+      - "sherpa-onnx と sherpa-onnx-node のpackage選択"
+      - "大きなmodel download"
+      - "platform対応"
+
+rules:
+  pm_owns_state: true
+  one_active_task: true
+  max_write_workers: 1
+  no_implementation_without_worker_or_pm_task: true
+  no_completion_without_judge_or_pm_audit: true
+  planning_is_not_completion: true
+  queued_required_worker_blocks_completion: true
+  continuous_until_full_outcome: true
+  missing_input_or_credentials_do_not_stop_goal: true
+  preserve_and_validate_existing_plan: true
+  intake_misfire_must_be_audited: true
+  goal_pressure_requires_oracle: true
+  no_completion_on_weak_proof: true
+
+agents:
+  scout: installed
+  worker: installed
+  judge: installed
+
+visual_board:
+  selected: local
+  local:
+    status: static_snapshot
+    url: "file:///Users/tsukuyomi/Documents/Projects/talking-pets/docs/goals/talking-pets-sherpa-onnx-design/.goalbuddy-board/index.html"
+    command: "static snapshot because npx goalbuddy board is blocked by npm cache permissions"
+
+active_task: null
+
+tasks:
+  - id: T001
+    type: worker
+    assignee: Worker
+    owner_role: "歌澄 音羽"
+    status: done
+    reasoning_hint: default
+    objective: "sherpa-onnx local TTS helper候補の設計メモを作る。"
+    allowed_files:
+      - "docs/research/sherpa-onnx-design.md"
+      - "docs/goals/talking-pets-sherpa-onnx-design/notes/**"
+      - "docs/goals/talking-pets-sherpa-onnx-design/state.yaml"
+    verify:
+      - "test -f docs/research/sherpa-onnx-design.md"
+      - "rg -n \"sherpa-onnx|sherpa-onnx-node|Apache|model|cache|benchmark|license|no install\" docs/research/sherpa-onnx-design.md"
+    stop_if:
+      - "npm installが必要になった場合。"
+      - "model downloadが必要になった場合。"
+      - "有料APIまたはsecretが必要になった場合。"
+    receipt:
+      result: done
+      summary: "依存追加やmodel downloadなしで、sherpa-onnx-nodeの設計メモを作成した。"
+      note: "notes/T001-design.md"
+      changed_files:
+        - "docs/research/sherpa-onnx-design.md"
+        - "docs/goals/talking-pets-sherpa-onnx-design/notes/T001-design.md"
+      commands:
+        - cmd: "test -f docs/research/sherpa-onnx-design.md"
+          status: pass
+        - cmd: "rg -n \"sherpa-onnx|sherpa-onnx-node|Apache|model|cache|benchmark|license|no install\" docs/research/sherpa-onnx-design.md"
+          status: pass
+
+  - id: T999
+    type: judge
+    assignee: Judge
+    owner_role: "白瀬 怜奈"
+    status: done
+    reasoning_hint: high
+    objective: "設計メモが安全で判断可能な状態か監査する。"
+    constraints:
+      - "依存やmodel変更が入っていたら拒否。"
+      - "license/cache判断が曖昧なら拒否。"
+    expected_output:
+      - "完了 | 未完了"
+      - "全体成果が完了したか"
+      - "次の判断"
+    receipt:
+      result: done
+      decision: complete
+      full_outcome_complete: true
+      summary: "設計のみのsherpa-onnx spikeは完了。実装にはMaster承認が必要。"
+      note: "notes/T999-final-audit.md"

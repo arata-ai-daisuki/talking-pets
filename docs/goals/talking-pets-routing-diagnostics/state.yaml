@@ -1,0 +1,117 @@
+version: 2
+
+goal:
+  title: "Talking Pets ルーティング診断"
+  slug: "talking-pets-routing-diagnostics"
+  kind: specific
+  tranche: "言語判定とTTS選択を、ローカルdry-run診断で見えるようにする。"
+  status: done
+  oracle:
+    signal: "診断JSONに、言語判定、effective language、chosen engine、fallback reason、読み上げ文が出る。"
+    cadence: "Worker完了後と最終監査時"
+    final_proof: "check-goal-stateが通り、ja/en/ko/zh fixture向けのローカル診断コマンドが通る。"
+  intake:
+    original_request: "GoalBuddy看板で進め続ける。"
+    interpreted_outcome: "外部callなしで、多言語/TTS routingの証拠画面を追加する。"
+    input_shape: specific
+    audience: "ARATAと将来のcontributor"
+    authority: inferred
+    proof_type: test
+    completion_proof: "診断コマンド出力と検証コマンドが通る。"
+    likely_misfire: "routing証拠だけでよいのに、音声再生やprovider接続をしてしまう。"
+    blind_spots_considered:
+      - "ko/zh専用対応の過大表現"
+      - "外部へのtext送信"
+      - "通常monitor出力の破壊"
+
+rules:
+  pm_owns_state: true
+  one_active_task: true
+  max_write_workers: 1
+  no_implementation_without_worker_or_pm_task: true
+  no_completion_without_judge_or_pm_audit: true
+  planning_is_not_completion: true
+  queued_required_worker_blocks_completion: true
+  continuous_until_full_outcome: true
+  missing_input_or_credentials_do_not_stop_goal: true
+  preserve_and_validate_existing_plan: true
+  intake_misfire_must_be_audited: true
+  goal_pressure_requires_oracle: true
+  no_completion_on_weak_proof: true
+
+agents:
+  scout: installed
+  worker: installed
+  judge: installed
+
+visual_board:
+  selected: local
+  local:
+    status: static_snapshot
+    url: "file:///Users/tsukuyomi/Documents/Projects/talking-pets/docs/goals/talking-pets-routing-diagnostics/.goalbuddy-board/index.html"
+    command: "static snapshot because npx goalbuddy board is blocked by npm cache permissions"
+
+active_task: null
+
+tasks:
+  - id: T001
+    type: worker
+    assignee: Worker
+    owner_role: "言守 詞葉"
+    status: done
+    reasoning_hint: default
+    objective: "Node monitorにローカルrouting診断を追加する。"
+    allowed_files:
+      - "scripts/pet-rollout-monitor.mjs"
+      - "README.md"
+      - "README.en.md"
+      - "docs/goals/talking-pets-routing-diagnostics/notes/**"
+      - "docs/goals/talking-pets-routing-diagnostics/state.yaml"
+    verify:
+      - "node --check scripts/pet-rollout-monitor.mjs"
+      - "node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --rollout test/fixtures/ko-rollout.jsonl"
+      - "node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --rollout test/fixtures/zh-rollout.jsonl"
+      - "npm run test:dry-run"
+    stop_if:
+      - "外部provider callが必要になった場合。"
+      - "音声再生が必要になった場合。"
+      - "広いprovider抽象が必要になった場合。"
+    receipt:
+      result: done
+      summary: "--diagnose-routing のJSON出力を追加し、READMEに使い方を記載した。"
+      note: "notes/T001-routing-diagnostics.md"
+      changed_files:
+        - "scripts/pet-rollout-monitor.mjs"
+        - "README.md"
+        - "README.en.md"
+        - "docs/goals/talking-pets-routing-diagnostics/notes/T001-routing-diagnostics.md"
+      commands:
+        - cmd: "node --check scripts/pet-rollout-monitor.mjs"
+          status: pass
+        - cmd: "node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --rollout test/fixtures/ko-rollout.jsonl"
+          status: pass
+        - cmd: "node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --rollout test/fixtures/zh-rollout.jsonl"
+          status: pass
+        - cmd: "npm run test:dry-run"
+          status: pass
+
+  - id: T999
+    type: judge
+    assignee: Judge
+    owner_role: "白瀬 怜奈"
+    status: done
+    reasoning_hint: high
+    objective: "routing診断の挙動と看板の正確性を監査する。"
+    constraints:
+      - "通常monitor出力が壊れていたら拒否。"
+      - "診断がko/zh専用provider対応を主張していたら拒否。"
+    expected_output:
+      - "完了 | 未完了"
+      - "全体成果が完了したか"
+      - "不足している証拠"
+    receipt:
+      result: done
+      decision: complete
+      full_outcome_complete: true
+      summary: "routing診断は実装、検証、README記載まで完了。"
+      note: "notes/T999-final-audit.md"

@@ -1,0 +1,181 @@
+version: 2
+
+goal:
+  title: "Talking Pets 成長とレイテンシ第三波"
+  slug: "talking-pets-growth-latency-wave"
+  kind: existing_plan
+  tranche: "第三波: レイテンシ比較、X/outreach準備、次のTTS/API/多言語判断を進める。"
+  status: done
+  oracle:
+    signal: "比較できるレイテンシ出力、手動outreachメモ、次のprovider/language判断材料がローカル検証つきで存在する。"
+    cadence: "各Worker完了後と最終PM監査時"
+    final_proof: "check-goal-state、検証コマンド、notesが揃い、公開アクション判断はMasterに残っている。"
+  intake:
+    original_request: "GoalBuddy看板を見ながら、エージェントがどんどん進める。"
+    interpreted_outcome: "一回きりの報告ではなく、GoalBuddy看板を正本にしてTalking Petsを継続推進する。"
+    input_shape: existing_plan
+    audience: "ARATA、将来のcontributor、Talking Petsの潜在ユーザー"
+    authority: requested
+    proof_type: artifact
+    completion_proof: "実装、Scout notes、検証、次の判断ゲートが看板に記録されている。"
+    likely_misfire: "作業は進んでいるのに、Masterが見ている看板に反映されない。"
+    blind_spots_considered:
+      - "看板と実作業のズレ"
+      - "スパム的または自動化されたoutreach"
+      - "レイテンシ、言語、provider対応の過大表現"
+      - "意図しない有料API利用"
+      - "並行編集による衝突"
+    existing_plan_facts:
+      - "ロードマップは承認済み。"
+      - "MasterはGoalBuddy看板上で進捗を追いたい。"
+      - "レイテンシは最初の実装トラックとして妥当。"
+      - "Outreach listは手動用で、送信はMasterが後で行う。"
+
+rules:
+  pm_owns_state: true
+  one_active_task: true
+  max_write_workers: 1
+  no_implementation_without_worker_or_pm_task: true
+  no_completion_without_judge_or_pm_audit: true
+  planning_is_not_completion: true
+  queued_required_worker_blocks_completion: true
+  continuous_until_full_outcome: true
+  missing_input_or_credentials_do_not_stop_goal: true
+  preserve_and_validate_existing_plan: true
+  intake_misfire_must_be_audited: true
+  goal_pressure_requires_oracle: true
+  no_completion_on_weak_proof: true
+
+agents:
+  scout: installed
+  worker: installed
+  judge: installed
+
+visual_board:
+  selected: local
+  local:
+    status: generated
+    url: "file:///Users/tsukuyomi/Documents/Projects/talking-pets/docs/goals/talking-pets-growth-latency-wave/.goalbuddy-board/index.html"
+    command: "npx goalbuddy board docs/goals/talking-pets-growth-latency-wave"
+
+active_task: null
+
+tasks:
+  - id: T001
+    type: worker
+    assignee: Worker
+    owner_role: "速水 光莉"
+    status: done
+    reasoning_hint: default
+    objective: "レイテンシbenchmarkを比較しやすくし、ローカルreceiptを残す。"
+    allowed_files:
+      - "scripts/latency-benchmark.mjs"
+      - "package.json"
+      - "docs/performance.md"
+      - "implementation-notes.md"
+      - "docs/goals/talking-pets-growth-latency-wave/notes/**"
+      - "docs/goals/talking-pets-growth-latency-wave/state.yaml"
+    verify:
+      - "npm run check:syntax"
+      - "npm run benchmark:latency -- --runs 5"
+    stop_if:
+      - "有料API実行が必要になった場合。"
+      - "許可ファイル外の変更が必要になった場合。"
+    receipt:
+      result: done
+      summary: "複数回benchmarkのreceipt保存用に --out を追加し、20回集計を保存した。"
+      note: "notes/T001-latency-benchmark.md"
+      artifacts:
+        - "notes/T001-latency-summary.json"
+      changed_files:
+        - "scripts/latency-benchmark.mjs"
+        - "package.json"
+        - "docs/performance.md"
+        - "implementation-notes.md"
+        - "docs/goals/talking-pets-growth-latency-wave/notes/T001-latency-benchmark.md"
+        - "docs/goals/talking-pets-growth-latency-wave/notes/T001-latency-summary.json"
+      commands:
+        - cmd: "npm run check:syntax"
+          status: pass
+        - cmd: "npm run benchmark:latency -- --runs 20 --out docs/goals/talking-pets-growth-latency-wave/notes/T001-latency-summary.json"
+          status: pass
+
+  - id: T002
+    type: scout
+    assignee: Scout
+    owner_role: "星宮 未来"
+    status: done
+    reasoning_hint: low
+    objective: "公開X/outreach候補を確認し、day-1手動送信キューを作る。"
+    constraints:
+      - "notes以外は読み取り専用。"
+      - "自動outreach禁止。"
+      - "非公開データ収集禁止。"
+    expected_output:
+      - "最初に触る安全な候補3件"
+      - "手動確認すべき投稿/文脈"
+      - "返信案とスパムでない理由"
+    receipt:
+      result: done
+      summary: "day-1手動outreachキューとして、安全な初回候補3件とスパム防止ルールを整理した。"
+      note: "notes/T002-day1-outreach-queue.md"
+
+  - id: T003
+    type: scout
+    assignee: Scout
+    owner_role: "歌澄 音羽"
+    status: done
+    reasoning_hint: low
+    objective: "次のlocal/API TTS provider候補を調査し、判断ゲートを整理する。"
+    constraints:
+      - "有料API call禁止。"
+      - "secret利用禁止。"
+      - "公式docsまたはproject repoを優先。"
+    expected_output:
+      - "provider候補表"
+      - "local-firstとAPIのtradeoff"
+      - "次に推奨する実験"
+    receipt:
+      result: done
+      summary: "次のlocal TTS設計候補としてsherpa-onnxを推奨し、API TTSはMaster承認待ちのP2 opt-inにした。"
+      note: "notes/T003-tts-provider-scout.md"
+
+  - id: T004
+    type: scout
+    assignee: Scout
+    owner_role: "言守 詞葉"
+    status: done
+    reasoning_hint: low
+    objective: "日本語、英語、韓国語、中国語の多言語routingリスクを調査する。"
+    constraints:
+      - "証拠なしに専用対応を主張しない。"
+      - "外部へのtext送信禁止。"
+    expected_output:
+      - "維持/修正すべき現在のclaim"
+      - "次に必要なlanguage fixture/docs"
+      - "次のWorker slice案"
+    receipt:
+      result: done
+      summary: "ko/zhはfirst-class OS fallbackとして扱い、次Workerとしてrouting diagnosticsを推奨した。"
+      note: "notes/T004-multilingual-routing-scout.md"
+
+  - id: T999
+    type: judge
+    assignee: Judge
+    owner_role: "白瀬 怜奈"
+    status: done
+    reasoning_hint: high
+    objective: "看板完了、receipt、検証、判断ゲートを監査する。"
+    constraints:
+      - "看板と実作業が一致しない場合は完了を拒否。"
+      - "outreachが自動化やcold DM spamを示す場合は完了を拒否。"
+    expected_output:
+      - "完了 | 未完了"
+      - "不足している証拠"
+      - "次の推奨task"
+    receipt:
+      result: done
+      decision: complete
+      full_outcome_complete: true
+      summary: "最終監査完了。検証は通過し、次の推奨boardはrouting-diagnostics-worker。"
+      note: "notes/T999-final-audit.md"
