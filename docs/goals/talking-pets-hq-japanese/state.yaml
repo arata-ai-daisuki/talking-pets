@@ -2579,6 +2579,39 @@ tasks:
         - cmd: "rg -n \"T082|PR #9|mergedAt|351f1196027ec4e3a73135b6391716814f854ca7|worktree|pr9_merged_next_savepoint_unlocked\" docs/goals/talking-pets-hq-japanese/notes/T082-pr9-merged-next-savepoint-unlocked.md docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
 
+  - id: T083
+    type: pm
+    assignee: PM
+    owner_role: "相庭 愛"
+    status: done
+    reasoning_hint: default
+    objective: "PR #9 merge後のHQ follow-up receiptsをPR #10として作成したことを記録する。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "outreach送信、返信送信しない。"
+      - "Issue作成しない。"
+      - "npm install、model download、API callはしない。"
+      - "active_taskはT061のままにする。"
+    receipt:
+      result: done
+      decision: pr10_open
+      full_outcome_complete: false
+      summary: "PR #9 merge後のHQ receipts T069-T082とstate.yamlをmainベースworktreeからstage/commit/pushし、PR #10を作成した。実装変更、outreach送信、npm install、model download、API callはしていない。"
+      note: "notes/T083-pr10-execution-receipt.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T083-pr10-execution-receipt.md"
+      commands:
+        - cmd: "node <goalbuddy-check> docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+        - cmd: "git diff --cached --name-only"
+          status: pass
+        - cmd: "gh pr create --base main --head codex/talking-pets-hq-after-pr9-followups --title \"Add post-PR9 GoalBuddy HQ follow-up receipts\" --body-file .pr-body.md"
+          status: pass
+        - cmd: "rg -n \"T083|PR #10|codex/talking-pets-hq-after-pr9-followups|pr10_open|T071|T061|outreach送信|npm install|model download\" docs/goals/talking-pets-hq-japanese/notes/T083-pr10-execution-receipt.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
   - id: T007
     type: worker
     assignee: Worker
