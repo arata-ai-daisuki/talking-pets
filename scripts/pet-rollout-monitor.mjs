@@ -3,6 +3,7 @@
 import { spawnSync } from "node:child_process";
 import { readFileSync, existsSync } from "node:fs";
 import { homedir } from "node:os";
+import { performance } from "node:perf_hooks";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -24,9 +25,11 @@ let lastSpokenKey = null;
 let didSkipExisting = false;
 
 while (true) {
-  const thread = await resolveThread(options);
+  const latencyProfile = startLatencyProfile(options.profileLatency);
+  const thread = await measureLatency(latencyProfile, "resolveThread", () => resolveThread(options));
   if (!thread) {
     console.log("[wait] Codex thread not found");
+    printLatencyProfile(latencyProfile, { candidate: false, dryRun: options.dryRun, thread: false });
     if (options.once) break;
     await sleep(options.interval * 1000);
     continue;
@@ -40,7 +43,7 @@ while (true) {
     didSkipExisting = false;
   }
 
-  const speechResult = readLatestSpeechCandidate(thread.rolloutPath, options.maxSourceCharacters);
+  const speechResult = measureLatency(latencyProfile, "readLatestSpeechCandidate", () => readLatestSpeechCandidate(thread.rolloutPath, options.maxSourceCharacters));
   const candidate = speechResult.candidate;
   if (candidate) {
     const key = normalizedKey(candidate.text);
@@ -49,18 +52,22 @@ while (true) {
       didSkipExisting = true;
       console.log(`[skip-existing] ${candidate.source} / ${candidate.timestamp}`);
     } else if (key !== lastSpokenKey) {
-      const speech = speechText(candidate.text, options);
+      const speech = measureLatency(latencyProfile, "speechText", () => speechText(candidate.text, options));
       console.log(`[source] ${candidate.text}`);
       console.log(`[pet] ${speech}`);
+      if (options.diagnoseRouting) {
+        console.log(JSON.stringify(routingDiagnostic(candidate.text, speech, options), null, 2));
+      }
       lastSpokenKey = key;
       if (!options.dryRun) {
-        speak(speech, options);
+        measureLatency(latencyProfile, "speak", () => speak(speech, options));
       }
     }
   } else {
     console.log(`[wait] ${speechResult.message}`);
   }
 
+  printLatencyProfile(latencyProfile, { candidate: Boolean(candidate), dryRun: options.dryRun, thread: true });
   if (options.once) break;
   await sleep(options.interval * 1000);
 }
@@ -88,6 +95,8 @@ function parseOptions(argv) {
     once: false,
     summarizeSpeech: true,
     skipExisting: false,
+    profileLatency: false,
+    diagnoseRouting: false,
     maxSourceCharacters: 4000,
     stateDB: null,
     rolloutPath: null,
@@ -179,6 +188,13 @@ function parseOptions(argv) {
       case "--skip-existing":
         result.skipExisting = true;
         break;
+      case "--profile-latency":
+        result.profileLatency = true;
+        break;
+      case "--diagnose-routing":
+        result.diagnoseRouting = true;
+        result.dryRun = true;
+        break;
       case "--no-summary":
         result.summarizeSpeech = false;
         break;
@@ -207,6 +223,8 @@ Common:
   --once                         Check once and exit
   --dry-run                      Print the spoken line without playing audio
   --skip-existing                Do not speak the current existing latest message
+  --profile-latency              Print monitor latency timings to stderr
+  --diagnose-routing             Print routing diagnostics as JSON and force dry-run
   --interval SECONDS             Polling interval (default: 1)
   --help                         Show this help
   --version                      Print package version
@@ -220,7 +238,7 @@ Codex source:
 
 Speech:
   --no-summary                   Speak the full source text
-  --speech-language LANG         auto, ja, en, ko, or other
+  --speech-language LANG         auto, ja, en, ko, zh, or other
   --speech-style PATH            JSON style config for spoken phrasing
 
 TTS:
@@ -475,7 +493,7 @@ function cleanSpeechLine(text, language) {
     .trim()
     .replace(/^[、,\s]+|[、,\s]+$/g, "");
   if (!/[。！？!?.?]$/.test(result)) {
-    result += language === "ja" ? "。" : ".";
+    result += language === "ja" || language === "zh" ? "。" : ".";
   }
   return result;
 }
@@ -545,6 +563,36 @@ function speak(text, opts) {
   }
 }
 
+function routingDiagnostic(sourceText, spokenText, opts) {
+  const detected = detectedLanguage(sourceText);
+  const effectiveLanguage = resolvedSpeechLanguage(sourceText, opts);
+  const engine = resolvedTTSEngine(sourceText, opts);
+  return {
+    sourceText,
+    spokenText,
+    detectedLanguage: detected,
+    speechLanguageHint: opts.speechLanguage,
+    effectiveLanguage,
+    ttsEngineConfigured: opts.ttsEngine,
+    languageRoute: opts.languageRoute,
+    chosenEngine: engine,
+    fallbackReason: routingFallbackReason(engine, effectiveLanguage, opts),
+    summary: opts.summarizeSpeech ? "enabled" : "disabled",
+    sourceCharacters: sourceText.length,
+  };
+}
+
+function routingFallbackReason(engine, language, opts) {
+  const configured = opts.ttsEngine.toLowerCase();
+  if (engine === "say" && configured === "auto" && language !== "ja" && language !== "en") {
+    return `${language} uses OS speech fallback; no dedicated provider is configured.`;
+  }
+  if (configured !== "auto" && !opts.languageRoute) {
+    return "explicit TTS engine selected; language routing is disabled.";
+  }
+  return null;
+}
+
 function speakWithFallback(text, opts, name) {
   console.log(`[tts-fallback] ${name} failed; using OS speech`);
   speakWithSay(text, opts);
@@ -576,8 +624,9 @@ function detectedLanguage(text) {
     else if (value >= 0xac00 && value <= 0xd7af) hangul += 1;
     else if ((value >= 0x41 && value <= 0x5a) || (value >= 0x61 && value <= 0x7a)) latin += 1;
   }
-  if (japanese > 0 || cjk >= 2) return "ja";
+  if (japanese > 0) return "ja";
   if (hangul > 0) return "ko";
+  if (cjk >= 2) return "zh";
   if (latin >= 4) return "en";
   return "other";
 }
@@ -643,6 +692,48 @@ function runProcess(command, args) {
 function runAndPrint(command, args) {
   const result = spawnSync(command, args, { stdio: "inherit" });
   process.exit(result.status ?? 1);
+}
+
+function startLatencyProfile(enabled) {
+  if (!enabled) return null;
+  return {
+    startedAt: performance.now(),
+    steps: [],
+  };
+}
+
+function measureLatency(profile, name, operation) {
+  if (!profile) return operation();
+
+  const startedAt = performance.now();
+  const record = () => {
+    profile.steps.push({ name, ms: performance.now() - startedAt });
+  };
+
+  try {
+    const result = operation();
+    if (result && typeof result.finally === "function") {
+      return result.finally(record);
+    }
+    record();
+    return result;
+  } catch (error) {
+    record();
+    throw error;
+  }
+}
+
+function printLatencyProfile(profile, fields) {
+  if (!profile) return;
+
+  const totalMs = performance.now() - profile.startedAt;
+  const steps = profile.steps.map(step => `${step.name}=${formatLatencyMs(step.ms)}`).join(" ");
+  const metadata = Object.entries(fields).map(([key, value]) => `${key}=${value}`).join(" ");
+  console.error(`[latency] total=${formatLatencyMs(totalMs)} ${steps} ${metadata}`.trim());
+}
+
+function formatLatencyMs(ms) {
+  return `${ms.toFixed(1)}ms`;
 }
 
 function sleep(ms) {

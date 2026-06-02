@@ -21,8 +21,10 @@
     "node": ">=22"
   },
   "scripts": {
-    "check:syntax": "node --check scripts/pet-rollout-monitor.mjs && node --check scripts/tts-kokoro.mjs && node --check scripts/tts-voicebox.mjs",
+    "check:syntax": "node --check scripts/pet-rollout-monitor.mjs && node --check scripts/tts-kokoro.mjs && node --check scripts/tts-voicebox.mjs && node --check scripts/latency-benchmark.mjs",
     "test:dry-run": "node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --rollout test/fixtures/assistant-rollout.jsonl",
+    "benchmark:dry-run": "node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --profile-latency --rollout test/fixtures/assistant-rollout.jsonl",
+    "benchmark:latency": "node scripts/latency-benchmark.mjs",
     "monitor:node": "node --no-warnings scripts/pet-rollout-monitor.mjs",
     "tts:kokoro": "node scripts/tts-kokoro.mjs",
     "tts:voicebox": "node scripts/tts-voicebox.mjs",

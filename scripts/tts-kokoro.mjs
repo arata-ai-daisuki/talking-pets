@@ -3,10 +3,12 @@
 import { spawnSync } from "node:child_process";
 import { mkdirSync, mkdtempSync } from "node:fs";
 import { homedir, tmpdir } from "node:os";
+import { performance } from "node:perf_hooks";
 import { join } from "node:path";
 import { env } from "@huggingface/transformers";
 
 const args = parseArgs(process.argv.slice(2));
+const latencyProfile = startLatencyProfile(args["profile-latency"]);
 
 const model = args.model ?? process.env.KOKORO_MODEL ?? "onnx-community/Kokoro-82M-v1.0-ONNX";
 const voice = args.voice ?? process.env.KOKORO_VOICE ?? "af_heart";
@@ -51,33 +53,41 @@ const KOKORO_VOICES = {
 try {
   if (args["list-voices"]) {
     console.log(JSON.stringify(KOKORO_VOICES, null, 2));
+    printLatencyProfile(latencyProfile, { provider: "kokoro", listVoices: true });
     process.exit(0);
   }
 
-  mkdirSync(cacheDir, { recursive: true });
-  env.cacheDir = cacheDir;
+  measureLatency(latencyProfile, "prepare_cache", () => {
+    mkdirSync(cacheDir, { recursive: true });
+    env.cacheDir = cacheDir;
+  });
 
-  const { KokoroTTS } = await import("kokoro-js");
-  const tts = await KokoroTTS.from_pretrained(model, { dtype, device });
+  const { KokoroTTS } = await measureLatency(latencyProfile, "import_kokoro", () => import("kokoro-js"));
+  const tts = await measureLatency(latencyProfile, "load_model", () => KokoroTTS.from_pretrained(model, { dtype, device }));
 
-  const text = args.text ?? (await readStdin());
+  const text = args.text ?? (await measureLatency(latencyProfile, "read_stdin", () => readStdin()));
   if (text.trim().length === 0) {
     console.error("tts-kokoro: text is empty");
+    printLatencyProfile(latencyProfile, { provider: "kokoro", success: false, reason: "empty_text" });
     process.exit(2);
   }
 
   const out = args.out ?? join(mkdtempSync(join(tmpdir(), "talking-pets-kokoro-")), "speech.wav");
-  const audio = await tts.generate(text, { voice });
-  await audio.save(out);
+  const audio = await measureLatency(latencyProfile, "generate", () => tts.generate(text, { voice }));
+  await measureLatency(latencyProfile, "save", () => audio.save(out));
 
   console.log(out);
 
   if (args.play) {
-    process.exit(playAudio(out));
+    const status = measureLatency(latencyProfile, "play", () => playAudio(out));
+    printLatencyProfile(latencyProfile, { provider: "kokoro", success: status === 0, play: true });
+    process.exit(status);
   }
+  printLatencyProfile(latencyProfile, { provider: "kokoro", success: true, play: false });
 } catch (error) {
   const message = error?.message ?? String(error);
   console.error(`tts-kokoro: ${message}`);
+  printLatencyProfile(latencyProfile, { provider: "kokoro", success: false });
   process.exit(1);
 }
 
@@ -85,7 +95,7 @@ function parseArgs(argv) {
   const result = {};
   for (let i = 0; i < argv.length; i += 1) {
     const arg = argv[i];
-    if (arg === "--play" || arg === "--list-voices") {
+    if (arg === "--play" || arg === "--list-voices" || arg === "--profile-latency") {
       result[arg.slice(2)] = true;
       continue;
     }
@@ -104,6 +114,47 @@ function parseArgs(argv) {
   }
 
   return result;
+}
+
+function startLatencyProfile(enabled) {
+  if (!enabled) return null;
+  return {
+    startedAt: performance.now(),
+    steps: [],
+  };
+}
+
+function measureLatency(profile, name, operation) {
+  if (!profile) return operation();
+
+  const startedAt = performance.now();
+  const record = () => {
+    profile.steps.push({ name, ms: performance.now() - startedAt });
+  };
+
+  try {
+    const result = operation();
+    if (result && typeof result.finally === "function") {
+      return result.finally(record);
+    }
+    record();
+    return result;
+  } catch (error) {
+    record();
+    throw error;
+  }
+}
+
+function printLatencyProfile(profile, fields) {
+  if (!profile) return;
+  const totalMs = performance.now() - profile.startedAt;
+  const steps = profile.steps.map(step => `${step.name}=${formatLatencyMs(step.ms)}`).join(" ");
+  const metadata = Object.entries(fields).map(([key, value]) => `${key}=${value}`).join(" ");
+  console.error(`[latency] total=${formatLatencyMs(totalMs)} ${steps} ${metadata}`.trim());
+}
+
+function formatLatencyMs(ms) {
+  return `${ms.toFixed(1)}ms`;
 }
 
 function playAudio(path) {

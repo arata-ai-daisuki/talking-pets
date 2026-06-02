@@ -3,28 +3,38 @@
 import { spawnSync } from "node:child_process";
 import { mkdtempSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
+import { performance } from "node:perf_hooks";
 import { join } from "node:path";
 
 const args = parseArgs(process.argv.slice(2));
+const latencyProfile = startLatencyProfile(args["profile-latency"]);
 const baseURL = (args.url ?? process.env.VOICEBOX_URL ?? "http://127.0.0.1:50021").replace(/\/$/, "");
 const mode = args.mode ?? process.env.VOICEBOX_MODE ?? (baseURL.includes(":50021") ? "voicevox" : "generic");
 const endpoint = args.endpoint ?? process.env.VOICEBOX_ENDPOINT ?? "/speak";
 const text = args.text ?? (args["list-voices"] ? "" : await readStdin());
 
 if (args["list-voices"]) {
-  await listVoices();
+  await measureLatency(latencyProfile, "list_voices", () => listVoices());
+  printLatencyProfile(latencyProfile, { provider: mode, success: true, listVoices: true });
   process.exit(0);
 }
 
 if (text.trim().length === 0) {
   console.error("tts-voicebox: text is empty");
+  printLatencyProfile(latencyProfile, { provider: mode, success: false, reason: "empty_text" });
   process.exit(2);
 }
 
-if (mode === "voicevox") {
-  await speakWithVoicevox();
-} else {
-  await speakWithGenericEndpoint();
+try {
+  if (mode === "voicevox") {
+    await speakWithVoicevox();
+  } else {
+    await speakWithGenericEndpoint();
+  }
+  printLatencyProfile(latencyProfile, { provider: mode, success: true, play: Boolean(args.play) });
+} catch (error) {
+  printLatencyProfile(latencyProfile, { provider: mode, success: false });
+  throw error;
 }
 
 async function listVoices() {
@@ -37,8 +47,8 @@ async function speakWithVoicevox() {
   const queryURL = `${baseURL}/audio_query?text=${encodeURIComponent(text)}&speaker=${encodeURIComponent(speaker)}`;
   const synthesisURL = `${baseURL}/synthesis?speaker=${encodeURIComponent(speaker)}`;
 
-  const queryResponse = await request(queryURL, { method: "POST" });
-  const query = await queryResponse.json();
+  const queryResponse = await measureLatency(latencyProfile, "audio_query", () => request(queryURL, { method: "POST" }));
+  const query = await measureLatency(latencyProfile, "parse_audio_query", () => queryResponse.json());
 
   if (args.speed) {
     query.speedScale = Number(args.speed);
@@ -50,18 +60,20 @@ async function speakWithVoicevox() {
     query.intonationScale = Number(args.intonation);
   }
 
-  const audioResponse = await request(synthesisURL, {
+  const audioResponse = await measureLatency(latencyProfile, "synthesis", () => request(synthesisURL, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(query),
-  });
-  const audio = Buffer.from(await audioResponse.arrayBuffer());
+  }));
+  const audio = Buffer.from(await measureLatency(latencyProfile, "read_audio", () => audioResponse.arrayBuffer()));
   const out = args.out ?? join(mkdtempSync(join(tmpdir(), "talking-pets-voicevox-")), "speech.wav");
-  writeFileSync(out, audio);
+  measureLatency(latencyProfile, "write_audio", () => writeFileSync(out, audio));
   console.log(out);
 
   if (args.play) {
-    process.exit(playAudio(out));
+    const status = measureLatency(latencyProfile, "play", () => playAudio(out));
+    printLatencyProfile(latencyProfile, { provider: mode, success: status === 0, play: true });
+    process.exit(status);
   }
 }
 
@@ -74,17 +86,18 @@ async function speakWithGenericEndpoint() {
     ...(args.personality ? { personality: true } : {}),
   };
 
-  const response = await request(`${baseURL}${endpoint}`, {
+  const response = await measureLatency(latencyProfile, "generic_request", () => request(`${baseURL}${endpoint}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),
-  });
+  }));
 
   const contentType = response.headers.get("content-type") ?? "";
   if (contentType.includes("application/json")) {
-    console.log(JSON.stringify(await response.json(), null, 2));
+    const body = await measureLatency(latencyProfile, "parse_json_response", () => response.json());
+    console.log(JSON.stringify(body, null, 2));
   } else {
-    console.log(await response.text());
+    console.log(await measureLatency(latencyProfile, "read_text_response", () => response.text()));
   }
 }
 
@@ -110,7 +123,7 @@ function parseArgs(argv) {
   const result = {};
   for (let i = 0; i < argv.length; i += 1) {
     const arg = argv[i];
-    if (arg === "--personality" || arg === "--play" || arg === "--list-voices") {
+    if (arg === "--personality" || arg === "--play" || arg === "--list-voices" || arg === "--profile-latency") {
       result[arg.slice(2)] = true;
       continue;
     }
@@ -129,6 +142,47 @@ function parseArgs(argv) {
   }
 
   return result;
+}
+
+function startLatencyProfile(enabled) {
+  if (!enabled) return null;
+  return {
+    startedAt: performance.now(),
+    steps: [],
+  };
+}
+
+function measureLatency(profile, name, operation) {
+  if (!profile) return operation();
+
+  const startedAt = performance.now();
+  const record = () => {
+    profile.steps.push({ name, ms: performance.now() - startedAt });
+  };
+
+  try {
+    const result = operation();
+    if (result && typeof result.finally === "function") {
+      return result.finally(record);
+    }
+    record();
+    return result;
+  } catch (error) {
+    record();
+    throw error;
+  }
+}
+
+function printLatencyProfile(profile, fields) {
+  if (!profile) return;
+  const totalMs = performance.now() - profile.startedAt;
+  const steps = profile.steps.map(step => `${step.name}=${formatLatencyMs(step.ms)}`).join(" ");
+  const metadata = Object.entries(fields).map(([key, value]) => `${key}=${value}`).join(" ");
+  console.error(`[latency] total=${formatLatencyMs(totalMs)} ${steps} ${metadata}`.trim());
+}
+
+function formatLatencyMs(ms) {
+  return `${ms.toFixed(1)}ms`;
 }
 
 function playAudio(path) {
