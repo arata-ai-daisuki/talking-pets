@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T088
+active_task: T090
 
 tasks:
   - id: T001
@@ -2753,7 +2753,7 @@ tasks:
     type: pm
     assignee: PM
     owner_role: "相庭 愛"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "Irodori追加後、返信待ち中に進めるlocal TTS次アクションを、Irodori smoke test、no-extra-install latency baseline、sherpa後回しdocs整理の3択からMaster判断する。"
     expected_output:
@@ -2761,13 +2761,65 @@ tasks:
       - "Irodoriはまだ起動しない。追加インストールなしでsay/autoのlatency baselineだけ測って。"
       - "sherpa-onnx-nodeは後回し。Irodoriと既存providerのdocs/issue/README整理を優先して。"
     receipt:
-      result: active
-      decision: waiting_for_next_local_tts_scope_after_irodori
+      result: done
+      decision: no_extra_install_latency_baseline_selected
       full_outcome_complete: false
-      summary: "あいちゃん推奨はno-extra-install latency baseline。Irodori server起動、音声生成、npm install、model download、API callはまだしていない。"
+      summary: "Masterの返信待ち中に進める方針として、あいちゃん推奨のno-extra-install latency baselineを選択し、T089へ引き継いだ。"
       note: "notes/T088-next-local-tts-scope-after-irodori.md"
       changed_files:
         - "docs/goals/talking-pets-hq-japanese/notes/T088-next-local-tts-scope-after-irodori.md"
+
+  - id: T089
+    type: worker
+    assignee: Worker
+    owner_role: "速水 光莉"
+    status: done
+    reasoning_hint: default
+    objective: "追加インストール、Irodori server起動、音声生成なしで、言語別fixtureのdry-run latency baselineを取得する。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "npm install、model download、API callはしない。"
+      - "Irodori serverを起動しない。"
+      - "実音声生成、実音声再生はしない。"
+      - "README claim変更はしない。"
+    receipt:
+      result: done
+      decision: monitor_dry_run_baseline_recorded
+      full_outcome_complete: false
+      summary: "ja/en/ko/zh fixtureで30-run dry-run latency baselineを取得した。monitor側のtotal p95は3.8msから6.6msで、TTS生成・再生時間は含まない。"
+      note: "notes/T089-no-extra-install-latency-baseline.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T089-no-extra-install-latency-baseline.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T088-next-local-tts-scope-after-irodori.md"
+      commands:
+        - cmd: "npm run benchmark:latency -- --runs 30 --rollout test/fixtures/ja-rollout.jsonl --out /private/tmp/talking-pets-ja-latency-baseline.json"
+          status: pass
+        - cmd: "npm run benchmark:latency -- --runs 30 --rollout test/fixtures/en-rollout.jsonl --out /private/tmp/talking-pets-en-latency-baseline.json"
+          status: pass
+        - cmd: "npm run benchmark:latency -- --runs 30 --rollout test/fixtures/ko-rollout.jsonl --out /private/tmp/talking-pets-ko-latency-baseline.json"
+          status: pass
+        - cmd: "npm run benchmark:latency -- --runs 30 --rollout test/fixtures/zh-rollout.jsonl --out /private/tmp/talking-pets-zh-latency-baseline.json"
+          status: pass
+
+  - id: T090
+    type: pm
+    assignee: PM
+    owner_role: "相庭 愛"
+    status: active
+    reasoning_hint: default
+    objective: "実音声provider latency測定へ進む前に、Irodori smoke test、say実音声baseline、latency caveat/docs整理のどれを優先するか決める。"
+    expected_output:
+      - "Irodori serverを起動したので、localhost healthと短文1つの合成だけ試す。"
+      - "Irodoriはまだ触らず、macOS sayだけ実音声latency baselineを取る。"
+      - "実音声はまだ触らず、測定設計とREADME caveat整理を先にやる。"
+    receipt:
+      result: active
+      decision: waiting_for_real_audio_latency_scope
+      full_outcome_complete: false
+      summary: "dry-run baselineはT089で取得済み。次は実音声を伴う可能性があるため、provider別測定の範囲についてMaster判断待ち。"
+      note: "notes/T089-no-extra-install-latency-baseline.md"
 
   - id: T007
     type: worker
