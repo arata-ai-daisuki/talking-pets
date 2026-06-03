@@ -8,6 +8,12 @@ const publicFixtureRollouts = [
   "test/fixtures/assistant-rollout.jsonl",
   "test/fixtures/mixed-ja-en-rollout.jsonl",
   "test/fixtures/ko-zh-rollout.jsonl",
+  "test/fixtures/ja-rollout.jsonl",
+  "test/fixtures/en-rollout.jsonl",
+  "test/fixtures/ko-rollout.jsonl",
+  "test/fixtures/zh-rollout.jsonl",
+  "test/fixtures/zh-traditional-rollout.jsonl",
+  "test/fixtures/symbol-only-rollout.jsonl",
 ];
 
 function main(argv = process.argv.slice(2), input = null) {

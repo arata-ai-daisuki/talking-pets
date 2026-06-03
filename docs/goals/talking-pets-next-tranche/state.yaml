@@ -1,0 +1,232 @@
+version: 2
+
+goal:
+  title: "Talking Pets Next Tranche"
+  slug: "talking-pets-next-tranche"
+  kind: existing_plan
+  tranche: "Parallel-safe follow-up work after the initial STELLAVOX roadmap setup."
+  status: done
+  oracle:
+    signal: "Outreach strategy, next parallel tasks, and at least one verified slice exist with clear Master decision gates."
+    cadence: "after each Worker package and at final audit"
+    final_proof: "GoalBuddy state is valid, local reports exist, and the next active task is clear."
+  intake:
+    original_request: "SNS outreach strategy and parallel sub-agent work should be added to the roadmap and managed locally."
+    interpreted_outcome: "Talking Pets has a respectful outreach plan and an active next-tranche board for latency, multilingual, and growth work."
+    input_shape: existing_plan
+    audience: "ARATA, future contributors, and potential overseas users"
+    authority: requested
+    proof_type: artifact
+    completion_proof: "docs/research/sns-outreach-strategy.md and this GoalBuddy board exist, with verified changes and clear next tasks."
+    likely_misfire: "Creating a spammy attack list instead of a respectful manual outreach plan."
+    blind_spots_considered:
+      - "Outreach harassment risk"
+      - "Privacy and private data collection"
+      - "API billing and external text transfer"
+      - "Overclaiming unsupported language/provider status"
+    existing_plan_facts:
+      - "The roadmap operating model is approved."
+      - "Latency work can start first."
+      - "README Star guidance is approved if modest."
+      - "Parallel Scout/Worker reports should be stored locally."
+
+rules:
+  pm_owns_state: true
+  one_active_task: true
+  max_write_workers: 1
+  no_implementation_without_worker_or_pm_task: true
+  no_completion_without_judge_or_pm_audit: true
+  planning_is_not_completion: true
+  queued_required_worker_blocks_completion: true
+  continuous_until_full_outcome: true
+  missing_input_or_credentials_do_not_stop_goal: true
+  preserve_and_validate_existing_plan: true
+  intake_misfire_must_be_audited: true
+  goal_pressure_requires_oracle: true
+  no_completion_on_weak_proof: true
+
+agents:
+  scout: installed
+  worker: installed
+  judge: installed
+
+visual_board:
+  selected: local
+  local:
+    status: generated
+    url: "http://goalbuddy.localhost:41737/talking-pets-next-tranche/"
+    command: "npx goalbuddy board docs/goals/talking-pets-next-tranche"
+
+active_task: null
+
+tasks:
+  - id: T001
+    type: worker
+    assignee: Worker
+    owner_role: "星宮 未来"
+    status: done
+    reasoning_hint: default
+    objective: "Create a respectful SNS outreach strategy and public candidate list."
+    allowed_files:
+      - "docs/research/sns-outreach-strategy.md"
+      - "docs/ROADMAP.md"
+      - "docs/goals/talking-pets-next-tranche/state.yaml"
+    verify:
+      - "test -f docs/research/sns-outreach-strategy.md"
+      - "rg -n \"Outreach|Guardrails|Candidate|Template|SNS|Star|Codex|VTuber\" docs/research/sns-outreach-strategy.md docs/ROADMAP.md"
+    stop_if:
+      - "Need private personal data."
+      - "Need automated outreach."
+      - "Need Master approval for public posting."
+    receipt:
+      result: done
+      summary: "Added respectful manual SNS outreach strategy and candidate list."
+      changed_files:
+        - "docs/research/sns-outreach-strategy.md"
+        - "docs/ROADMAP.md"
+      commands:
+        - cmd: "test -f docs/research/sns-outreach-strategy.md"
+          status: pass
+        - cmd: "rg -n \"Outreach|Guardrails|Candidate|Template|SNS|Star|Codex|VTuber\" docs/research/sns-outreach-strategy.md docs/ROADMAP.md"
+          status: pass
+
+  - id: T002
+    type: worker
+    assignee: Worker
+    owner_role: "速水 光莉"
+    status: done
+    reasoning_hint: default
+    objective: "Extend latency profiling to TTS helpers or prepare a performance doc from the first benchmark slice."
+    allowed_files:
+      - "scripts/tts-kokoro.mjs"
+      - "scripts/tts-voicebox.mjs"
+      - "docs/performance.md"
+      - "docs/goals/talking-pets-next-tranche/notes/**"
+      - "docs/goals/talking-pets-next-tranche/state.yaml"
+    verify:
+      - "node --check scripts/tts-kokoro.mjs"
+      - "node --check scripts/tts-voicebox.mjs"
+      - "npm run benchmark:dry-run"
+    stop_if:
+      - "Need paid API execution."
+      - "Need provider helper changes larger than measurement-only."
+      - "Need files outside allowed_files."
+    receipt:
+      result: done
+      summary: "Added --profile-latency to TTS helper scripts and documented the performance measurement surface."
+      note: "notes/T002-tts-helper-latency.md"
+      changed_files:
+        - "scripts/tts-kokoro.mjs"
+        - "scripts/tts-voicebox.mjs"
+        - "docs/performance.md"
+        - "docs/goals/talking-pets-next-tranche/notes/T002-tts-helper-latency.md"
+      commands:
+        - cmd: "node --check scripts/tts-kokoro.mjs"
+          status: pass
+        - cmd: "node --check scripts/tts-voicebox.mjs"
+          status: pass
+        - cmd: "npm run benchmark:dry-run"
+          status: pass
+        - cmd: "node scripts/tts-kokoro.mjs --list-voices --profile-latency"
+          status: pass
+
+  - id: T003
+    type: worker
+    assignee: Worker
+    owner_role: "言守 詞葉"
+    status: done
+    reasoning_hint: default
+    objective: "Align multilingual fallback claims for ko, zh, and other without overclaiming support."
+    allowed_files:
+      - "scripts/pet-rollout-monitor.mjs"
+      - "README.md"
+      - "README.en.md"
+      - "FUTURE_PLAN.md"
+      - "presets/voices.json"
+      - "presets/speech-style.json"
+      - "test/fixtures/**"
+      - "docs/goals/talking-pets-next-tranche/notes/**"
+      - "docs/goals/talking-pets-next-tranche/state.yaml"
+    verify:
+      - "npm run test:dry-run"
+      - "rg -n \"ko|zh|Korean|Chinese|韓国語|中国語|fallback\" README.md README.en.md FUTURE_PLAN.md presets test"
+    stop_if:
+      - "Need dedicated provider selection."
+      - "Need first-class support claim without proof."
+    receipt:
+      result: done
+      summary: "Aligned Korean and Chinese as first-class fallback paths without claiming dedicated provider support."
+      note: "notes/T003-multilingual-fallback.md"
+      changed_files:
+        - "scripts/pet-rollout-monitor.mjs"
+        - "presets/voices.json"
+        - "presets/speech-style.json"
+        - "README.md"
+        - "README.en.md"
+        - "FUTURE_PLAN.md"
+        - "test/fixtures/ko-rollout.jsonl"
+        - "test/fixtures/zh-rollout.jsonl"
+        - "docs/goals/talking-pets-next-tranche/notes/T003-multilingual-fallback.md"
+      commands:
+        - cmd: "node --check scripts/pet-rollout-monitor.mjs"
+          status: pass
+        - cmd: "npm run test:dry-run"
+          status: pass
+        - cmd: "node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --speech-language ko --rollout test/fixtures/ko-rollout.jsonl"
+          status: pass
+        - cmd: "node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --speech-language zh --rollout test/fixtures/zh-rollout.jsonl"
+          status: pass
+        - cmd: "rg -n \"ko|zh|Korean|Chinese|韓国語|中国語|fallback\" README.md README.en.md FUTURE_PLAN.md presets test"
+          status: pass
+
+  - id: T004
+    type: scout
+    assignee: Scout
+    owner_role: "星宮 未来"
+    status: done
+    reasoning_hint: default
+    objective: "Manually verify the first 10 outreach candidates and prepare a weekly tracking table."
+    constraints:
+      - "Read-only except local notes."
+      - "No automated outreach."
+      - "No private data collection."
+    expected_output:
+      - "Verified public links"
+      - "Best surface for each target"
+      - "First message suggestion"
+    receipt:
+      result: done
+      summary: "Prepared a read-only manual verification memo for initial outreach candidates."
+      note: "notes/T004-outreach-scout.md"
+
+  - id: T999
+    type: judge
+    assignee: Judge
+    owner_role: "白瀬 怜奈"
+    status: done
+    reasoning_hint: default
+    objective: "Audit whether the next tranche has a valid report, safe outreach plan, and clear next implementation task."
+    inputs:
+      - "All receipts"
+      - "docs/research/sns-outreach-strategy.md"
+      - "state.yaml"
+    constraints:
+      - "Reject completion if outreach encourages spam or private data collection."
+    expected_output:
+      - "complete | not_complete"
+      - "full_outcome_complete: true | false"
+      - "missing evidence"
+    receipt:
+      result: done
+      decision: complete
+      full_outcome_complete: true
+      summary: "Final audit passed. Outreach strategy, helper latency profiling, and multilingual fallback alignment are in place."
+      note: "notes/T999-final-audit.md"
+
+checks:
+  dirty_fingerprint: unknown
+  last_verification:
+    result: pending
+    task: "T999"
+    commands:
+      - "node <goalbuddy-check> docs/goals/talking-pets-next-tranche/state.yaml"

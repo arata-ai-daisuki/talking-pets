@@ -900,3 +900,28 @@
 - デモ録画内のPetキャラクターは作者のローカル環境のもので、repoにはPet画像、Live2D素材、アバター素材、キャラクターアートを含めないことを明記した。
 - Talking Pets は公開Codex APIではなく、`state_5.sqlite` と rollout JSONL というローカル保存形式に依存するMVPであり、今後のCodexアップデートで壊れる可能性があることを明記した。
 - 互換性が怪しい時は `check.command` と `--once --dry-run` で最新assistant発話の取得可否を確認する流れを案内した。
+
+## 2026-06-02 STELLAVOX Roadmap And Latency Probe
+
+- Talking Pets の中長期ロードマップ管理として `docs/ROADMAP.md` を追加し、STELLAVOX / 星声機構のHQ体制、担当、進捗状態、guardrail、次PR候補を日本語で整理した。
+- GoalBuddy用に `docs/goals/talking-pets-roadmap/goal.md` / `state.yaml` / `notes/` を追加し、TTS、多言語、レイテンシ、SNS/成長、リスクをScoutしたreceiptを残した。
+- ロードマップでは local-first、no paid API by default、privacy first、small PR を強い制約として扱い、API TTSや外部endpointは明示opt-inかつMaster確認後にする方針にした。
+
+## 2026-06-02 Outreach, Helper Latency, And Multilingual Fallback
+
+- 次トランシェのGoalBuddy正本として `docs/goals/talking-pets-next-tranche/` を追加し、TTS helper計測、多言語fallback、SNS/outreach調査、final auditのreceiptを残した。
+- 韓国語と中国語を「専用TTS対応済み」とは言わず、`ko` / `zh` のfirst-class fallbackとして扱う方針を整理した。
+- `docs/research/sns-outreach-strategy.md` を追加し、X/GitHub/Redditでの手動outreach候補、送信テンプレ、週次リズム、スパム化しないguardrailを整理した。自動DM、自動reply、非公開連絡先収集はしない方針にした。
+
+## 2026-06-02 X Outreach Targets And Latency Benchmark Summary
+
+- `docs/research/x-outreach-targets.md` を追加し、Xで見るべき候補、返信できる文脈、DM可否、リプ文案、初週の手動運用を整理した。
+- 候補はCodex avatar / local TTS / AI VTuber / local-first agent UXに限定し、DMは相手が明示的に許可した場合か、公開返信後のフォローアップだけにした。
+- レイテンシ計測はPR1で `scripts/latency-benchmark.mjs` と `npm run benchmark:latency` として保存済み。PR3では運用記録とroadmap側のreceiptを保存する。
+
+## 2026-06-02 GoalBuddy Waves And Routing Diagnostics
+
+- GoalBuddy第三波として `docs/goals/talking-pets-growth-latency-wave/` を追加し、レイテンシ比較、day-1 outreach queue、TTS候補Scout、多言語routing Scout、final auditを完了させた。
+- `docs/goals/talking-pets-routing-diagnostics/` を追加し、routing diagnostics の設計・検証receiptを保存した。実装本体はPR1で保存済み。
+- `docs/goals/talking-pets-sherpa-onnx-design/` と `docs/research/sherpa-onnx-design.md` を追加し、`sherpa-onnx-node` を次のlocal TTS候補として設計だけ行った。依存追加、model download、API callはしていない。
+- npm cache権限問題のため一時的に静的看板を使ったが、その後 `npx goalbuddy board <absolute-goal-dir>` で local hub に `growth-latency-wave`、`routing-diagnostics`、`sherpa-onnx-design` を登録できることを確認した。

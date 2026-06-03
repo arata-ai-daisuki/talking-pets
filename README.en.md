@@ -5,6 +5,10 @@ Talking Pets is a small add-on that reads Codex Pet bubbles or the latest Codex 
 It reads local conversation logs and sends short spoken lines to VOICEVOX, Kokoro, or OS speech without patching Codex or modifying a signed app bundle.
 It does not replace your existing Codex Pet. It adds a local voice layer to the pet experience you already use.
 
+Start here: [Demo recording](https://github.com/arata-ai-daisuki/talking-pets/blob/main/docs/demo/talking-pets-overlay-2026-05-28.mov) / [Quick Start](#quick-start) / [Open an issue](https://github.com/arata-ai-daisuki/talking-pets/issues)
+
+If this looks useful, a GitHub Star helps guide the next TTS, multilingual, and latency improvements.
+
 ![Talking Pets demo preview](assets/demo-preview.png)
 
 ## Demo Recording
@@ -390,10 +394,16 @@ To force a spoken language from saved config, set `TALKING_PETS_SPEECH_LANGUAGE=
 
 - Language support prioritizes Japanese and English. Japanese routes to VOICEVOX, English routes to Kokoro.js, and Korean, Chinese, and other languages fall back to OS speech.
 - Language detection is a short character-based heuristic. Text with kana is treated as Japanese, text with Hangul is treated as Korean, and CJK text with only Han characters is treated as Chinese. Japanese kanji-only short text or symbol-only short text may route to a different TTS than expected.
-- Use `--speech-language ja|en|ko|zh|other` to force the spoken language.
+- Use `--speech-language ja|en|ko|zh|other` to force the spoken language. `ko` and `zh` are first-class fallback paths for now, not dedicated TTS provider support.
 - OS speech quality varies by platform. Talking Pets uses macOS `say`, Windows `System.Speech`, or Linux `espeak`.
 - `TALKING_PETS_SAY_VOICE` / `--voice` selects a macOS `say` voice. It is not used by the Windows / Linux OS speech fallback.
 - Windows and Linux use the experimental Node monitor path. PowerShell execution on a real Windows device and real Linux audio playback were not verified in this macOS environment.
+
+To inspect routing without playing audio, print JSON diagnostics:
+
+```bash
+node --no-warnings scripts/pet-rollout-monitor.mjs --once --diagnose-routing --rollout test/fixtures/ko-rollout.jsonl
+```
 
 Experimental Node monitor:
 
