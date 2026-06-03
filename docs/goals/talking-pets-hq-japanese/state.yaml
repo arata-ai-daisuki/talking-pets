@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T090
+active_task: T093
 
 tasks:
   - id: T001
@@ -2807,7 +2807,7 @@ tasks:
     type: pm
     assignee: PM
     owner_role: "相庭 愛"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "実音声provider latency測定へ進む前に、Irodori smoke test、say実音声baseline、latency caveat/docs整理のどれを優先するか決める。"
     expected_output:
@@ -2815,11 +2815,97 @@ tasks:
       - "Irodoriはまだ触らず、macOS sayだけ実音声latency baselineを取る。"
       - "実音声はまだ触らず、測定設計とREADME caveat整理を先にやる。"
     receipt:
-      result: active
-      decision: waiting_for_real_audio_latency_scope
+      result: done
+      decision: irodori_smoke_test_selected
       full_outcome_complete: false
-      summary: "dry-run baselineはT089で取得済み。次は実音声を伴う可能性があるため、provider別測定の範囲についてMaster判断待ち。"
-      note: "notes/T089-no-extra-install-latency-baseline.md"
+      summary: "MasterがIrodori server smoke testを依頼したため、worktree整理をT091、Irodori smoke testをT092へ進めた。"
+      note: "notes/T092-irodori-server-smoke-test.md"
+
+  - id: T091
+    type: worker
+    assignee: Worker
+    owner_role: "文月 栞里"
+    status: done
+    reasoning_hint: default
+    objective: "Irodori smoke test前に、閉じられるworktreeを整理する。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "未整理差分のあるworktreeは触らない。"
+      - "OPEN PRの作業worktreeは閉じない。"
+    receipt:
+      result: done
+      decision: clean_merged_worktrees_removed
+      full_outcome_complete: false
+      summary: "prunable worktree参照を掃除し、cleanでmain取り込み済みのf886/f024 worktreeをremoveした。dirty worktreeとPR #14 worktreeは残した。"
+      note: "notes/T091-worktree-cleanup-before-irodori-smoke.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T091-worktree-cleanup-before-irodori-smoke.md"
+      commands:
+        - cmd: "git worktree prune"
+          status: pass
+        - cmd: "git worktree remove /Users/tsukuyomi/.codex/worktrees/f886/talking-pets"
+          status: pass
+        - cmd: "git worktree remove /Users/tsukuyomi/.codex/worktrees/f024/talking-pets"
+          status: pass
+        - cmd: "git worktree list --porcelain"
+          status: pass
+
+  - id: T092
+    type: worker
+    assignee: Worker
+    owner_role: "速水 光莉"
+    status: done
+    reasoning_hint: default
+    objective: "Irodori-TTS-Serverをローカルで起動し、healthと短文合成のsmoke testを行う。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "repoに生成wavやIrodori server本体を含めない。"
+      - "再生はしない。"
+      - "public README claimはこのPRでは変更しない。"
+    receipt:
+      result: done
+      decision: irodori_health_and_warm_synthesis_passed
+      full_outcome_complete: false
+      summary: "Irodori-TTS-Serverを/private/tmpにcloneし、uvでlocalhost:8088起動。healthは37.2msでpass。初回ロード後、短文合成は29.45sでpassし、4.04sのwavを/private/tmpへ保存した。"
+      note: "notes/T092-irodori-server-smoke-test.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T092-irodori-server-smoke-test.md"
+      commands:
+        - cmd: "git clone https://github.com/Aratako/Irodori-TTS-Server.git /private/tmp/Irodori-TTS-Server"
+          status: pass
+        - cmd: "uv run --extra cpu python -m irodori_openai_tts --host 127.0.0.1 --port 8088"
+          status: pass
+        - cmd: "npm run tts:irodori -- --health --url http://127.0.0.1:8088 --profile-latency"
+          status: pass
+        - cmd: "npm run tts:irodori -- --url http://127.0.0.1:8088 --voice none --model irodori-tts --format wav --text <short-ja-smoke> --out /private/tmp/talking-pets-irodori-smoke.wav --profile-latency"
+          status: pass
+        - cmd: "file /private/tmp/talking-pets-irodori-smoke.wav"
+          status: pass
+        - cmd: "afinfo /private/tmp/talking-pets-irodori-smoke.wav"
+          status: pass
+
+  - id: T093
+    type: pm
+    assignee: PM
+    owner_role: "相庭 愛"
+    status: active
+    reasoning_hint: default
+    objective: "Irodori smoke test結果を受けて、cold start対策、warm latency改善、README caveat、次PR分割のどれを優先するか決める。"
+    expected_output:
+      - "cold start timeout対策を実装する。"
+      - "warm synthesis latencyをもう少し測る。"
+      - "README caveatとトラブルシュートを先に更新する。"
+      - "PR #14をmergeしてから次PRに分ける。"
+    receipt:
+      result: active
+      decision: waiting_for_post_irodori_smoke_priority
+      full_outcome_complete: false
+      summary: "Irodoriはhealthとwarm synthesisが通ったが、初回ロードは数分かかりclient timeoutしやすい。次はcold/warmを分けた改善かdocs整理を選ぶ。"
+      note: "notes/T092-irodori-server-smoke-test.md"
 
   - id: T007
     type: worker
