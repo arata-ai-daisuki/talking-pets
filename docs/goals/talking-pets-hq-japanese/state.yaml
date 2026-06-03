@@ -2845,9 +2845,9 @@ tasks:
       commands:
         - cmd: "git worktree prune"
           status: pass
-        - cmd: "git worktree remove /Users/tsukuyomi/.codex/worktrees/f886/talking-pets"
+        - cmd: "git worktree remove <codex-worktree>/f886/talking-pets"
           status: pass
-        - cmd: "git worktree remove /Users/tsukuyomi/.codex/worktrees/f024/talking-pets"
+        - cmd: "git worktree remove <codex-worktree>/f024/talking-pets"
           status: pass
         - cmd: "git worktree list --porcelain"
           status: pass
