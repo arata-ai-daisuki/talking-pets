@@ -21,8 +21,8 @@ Masterが手動でoutreachを送った後、反応や次アクションを忘れ
 
 | 日付 | 優先 | 相手/Project | Surface | URL | 送信文 | 状態 | 次アクション |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-|  | P0 | OpenClaw / Sogni Voice | X |  |  | 未送信 | 投稿文脈を確認 |
-|  | P0 | V1GPT | Reddit/GitHub/X確認後 |  |  | 未送信 | 公式XがなければReddit public threadのみ |
+| 2026-06-03 | P0 | OpenClaw / Sogni Voice | X public reply | https://x.com/krunkosaurus/status/2015719029911220531 | This is close to a small Codex companion experiment I'm building: local Codex output -> local TTS, without patching Codex.app. / I'm measuring latency now. For coding companions, which metric matters most: first audio, full utterance, or end-to-end turn time? | 送信済み | 返信がなければ2026-06-17以降まで触らない |
+| 2026-06-03 | P0 | V1GPT | Reddit public comment | https://www.reddit.com/r/codex/comments/1s0avrn/i_gave_codex_a_3d_avatar_v1gpt_is_now_my_voice/ | I found V1GPT while working on a smaller Codex Pet voice experiment. / Talking Pets avoids patching Codex and uses local session output -> local TTS. I'm trying to measure when a coding avatar feels useful instead of distracting. / Would love to compare notes if that sounds relevant. | 送信済み | 返信がなければ2026-06-17以降まで触らない |
 |  | P0 | V1R4 | Reddit/GitHub/X確認後 |  |  | 未送信 | GitHub Issueを宣伝欄にしない |
 
 ## 反応ログ
@@ -46,8 +46,8 @@ Masterが手動でoutreachを送った後、反応や次アクションを忘れ
 例:
 
 ```text
-送信日: 2026-06-02
-次に触ってよい日: 2026-06-16以降
+送信日: 2026-06-03
+次に触ってよい日: 2026-06-17以降
 ```
 
 ## 返信が来た時の基本方針

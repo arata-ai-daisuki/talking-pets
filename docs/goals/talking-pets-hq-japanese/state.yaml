@@ -2675,6 +2675,38 @@ tasks:
         - cmd: "rg -n \"T085|PR #10|287d9793b3f2993059ffcf78c224befb87aa44dd|pr10_merged_next_outreach_or_t061|T071|T007|T061\" docs/goals/talking-pets-hq-japanese/notes/T085-pr10-merged-next-outreach.md docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
 
+  - id: T086
+    type: worker
+    assignee: Worker
+    owner_role: "星宮 未来"
+    status: done
+    reasoning_hint: default
+    objective: "MasterがV1GPTとOpenClaw/Sogni VoiceへDay 1 outreachを手動送信したことをT007へ記録する。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "outreach送信を代行しない。"
+      - "返信送信しない。"
+      - "DM、follow、like、mentionをしない。"
+      - "初手Star依頼をしない。"
+      - "npm install、model download、API callはしない。"
+      - "active_taskはT061のままにする。"
+    receipt:
+      result: done
+      decision: outreach_day1_two_public_replies_sent_by_master
+      full_outcome_complete: false
+      summary: "MasterがV1GPTのReddit public commentとOpenClaw/Sogni VoiceのX public replyを手動送信した。T007へ2026-06-03付で2件を送信済み記録し、返信がなければ2026-06-17以降まで触らない方針にした。"
+      note: "notes/T086-outreach-day1-sent.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T007-outreach-tracking-template.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T086-outreach-day1-sent.md"
+      commands:
+        - cmd: "node <goalbuddy-check> docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+        - cmd: "rg -n \"T086|V1GPT|OpenClaw|送信済み|2026-06-03|2026-06-17|outreach_day1_two_public_replies_sent_by_master\" docs/goals/talking-pets-hq-japanese/notes/T007-outreach-tracking-template.md docs/goals/talking-pets-hq-japanese/notes/T086-outreach-day1-sent.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
   - id: T007
     type: worker
     assignee: Worker
