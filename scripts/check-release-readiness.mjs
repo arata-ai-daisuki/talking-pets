@@ -208,7 +208,7 @@ function main() {
   checkTextContains("README.md", "既知の `TALKING_PETS_*` キー");
   checkTextContains("README.md", "生成音声、録画、archive、macOS metadata、ローカルSQLite DB名、モデルファイル名");
   checkTextContains("README.md", "ローカルSQLite DB名");
-  checkTextContains("README.md", "--tts auto|voicevox|voicebox|kokoro|say");
+  checkTextContains("README.md", "--tts auto|voicevox|voicebox|kokoro|irodori|say");
   checkTextContains("README.md", "--speech-language auto|ja|en|ko|zh|other");
   checkTextContains("README.md", "--max-source-chars");
   checkTextContains("README.md", "--show-private-paths");
@@ -282,7 +282,7 @@ function main() {
   checkTextContains("README.en.md", "known `TALKING_PETS_*` keys");
   checkTextContains("README.en.md", "recording names, archive names, macOS metadata names");
   checkTextContains("README.en.md", "local SQLite DB names");
-  checkTextContains("README.en.md", "--tts auto|voicevox|voicebox|kokoro|say");
+  checkTextContains("README.en.md", "--tts auto|voicevox|voicebox|kokoro|irodori|say");
   checkTextContains("README.en.md", "--speech-language auto|ja|en|ko|zh|other");
   checkTextContains("README.en.md", "--max-source-chars");
   checkTextContains("README.en.md", "--show-private-paths");
@@ -711,7 +711,7 @@ function main() {
   checkTextDoesNotContain("install.command", "Saved config: $CONFIG_FILE");
   checkTextDoesNotContain("install.command", "npm install");
   checkTextContains("install.ps1", "TALKING_PETS_SPEECH_LANGUAGE");
-  checkTextContains("install.ps1", "ValidateSet(\"auto\", \"voicevox\", \"voicebox\", \"kokoro\", \"say\")");
+  checkTextContains("install.ps1", "ValidateSet(\"auto\", \"voicevox\", \"voicebox\", \"kokoro\", \"irodori\", \"say\")");
   checkTextContains("install.ps1", "ValidateSet(\"voicevox\", \"generic\")");
   checkTextContains("install.ps1", "TALKING_PETS_VOICEBOX_MODE");
   checkTextContains("install.ps1", "TALKING_PETS_VOICEBOX_PROFILE");
@@ -965,7 +965,7 @@ function main() {
   checkTextContains("test/monitor.test.mjs", "requires installer config checks on their native platforms");
   checkTextContains("test/monitor.test.mjs", "keeps installer output safe for public evidence");
   checkTextContains("test/monitor.test.mjs", "validates local env values before startup");
-  checkTextContains("scripts/pet-rollout-monitor.mjs", "--tts auto|voicevox|voicebox|kokoro|say");
+  checkTextContains("scripts/pet-rollout-monitor.mjs", "--tts auto|voicevox|voicebox|kokoro|irodori|say");
   checkTextContains("scripts/pet-rollout-monitor.swift", "choiceValue(\"--tts\"");
   checkTextContains("scripts/pet-rollout-monitor.swift", "choiceValue(\"--speech-language\"");
   checkTextContains("scripts/pet-rollout-monitor.mjs", "\"zh\"");

@@ -1,7 +1,7 @@
 param(
   [ValidateSet("en", "ja")]
   [string]$Language = "en",
-  [ValidateSet("auto", "voicevox", "voicebox", "kokoro", "say")]
+  [ValidateSet("auto", "voicevox", "voicebox", "kokoro", "irodori", "say")]
   [string]$Tts = "auto",
   [string]$VoicevoxUrl = "http://127.0.0.1:50021",
   [string]$VoicevoxSpeaker = "3",
@@ -12,7 +12,9 @@ param(
   [string]$KokoroVoice = "af_heart",
   [string]$SayVoice = "Kyoko",
   [ValidateSet("auto", "ja", "en", "ko", "zh", "other")]
-  [string]$SpeechLanguage = "auto"
+  [string]$SpeechLanguage = "auto",
+  [string]$IrodoriUrl = "http://127.0.0.1:8088",
+  [string]$IrodoriVoice = "none"
 )
 
 $ErrorActionPreference = "Stop"
@@ -97,6 +99,21 @@ TALKING_PETS_VOICEBOX_MODE="$VoiceboxMode"
   }
 }
 
+if ($Tts -eq "irodori") {
+  $IrodoriConfig = @"
+TALKING_PETS_IRODORI_URL="$IrodoriUrl"
+TALKING_PETS_IRODORI_VOICE="$IrodoriVoice"
+"@
+  try {
+    Invoke-RestMethod -Uri "$IrodoriUrl/health" -Method Get | Out-Null
+    Write-Localized "Irodori-TTS Server is reachable." "Irodori-TTS Server を確認しました。"
+  } catch {
+    Write-Localized "Irodori-TTS Server was not reachable. Start it separately and then run check.ps1." "Irodori-TTS Server に接続できませんでした。別途起動してから check.ps1 を実行してください。"
+  }
+} else {
+  $IrodoriConfig = ""
+}
+
 @"
 TALKING_PETS_UI_LANGUAGE="$Language"
 TALKING_PETS_TTS="$Tts"
@@ -104,6 +121,7 @@ TALKING_PETS_VOICEVOX_URL="$VoicevoxUrl"
 TALKING_PETS_VOICEVOX_SPEAKER="$VoicevoxSpeaker"
 $VoiceboxConfig
 TALKING_PETS_KOKORO_VOICE="$KokoroVoice"
+$IrodoriConfig
 TALKING_PETS_SAY_VOICE="$SayVoice"
 TALKING_PETS_LANGUAGE_ROUTE="$(if ($Tts -eq "auto") { "1" } else { "0" })"
 TALKING_PETS_SPEECH_LANGUAGE="$SpeechLanguage"

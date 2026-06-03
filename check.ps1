@@ -12,6 +12,8 @@ $AllowedConfigKeys = @(
   "TALKING_PETS_VOICEBOX_PROFILE",
   "TALKING_PETS_VOICEBOX_LANGUAGE",
   "TALKING_PETS_KOKORO_VOICE",
+  "TALKING_PETS_IRODORI_URL",
+  "TALKING_PETS_IRODORI_VOICE",
   "TALKING_PETS_SAY_VOICE",
   "TALKING_PETS_LANGUAGE_ROUTE",
   "TALKING_PETS_SPEECH_LANGUAGE"
@@ -163,6 +165,18 @@ if ($NodeMajor -ge 22) {
   }
 } else {
   Write-Host "config files: skipped -> Node.js 22 or later is required"
+}
+
+if ($env:TALKING_PETS_TTS -eq "irodori") {
+  $IrodoriUrl = if ($env:TALKING_PETS_IRODORI_URL) { $env:TALKING_PETS_IRODORI_URL } else { "http://127.0.0.1:8088" }
+  $IrodoriVoice = if ($env:TALKING_PETS_IRODORI_VOICE) { $env:TALKING_PETS_IRODORI_VOICE } else { "none" }
+  try {
+    Invoke-RestMethod -Uri "$IrodoriUrl/health" -Method Get | Out-Null
+    Write-Host "Irodori-TTS Server: ok ($IrodoriUrl)"
+    Write-Host "Irodori voice: $IrodoriVoice"
+  } catch {
+    Write-Host "Irodori-TTS Server: not reachable ($IrodoriUrl) -> start Irodori-TTS-Server or choose another TTS"
+  }
 }
 
 Write-Host ""

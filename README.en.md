@@ -31,6 +31,7 @@ This repository is a public-review-ready MVP. The macOS Swift monitor is the sta
 | Linux Node monitor | Experimental | Audio playback depends on `aplay`, `paplay`, `ffplay`, or `espeak`. |
 | VOICEVOX | Optional | Recommended for Japanese. Start VOICEVOX Engine separately. |
 | Kokoro.js | Optional | Mostly English voices. Downloads model files on first use. |
+| Irodori-TTS Server | Experimental optional | Japanese-oriented. Start Irodori-TTS-Server separately. |
 | OS speech | Fallback | Uses macOS `say`, Windows `System.Speech`, or Linux `espeak`. |
 
 ## Important Notes
@@ -77,6 +78,12 @@ For English voices:
 - `kokoro-js`
 - Network access for the first Kokoro model download
 
+For Irodori-TTS:
+
+- Irodori-TTS-Server
+- Irodori-TTS-Server running at `http://127.0.0.1:8088`
+- This is an experimental manually selected provider for Japanese input. It is not part of the default auto route.
+
 Windows experimental:
 
 - Node.js 22 or later
@@ -117,10 +124,12 @@ The macOS installer first asks for a display language (`en` / `ja`), then lets y
 | Kokoro.js | Local English-oriented voices | npm ci and first model download |
 | macOS say | Fastest no-extra-install check | None |
 | Voicebox-compatible endpoint | Custom or generic local voice endpoints | endpoint URL and any required profile/language |
+| Irodori-TTS Server | Try Irodori after starting it yourself | Irodori-TTS-Server |
 
 If you choose VOICEVOX, start VOICEVOX Engine first and make sure it is listening at `http://127.0.0.1:50021`.
 If you choose a Voicebox-compatible endpoint, the installer can save the endpoint URL, mode, profile, and language.
 Kokoro.js downloads model files on first use. The default cache path is `~/.cache/talking-pets/transformers`. The default q8 model is about 92 MB, so the first run can take a little while.
+Irodori-TTS Server is not bundled in this repository. Start it in a separate terminal first and confirm that its `/health` endpoint responds.
 
 ## Distribution
 
@@ -318,6 +327,13 @@ npm run monitor:node -- --tts kokoro --kokoro-voice af_heart --skip-existing
 npm run monitor:node -- --tts kokoro --list-voices
 ```
 
+Irodori-TTS Server:
+
+```bash
+npm run monitor:node -- --tts irodori --no-language-route --irodori-url http://127.0.0.1:8088 --irodori-voice none --skip-existing
+npm run tts:irodori -- --health --url http://127.0.0.1:8088
+```
+
 OS speech:
 
 ```bash
@@ -360,10 +376,11 @@ To force a spoken language from saved config, set `TALKING_PETS_SPEECH_LANGUAGE=
 - `node: not found`: install Node.js 22 or later. If you only want to try macOS say, choose `4` in the installer.
 - `node_modules: not found`: run `npm ci` if you use Kokoro.js.
 - `VOICEVOX: not reachable`: start VOICEVOX Engine and confirm the URL is `http://127.0.0.1:50021`.
+- `Irodori-TTS Server: not reachable`: start Irodori-TTS-Server and confirm the URL is `http://127.0.0.1:8088`.
 - `[wait] Codex thread not found`: confirm Codex Desktop or Codex CLI is saving local conversation logs.
 - `[wait] rollout unreadable`: confirm the rollout JSONL path exists and whether `CODEX_HOME` points somewhere custom.
 - `--interval` / `--rate` / `--max-source-chars` errors: pass positive numeric values. `--max-source-chars` accepts only positive integers.
-- `--tts` / `--speech-language` errors: use `--tts auto|voicevox|voicebox|kokoro|say` and `--speech-language auto|ja|en|ko|zh|other`.
+- `--tts` / `--speech-language` errors: use `--tts auto|voicevox|voicebox|kokoro|irodori|say` and `--speech-language auto|ja|en|ko|zh|other`.
 - `npm run check:config` URL / speaker / voice errors: `TALKING_PETS_VOICEVOX_URL` must be an `http://` or `https://` URL, `TALKING_PETS_VOICEVOX_SPEAKER` must be numeric, `TALKING_PETS_VOICEBOX_MODE` must be `voicevox` or `generic`, and Kokoro / say / Voicebox profile / language values must not be empty.
 - No sound: check OS volume, selected TTS, VOICEVOX/Kokoro state, and macOS output device.
 - Missing audio command: run `npm run check:audio` and check `afplay` / `say` on macOS, PowerShell / `System.Speech` on Windows, or `aplay` / `paplay` / `ffplay` / `espeak` on Linux.
@@ -520,6 +537,7 @@ window.dispatchEvent(new CustomEvent("codex-pet:message", {
 - Kokoro.js downloads model files on first use.
 - `.talking-pets.local.env` is parsed as `KEY="value"` data, and only known `TALKING_PETS_*` keys are accepted.
 - Do not attach local env files, credentials, local SQLite DBs such as `state_5.sqlite`, private rollout JSONL, generated audio, local recordings, archives, or downloaded model files to public issues or release evidence.
+- Irodori-TTS Server sends text to the locally running Irodori endpoint when selected.
 - If you configure a custom TTS endpoint, conversation text may be sent to that endpoint.
 
 ## Roadmap

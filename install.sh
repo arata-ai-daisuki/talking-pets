@@ -33,9 +33,12 @@ need_npm() {
 }
 
 write_config() {
+  local speech_language="${8:-auto}"
   local voicebox_mode="${9:-}"
   local voicebox_profile="${10:-}"
   local voicebox_language="${11:-}"
+  local irodori_url="${12:-}"
+  local irodori_voice="${13:-}"
   cat > "$CONFIG_FILE" <<EOF
 TALKING_PETS_UI_LANGUAGE="$7"
 TALKING_PETS_TTS="$1"
@@ -61,8 +64,18 @@ EOF
 TALKING_PETS_KOKORO_VOICE="$4"
 TALKING_PETS_SAY_VOICE="$5"
 TALKING_PETS_LANGUAGE_ROUTE="$6"
-TALKING_PETS_SPEECH_LANGUAGE="$8"
+TALKING_PETS_SPEECH_LANGUAGE="$speech_language"
 EOF
+  if [[ -n "$irodori_url" ]]; then
+    cat >> "$CONFIG_FILE" <<EOF
+TALKING_PETS_IRODORI_URL="$irodori_url"
+EOF
+  fi
+  if [[ -n "$irodori_voice" ]]; then
+    cat >> "$CONFIG_FILE" <<EOF
+TALKING_PETS_IRODORI_VOICE="$irodori_voice"
+EOF
+  fi
 }
 
 echo
@@ -83,6 +96,7 @@ echo "2) VOICEVOX / Zundamon Normal (recommended for Japanese)"
 echo "3) Kokoro.js (local, mostly English voices)"
 echo "4) Linux espeak (no npm model download)"
 echo "5) Voicebox-compatible endpoint"
+echo "6) Irodori-TTS Server (experimental, start server separately)"
 printf "Choice [1]: "
 read -r choice
 choice="${choice:-1}"
@@ -95,6 +109,8 @@ language_route="1"
 voicebox_mode="generic"
 voicebox_profile="default"
 voicebox_language="en"
+irodori_url="http://127.0.0.1:8088"
+irodori_voice="none"
 
 case "$choice" in
   1)
@@ -172,6 +188,21 @@ case "$choice" in
     read -r input
     voicebox_language="${input:-$voicebox_language}"
     write_config "voicebox" "$voicevox_url" "$voicevox_speaker" "$kokoro_voice" "$say_voice" "0" "$ui_lang" "auto" "$voicebox_mode" "$voicebox_profile" "$voicebox_language"
+    ;;
+  6)
+    need_node
+    printf "Irodori-TTS Server URL [%s]: " "$irodori_url"
+    read -r input
+    irodori_url="${input:-$irodori_url}"
+    printf "Irodori voice id [%s]: " "$irodori_voice"
+    read -r input
+    irodori_voice="${input:-$irodori_voice}"
+    if command -v curl >/dev/null 2>&1 && curl -fsS "$irodori_url/health" >/dev/null 2>&1; then
+      echo "Irodori-TTS Server is reachable."
+    else
+      echo "Irodori-TTS Server was not reachable. Start Irodori-TTS-Server and run ./check.sh later."
+    fi
+    write_config "irodori" "$voicevox_url" "$voicevox_speaker" "$kokoro_voice" "$say_voice" "0" "$ui_lang" "auto" "" "" "" "$irodori_url" "$irodori_voice"
     ;;
   *)
     echo "Unknown choice: $choice"
