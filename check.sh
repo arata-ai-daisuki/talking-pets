@@ -15,6 +15,8 @@ clear_config() {
   unset TALKING_PETS_VOICEBOX_PROFILE
   unset TALKING_PETS_VOICEBOX_LANGUAGE
   unset TALKING_PETS_KOKORO_VOICE
+  unset TALKING_PETS_IRODORI_URL
+  unset TALKING_PETS_IRODORI_VOICE
   unset TALKING_PETS_SAY_VOICE
   unset TALKING_PETS_LANGUAGE_ROUTE
   unset TALKING_PETS_SPEECH_LANGUAGE
@@ -33,7 +35,7 @@ load_config() {
       key="${BASH_REMATCH[1]}"
       value="${BASH_REMATCH[2]}"
       case "$key" in
-        TALKING_PETS_UI_LANGUAGE|TALKING_PETS_TTS|TALKING_PETS_VOICEVOX_URL|TALKING_PETS_VOICEVOX_SPEAKER|TALKING_PETS_VOICEBOX_MODE|TALKING_PETS_VOICEBOX_PROFILE|TALKING_PETS_VOICEBOX_LANGUAGE|TALKING_PETS_KOKORO_VOICE|TALKING_PETS_SAY_VOICE|TALKING_PETS_LANGUAGE_ROUTE|TALKING_PETS_SPEECH_LANGUAGE) ;;
+        TALKING_PETS_UI_LANGUAGE|TALKING_PETS_TTS|TALKING_PETS_VOICEVOX_URL|TALKING_PETS_VOICEVOX_SPEAKER|TALKING_PETS_VOICEBOX_MODE|TALKING_PETS_VOICEBOX_PROFILE|TALKING_PETS_VOICEBOX_LANGUAGE|TALKING_PETS_KOKORO_VOICE|TALKING_PETS_IRODORI_URL|TALKING_PETS_IRODORI_VOICE|TALKING_PETS_SAY_VOICE|TALKING_PETS_LANGUAGE_ROUTE|TALKING_PETS_SPEECH_LANGUAGE) ;;
         *)
           echo "config: unsupported key ($key)"
           clear_config
@@ -124,6 +126,16 @@ if command -v curl >/dev/null 2>&1 && curl -fsS "$voicevox_url/version" >/dev/nu
   echo "VOICEVOX speakers: npm run monitor:node -- --tts voicevox --list-voices"
 else
   echo "VOICEVOX: not reachable ($voicevox_url_for_log) -> start VOICEVOX Engine or choose another TTS"
+fi
+
+irodori_url="${TALKING_PETS_IRODORI_URL:-http://127.0.0.1:8088}"
+irodori_url_for_log="$(redact_endpoint_for_log "$irodori_url")"
+if [[ "${TALKING_PETS_TTS:-}" == "irodori" ]]; then
+  if command -v curl >/dev/null 2>&1 && curl -fsS "$irodori_url/health" >/dev/null 2>&1; then
+    echo "Irodori-TTS Server: ok ($irodori_url_for_log)"
+  else
+    echo "Irodori-TTS Server: not reachable ($irodori_url_for_log) -> start Irodori-TTS-Server or choose another TTS"
+  fi
 fi
 
 echo

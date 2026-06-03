@@ -16,6 +16,8 @@ const allowedEnvKeys = new Set([
   "TALKING_PETS_VOICEBOX_PROFILE",
   "TALKING_PETS_VOICEBOX_LANGUAGE",
   "TALKING_PETS_KOKORO_VOICE",
+  "TALKING_PETS_IRODORI_URL",
+  "TALKING_PETS_IRODORI_VOICE",
   "TALKING_PETS_SAY_VOICE",
   "TALKING_PETS_LANGUAGE_ROUTE",
   "TALKING_PETS_SPEECH_LANGUAGE",
@@ -224,7 +226,7 @@ function checkEnvFile(file, opts = {}) {
 
 function validateEnvValues(values, file = "env") {
   const errors = [];
-  if (values.TALKING_PETS_TTS && !["auto", "voicevox", "voicebox", "kokoro", "say"].includes(values.TALKING_PETS_TTS)) {
+  if (values.TALKING_PETS_TTS && !["auto", "voicevox", "voicebox", "kokoro", "irodori", "say"].includes(values.TALKING_PETS_TTS)) {
     errors.push(`${file} TALKING_PETS_TTS has unsupported value: ${values.TALKING_PETS_TTS}`);
   }
   if (values.TALKING_PETS_VOICEBOX_MODE && !["voicevox", "generic"].includes(values.TALKING_PETS_VOICEBOX_MODE)) {
@@ -242,10 +244,13 @@ function validateEnvValues(values, file = "env") {
   if (values.TALKING_PETS_VOICEVOX_URL && !isHTTPURL(values.TALKING_PETS_VOICEVOX_URL)) {
     errors.push(`${file} TALKING_PETS_VOICEVOX_URL must be a valid http(s) URL`);
   }
+  if (values.TALKING_PETS_IRODORI_URL && !isHTTPURL(values.TALKING_PETS_IRODORI_URL)) {
+    errors.push(`${file} TALKING_PETS_IRODORI_URL must be a valid http(s) URL`);
+  }
   if (values.TALKING_PETS_VOICEVOX_SPEAKER && !/^\d+$/.test(values.TALKING_PETS_VOICEVOX_SPEAKER)) {
     errors.push(`${file} TALKING_PETS_VOICEVOX_SPEAKER must be a numeric speaker/style id`);
   }
-  for (const key of ["TALKING_PETS_VOICEBOX_PROFILE", "TALKING_PETS_VOICEBOX_LANGUAGE", "TALKING_PETS_KOKORO_VOICE", "TALKING_PETS_SAY_VOICE"]) {
+  for (const key of ["TALKING_PETS_VOICEBOX_PROFILE", "TALKING_PETS_VOICEBOX_LANGUAGE", "TALKING_PETS_KOKORO_VOICE", "TALKING_PETS_IRODORI_VOICE", "TALKING_PETS_SAY_VOICE"]) {
     if (values[key] != null && values[key].trim() === "") {
       errors.push(`${file} ${key} must not be empty`);
     }

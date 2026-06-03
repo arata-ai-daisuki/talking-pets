@@ -88,6 +88,8 @@ case "$tts" in
       --tts auto \
       "${voicebox_config_args[@]}" \
       --kokoro-voice "${TALKING_PETS_KOKORO_VOICE:-af_heart}" \
+      --irodori-url "${TALKING_PETS_IRODORI_URL:-http://127.0.0.1:8088}" \
+      --irodori-voice "${TALKING_PETS_IRODORI_VOICE:-none}" \
       --voice "${TALKING_PETS_SAY_VOICE:-Kyoko}" \
       "${speech_args[@]}" \
       "${route_args[@]}" \
@@ -116,6 +118,14 @@ case "$tts" in
       --tts kokoro \
       --kokoro-voice "${TALKING_PETS_KOKORO_VOICE:-af_heart}" \
       "${speech_args[@]}" \
+      "${route_args[@]}" \
+      --skip-existing
+    ;;
+  irodori)
+    exec "$ROOT_DIR/scripts/pet-rollout-monitor.command" \
+      --tts irodori \
+      --irodori-url "${TALKING_PETS_IRODORI_URL:-http://127.0.0.1:8088}" \
+      --irodori-voice "${TALKING_PETS_IRODORI_VOICE:-none}" \
       "${route_args[@]}" \
       --skip-existing
     ;;
