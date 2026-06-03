@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T061
+active_task: T088
 
 tasks:
   - id: T001
@@ -1956,17 +1956,17 @@ tasks:
     type: pm
     assignee: PM
     owner_role: "相庭 愛"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "sherpa-onnx-nodeのpackage確認、model公開metadata、license公開情報調査後に、npm installだけ試すか、local TTSを保留してoutreach/README改善を優先するかMaster判断を受ける。"
     expected_output:
       - "package確認とlicense公開情報はOK。npm installだけ試して。model downloadはまだしない。"
       - "model downloadはまだしない。local TTSは保留してoutreachを優先して。"
     receipt:
-      result: active
-      decision: waiting_for_install_or_outreach_priority
+      result: done
+      decision: superseded_by_irodori_after_outreach
       full_outcome_complete: false
-      summary: "T053の公開情報調査ルートは完了。次はnpm installだけ試すか、local TTSを保留してoutreach/README改善を優先するかの2択。"
+      summary: "T053の公開情報調査ルートは完了し、Day 1 outreachはT086で送信済み。PR #13でIrodori-TTS Server providerが追加されたため、sherpa install判断はT087/T088へ引き継ぐ。"
       note: "notes/T061-local-tts-next-scope-after-license.md"
       changed_files:
         - "docs/goals/talking-pets-hq-japanese/notes/T061-local-tts-next-scope-after-license.md"
@@ -2706,6 +2706,68 @@ tasks:
           status: pass
         - cmd: "rg -n \"T086|V1GPT|OpenClaw|送信済み|2026-06-03|2026-06-17|outreach_day1_two_public_replies_sent_by_master\" docs/goals/talking-pets-hq-japanese/notes/T007-outreach-tracking-template.md docs/goals/talking-pets-hq-japanese/notes/T086-outreach-day1-sent.md docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
+
+  - id: T087
+    type: judge
+    assignee: Judge
+    owner_role: "白瀬 怜奈"
+    status: done
+    reasoning_hint: high
+    objective: "PR #13でIrodori-TTS Server providerが追加された後のlocal TTS現在地を確認し、T061のsherpa前提判断を更新する。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "Irodori serverを起動しない。"
+      - "音声生成しない。"
+      - "npm install、model download、API callはしない。"
+      - "README claim変更はしない。"
+    receipt:
+      result: done
+      decision: local_tts_scope_updated_after_irodori
+      full_outcome_complete: false
+      summary: "Irodoriはexperimental optional providerとして追加済みで、auto routingはja=VOICEVOX/en=Kokoro/ko-zh-other=say fallbackのまま。T061のsherpa install判断は古くなったためT088へ引き継いだ。"
+      note: "notes/T087-local-tts-current-state-after-irodori.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T087-local-tts-current-state-after-irodori.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T061-local-tts-next-scope-after-license.md"
+      commands:
+        - cmd: "npm run check:syntax"
+          status: pass
+        - cmd: "npm run test:dry-run"
+          status: pass
+        - cmd: "node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --rollout test/fixtures/ja-rollout.jsonl"
+          status: pass
+        - cmd: "node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --rollout test/fixtures/en-rollout.jsonl"
+          status: pass
+        - cmd: "node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --rollout test/fixtures/ko-rollout.jsonl"
+          status: pass
+        - cmd: "node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --rollout test/fixtures/zh-rollout.jsonl"
+          status: pass
+        - cmd: "node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --rollout test/fixtures/zh-traditional-rollout.jsonl"
+          status: pass
+        - cmd: "node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --rollout test/fixtures/symbol-only-rollout.jsonl"
+          status: pass
+
+  - id: T088
+    type: pm
+    assignee: PM
+    owner_role: "相庭 愛"
+    status: active
+    reasoning_hint: default
+    objective: "Irodori追加後、返信待ち中に進めるlocal TTS次アクションを、Irodori smoke test、no-extra-install latency baseline、sherpa後回しdocs整理の3択からMaster判断する。"
+    expected_output:
+      - "Irodori-TTS Serverはローカルで起動した。health checkと短文1つの合成だけ試して。model取得や外部APIは追加しない。"
+      - "Irodoriはまだ起動しない。追加インストールなしでsay/autoのlatency baselineだけ測って。"
+      - "sherpa-onnx-nodeは後回し。Irodoriと既存providerのdocs/issue/README整理を優先して。"
+    receipt:
+      result: active
+      decision: waiting_for_next_local_tts_scope_after_irodori
+      full_outcome_complete: false
+      summary: "あいちゃん推奨はno-extra-install latency baseline。Irodori server起動、音声生成、npm install、model download、API callはまだしていない。"
+      note: "notes/T088-next-local-tts-scope-after-irodori.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T088-next-local-tts-scope-after-irodori.md"
 
   - id: T007
     type: worker
