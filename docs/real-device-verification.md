@@ -104,6 +104,17 @@ Use this order when a contributor shares Korean, Chinese, or another fallback-la
 
 Do not wait on outside replies before continuing safe internal work. Missing or partial reports should stay as intake/follow-up evidence, not as a blocker.
 
+### Multilingual Intake Routing Matrix
+
+Use this matrix after the first classification:
+
+| Incoming report | Record in | Do not do |
+| --- | --- | --- |
+| `fallback-only` with OS speech and one audible line | Platform verification issue and `docs/verification-status.md` as routing/audio evidence. | Do not change README wording to dedicated provider support. |
+| `provider-specific` with a named local TTS path and audible result | Platform verification issue, `docs/verification-status.md`, and the Dedicated Provider Evidence Checklist. | Do not skip license/cache/runtime review. |
+| Provider advice about runtime, cache, license, measurement, or platform behavior | One-sentence technical summary in `docs/research/tts-provider-comparison.md#provider-feedback-intake`. | Do not paste private messages, full threads, generated audio, or contact details. |
+| Partial, missing, or unclear report | Follow-up notes only, plus a request for the Minimal Multilingual Report Form if appropriate. | Do not treat it as evidence for public support wording. |
+
 ## Quick Contributor Request
 
 When asking someone else to verify Windows or Linux, send them this short checklist:

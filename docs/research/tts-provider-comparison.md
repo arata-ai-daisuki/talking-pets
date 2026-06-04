@@ -322,6 +322,8 @@ Design note: `docs/research/melotts-design-note.md`
 
 Use this table when someone replies to the provider feedback ask. Record only public or voluntarily shared technical guidance; do not collect private contact details or generated audio files.
 
+Multilingual intake rule: fallback-only OS speech reports stay in verification status as routing/audio evidence. Add a Provider Feedback Intake row only when the report changes a provider assumption such as runtime setup, cache ownership, license, measurement shape, or platform friction.
+
 | Date | Source | Provider | Feedback Area | Evidence Summary | Decision Impact | Follow-Up |
 | --- | --- | --- | --- | --- | --- | --- |
 |  | Public URL or `private summary approved by Master` | Piper / MeloTTS / sherpa-onnx / other | license / runtime / cache / measurement / platform | One-sentence technical summary only | keep design-only / update design note / ask Master / no action | Link to Search Review Log row or next note |

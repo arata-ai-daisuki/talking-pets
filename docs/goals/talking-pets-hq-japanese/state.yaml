@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T192
+active_task: T193
 
 tasks:
   - id: T001
@@ -6166,7 +6166,7 @@ tasks:
     type: pm
     assignee: PM
     owner_role: "言守 詞葉"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "外部証跡が届いた時に、fallback-only / provider-specific / provider feedback intakeの混線がない状態を保つ。"
     allowed_files:
@@ -6182,11 +6182,53 @@ tasks:
       - "生成音声、private logs、private DM本文をdocsへ貼らない。"
       - "provider実装、model download、API callをしない。"
     receipt:
-      result: active
+      result: done
       decision: multilingual_intake_follow_up
-      full_outcome_complete: false
-      summary: "次は多言語証跡の記録先とstop lineを再確認する。"
+      full_outcome_complete: true
+      summary: "real-device-verificationとverification-statusにMultilingual Intake Routing Matrixを追加し、fallback-only、provider-specific、provider feedback、partial/private reportの記録先とREADME wording停止線を明確にした。"
       note: "notes/T192-multilingual-intake-follow-up.md"
+      changed_files:
+        - "docs/real-device-verification.md"
+        - "docs/verification-status.md"
+        - "docs/research/tts-provider-comparison.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T192-multilingual-intake-follow-up.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T193-local-tts-approval-check.md"
+        - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+        - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n 'Multilingual Intake Routing Matrix|fallback-only OS speech|provider-specific local TTS|active_task: T193|multilingual_intake_follow_up|local_tts_approval_check' docs/real-device-verification.md docs/verification-status.md docs/research/tts-provider-comparison.md docs/goals/talking-pets-hq-japanese/notes/T192-multilingual-intake-follow-up.md docs/goals/talking-pets-hq-japanese/notes/T193-local-tts-approval-check.md docs/goals/talking-pets-hq-japanese/hq-backlog-board.md docs/goals/talking-pets-hq-japanese/activity-index.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+        - cmd: "npm run check:docs"
+          status: pass
+
+  - id: T193
+    type: pm
+    assignee: PM
+    owner_role: "歌澄 音羽 / 白瀬 怜奈"
+    status: active
+    reasoning_hint: default
+    objective: "scorecard gapはdesign-note質問へ落ちたので、実験へ進む場合のMaster承認範囲を確認できる形にする。"
+    allowed_files:
+      - "docs/research/tts-provider-comparison.md"
+      - "docs/research/sherpa-onnx-design.md"
+      - "docs/research/melotts-design-note.md"
+      - "docs/research/piper-design-note.md"
+      - "docs/research/api-tts-design-note.md"
+      - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+      - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "Master承認なしにdependency install、model download、API callをしない。"
+      - "sherpa/MeloTTS/Piper/API TTSを対応済みproviderとしてclaimしない。"
+      - "実験を始める場合は別PRに分ける。"
+    receipt:
+      result: active
+      decision: local_tts_approval_check
+      full_outcome_complete: false
+      summary: "次はLocal TTS実験へ進む場合のapproval-only cardを準備する。"
+      note: "notes/T193-local-tts-approval-check.md"
       changed_files:
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands: []

@@ -6,9 +6,9 @@
 
 ## Scope
 
-- verification-statusとreal-device-verificationの多言語handling orderを再確認する。
-- provider-specific報告が来た時の記録先を確認する。
-- README support wordingを変える前のstop lineを維持する。
+- verification-statusとreal-device-verificationの多言語handling orderを再確認した。
+- provider-specific報告が来た時の記録先を確認した。
+- README support wordingを変える前のstop lineを維持した。
 
 ## Stop Lines
 
@@ -20,5 +20,5 @@
 
 - decision: `multilingual_intake_follow_up`
 - owner: `言守 詞葉`
-- status: active
-- next: verify multilingual intake links and stop lines before any claim change.
+- status: done
+- next: local TTS approval check.
