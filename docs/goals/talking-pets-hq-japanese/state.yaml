@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T195
+active_task: T196
 
 tasks:
   - id: T001
@@ -6285,7 +6285,7 @@ tasks:
     type: pm
     assignee: PM
     owner_role: "文月 栞里 / 白瀬 怜奈"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "多言語intakeとprovider approvalの波が進んだので、Issue #23-#26の受け入れ状態をclaim変更なしで見直せるようにする。"
     allowed_files:
@@ -6303,12 +6303,55 @@ tasks:
       - "実機証跡なしにWindows/Linuxをstableへ上げない。"
       - "VOICEVOX/Irodoriの1件データを性能保証にしない。"
     receipt:
-      result: active
+      result: done
       decision: verification_issue_watch
-      full_outcome_complete: false
-      summary: "次はIssue #23-#26の受け入れ導線をclaim変更なしで確認する。"
+      full_outcome_complete: true
+      summary: "Issue #23-#26をgh issue viewで確認し、4件すべてopen/comment 0のため、verification-statusにIssue Watch Snapshotを追加した。返信やclaim変更は不要で、Windows/Linux experimental、VOICEVOX/Irodori reference-only境界を維持した。"
       note: "notes/T195-verification-issue-watch.md"
       changed_files:
+        - "docs/verification-status.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T195-verification-issue-watch.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T196-release-proof-package-refresh.md"
+        - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+        - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "gh issue view 23 --json number,title,state,comments,updatedAt,url && gh issue view 24 --json number,title,state,comments,updatedAt,url && gh issue view 25 --json number,title,state,comments,updatedAt,url && gh issue view 26 --json number,title,state,comments,updatedAt,url"
+          status: pass
+        - cmd: "rg -n 'Issue Watch Snapshot|#23 Linux audible TTS|#24 Windows audible TTS|#25 Irodori latency|#26 VOICEVOX latency|active_task: T196|verification_issue_watch|release_proof_package_refresh' docs/verification-status.md docs/goals/talking-pets-hq-japanese/notes/T195-verification-issue-watch.md docs/goals/talking-pets-hq-japanese/notes/T196-release-proof-package-refresh.md docs/goals/talking-pets-hq-japanese/hq-backlog-board.md docs/goals/talking-pets-hq-japanese/activity-index.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+        - cmd: "npm run check:docs"
+          status: pass
+
+  - id: T196
+    type: pm
+    assignee: PM
+    owner_role: "文月 栞里 / 白瀬 怜奈"
+    status: active
+    reasoning_hint: default
+    objective: "routing/evidence/approvalの波が進んだので、README claimを変えずに公開証跡リンクを確認できる状態にする。"
+    allowed_files:
+      - "docs/verification-status.md"
+      - "docs/real-device-verification.md"
+      - "docs/contributor-entrypoints.md"
+      - "README.md"
+      - "README.en.md"
+      - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+      - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "Windows/Linuxを実機証跡なしにstableへ上げない。"
+      - "VOICEVOX/Irodoriの性能保証claimを追加しない。"
+      - "releaseやGitHub issueへ自動投稿しない。"
+    receipt:
+      result: active
+      decision: release_proof_package_refresh
+      full_outcome_complete: false
+      summary: "次はREADME claimを変えずに公開証跡リンクを確認する。"
+      note: "notes/T196-release-proof-package-refresh.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T196-release-proof-package-refresh.md"
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands: []
 

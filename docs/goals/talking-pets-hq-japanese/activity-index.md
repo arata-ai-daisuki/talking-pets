@@ -8,14 +8,14 @@ This page is a readable snapshot of the Japanese HQ state. The authoritative sou
 
 - Board URL: `http://goalbuddy.localhost:41737/talking-pets-hq-japanese/`
 - Local board files: `docs/goals/talking-pets-hq-japanese/.goalbuddy-board/`
-- Current active task: `T195`
-- Current focus: Issue #23-#26の受け入れ導線をclaim変更なしで確認する。
+- Current active task: `T196`
+- Current focus: 公開証跡リンクをREADME claim変更なしで確認する。
 
 ## Kanban Snapshot
 
 | Column | Count | Meaning |
 | --- | ---: | --- |
-| Done | 195 | 完了済みの小PR、調査、判断カード、検証receipt。 |
+| Done | 196 | 完了済みの小PR、調査、判断カード、検証receipt。 |
 | Active | 1 | いまHQが追っている作業。 |
 | Blocked | 0 | 同じ停止条件が継続しており、Master判断なしに進めないもの。 |
 
@@ -29,7 +29,7 @@ This page is a readable snapshot of the Japanese HQ state. The authoritative sou
 | 歌澄 音羽 | Voice Provider Lead | 30 | 0 | TTS provider、VOICEVOX/Irodori/sherpa/Melo/API設計。 |
 | 言守 詞葉 | Multilingual Lead | 18 | 0 | ko/zh fallback、多言語fixture、dedicated provider evidence境界。 |
 | 速水 光莉 | Latency Lead | 14 | 0 | latency診断、RTF、table helper、測定読み方。 |
-| 文月 栞里 | Docs / Operations Lead | 11 | 1 | docs整備、hygiene、activity index、運用導線。 |
+| 文月 栞里 | Docs / Operations Lead | 12 | 1 | docs整備、hygiene、activity index、運用導線。 |
 | 愛坂 あい | Pet / Persona Lead | 2 | 0 | キャラクター/会話体験の方向づけ。 |
 | 月城 奏 | Release Support | 1 | 0 | release補助。 |
 
@@ -82,7 +82,8 @@ This page is a readable snapshot of the Japanese HQ state. The authoritative sou
 | `T192` | 言守 詞葉 | done | 多言語証跡の記録先とstop lineを整理。 |
 | `T193` | 歌澄 音羽 / 白瀬 怜奈 | done | Local TTS approval-only cardを追加。 |
 | `T194` | 星宮 未来 | done | Outreach reply intake playbookを追加。 |
-| `T195` | 文月 栞里 / 白瀬 怜奈 | active | Verification issue watchを準備中。 |
+| `T195` | 文月 栞里 / 白瀬 怜奈 | done | Issue #23-#26のwatch snapshotを追加。 |
+| `T196` | 文月 栞里 / 白瀬 怜奈 | active | Release proof package refreshを準備中。 |
 
 ## Where To Look Next
 
