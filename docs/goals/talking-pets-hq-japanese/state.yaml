@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T093
+active_task: T095
 
 tasks:
   - id: T001
@@ -2892,7 +2892,7 @@ tasks:
     type: pm
     assignee: PM
     owner_role: "相庭 愛"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "Irodori smoke test結果を受けて、cold start対策、warm latency改善、README caveat、次PR分割のどれを優先するか決める。"
     expected_output:
@@ -2901,11 +2901,67 @@ tasks:
       - "README caveatとトラブルシュートを先に更新する。"
       - "PR #14をmergeしてから次PRに分ける。"
     receipt:
-      result: active
-      decision: waiting_for_post_irodori_smoke_priority
+      result: done
+      decision: readme_caveat_selected
       full_outcome_complete: false
-      summary: "Irodoriはhealthとwarm synthesisが通ったが、初回ロードは数分かかりclient timeoutしやすい。次はcold/warmを分けた改善かdocs整理を選ぶ。"
-      note: "notes/T092-irodori-server-smoke-test.md"
+      summary: "おすすめとして、実装前にIrodoriのcold start / warm synthesis caveatをREADMEへ明記する方針を選んだ。"
+      note: "notes/T094-irodori-readme-caveat.md"
+
+  - id: T094
+    type: worker
+    assignee: Worker
+    owner_role: "言守 詞葉"
+    status: done
+    reasoning_hint: default
+    objective: "Irodori smoke test結果をREADME / README.enへ反映し、cold startとwarm synthesisの期待値を正直に書く。"
+    allowed_files:
+      - "README.md"
+      - "README.en.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "Irodoriを速いproviderとして宣伝しない。"
+      - "生成wavやlocal model pathをrepoへ入れない。"
+      - "新しい実装変更は混ぜない。"
+    receipt:
+      result: done
+      decision: irodori_latency_caveat_documented
+      full_outcome_complete: false
+      summary: "READMEとREADME.enに、/healthはモデルロード前でも返ること、初回合成はモデル取得/runtime loadで数分かかること、warm synthesisでも数十秒かかり得ること、timeout時の確認点を追加した。"
+      note: "notes/T094-irodori-readme-caveat.md"
+      changed_files:
+        - "README.md"
+        - "README.en.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T094-irodori-readme-caveat.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "npm run check:docs"
+          status: pass
+        - cmd: "npm run check:release"
+          status: pass
+        - cmd: "npm run check:syntax"
+          status: pass
+        - cmd: "npm run test:dry-run"
+          status: pass
+
+  - id: T095
+    type: pm
+    assignee: PM
+    owner_role: "相庭 愛"
+    status: active
+    reasoning_hint: default
+    objective: "Irodori caveat PR後に、cold start timeout対策、warm latency追加測定、またはoutreach返信待ち運用のどれを次にするか決める。"
+    expected_output:
+      - "cold start timeout対策を実装する。"
+      - "warm synthesis latencyを複数回測る。"
+      - "outreach返信待ちに戻り、反応ログだけ見る。"
+      - "README caveat PRをmergeしてから次へ進む。"
+    receipt:
+      result: active
+      decision: waiting_for_next_after_irodori_caveat
+      full_outcome_complete: false
+      summary: "Irodori caveatは小さくPR化する。次はmerge後にcold/warm改善かoutreach運用へ戻るかを選ぶ。"
+      note: "notes/T094-irodori-readme-caveat.md"
 
   - id: T007
     type: worker
