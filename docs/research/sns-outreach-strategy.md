@@ -203,6 +203,8 @@ Cycle watch: 2026-06-05. V1GPT still returns a Reddit verification page and Open
 
 Boundary watch: 2026-06-05. V1GPT still returns a Reddit verification page, and OpenClaw / Sogni Voice still returns X logged-out app-shell HTML in the public fetch. Keep the outreach lane in wait state with insufficient public evidence; no send, nudge, DM, mention, follow, like, or Star ask was made.
 
+Boundary watch 2: 2026-06-05. V1GPT still returns a Reddit verification page, and OpenClaw / Sogni Voice still returns X logged-out app-shell HTML in the public fetch. Keep the outreach lane in wait state with insufficient public evidence; no send, nudge, DM, mention, follow, like, or Star ask was made.
+
 Keep V1R4 as `reply later` until a current public thread clearly invites related project examples.
 
 ### Public Proof Route Selector

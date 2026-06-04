@@ -21,5 +21,8 @@ T235のmultilingual verification boundary watch後に、outreach waiting laneへ
 
 - decision: `outreach_waiting_lane_boundary_watch`
 - owner: `星宮 未来 / 白瀬 怜奈`
-- status: active
-- next: recheck outreach waiting lane without auto-send or nudge.
+- status: done
+- result: V1GPT public Reddit fetch still returned a verification page; OpenClaw / Sogni Voice X fetch still returned logged-out app-shell HTML without usable reply text.
+- kept: both sent rows remain `wait`; do not infer reply or no-reply from unreadable public pages.
+- not done: automated outreach, manual nudge, DM, mention, follow, like, Star ask, private contact storage, DM text storage.
+- next: return to local TTS boundary watch without install, model download, API call, or support-claim changes.
