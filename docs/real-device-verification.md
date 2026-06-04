@@ -12,6 +12,8 @@ CI, fixture rollouts, `npm run check:compat -- --no-state`, and sanitized dry-ru
 
 For latency reports, include generated audio duration when possible. Real-time factor, or RTF, is `synthesis time / audio duration`. RTF below `1.0x` means synthesis finished faster than the produced audio duration. RTF above `1.0x` means synthesis took longer than the audio duration.
 
+When reading a generated latency table, compare `total` for user-visible elapsed time, `synthesis` for engine generation time, `audioDuration` for produced WAV length, and `rtf` for whether synthesis is faster or slower than the generated audio. Treat rows without `audioDuration` or `rtf` as partial latency evidence.
+
 ## Quick Contributor Request
 
 When asking someone else to verify Windows or Linux, send them this short checklist:
