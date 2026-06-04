@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T112
+active_task: T116
 
 tasks:
   - id: T001
@@ -3455,7 +3455,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "星宮 未来"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "協力者が入りやすいgood first issue相当の入口をREADME/CONTRIBUTING/docsに作る。"
     allowed_files:
@@ -3477,10 +3477,10 @@ tasks:
       - "test -f docs/contributor-entrypoints.md"
       - "rg -n \"Windows real-device|Linux real-device|VOICEVOX latency|Irodori latency|good first issue|Platform verification\" docs/contributor-entrypoints.md README.md README.en.md CONTRIBUTING.md"
     receipt:
-      result: active
+      result: done
       decision: contributor_entrypoints_added
       full_outcome_complete: false
-      summary: "協力者入口docsを追加し、README日英とCONTRIBUTINGから誘導した。"
+      summary: "協力者入口docsを追加し、README日英とCONTRIBUTINGから誘導した。PR #22でmainへmerge済み。"
       note: "notes/T111-contributor-entrypoints.md"
       changed_files:
         - "README.md"
@@ -3496,6 +3496,116 @@ tasks:
         - cmd: "npm run check:pack"
           status: pass
         - cmd: "rg -n \"Windows real-device|Linux real-device|VOICEVOX latency|Irodori latency|good first issue|Platform verification\" docs/contributor-entrypoints.md README.md README.en.md CONTRIBUTING.md"
+          status: pass
+
+  - id: T113
+    type: pm
+    assignee: PM
+    owner_role: "相庭 愛"
+    status: done
+    reasoning_hint: default
+    objective: "READMEの協力者募集導線から、外部協力者が参加しやすいGitHub Issueを実際に作成する。"
+    constraints:
+      - "自動投稿、自動DMはしない。"
+      - "npm install、model download、API callはしない。"
+      - "active_taskはT061のままにする。"
+    receipt:
+      result: done
+      decision: contributor_issues_opened
+      full_outcome_complete: false
+      summary: "Windows、Linux、Irodori別環境、VOICEVOX別端末の検証Issueを4本作成し、verification/latency/windows/linux/tts labelsも追加した。active_taskはT061のまま。"
+      note: "notes/T113-contributor-issues-opened.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T113-contributor-issues-opened.md"
+      issue_urls:
+        - "https://github.com/arata-ai-daisuki/talking-pets/issues/23"
+        - "https://github.com/arata-ai-daisuki/talking-pets/issues/24"
+        - "https://github.com/arata-ai-daisuki/talking-pets/issues/25"
+        - "https://github.com/arata-ai-daisuki/talking-pets/issues/26"
+      commands:
+        - cmd: "gh issue list --state open --limit 20"
+          status: pass
+
+  - id: T114
+    type: worker
+    assignee: Worker
+    owner_role: "星宮 未来"
+    status: done
+    reasoning_hint: default
+    objective: "Issue #23-#26を使い、Masterが手動投稿できる協力者募集SNS文面を作る。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "自動投稿、自動DM、follow、like、mention代行はしない。"
+      - "初手でStar依頼しない。"
+      - "未検証の性能claimをしない。"
+      - "active_taskはT061のままにする。"
+    receipt:
+      result: done
+      decision: contributor_call_copy_ready
+      full_outcome_complete: false
+      summary: "Windows/Linux/VOICEVOX/Irodoriの検証Issueへ誘導する英語post、英語reply版、日本語post、日本語短縮版を作成した。投稿はしていない。"
+      note: "notes/T114-contributor-call-copy-pack.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T114-contributor-call-copy-pack.md"
+      commands:
+        - cmd: "rg -n \"T114|help-wanted|Windows 11|Ubuntu 24.04|VOICEVOX|Irodori|Star依頼しない|contributor_call_copy_ready\" docs/goals/talking-pets-hq-japanese/notes/T114-contributor-call-copy-pack.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T115
+    type: judge
+    assignee: Judge
+    owner_role: "白瀬 怜奈"
+    status: done
+    reasoning_hint: high
+    objective: "Issue #23-#26に検証報告が来た時、採用できる証拠と追加確認が必要な報告を判定できるplaybookを作る。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "Issue返信しない。"
+      - "外部コメントが来る前にverification-statusへ反映しない。"
+      - "private pathやconversation textを採用しない。"
+      - "active_taskはT061のままにする。"
+    receipt:
+      result: done
+      decision: verification_intake_playbook_ready
+      full_outcome_complete: false
+      summary: "Issue #23-#26の報告を採用できる条件、採用しない条件、追加情報/sanitize/latency確認/採用時の返信テンプレを作成した。"
+      note: "notes/T115-verification-intake-playbook.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T115-verification-intake-playbook.md"
+      commands:
+        - cmd: "rg -n \"T115|採用できる報告|まだ採用しない|sanitize|latency|verification_intake_playbook_ready\" docs/goals/talking-pets-hq-japanese/notes/T115-verification-intake-playbook.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T116
+    type: pm
+    assignee: PM
+    owner_role: "相庭 愛"
+    status: active
+    reasoning_hint: default
+    objective: "T112-T115で整えた協力者入口、実Issue、募集文面、採用基準を使い、公開検証ループを運用する。"
+    expected_output:
+      - "Master投稿URLをT007へ記録する。"
+      - "Issue #23-#26の報告をT115基準で判定する。"
+      - "採用できる検証結果だけdocs/verification-status.mdへ小PRで反映する。"
+    constraints:
+      - "自動投稿、自動DM、返信代行はしない。"
+      - "model download、npm install、API callはしない。"
+      - "性能保証として書かない。"
+    receipt:
+      result: active
+      decision: public_verification_loop_ready
+      full_outcome_complete: false
+      summary: "協力者入口、実Issue、SNS募集文面、採用基準が揃ったため、次はMaster手動投稿とIssue報告待ちの公開検証ループをactiveにする。"
+      note: "notes/T116-next-public-verification-loop.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T116-next-public-verification-loop.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n \"active_task: T116|T116|public_verification_loop_ready|自動投稿|docs/verification-status.md\" docs/goals/talking-pets-hq-japanese/notes/T116-next-public-verification-loop.md docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
 
   - id: T007
