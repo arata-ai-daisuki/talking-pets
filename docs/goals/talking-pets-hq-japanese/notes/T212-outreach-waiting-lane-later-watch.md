@@ -9,6 +9,9 @@ T211の多言語検証follow-up後に、OpenClaw / V1GPTなどの返信待ちout
 - 送信済みoutreachの待機状態を確認する。
 - 返信がない場合は、再送・催促なしで待機を維持する。
 - 返信がある場合だけ、public-safe intakeまたはProvider Feedback Intakeへ回す。
+- V1GPT Reddit public HTMLを確認し、取得範囲では `Talking Pets` / `arata` / `local session` が見当たらないことを記録した。
+- OpenClaw / Sogni Voice X pageは今回も有用なpublic HTML本文を取得できなかったため、Xの返信有無は推定しない。
+- `docs/research/x-outreach-targets.md` と `docs/research/sns-outreach-strategy.md` にLater watchを追記した。
 
 ## Stop Lines
 
@@ -20,5 +23,5 @@ T211の多言語検証follow-up後に、OpenClaw / V1GPTなどの返信待ちout
 
 - decision: `outreach_waiting_lane_later_watch`
 - owner: `星宮 未来 / 白瀬 怜奈`
-- status: active
-- next: check outreach waiting lane without sending.
+- status: done
+- next: return to local TTS approval response watch.

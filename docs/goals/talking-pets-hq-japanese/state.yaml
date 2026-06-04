@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T212
+active_task: T213
 
 tasks:
   - id: T001
@@ -6939,7 +6939,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "星宮 未来 / 白瀬 怜奈"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "T211の多言語検証follow-up後に、OpenClaw / V1GPTなどの返信待ちoutreach laneへ戻る。"
     allowed_files:
@@ -6954,13 +6954,56 @@ tasks:
       - "OpenClaw / V1GPTの催促禁止日より前にnudgeしない。"
       - "private contact、private DM、未sanitized内容をrepoへ貼らない。"
     receipt:
-      result: active
+      result: done
       decision: outreach_waiting_lane_later_watch
-      full_outcome_complete: false
-      summary: "次はoutreach返信待ちlaneを、送信なしで再確認する。"
+      full_outcome_complete: true
+      summary: "V1GPT Reddit public HTMLではTalking Pets/arata/local sessionが見当たらず、OpenClaw/Sogni Voice X pageは有用なpublic HTML本文を取得できなかったためXの返信有無は推定しない形で、Later watchを追記した。OpenClaw/V1GPTは2026-06-17より前にnudgeせず、送信、DM、mention、follow、like、Star依頼、private contact記録はしていない。"
       note: "notes/T212-outreach-waiting-lane-later-watch.md"
       changed_files:
+        - "docs/research/x-outreach-targets.md"
+        - "docs/research/sns-outreach-strategy.md"
         - "docs/goals/talking-pets-hq-japanese/notes/T212-outreach-waiting-lane-later-watch.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T213-local-tts-approval-later-watch.md"
+        - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+        - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "web open https://www.reddit.com/r/codex/comments/1s0avrn/i_gave_codex_a_3d_avatar_v1gpt_is_now_my_voice/"
+          status: pass
+        - cmd: "web open https://x.com/krunkosaurus/status/2015719029911220531"
+          status: pass
+        - cmd: "web find Talking Pets / arata / local session on V1GPT Reddit page"
+          status: pass
+        - cmd: "rg -n 'Later watch checked: 2026-06-05|active_task: T213|outreach_waiting_lane_later_watch|local_tts_approval_later_watch|Do not bump before 2026-06-17|V1GPT Reddit public HTML|X page' docs/research/x-outreach-targets.md docs/research/sns-outreach-strategy.md docs/goals/talking-pets-hq-japanese/notes/T212-outreach-waiting-lane-later-watch.md docs/goals/talking-pets-hq-japanese/notes/T213-local-tts-approval-later-watch.md docs/goals/talking-pets-hq-japanese/hq-backlog-board.md docs/goals/talking-pets-hq-japanese/activity-index.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+        - cmd: "npm run check:docs"
+          status: pass
+
+  - id: T213
+    type: worker
+    assignee: Worker
+    owner_role: "歌澄 音羽 / 白瀬 怜奈"
+    status: active
+    reasoning_hint: default
+    objective: "T212のoutreach待機確認後に、local TTSのA/B/C承認判断へ戻る。"
+    allowed_files:
+      - "docs/research/tts-provider-comparison.md"
+      - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+      - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "sherpa-onnx-nodeをinstallしない。"
+      - "MeloTTSのPython/Docker/model/unidic setupをしない。"
+      - "model download、API call、生成音声、README support claim変更をしない。"
+    receipt:
+      result: active
+      decision: local_tts_approval_later_watch
+      full_outcome_complete: false
+      summary: "次はlocal TTS承認判断状態を、実装なしで再確認する。"
+      note: "notes/T213-local-tts-approval-later-watch.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T213-local-tts-approval-later-watch.md"
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands: []
 
