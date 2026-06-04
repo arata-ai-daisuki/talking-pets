@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T153
+active_task: T154
 
 tasks:
   - id: T001
@@ -4778,7 +4778,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "歌澄 音羽"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "MeloTTSをprovider-specific design noteへ落とし、実装前のruntime/cache停止線を明確にする。"
     allowed_files:
@@ -4792,7 +4792,7 @@ tasks:
       - "model、dictionary、voice、language assetをdownloadしない。"
       - "README support wordingやdefault routingを追加しない。"
     receipt:
-      result: active
+      result: done
       decision: melotts_design_note
       full_outcome_complete: false
       summary: "MeloTTS design noteを追加し、L0 design-only / runtime-review candidateとしてuser-managed external runtime候補に留める停止線を明記した。"
@@ -4804,6 +4804,39 @@ tasks:
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands:
         - cmd: "rg -n 'active_task: T153|T153|melotts_design_note|MeloTTS Design Note|L0 design-only|runtime-review candidate|user-managed external|python -m unidic download|No dependency was installed' docs/research/melotts-design-note.md docs/research/tts-provider-comparison.md docs/goals/talking-pets-hq-japanese/notes/T153-melotts-design-note.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T154
+    type: worker
+    assignee: Worker
+    owner_role: "白瀬 怜奈"
+    status: active
+    reasoning_hint: default
+    objective: "API TTSをprovider-specific design noteへ落とし、実装前のprivacy/billing/credential停止線を明確にする。"
+    allowed_files:
+      - "docs/research/api-tts-design-note.md"
+      - "docs/research/tts-provider-comparison.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "API keyを使わない。"
+      - "paid API callをしない。"
+      - "textを外部APIへ送らない。"
+      - "SDK/dependencyを追加しない。"
+      - "README support wordingやdefault routingを追加しない。"
+    receipt:
+      result: active
+      decision: api_tts_design_note
+      full_outcome_complete: false
+      summary: "API TTS design noteを追加し、L0 design-only / privacy-and-billing-review candidateとしてAPI key、paid call、外部送信、remote audio cacheの停止線を明記した。"
+      note: "notes/T154-api-tts-design-note.md"
+      changed_files:
+        - "docs/research/api-tts-design-note.md"
+        - "docs/research/tts-provider-comparison.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T154-api-tts-design-note.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n 'active_task: T154|T154|api_tts_design_note|API TTS Design Note|privacy-and-billing-review candidate|No API key was used|paid API call|text leaves the machine|Stop Lines' docs/research/api-tts-design-note.md docs/research/tts-provider-comparison.md docs/goals/talking-pets-hq-japanese/notes/T154-api-tts-design-note.md docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
 
   - id: T007
