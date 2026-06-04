@@ -148,9 +148,24 @@ Manual send checklist:
 
 Use this table before posting. A row here does not mean outreach happened; it only records a public post or project that may be relevant after manual review.
 
+### Current Outreach Cadence Snapshot
+
+Checked: 2026-06-05.
+
+| Target | Current state | Public URL | Earliest follow-up | Rule |
+| --- | --- | --- | --- | --- |
+| OpenClaw / Sogni Voice | sent by Master | https://x.com/krunkosaurus/status/2015719029911220531 | 2026-06-17 | Do not bump unless they reply first. |
+| V1GPT | sent by Master | https://www.reddit.com/r/codex/comments/1s0avrn/i_gave_codex_a_3d_avatar_v1gpt_is_now_my_voice/ | 2026-06-17 | Do not bump unless they reply first. |
+| V1R4 | not sent | https://www.reddit.com/r/ClaudeCode/comments/1rw6296/i_gave_claude_code_a_3d_avatar_its_now_my/ | n/a | Keep as reply-later; do not use GitHub issues as a promo surface. |
+| Multilingual / local TTS candidates | watch / reply later | Search Review Log rows below | n/a | Use only when a current public thread invites evidence, setup, or benchmark discussion. |
+
+Do not wait on the sent rows before continuing provider design, verification intake, or docs work.
+
 | Date | Query / Source | Candidate / Post | Fit | Evidence Need | Suggested Template | Decision | Follow-Up |
 |---|---|---|---|---|---|---|---|
 |  |  |  | Codex / local voice / multilingual TTS / AI companion | latency / provider feedback / dedicated provider evidence / intro | Codex-specific / Local voice / Provider-specific multilingual TTS / AI VTuber | watch / reply later / skip / sent |  |
+| 2026-06-03 | Master manual send | OpenClaw / Sogni Voice X public reply | local voice / OpenClaw / agent voice latency | latency | Local voice / TTS-specific | sent | Public URL: https://x.com/krunkosaurus/status/2015719029911220531. Do not follow up before 2026-06-17 unless they reply first. |
+| 2026-06-03 | Master manual send | V1GPT Reddit public comment | Codex / voice avatar builder | intro / latency | Codex-specific | sent | Public URL: https://www.reddit.com/r/codex/comments/1s0avrn/i_gave_codex_a_3d_avatar_v1gpt_is_now_my_voice/. Do not follow up before 2026-06-17 unless they reply first. |
 | 2026-06-04 | `"MeloTTS" "Chinese"`, GitHub | `myshell-ai/MeloTTS` repo | multilingual TTS | provider feedback / dedicated provider evidence | Provider-specific multilingual TTS | reply later | Good fit for Chinese/Korean provider-specific evidence, but use GitHub only if discussions/issues invite integration questions. |
 | 2026-06-04 | `"MeloTTS" "Chinese"`, GitHub | `apinge/MeloTTS.cpp` repo | multilingual TTS | provider feedback / dedicated provider evidence | Provider-specific multilingual TTS | watch | Chinese/OpenVINO runtime angle is relevant; wait for a public thread or issue where integration evidence is welcome. |
 | 2026-06-04 | `"multilingual TTS" "offline"`, Reddit | MOSS-TTS-Nano announcement on r/LocalLLaMA | multilingual TTS | latency / provider feedback | Local voice / Provider-specific multilingual TTS | reply later | Recent project post asks for quality/latency/use-case feedback; possible place to ask what evidence a small tool should collect. |
