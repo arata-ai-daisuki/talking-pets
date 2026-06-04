@@ -87,7 +87,7 @@ It's a small open-source Codex companion experiment, not a commercial pitch.
 I'm collecting real-device data for Talking Pets, especially local TTS latency and Windows/Linux audible TTS checks.
 
 If you have a local VOICEVOX, Irodori, Windows, or Linux setup, a sanitized GitHub verification issue would help a lot:
-<verification issue template link>
+https://github.com/arata-ai-daisuki/talking-pets/issues/new?template=platform_verification.yml
 
 No generated audio files needed. Just sanitized command output and whether one spoken line was audible.
 ```
@@ -102,7 +102,7 @@ The most useful data right now is:
 - Irodori-TTS Server latency on another CPU/GPU/backend
 
 If you already have either running locally, sanitized latency lines in a GitHub Platform verification issue would help:
-<real-device verification link>
+https://github.com/arata-ai-daisuki/talking-pets/blob/main/docs/real-device-verification.md#voicevox-latency-contribution
 
 No generated audio files or private logs needed. Device/OS, provider version if known, warm synthesis times, audio duration/RTF if available, and whether one spoken line was audible are enough.
 ```
@@ -113,19 +113,19 @@ No generated audio files or private logs needed. Device/OS, provider version if 
 I'm also separating OS speech fallback from dedicated provider evidence for Korean/Chinese or other multilingual TTS.
 
 If you have a provider-specific local TTS path for those languages, a sanitized Platform verification issue would be very helpful:
-<verification issue template link>
+https://github.com/arata-ai-daisuki/talking-pets/issues/new?template=platform_verification.yml
 
 Useful details: source text or fixture, forced/detected speech-language value, provider name/version, OS/device, config source, whether one spoken line was audible, and sanitized `[latency]` lines if measured.
 
 No generated audio files, private Codex text, credentials, or local private paths needed.
-Checklist: <dedicated provider evidence checklist link>
+Checklist: https://github.com/arata-ai-daisuki/talking-pets/blob/main/docs/verification-status.md#dedicated-provider-evidence-checklist
 ```
 
 ### After someone shows interest
 
 ```text
 Thank you! The cleanest way to share results is this GitHub "Platform verification" issue template:
-<verification issue template link>
+https://github.com/arata-ai-daisuki/talking-pets/issues/new?template=platform_verification.yml
 
 Useful reports include OS/device, Node/npm versions, TTS path, speech-language value, sanitized `[latency]` lines if measured, and whether one spoken line was audible.
 

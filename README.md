@@ -11,6 +11,7 @@ Codex本体や署名済みアプリを改造せず、ローカルに保存され
 
 Windows / Linux実機確認、VOICEVOX別環境測定、Irodori別GPU測定で協力できる方は [手伝う入口](docs/contributor-entrypoints.md) を見てください。
 すぐ参加できる検証Issue: [Linux #23](https://github.com/arata-ai-daisuki/talking-pets/issues/23) / [Windows #24](https://github.com/arata-ai-daisuki/talking-pets/issues/24) / [Irodori #25](https://github.com/arata-ai-daisuki/talking-pets/issues/25) / [VOICEVOX #26](https://github.com/arata-ai-daisuki/talking-pets/issues/26)
+韓国語・中国語などの専用provider証跡を共有できる方は、[Minimal Multilingual Report Form](docs/real-device-verification.md#minimal-multilingual-report-form) から fallback-only / provider-specific を分けて報告してください。
 
 ![Talking Pets demo preview](assets/demo-preview.png)
 

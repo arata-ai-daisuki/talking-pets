@@ -1,6 +1,6 @@
 # HQ Activity Index
 
-Last updated: 2026-06-04
+Last updated: 2026-06-05
 
 This page is a readable snapshot of the Japanese HQ state. The authoritative source remains `docs/goals/talking-pets-hq-japanese/state.yaml`.
 
@@ -8,14 +8,14 @@ This page is a readable snapshot of the Japanese HQ state. The authoritative sou
 
 - Board URL: `http://goalbuddy.localhost:41737/talking-pets-hq-japanese/`
 - Local board files: `docs/goals/talking-pets-hq-japanese/.goalbuddy-board/`
-- Current active task: `T184`
-- Current focus: README/SNS導線が現在地に合っているか再点検する。
+- Current active task: `T185`
+- Current focus: T181-T184の波を畳み、次に進めるBacklogを再整理する。
 
 ## Kanban Snapshot
 
 | Column | Count | Meaning |
 | --- | ---: | --- |
-| Done | 184 | 完了済みの小PR、調査、判断カード、検証receipt。 |
+| Done | 185 | 完了済みの小PR、調査、判断カード、検証receipt。 |
 | Active | 1 | いまHQが追っている作業。 |
 | Blocked | 0 | 同じ停止条件が継続しており、Master判断なしに進めないもの。 |
 
@@ -24,7 +24,7 @@ This page is a readable snapshot of the Japanese HQ state. The authoritative sou
 | Agent | Role | Done | Active | Main lane |
 | --- | --- | ---: | ---: | --- |
 | 相庭 愛 | HQ Producer | 58 | 1 | 判断カード、全体整理、Master確認。 |
-| 星宮 未来 | Outreach Lead | 32 | 0 | SNS/outreach、候補表、返信ドラフト、送信後記録。 |
+| 星宮 未来 | Outreach Lead | 33 | 0 | SNS/outreach、候補表、返信ドラフト、送信後記録。 |
 | 白瀬 怜奈 | Risk / Review Lead | 20 | 0 | claim境界、license/privacy/API、セルフレビュー。 |
 | 歌澄 音羽 | Voice Provider Lead | 26 | 0 | TTS provider、VOICEVOX/Irodori/sherpa/Melo/API設計。 |
 | 言守 詞葉 | Multilingual Lead | 16 | 0 | ko/zh fallback、多言語fixture、dedicated provider evidence境界。 |
@@ -71,7 +71,8 @@ This page is a readable snapshot of the Japanese HQ state. The authoritative sou
 | `T181` | 白瀬 怜奈 | done | installer/configにMeloTTS external runtime health-check案内だけを追加。 |
 | `T182` | 星宮 未来 | done | provider feedback capture導線をSearch Review Logとprovider intakeへ追加。 |
 | `T183` | 言守 詞葉 | done | 多言語検証フォームと小テスト導線をprovider feedback intakeへ接続。 |
-| `T184` | 星宮 未来 | active | README/SNS導線の現在地チェック中。 |
+| `T184` | 星宮 未来 | done | README/SNS導線を多言語証跡フォームと現行Issue導線へ接続。 |
+| `T185` | 相庭 愛 / 文月 栞里 | active | Backlog refreshを準備中。 |
 
 ## Where To Look Next
 
