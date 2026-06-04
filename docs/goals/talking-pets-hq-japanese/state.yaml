@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T121
+active_task: T122
 
 tasks:
   - id: T001
@@ -3745,7 +3745,7 @@ tasks:
     type: pm
     assignee: PM
     owner_role: "相庭 愛"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "Issue #23-#26の新規コメントを見回り、T120/T115に沿って分類する。"
     expected_output:
@@ -3758,16 +3758,52 @@ tasks:
       - "private pathやconversation textを採用しない。"
       - "性能保証として書かない。"
     receipt:
-      result: active
+      result: done
       decision: weekly_verification_watch_active
       full_outcome_complete: false
-      summary: "次のactive taskを、T114投稿URLまたはIssue #23-#26の新規コメントを受けてT120/T115基準で分類する週次見回りにした。"
+      summary: "Issue #23-#26を見回り、全Issueがopenかつコメント0件であることを確認した。投稿URLと外部コメントはまだ未受領。"
       note: "notes/T121-next-weekly-verification-watch.md"
       changed_files:
         - "docs/goals/talking-pets-hq-japanese/notes/T121-next-weekly-verification-watch.md"
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands:
         - cmd: "rg -n \"active_task: T121|T121|weekly_verification_watch_active|T120|T115|Issue #23-#26\" docs/goals/talking-pets-hq-japanese/notes/T121-next-weekly-verification-watch.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+        - cmd: "gh issue view 23 --json number,title,state,comments,updatedAt,author,url"
+          status: pass
+        - cmd: "gh issue view 24 --json number,title,state,comments,updatedAt,author,url"
+          status: pass
+        - cmd: "gh issue view 25 --json number,title,state,comments,updatedAt,author,url"
+          status: pass
+        - cmd: "gh issue view 26 --json number,title,state,comments,updatedAt,author,url"
+          status: pass
+
+  - id: T122
+    type: pm
+    assignee: PM
+    owner_role: "相庭 愛"
+    status: active
+    reasoning_hint: default
+    objective: "T114のSNS投稿URLまたはIssue #23-#26の新規コメントを受け取り、T007記録またはT120/T115分類へ進める。"
+    expected_output:
+      - "投稿URLが来たらT007へ記録する。"
+      - "Issueコメントが来たら分類し、usableならverification-status反映PRへ進める。"
+      - "needs-info/needs-sanitize/latency-unclearなら返信案を作り、Master確認を待つ。"
+    constraints:
+      - "SNS投稿、Issue返信、DMを代行しない。"
+      - "private pathやconversation textを採用しない。"
+      - "性能保証として書かない。"
+    receipt:
+      result: active
+      decision: post_url_and_issue_watch_active
+      full_outcome_complete: false
+      summary: "Issue #23-#26はopenかつコメントなし。次はT114投稿URLまたはIssue新規コメントを受けて記録・分類する。"
+      note: "notes/T122-post-url-and-issue-watch-next.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T122-post-url-and-issue-watch-next.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n \"active_task: T122|T122|post_url_and_issue_watch_active|commentsなし|Issue #23\" docs/goals/talking-pets-hq-japanese/notes/T122-post-url-and-issue-watch-next.md docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
 
   - id: T007
