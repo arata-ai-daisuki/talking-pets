@@ -205,6 +205,20 @@ If Master wants the next local TTS movement, ask for exactly one of these choice
 
 Do not treat this snapshot as approval. It only defines the exact wording needed before any dependency, model, API, generated-audio, or support-claim work.
 
+### Local TTS Approval Decision Card
+
+Checked: 2026-06-05. Use this as the current Master-facing decision card. It summarizes the safe next action without treating prior planning as approval.
+
+Recommended answer: **A: keep evidence-first**.
+
+| Choice | What I will do next | Why this is safest now | What remains blocked |
+| --- | --- | --- | --- |
+| A: keep evidence-first | Continue collecting sanitized VOICEVOX #26 and Irodori #25 reports, and compare contributor latency by device/runtime. | It improves the already-supported optional paths and public proof without adding package, model, or API risk. | New provider code, new dependency, model download, default routing, broad performance claim. |
+| B: approve sherpa metadata review only | Update `sherpa-onnx-design.md` from public package/model/vocoder/license docs only. | sherpa remains the most npm-shaped future local candidate, but useful synthesis still depends on explicit model assets. | Installing `sherpa-onnx-node`, downloading model/vocoder/token/espeak data, helper code, audio generation. |
+| C: approve MeloTTS external-runtime design only | Refine the user-managed CLI/server/Docker/cache plan around the existing health-only path. | Good multilingual research lane, but Python/Docker/runtime ownership is too heavy for the normal install path. | Python/Docker setup, `unidic` or model download, synthesis, Korean/Chinese support wording. |
+
+Default execution if Master does not choose B or C: continue A and move the HQ board to multilingual verification intake/watch. B and C stay design-only candidates and do not become implementation approval.
+
 ### Local TTS Next Choice Refresh
 
 Checked: 2026-06-05. This refresh incorporates the sherpa optional npm install check, MeloTTS detect/connect-only helper work, provider feedback capture path, and multilingual evidence routes.
