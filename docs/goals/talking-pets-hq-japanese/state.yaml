@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T205
+active_task: T206
 
 tasks:
   - id: T001
@@ -6677,7 +6677,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "相庭 愛 / 文月 栞里"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "T203-T204のlocal TTS判断カードと多言語watchを畳み、次に進むHQ全体の波を整理する。"
     allowed_files:
@@ -6690,13 +6690,50 @@ tasks:
       - "依存追加、model download、API callをしない。"
       - "README support claimを強めない。"
     receipt:
-      result: active
+      result: done
       decision: hq_wave_refresh_after_local_multilingual
-      full_outcome_complete: false
-      summary: "次はT203-T204の波を畳み、次の安全な小PR候補を整理する。"
+      full_outcome_complete: true
+      summary: "T203-T204のlocal TTS判断カードと多言語watchをDone履歴へ畳み、HQ Backlog BoardとActivity IndexをT206 Public Proof Route Selectorへ進めた。外部投稿、依存追加、model download、API call、README support claim変更はしていない。"
       note: "notes/T205-hq-wave-refresh-after-local-multilingual.md"
       changed_files:
         - "docs/goals/talking-pets-hq-japanese/notes/T205-hq-wave-refresh-after-local-multilingual.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T206-public-proof-route-selector.md"
+        - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+        - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n 'active_task: T206|public_proof_route_selector|hq_wave_refresh_after_local_multilingual|T205|T206|Public proof route selector' docs/goals/talking-pets-hq-japanese/notes/T205-hq-wave-refresh-after-local-multilingual.md docs/goals/talking-pets-hq-japanese/notes/T206-public-proof-route-selector.md docs/goals/talking-pets-hq-japanese/hq-backlog-board.md docs/goals/talking-pets-hq-japanese/activity-index.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+        - cmd: "npm run check:docs"
+          status: pass
+
+  - id: T206
+    type: worker
+    assignee: Worker
+    owner_role: "相庭 愛 / 文月 栞里"
+    status: active
+    reasoning_hint: default
+    objective: "返信待ちや外部証跡待ちで止まらず、次のpublic proof向け小PR候補を選べる状態にする。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+      - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      - "docs/research/sns-outreach-strategy.md"
+      - "docs/research/x-outreach-targets.md"
+      - "docs/verification-status.md"
+    constraints:
+      - "自動投稿、自動DM、自動mentionをしない。"
+      - "Issue催促、外部返信、Star依頼を自動化しない。"
+      - "README support claimを強めない。"
+    receipt:
+      result: active
+      decision: public_proof_route_selector
+      full_outcome_complete: false
+      summary: "次はpublic proof向けの小PR候補を、外部待ちに依存しない形で選ぶ。"
+      note: "notes/T206-public-proof-route-selector.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T206-public-proof-route-selector.md"
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands: []
 
