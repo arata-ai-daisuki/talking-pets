@@ -13,6 +13,8 @@ If you can help with Windows / Linux real-device checks, VOICEVOX latency on ano
 Quick verification issues: [Linux #23](https://github.com/arata-ai-daisuki/talking-pets/issues/23) / [Windows #24](https://github.com/arata-ai-daisuki/talking-pets/issues/24) / [Irodori #25](https://github.com/arata-ai-daisuki/talking-pets/issues/25) / [VOICEVOX #26](https://github.com/arata-ai-daisuki/talking-pets/issues/26)
 If you can share Korean, Chinese, or other dedicated-provider evidence, use the [Minimal Multilingual Report Form](docs/real-device-verification.md#minimal-multilingual-report-form) and mark whether the result is fallback-only or provider-specific.
 
+To check what is verified, what is waiting, and how to share useful evidence, start from the [Public proof hub](docs/contributor-entrypoints.md#public-proof-hub).
+
 ![Talking Pets demo preview](assets/demo-preview.png)
 
 ## Demo Recording

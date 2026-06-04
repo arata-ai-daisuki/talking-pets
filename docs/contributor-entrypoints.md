@@ -2,6 +2,20 @@
 
 This page lists small, concrete ways to help Talking Pets without needing to understand the whole codebase.
 
+## Public Proof Hub
+
+Use this hub to see what is already evidenced, what is still waiting, and where to add useful public verification.
+
+| Need | Start here | What it proves | Claim boundary |
+| --- | --- | --- | --- |
+| Current support status | [Verification status](verification-status.md#current-snapshot) | Which OS/provider paths are stable, experimental, optional, or waiting. | Waiting rows are not verified support. |
+| Public proof package | [Release Proof Package Index](verification-status.md#release-proof-package-index) | Which public docs and issues can support release notes. | Do not turn reference data into performance guarantees. |
+| Windows / Linux proof | [External Verification Intake](verification-status.md#external-verification-intake) | What Issue #23/#24 need before platform wording changes. | CI and fixture checks do not graduate real-device support. |
+| VOICEVOX / Irodori latency | [Real Device Verification](real-device-verification.md#voicevox-latency-contribution) | How to report device, timing, playback, audio duration, and sanitized output. | One machine's data is reference evidence, not a universal speed claim. |
+| Korean / Chinese evidence | [Minimal Multilingual Report Form](real-device-verification.md#minimal-multilingual-report-form) | Whether a report is fallback-only or provider-specific. | OS speech fallback is not dedicated provider support. |
+
+If you only have a few minutes, pick one row from [Best First Issues](#best-first-issues), run the smallest matching check, sanitize output, and open a public issue.
+
 ## Best First Issues
 
 | Priority | Title | Good for | What to do | Issue template |

@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T207
+active_task: T208
 
 tasks:
   - id: T001
@@ -6749,7 +6749,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "文月 栞里 / 白瀬 怜奈"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "README/SNS/verificationのpublic proof導線を、support claimを強めずに初見ユーザーが追いやすい形へ磨く。"
     allowed_files:
@@ -6768,13 +6768,50 @@ tasks:
       - "VOICEVOX/Irodoriの性能保証claimを追加しない。"
       - "Korean/Chinese dedicated provider support claimを追加しない。"
     receipt:
-      result: active
+      result: done
       decision: public_proof_hub_polish
-      full_outcome_complete: false
-      summary: "次はpublic proof導線をsupport claimなしで磨く。"
+      full_outcome_complete: true
+      summary: "README日英からPublic proof hubへリンクし、contributor-entrypointsにVerification status、Release Proof Package Index、External Verification Intake、Real-device verification、Minimal Multilingual Report Formを辿るPublic Proof Hubを追加した。README support claim、platform status、性能保証claim、Korean/Chinese dedicated provider support claimは変更していない。"
       note: "notes/T207-public-proof-hub-polish.md"
       changed_files:
+        - "README.md"
+        - "README.en.md"
+        - "docs/contributor-entrypoints.md"
         - "docs/goals/talking-pets-hq-japanese/notes/T207-public-proof-hub-polish.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T208-hq-wave-refresh-after-proof-hub.md"
+        - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+        - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n 'Public Proof Hub|public proof hub|active_task: T208|public_proof_hub_polish|hq_wave_refresh_after_proof_hub|support claim|performance guarantees|dedicated provider support' README.md README.en.md docs/contributor-entrypoints.md docs/goals/talking-pets-hq-japanese/notes/T207-public-proof-hub-polish.md docs/goals/talking-pets-hq-japanese/notes/T208-hq-wave-refresh-after-proof-hub.md docs/goals/talking-pets-hq-japanese/hq-backlog-board.md docs/goals/talking-pets-hq-japanese/activity-index.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+        - cmd: "npm run check:docs"
+          status: pass
+
+  - id: T208
+    type: worker
+    assignee: Worker
+    owner_role: "相庭 愛 / 文月 栞里"
+    status: active
+    reasoning_hint: default
+    objective: "T206-T207のpublic proof導線整備を畳み、次のHQ activeを整理する。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+      - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "自動投稿、自動DM、自動mentionをしない。"
+      - "README support claimを強めない。"
+      - "依存追加、model download、API callをしない。"
+    receipt:
+      result: active
+      decision: hq_wave_refresh_after_proof_hub
+      full_outcome_complete: false
+      summary: "次はT206-T207のpublic proof導線整備を畳み、次のHQ activeを整理する。"
+      note: "notes/T208-hq-wave-refresh-after-proof-hub.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T208-hq-wave-refresh-after-proof-hub.md"
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands: []
 
