@@ -107,6 +107,10 @@ Use this table before posting. A row here does not mean outreach happened; it on
 | Date | Query / Source | Candidate / Post | Fit | Evidence Need | Suggested Template | Decision | Follow-Up |
 |---|---|---|---|---|---|---|---|
 |  |  |  | Codex / local voice / multilingual TTS / AI companion | latency / provider feedback / dedicated provider evidence / intro | Codex-specific / Local voice / Provider-specific multilingual TTS / AI VTuber | watch / reply later / skip / sent |  |
+| 2026-06-04 | `"MeloTTS" "Chinese"`, GitHub | `myshell-ai/MeloTTS` repo | multilingual TTS | provider feedback / dedicated provider evidence | Provider-specific multilingual TTS | reply later | Good fit for Chinese/Korean provider-specific evidence, but use GitHub only if discussions/issues invite integration questions. |
+| 2026-06-04 | `"MeloTTS" "Chinese"`, GitHub | `apinge/MeloTTS.cpp` repo | multilingual TTS | provider feedback / dedicated provider evidence | Provider-specific multilingual TTS | watch | Chinese/OpenVINO runtime angle is relevant; wait for a public thread or issue where integration evidence is welcome. |
+| 2026-06-04 | `"multilingual TTS" "offline"`, Reddit | MOSS-TTS-Nano announcement on r/LocalLLaMA | multilingual TTS | latency / provider feedback | Local voice / Provider-specific multilingual TTS | reply later | Recent project post asks for quality/latency/use-case feedback; possible place to ask what evidence a small tool should collect. |
+| 2026-06-04 | `"offline TTS" "CPU"`, Reddit | Offline TTS CPU benchmark thread on r/TextToSpeech | local voice / multilingual TTS | latency / provider feedback | Local voice | reply later | Useful CPU/RTF context; ask about first-audio vs full-utterance metrics only if thread is still active. |
 
 Review rules:
 
@@ -140,3 +144,7 @@ Before moving a row to `sent`, choose exactly one template and one ask:
 - OpenClaw TTS docs: https://docs.openclaw.ai/tools/tts
 - OpenClaw Voice: https://openclawvoice.com/
 - Project AIRI Steam page: https://store.steampowered.com/app/3885340/Project_AIRI/
+- MeloTTS GitHub: https://github.com/myshell-ai/MeloTTS
+- MeloTTS.cpp GitHub: https://github.com/apinge/MeloTTS.cpp
+- MOSS-TTS-Nano r/LocalLLaMA post: https://www.reddit.com/r/LocalLLaMA/comments/1sjdfp6/mossttsnano_a_01b_opensource_multilingual_tts/
+- Offline TTS CPU benchmark r/TextToSpeech post: https://www.reddit.com/r/TextToSpeech/comments/1sqkiuc/benchmarked_5_offline_tts_models_on_cpu_short/
