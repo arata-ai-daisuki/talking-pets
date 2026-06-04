@@ -99,6 +99,9 @@ Provider候補ごとの比較は [docs/research/tts-provider-comparison.md](rese
 現在のcontrol sample:
 
 - macOS `say` via Node monitor: `total=440.1ms`, `speak=434.9ms` on `test/fixtures/assistant-rollout.jsonl`
+- VOICEVOX via voicebox helper, speaker 3, running local engine: `list_voices=76.2ms`; warm synthesis totals `1334.3ms` / `1388.6ms` / `2206.6ms` for a `3.861333s` WAV
+- VOICEVOX playback-included short run: `total=5693.8ms`, `synthesis=1127.8ms`, `play=4398.6ms`, output duration `3.210667s`
+- Kokoro measurement is on hold because no local `~/.cache/talking-pets/transformers` cache was found; first run may require model download.
 
 ## 注意
 

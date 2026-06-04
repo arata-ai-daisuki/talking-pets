@@ -22,9 +22,9 @@ First, make the measurement shape consistent:
 
 | Priority | Provider | Role | Strength | Main Risk | Next Safe Action |
 | --- | --- | --- | --- | --- | --- |
-| P0 | VOICEVOX / Voicebox-compatible endpoint | Japanese local TTS baseline | Mature local Japanese voice path; already supported through voicebox helper | Requires a running local engine; voice and license notices must stay clear | Re-measure with the same short text and `--profile-latency` while engine is already running |
+| P0 | VOICEVOX / Voicebox-compatible endpoint | Japanese local TTS baseline | Mature local Japanese voice path; already supported through voicebox helper | Requires a running local engine; voice and license notices must stay clear | Done on maintainer macOS with running VOICEVOX: warm synthesis total 1.33s / 1.39s / 2.21s |
 | P0 | macOS `say` / OS speech fallback | No-extra-install baseline | Fast setup, useful control sample, no model download | Voice quality and language coverage vary by OS | Done once on maintainer macOS: total 440.1ms, speak 434.9ms |
-| P1 | Kokoro.js | English local TTS | Already has helper and profile output; useful for English demo path | First run may download/load a model; warm mode may need process reuse | Compare cold vs warm helper runs without changing default routing |
+| P1 | Kokoro.js | English local TTS | Already has helper and profile output; useful for English demo path | First run may download/load a model; warm mode may need process reuse | Blocked for now: no local `~/.cache/talking-pets/transformers` cache found, so measurement may require model download |
 | P1 | Irodori-TTS Server | Japanese-oriented local server / OpenAI-compatible API | High-quality local Japanese candidate; now has health and contribution docs | Cold start and warm synthesis were slow on the maintainer M1 test device | Keep as experimental and collect more real-device data before optimizing |
 | P2 | sherpa-onnx-node | Future local ONNX provider | Cross-platform package looks promising from design notes | Needs dependency, model, vocoder, tokens, espeak data, and license confirmation | Stay design-only until Master approves dependency/model experiment |
 | P2 | API TTS | Optional cloud or remote fallback | Can be fast and high quality on good networks | Privacy, cost, API key management, and local-first positioning | Design opt-in boundary first; do not implement by default |
@@ -75,8 +75,8 @@ Stop and ask before:
 
 ## Recommended Order
 
-1. Re-measure VOICEVOX / voicebox when the local engine is already running.
-2. Re-measure Kokoro cold/warm behavior if the model is already available locally.
+1. Add one playback-included VOICEVOX run if audible timing is needed.
+2. Ask Master before Kokoro model download if Kokoro cold/warm measurement is still desired.
 3. Wait for Irodori contribution data before claiming it is fast or slow generally.
 4. Keep sherpa-onnx-node and API TTS as explicit opt-in design work.
 
@@ -89,3 +89,24 @@ macOS `say` via the Node monitor:
 ```
 
 This is not a quality benchmark. It is a no-extra-install response-time control sample.
+
+VOICEVOX via the voicebox helper, speaker 3, with a locally running engine:
+
+```text
+list_voices total=76.2ms
+warm synthesis totals=1388.6ms, 2206.6ms, 1334.3ms
+output audio duration=3.861333s
+playback-included total=5693.8ms
+playback-included synthesis=1127.8ms
+playback-included audio duration=3.210667s
+```
+
+This is a running-engine benchmark on one maintainer machine, not a universal VOICEVOX claim.
+
+Kokoro status:
+
+```text
+no local ~/.cache/talking-pets/transformers cache found
+```
+
+Do not measure Kokoro cold start without explicit approval for model download.
