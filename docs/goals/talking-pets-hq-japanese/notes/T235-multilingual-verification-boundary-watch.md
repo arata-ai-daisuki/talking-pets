@@ -21,5 +21,9 @@ T234のlocal TTS boundary watch後に、多言語検証の境界へ戻る。
 
 - decision: `multilingual_verification_boundary_watch`
 - owner: `言守 詞葉 / 白瀬 怜奈`
-- status: active
-- next: recheck multilingual verification boundary without support-claim changes.
+- status: done
+- result: Issue #23, #24, #25, and #26 are still open with 0 comments and unchanged timestamps from the previous watch.
+- docs: added Multilingual Verification Boundary Watch Result 2 to `docs/verification-status.md` and `docs/real-device-verification.md`.
+- kept: Korean / Chinese fallback-only boundary.
+- not changed: README support claim, Korean/Chinese dedicated provider support claim, generated audio, private logs, private contact, model download, API call.
+- next: return to outreach waiting lane without auto-send or nudge.

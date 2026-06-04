@@ -371,3 +371,18 @@ Issue #23, #24, #25, and #26 remain open with 0 comments. Their last updated tim
 Decision: keep Korean / Chinese as OS speech fallback-only verification until sanitized contributor evidence supports a provider-specific claim.
 
 No Korean/Chinese dedicated provider support claim, README support claim, generated audio, private log, private contact, model download, or API call was added in this watch.
+
+## Multilingual Verification Boundary Watch Result 2
+
+Checked: 2026-06-05
+
+Issue #23, #24, #25, and #26 are still open with 0 comments. Their last updated timestamps remain unchanged:
+
+- #23: 2026-06-04T05:57:31Z
+- #24: 2026-06-04T05:57:33Z
+- #25: 2026-06-04T05:57:33Z
+- #26: 2026-06-04T05:57:34Z
+
+Decision: keep Korean / Chinese as OS speech fallback-only verification until sanitized contributor evidence supports a provider-specific claim.
+
+No Korean/Chinese dedicated provider support claim, README support claim, generated audio, private log, private contact, model download, or API call was added in this watch.

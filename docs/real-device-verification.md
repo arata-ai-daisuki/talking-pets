@@ -561,3 +561,18 @@ Current public verification issues remain waiting-only:
 Korean / Chinese verification remains fallback-only until a sanitized real-device report includes speech-language value, fixture or source text, audible result, platform details, and a public issue link. Do not treat OS fallback as Korean/Chinese dedicated provider support.
 
 No generated audio, private rollout, private log, private contact, model download, API call, or README support claim change was made in this watch.
+
+## Multilingual Verification Boundary Watch Result 2
+
+Checked: 2026-06-05
+
+Current public verification issues remain waiting-only:
+
+- #23 Ubuntu audible TTS: open, 0 comments, updated 2026-06-04T05:57:31Z.
+- #24 Windows audible TTS: open, 0 comments, updated 2026-06-04T05:57:33Z.
+- #25 Irodori latency: open, 0 comments, updated 2026-06-04T05:57:33Z.
+- #26 VOICEVOX latency: open, 0 comments, updated 2026-06-04T05:57:34Z.
+
+Korean / Chinese verification remains fallback-only until a sanitized real-device report includes speech-language value, fixture or source text, audible result, platform details, and a public issue link. Do not treat OS fallback as Korean/Chinese dedicated provider support.
+
+No generated audio, private rollout, private log, private contact, model download, API call, or README support claim change was made in this watch.
