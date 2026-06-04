@@ -43,6 +43,16 @@ This is a design-only note. No dependency was installed, no model was downloaded
 - Sanitized `[latency]` fields: include provider name, health, cold/warm state, synthesis, audioDuration, rtf, playbackIncluded, and whether speech was audible.
 - Contributor evidence path: Platform verification issue with sanitized command output and no attached generated audio.
 
+## Evidence Gap Questions
+
+Answer these before Piper moves from hold/license review into any helper PR:
+
+1. Which current Piper package, binary, or fork is the exact review target?
+2. Which voice/model source would a user install outside Talking Pets, and what are the voice, model, and generated-audio terms?
+3. Does the selected path require GPL-3.0 code to be bundled, linked, or distributed with Talking Pets?
+4. Where do the selected runtime and voice assets live on disk, and can Talking Pets avoid owning that cache?
+5. Can the first safe helper remain health-only or user-installed-CLI-only while normal `npm ci`, `npm run check:all`, and npm pack checks pass without Piper?
+
 ## Stop Lines
 
 Stop and ask Master before:

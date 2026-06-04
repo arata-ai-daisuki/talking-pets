@@ -152,6 +152,17 @@ Current planning read:
 
 Scorecard refresh result: no candidate should move to implementation from this table alone. VOICEVOX and Irodori need contributor evidence; Kokoro needs explicit model-download approval; sherpa, MeloTTS, Piper, and API TTS stay behind design or approval gates.
 
+### Evidence Gap Question Queue
+
+Use this queue before opening any provider experiment PR. These are design-note questions, not approval to install dependencies, download models, call APIs, or change README support wording.
+
+| Provider | Question to answer next | Where to answer it | Still blocked |
+| --- | --- | --- | --- |
+| sherpa-onnx-node | Which one named model family, vocoder, token set, and espeak data should a future experiment review first, and what license evidence is needed for each asset? | [Sherpa ONNX design](sherpa-onnx-design.md#b-design-only-scope) | Dependency install, asset download, helper code, README support wording. |
+| MeloTTS | Which runtime shape should Talking Pets target first: CLI, local server, Docker, or user-managed Python, and who owns model/dictionary cache cleanup? | [MeloTTS design note](melotts-design-note.md#c-runtime-design-only-scope) | Python/Docker setup, dictionary/model download, generated audio, Korean/Chinese support claim. |
+| Piper-like path | Which current binary/package and voice source should be reviewed, and how do GPL/MIT, voice/model, and generated-audio terms affect a helper? | [Piper design note](piper-design-note.md#evidence-gap-questions) | Package install, bundled binary/model, model download, README provider wording. |
+| API TTS | Which provider is worth a separate opt-in design note, and how will privacy, billing, credential storage, dry-run, and audio cache policy be proven before any live request? | [API TTS design note](api-tts-design-note.md#evidence-gap-questions) | API key handling, paid call, remote endpoint call, default route, README support wording. |
+
 ## Next Provider Decision Card
 
 Use this card when asking Master what provider work should move from planning into an experiment. Choosing an option here does not install packages, download models, call APIs, or change README support wording.
