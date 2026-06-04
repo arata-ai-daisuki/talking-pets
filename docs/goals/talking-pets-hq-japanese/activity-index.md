@@ -8,14 +8,14 @@ This page is a readable snapshot of the Japanese HQ state. The authoritative sou
 
 - Board URL: `http://goalbuddy.localhost:41737/talking-pets-hq-japanese/`
 - Local board files: `docs/goals/talking-pets-hq-japanese/.goalbuddy-board/`
-- Current active task: `T226`
-- Current focus: 多言語検証の受け口へ戻る。
+- Current active task: `T227`
+- Current focus: outreach送信済みlaneへ戻る。
 
 ## Kanban Snapshot
 
 | Column | Count | Meaning |
 | --- | ---: | --- |
-| Done | 226 | 完了済みの小PR、調査、判断カード、検証receipt。 |
+| Done | 227 | 完了済みの小PR、調査、判断カード、検証receipt。 |
 | Active | 1 | いまHQが追っている作業。 |
 | Blocked | 0 | 同じ停止条件が継続しており、Master判断なしに進めないもの。 |
 
@@ -24,10 +24,10 @@ This page is a readable snapshot of the Japanese HQ state. The authoritative sou
 | Agent | Role | Done | Active | Main lane |
 | --- | --- | ---: | ---: | --- |
 | 相庭 愛 | HQ Producer | 63 | 0 | 判断カード、全体整理、Master確認。 |
-| 星宮 未来 | Outreach Lead | 44 | 0 | SNS/outreach、候補表、返信ドラフト、送信後記録。 |
-| 白瀬 怜奈 | Risk / Review Lead | 40 | 1 | claim境界、license/privacy/API、セルフレビュー。 |
+| 星宮 未来 | Outreach Lead | 44 | 1 | SNS/outreach、候補表、返信ドラフト、送信後記録。 |
+| 白瀬 怜奈 | Risk / Review Lead | 41 | 1 | claim境界、license/privacy/API、セルフレビュー。 |
 | 歌澄 音羽 | Voice Provider Lead | 38 | 0 | TTS provider、VOICEVOX/Irodori/sherpa/Melo/API設計。 |
-| 言守 詞葉 | Multilingual Lead | 25 | 1 | ko/zh fallback、多言語fixture、dedicated provider evidence境界。 |
+| 言守 詞葉 | Multilingual Lead | 26 | 0 | ko/zh fallback、多言語fixture、dedicated provider evidence境界。 |
 | 速水 光莉 | Latency Lead | 14 | 0 | latency診断、RTF、table helper、測定読み方。 |
 | 文月 栞里 | Docs / Operations Lead | 18 | 0 | docs整備、hygiene、activity index、運用導線。 |
 | 愛坂 あい | Pet / Persona Lead | 2 | 0 | キャラクター/会話体験の方向づけ。 |
@@ -109,7 +109,8 @@ This page is a readable snapshot of the Japanese HQ state. The authoritative sou
 | `T223` | 言守 詞葉 / 白瀬 怜奈 | done | Multilingual Verification Next Cycle Watchを追加し、fallback-only境界を維持。 |
 | `T224` | 星宮 未来 / 白瀬 怜奈 | done | Outreach Post-merge next-cycle watchを追加し、判定不能のままwaitを維持。 |
 | `T225` | 歌澄 音羽 / 白瀬 怜奈 | done | Local TTS Approval Cycle Refreshを追加し、A: evidence-firstを維持。 |
-| `T226` | 言守 詞葉 / 白瀬 怜奈 | active | 多言語検証の受け口をclaim変更なしで再確認中。 |
+| `T226` | 言守 詞葉 / 白瀬 怜奈 | done | Multilingual Verification Cycle Refreshを追加し、fallback-only境界を維持。 |
+| `T227` | 星宮 未来 / 白瀬 怜奈 | active | outreach送信済みlaneを再送・催促なしで確認中。 |
 
 ## Where To Look Next
 

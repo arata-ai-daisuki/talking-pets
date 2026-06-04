@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T226
+active_task: T227
 
 tasks:
   - id: T001
@@ -7482,7 +7482,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "言守 詞葉 / 白瀬 怜奈"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "T225のlocal TTS approval cycle refresh後に、多言語検証の受け口へ戻る。"
     allowed_files:
@@ -7497,13 +7497,55 @@ tasks:
       - "README support claimを強めない。"
       - "生成音声、private logs、private contactをrepoへ保存しない。"
     receipt:
-      result: active
+      result: done
       decision: multilingual_verification_cycle_refresh
-      full_outcome_complete: false
-      summary: "次は多言語検証の受け口をclaim変更なしで再確認する。"
+      full_outcome_complete: true
+      summary: "GitHub issue #23-#26を確認し、すべてOpen / 0 comments / 前回watch以降の更新なしだったため、Multilingual Verification Cycle Refreshを追加した。Korean/Chinese dedicated provider support claim、README support claim、生成音声、private logs、private contactの追加はしていない。"
       note: "notes/T226-multilingual-verification-cycle-refresh.md"
       changed_files:
+        - "docs/verification-status.md"
+        - "docs/real-device-verification.md"
         - "docs/goals/talking-pets-hq-japanese/notes/T226-multilingual-verification-cycle-refresh.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T227-outreach-waiting-lane-cycle-refresh.md"
+        - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+        - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "gh issue view 23 --json number,title,state,comments,updatedAt,url"
+          status: pass
+        - cmd: "gh issue view 24 --json number,title,state,comments,updatedAt,url"
+          status: pass
+        - cmd: "gh issue view 25 --json number,title,state,comments,updatedAt,url"
+          status: pass
+        - cmd: "gh issue view 26 --json number,title,state,comments,updatedAt,url"
+          status: pass
+
+  - id: T227
+    type: worker
+    assignee: Worker
+    owner_role: "星宮 未来 / 白瀬 怜奈"
+    status: active
+    reasoning_hint: default
+    objective: "T226の多言語検証cycle refresh後に、outreach送信済みlaneへ戻る。"
+    allowed_files:
+      - "docs/research/x-outreach-targets.md"
+      - "docs/research/sns-outreach-strategy.md"
+      - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+      - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "自動投稿、DM、mention、follow、likeをしない。"
+      - "`2026-06-17`より前に催促しない。"
+      - "private contact、full thread、unsanitized DMをrepoへ保存しない。"
+    receipt:
+      result: active
+      decision: outreach_waiting_lane_cycle_refresh
+      full_outcome_complete: false
+      summary: "次はoutreach送信済みlaneを再送・催促なしで確認する。"
+      note: "notes/T227-outreach-waiting-lane-cycle-refresh.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T227-outreach-waiting-lane-cycle-refresh.md"
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands: []
 
