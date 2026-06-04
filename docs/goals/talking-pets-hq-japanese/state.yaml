@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T130
+active_task: T131
 
 tasks:
   - id: T001
@@ -4021,7 +4021,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "星宮 未来"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "VOICEVOX/Irodoriの外部測定結果をRTFつきで集めやすい報告テンプレにする。"
     allowed_files:
@@ -4035,7 +4035,7 @@ tasks:
       - "RTFを必須にしない。"
       - "private logsや生成音声添付を求めない。"
     receipt:
-      result: active
+      result: done
       decision: latency_report_template
       full_outcome_complete: false
       summary: "Platform verification issueとreal-device verification docsへ、VOICEVOX/IrodoriのRTFつき報告欄とVOICEVOX測定手順を追加した。"
@@ -4048,6 +4048,37 @@ tasks:
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands:
         - cmd: "rg -n \"active_task: T130|T130|VOICEVOX latency data|Derived RTF|VOICEVOX Latency Contribution|derived RTF if known\" .github/ISSUE_TEMPLATE/platform_verification.yml docs/real-device-verification.md docs/verification-status.md docs/goals/talking-pets-hq-japanese/notes/T130-latency-report-template.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T131
+    type: worker
+    assignee: Worker
+    owner_role: "歌澄 音羽"
+    status: active
+    reasoning_hint: default
+    objective: "READMEのLatency snapshotからRTFの詳しい読み方へ迷わず辿れるようにする。"
+    allowed_files:
+      - "README.md"
+      - "README.en.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "READMEに性能保証を書かない。"
+      - "RTF表をREADMEへ重複展開しない。"
+      - "model downloadや外部APIを使わない。"
+    receipt:
+      result: active
+      decision: readme_rtf_link
+      full_outcome_complete: false
+      summary: "README / README.en のLatency snapshotに、RTFの意味とTTS Provider ComparisonのRTF snapshotへのリンクを追加した。"
+      note: "notes/T131-readme-rtf-link.md"
+      changed_files:
+        - "README.md"
+        - "README.en.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T131-readme-rtf-link.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n \"active_task: T131|T131|maintainer-real-time-factor-snapshot|RTF|synthesis / audio duration|synthesis time divided\" README.md README.en.md docs/goals/talking-pets-hq-japanese/notes/T131-readme-rtf-link.md docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
 
   - id: T007

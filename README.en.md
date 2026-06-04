@@ -152,7 +152,7 @@ These are short-text measurements from the maintainer environment. They are not 
 | VOICEVOX speaker 3 | Engine already running, playback included | `total=5693.8ms`, `synthesis=1127.8ms`, `play=4398.6ms` |
 | Irodori-TTS Server | runtime already loaded, no playback | warm synthesis total `9565.2ms` / `10096.2ms` / `16708.0ms` |
 
-VOICEVOX playback-included `total` includes waiting for playback to finish; it is not the same as time to first audible speech. Kokoro.js was not measured in this environment without model download because no local cache was present.
+VOICEVOX playback-included `total` includes waiting for playback to finish; it is not the same as time to first audible speech. For generation speed, also keep RTF separate: synthesis time divided by generated audio duration. See [TTS Provider Comparison](https://github.com/arata-ai-daisuki/talking-pets/blob/main/docs/research/tts-provider-comparison.md#maintainer-real-time-factor-snapshot) for VOICEVOX/Irodori RTF examples and how to read them. Kokoro.js was not measured in this environment without model download because no local cache was present.
 
 ## Distribution
 

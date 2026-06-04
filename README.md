@@ -152,7 +152,7 @@ Maintainer環境での短文測定例です。性能保証ではなく、provide
 | VOICEVOX speaker 3 | Engine起動済み、再生込み | `total=5693.8ms`, `synthesis=1127.8ms`, `play=4398.6ms` |
 | Irodori-TTS Server | runtime loaded後、再生なし | warm synthesis total `9565.2ms` / `10096.2ms` / `16708.0ms` |
 
-VOICEVOXの再生込み `total` は再生完了まで含むため、声が出始めるまでの値ではありません。Kokoro.js はこの環境ではcacheが未取得だったため、model downloadなしでは測定していません。
+VOICEVOXの再生込み `total` は再生完了まで含むため、声が出始めるまでの値ではありません。生成速度を見る場合は、音声の長さに対する `synthesis` の比率であるRTFも分けて確認します。VOICEVOX/IrodoriのRTF例と読み方は [TTS Provider Comparison](https://github.com/arata-ai-daisuki/talking-pets/blob/main/docs/research/tts-provider-comparison.md#maintainer-real-time-factor-snapshot) にあります。Kokoro.js はこの環境ではcacheが未取得だったため、model downloadなしでは測定していません。
 
 ## Distribution
 
