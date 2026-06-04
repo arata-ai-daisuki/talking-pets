@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T167
+active_task: T168
 
 tasks:
   - id: T001
@@ -5206,7 +5206,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "言守 詞葉"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "多言語fallback / dedicated provider evidenceを、外部協力者が短く報告できるMinimal Multilingual Report Formとして追加する。"
     allowed_files:
@@ -5221,7 +5221,7 @@ tasks:
       - "generated audio添付を推奨しない。"
       - "READMEの対応provider claimを増やさない。"
     receipt:
-      result: active
+      result: done
       decision: minimal_multilingual_report_form
       full_outcome_complete: false
       summary: "real-device-verificationにMinimal Multilingual Report Formを追加し、verification-statusからfallback-only / provider-specificの簡易報告導線へリンクした。"
@@ -5234,6 +5234,38 @@ tasks:
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands:
         - cmd: "rg -n 'active_task: T167|T167|minimal_multilingual_report_form|Minimal Multilingual Report Form|fallback-only|provider-specific|generated audio|言守 詞葉' docs/real-device-verification.md docs/verification-status.md docs/goals/talking-pets-hq-japanese/activity-index.md docs/goals/talking-pets-hq-japanese/notes/T167-minimal-multilingual-report-form.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T168
+    type: worker
+    assignee: Worker
+    owner_role: "星宮 未来"
+    status: active
+    reasoning_hint: default
+    objective: "Minimal Multilingual Report Formを、手動outreachの返信で渡せる短いfollow-up文にする。"
+    allowed_files:
+      - "docs/research/x-outreach-targets.md"
+      - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "自動返信、DM、follow、like、mentionをしない。"
+      - "`sent` にはしない。"
+      - "generated audioやprivate logsの添付を求めない。"
+      - "Korean / Chinese dedicated provider support claimを追加しない。"
+    receipt:
+      result: active
+      decision: multilingual_report_form_followup_copy
+      full_outcome_complete: false
+      summary: "x-outreach-targetsにMultilingual report form follow-upを追加し、fallback-only / provider-specificを分けて短く報告してもらう導線を手動返信にした。"
+      note: "notes/T168-multilingual-report-form-followup.md"
+      changed_files:
+        - "docs/research/x-outreach-targets.md"
+        - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T168-multilingual-report-form-followup.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n 'active_task: T168|T168|multilingual_report_form_followup_copy|Multilingual report form follow-up|fallback-only|provider-specific|generated audio|private logs|星宮 未来' docs/research/x-outreach-targets.md docs/goals/talking-pets-hq-japanese/activity-index.md docs/goals/talking-pets-hq-japanese/notes/T168-multilingual-report-form-followup.md docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
 
   - id: T007
