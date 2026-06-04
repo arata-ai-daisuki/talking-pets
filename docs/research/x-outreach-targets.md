@@ -134,6 +134,26 @@ Before moving a row to `sent`, choose exactly one template and one ask:
 - dedicated provider evidence
 - intro to a relevant builder
 
+## Candidate-Specific Manual Drafts
+
+Use these only after the current thread/post clearly invites relevant tools, benchmarks, or implementation feedback. Keep the first touch short and public.
+
+### `myshell-ai/MeloTTS`
+
+> I'm building a small local-first Codex voice tool and keeping Korean/Chinese support honest for now: OS speech fallback only, not dedicated provider support. MeloTTS looks relevant for provider-specific evidence. If a project like mine wanted to evaluate it responsibly, which evidence would matter most: provider version, sample text/audio, latency lines, model/license notes, or device/OS details?
+
+### `apinge/MeloTTS.cpp`
+
+> This OpenVINO/C++ path is interesting for a small local-first coding companion voice tool. I'm not adding another provider yet, but I'm collecting evidence requirements first. For a lightweight integration, would you prioritize CPU latency, first-audio time, model size, language coverage, or setup complexity?
+
+### MOSS-TTS-Nano r/LocalLLaMA post
+
+> This is very relevant to a small local-first Codex voice add-on I'm building. I'm especially curious about what to measure for coding-companion use: first-audio latency, full utterance time, CPU load, or how distracting the voice feels during work. If you wanted feedback from small tools, what test case would be useful?
+
+### Offline TTS CPU benchmark r/TextToSpeech post
+
+> This benchmark is useful context. I'm measuring local TTS for a tiny Codex companion and trying not to overclaim. For real-world usability, do you think first-audio latency matters more than total generation time, or should both be reported with device/OS details?
+
 ## Sources Checked
 
 - X search result for Mau Ledford / Sogni Voice: https://x.com/krunkosaurus/status/2015719029911220531
