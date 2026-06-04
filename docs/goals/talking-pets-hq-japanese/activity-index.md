@@ -8,14 +8,14 @@ This page is a readable snapshot of the Japanese HQ state. The authoritative sou
 
 - Board URL: `http://goalbuddy.localhost:41737/talking-pets-hq-japanese/`
 - Local board files: `docs/goals/talking-pets-hq-japanese/.goalbuddy-board/`
-- Current active task: `T182`
-- Current focus: provider feedbackをSearch Review Logとprovider scorecardへ手動反映する導線を更新する。
+- Current active task: `T183`
+- Current focus: 多言語検証フォームと小テスト導線をprovider feedback captureに合わせて更新する。
 
 ## Kanban Snapshot
 
 | Column | Count | Meaning |
 | --- | ---: | --- |
-| Done | 182 | 完了済みの小PR、調査、判断カード、検証receipt。 |
+| Done | 183 | 完了済みの小PR、調査、判断カード、検証receipt。 |
 | Active | 1 | いまHQが追っている作業。 |
 | Blocked | 0 | 同じ停止条件が継続しており、Master判断なしに進めないもの。 |
 
@@ -69,7 +69,8 @@ This page is a readable snapshot of the Japanese HQ state. The authoritative sou
 | `T179` | 相庭 愛 | done | MeloTTS次PR候補を整理し、monitor health integrationを推奨。 |
 | `T180` | 歌澄 音羽 | done | MeloTTS health-only helperをmonitorの`--list-voices`へ接続。 |
 | `T181` | 白瀬 怜奈 | done | installer/configにMeloTTS external runtime health-check案内だけを追加。 |
-| `T182` | 星宮 未来 | active | provider feedback capture導線を更新中。 |
+| `T182` | 星宮 未来 | done | provider feedback capture導線をSearch Review Logとprovider intakeへ追加。 |
+| `T183` | 言守 詞葉 | active | 多言語検証フォームと小テスト導線を更新中。 |
 
 ## Where To Look Next
 

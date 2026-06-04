@@ -291,9 +291,9 @@ Design note: `docs/research/melotts-design-note.md`
 
 Use this table when someone replies to the provider feedback ask. Record only public or voluntarily shared technical guidance; do not collect private contact details or generated audio files.
 
-| Date | Source | Provider | Feedback Area | What They Said | Decision Impact | Follow-Up |
+| Date | Source | Provider | Feedback Area | Evidence Summary | Decision Impact | Follow-Up |
 | --- | --- | --- | --- | --- | --- | --- |
-|  |  | Piper / MeloTTS / other | license / runtime / cache / measurement / platform |  | keep design-only / write design note / ask Master / no action |  |
+|  | Public URL or `private summary approved by Master` | Piper / MeloTTS / sherpa-onnx / other | license / runtime / cache / measurement / platform | One-sentence technical summary only | keep design-only / update design note / ask Master / no action | Link to Search Review Log row or next note |
 
 Classification rules:
 
@@ -302,6 +302,13 @@ Classification rules:
 - `cache`: model, dictionary, voice, or downloaded asset location and cleanup behavior.
 - `measurement`: cold start, warm synthesis, audio duration, RTF, playback flag, or contributor evidence shape.
 - `platform`: Windows, macOS, Linux, architecture, or device-specific friction.
+
+Decision impact rules:
+
+- `keep design-only`: feedback is useful context but does not resolve dependency, model, license, cache, and platform boundaries.
+- `update design note`: feedback changes a known boundary, adds a public source, or narrows a future helper surface.
+- `ask Master`: feedback suggests dependency install, model download, API use, generated audio review, or public support wording.
+- `no action`: feedback is promotional, private without approved summary, unrelated, or too vague to affect a provider decision.
 
 Do not change README provider claims from feedback alone. First convert meaningful feedback into a provider-specific design note, then ask Master before dependency, model, or implementation work.
 
