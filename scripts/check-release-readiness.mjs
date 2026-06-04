@@ -1408,7 +1408,7 @@ function isForbiddenEnvFile(file) {
 function listFiles(dir, prefix = "") {
   const result = [];
   for (const entry of readdirSync(dir)) {
-    if (entry === ".git" || entry === "node_modules") continue;
+    if (entry === ".git" || entry === "node_modules" || entry === ".DS_Store") continue;
     const rel = prefix ? `${prefix}/${entry}` : entry;
     const path = join(dir, entry);
     const stat = statSync(path);

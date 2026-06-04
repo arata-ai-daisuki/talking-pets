@@ -70,12 +70,16 @@ Use these on X before sending anything:
 > Thanks, this is exactly the kind of evidence I'm trying to collect carefully. I added a short report form so it does not need a full benchmark: https://github.com/arata-ai-daisuki/talking-pets/blob/main/docs/real-device-verification.md#minimal-multilingual-report-form
 >
 > The key thing is marking whether it is fallback-only or provider-specific evidence. Please do not attach generated audio or private logs.
+>
+> If your result changes a provider/runtime assumption, I will only record a short technical summary in the provider feedback intake, not private messages or contact details.
 
 ### Minimal multilingual test pack
 
 > I added a tiny Korean/Chinese test pack so this does not need to become a full benchmark: https://github.com/arata-ai-daisuki/talking-pets/blob/main/docs/real-device-verification.md#minimal-multilingual-test-pack
 >
 > The useful distinction is fallback-only vs provider-specific. A sanitized routing or latency line, OS/device, provider name/version if known, and whether one spoken line was audible are enough. No generated audio or private logs needed.
+>
+> If you share provider-specific setup advice, I will summarize only the technical point in the provider feedback intake before changing any support wording.
 
 ### AI VTuber / companion-specific
 

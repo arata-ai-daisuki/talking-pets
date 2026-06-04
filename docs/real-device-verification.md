@@ -39,6 +39,7 @@ Talking Pets multilingual check
 - Chosen provider/path:
 - Was one spoken line audible: yes/no:
 - Evidence type: fallback-only / provider-specific:
+- Provider feedback intake needed: yes/no:
 - Sanitized command output or latency line:
 - Private text, paths, credentials, generated audio, model files removed: yes/no:
 - Notes:
@@ -50,6 +51,7 @@ Rules for this form:
 - Provider-specific evidence must name the provider and version if known.
 - Do not attach generated audio unless the exact model and generated-audio terms have already been reviewed.
 - Do not change README wording from fallback to dedicated support from this form alone.
+- If provider-specific evidence changes a runtime, cache, license, measurement, or platform assumption, summarize it in `docs/research/tts-provider-comparison.md#provider-feedback-intake`.
 - If the report includes Korean or Chinese provider-specific evidence, also check the Dedicated Provider Evidence Checklist in `docs/verification-status.md`.
 
 ## Minimal Multilingual Test Pack
@@ -85,6 +87,7 @@ Copy the Minimal Multilingual Report Form above and fill it with:
 - one sanitized routing line or latency line
 - whether one spoken line was audible
 - device/OS and Node/npm versions
+- whether the result should also become a provider feedback intake row
 
 Do not attach generated audio, private logs, local paths, model files, downloaded dictionaries, credentials, or private Codex text.
 
