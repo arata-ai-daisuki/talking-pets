@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T220
+active_task: T221
 
 tasks:
   - id: T001
@@ -7252,7 +7252,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "言守 詞葉 / 白瀬 怜奈"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "T219のlocal TTS approval follow-up後に、多言語検証の受け口へ戻る。"
     allowed_files:
@@ -7267,13 +7267,53 @@ tasks:
       - "README support claimを強めない。"
       - "生成音声、private logs、private contactをrepoへ保存しない。"
     receipt:
-      result: active
+      result: done
       decision: multilingual_verification_follow_up_watch
-      full_outcome_complete: false
-      summary: "次は多言語検証の受け口をclaim変更なしで再確認する。"
+      full_outcome_complete: true
+      summary: "GitHub issue #23-#26を再確認し、全てopen / 0 commentsで新しい多言語証跡がないため、Multilingual Verification Follow-Up Watchを追加した。README、release notes、provider comparison、platform status、Korean/Chinese dedicated provider claim、生成音声、private logs、private contactは追加していない。"
       note: "notes/T220-multilingual-verification-follow-up-watch.md"
       changed_files:
+        - "docs/verification-status.md"
+        - "docs/real-device-verification.md"
         - "docs/goals/talking-pets-hq-japanese/notes/T220-multilingual-verification-follow-up-watch.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T221-outreach-waiting-lane-next-cycle.md"
+        - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+        - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "gh issue view 23 --json number,state,comments,updatedAt,title && gh issue view 24 --json number,state,comments,updatedAt,title && gh issue view 25 --json number,state,comments,updatedAt,title && gh issue view 26 --json number,state,comments,updatedAt,title"
+          status: pass
+        - cmd: "rg -n 'Multilingual Verification Follow-Up Watch|active_task: T221|multilingual_verification_follow_up_watch|outreach_waiting_lane_next_cycle|0 comments|fallback-only|provider-specific|Dedicated Provider Evidence Checklist' docs/verification-status.md docs/real-device-verification.md docs/goals/talking-pets-hq-japanese/notes/T220-multilingual-verification-follow-up-watch.md docs/goals/talking-pets-hq-japanese/notes/T221-outreach-waiting-lane-next-cycle.md docs/goals/talking-pets-hq-japanese/hq-backlog-board.md docs/goals/talking-pets-hq-japanese/activity-index.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+        - cmd: "npm run check:docs"
+          status: pass
+
+  - id: T221
+    type: worker
+    assignee: Worker
+    owner_role: "星宮 未来 / 白瀬 怜奈"
+    status: active
+    reasoning_hint: default
+    objective: "T220の多言語検証follow-up後に、OpenClaw / V1GPTなどのoutreach返信待ちlaneへ戻る。"
+    allowed_files:
+      - "docs/research/x-outreach-targets.md"
+      - "docs/research/sns-outreach-strategy.md"
+      - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+      - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "自動投稿、DM、mention、follow、likeをしない。"
+      - "OpenClaw / V1GPTの催促禁止日より前にnudgeしない。"
+      - "private contact、private DM、未sanitized内容をrepoへ貼らない。"
+    receipt:
+      result: active
+      decision: outreach_waiting_lane_next_cycle
+      full_outcome_complete: false
+      summary: "次はoutreach返信待ちlaneを、送信なしで再確認する。"
+      note: "notes/T221-outreach-waiting-lane-next-cycle.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T221-outreach-waiting-lane-next-cycle.md"
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands: []
 
