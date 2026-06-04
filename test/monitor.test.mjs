@@ -30,6 +30,7 @@ import { documentAnchors, documentLinks, shouldSkip, stripHtmlComments } from ".
 import { KOKORO_VOICES, parseArgs as parseKokoroArgs } from "../scripts/tts-kokoro.mjs";
 import { parseArgs as parseVoiceboxArgs, safeURLForLog } from "../scripts/tts-voicebox.mjs";
 import { formatAudioDurationSeconds, formatRealTimeFactor, latencyAudioFields, wavDurationSeconds } from "../scripts/wav-duration.mjs";
+import { csvCell, formatLatencyRows, latencyRowsFromText, parseLatencyLine as parseLatencyTableLine } from "../scripts/latency-lines-to-table.mjs";
 import { sanitizePublicOutput, stripURLQuery } from "../scripts/sanitize-public-output.mjs";
 import { forbiddenText as sanitizerForbiddenText, requiredText as sanitizerRequiredText, sample as sanitizerSample } from "../scripts/check-public-output-sanitizer.mjs";
 
@@ -230,6 +231,30 @@ test("reads WAV duration and formats latency audio fields", () => {
     { audioDuration: "1.5s", rtf: "0.50x" },
   );
   assert.equal(wavDurationSeconds(Buffer.from("not wav")), null);
+});
+
+test("converts latency lines to markdown and CSV tables", () => {
+  const input = [
+    "[latency] total=1334.3ms audio_query=120.0ms synthesis=1100.0ms audioDuration=3.861333s rtf=0.28x provider=voicevox success=true play=false",
+    "ignored line",
+    "[latency] total=9565.2ms synthesis=9560.9ms audioDuration=3.92s rtf=2.44x provider=irodori success=true play=false",
+  ].join("\n");
+  const rows = latencyRowsFromText(input);
+  assert.deepEqual(rows[0], {
+    run: 1,
+    total: "1334.3ms",
+    audio_query: "120.0ms",
+    synthesis: "1100.0ms",
+    audioDuration: "3.861333s",
+    rtf: "0.28x",
+    provider: "voicevox",
+    success: "true",
+    play: "false",
+  });
+  assert.match(formatLatencyRows(rows, "markdown"), /\| 1 \| voicevox \| 1334\.3ms \| 1100\.0ms \| 3\.861333s \| 0\.28x \| false \| true \| 120\.0ms \|/);
+  assert.match(formatLatencyRows(rows, "csv"), /^run,provider,total,synthesis,audioDuration,rtf,play,success,audio_query/m);
+  assert.equal(parseLatencyTableLine("[latency] provider=a|b total=1ms").provider, "a|b");
+  assert.equal(csvCell('a,"b"'), '"a,""b"""');
 });
 
 test("sanitizes public check output before issue sharing", () => {
@@ -988,7 +1013,7 @@ test("detects npm pack scope drift", () => {
   }).join("\n"), /missing required file: test\/fixtures\/mixed-ja-en-rollout\.jsonl/);
   const completePackIssues = packIssues({
     size: 300_000,
-    entryCount: 61,
+    entryCount: 62,
     files: [
       { path: ".talking-pets.local.env.example", mode: 0o644 },
       { path: "README.md", mode: 0o644 },
@@ -1033,6 +1058,7 @@ test("detects npm pack scope drift", () => {
       { path: "scripts/check-platform-scripts.mjs", mode: 0o644 },
       { path: "scripts/check-release-readiness.mjs", mode: 0o644 },
       { path: "scripts/check-swift-cli.mjs", mode: 0o644 },
+      { path: "scripts/latency-lines-to-table.mjs", mode: 0o644 },
       { path: "scripts/sanitize-public-output.mjs", mode: 0o644 },
       { path: "scripts/pet-rollout-monitor-node.command", mode: 0o755 },
       { path: "scripts/pet-rollout-monitor.command", mode: 0o755 },

@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T136
+active_task: T137
 
 tasks:
   - id: T001
@@ -4239,7 +4239,7 @@ tasks:
     type: pm
     assignee: PM
     owner_role: "愛坂 あい"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "次のno-download diagnostics改善として、TTS helper複数回測定を表にしやすくする小実装候補を定義する。"
     allowed_files:
@@ -4251,7 +4251,7 @@ tasks:
       - "VOICEVOX/Irodori server起動を前提にしない。"
       - "性能保証を書かない。"
     receipt:
-      result: active
+      result: done
       decision: next_diagnostics_candidate
       full_outcome_complete: false
       summary: "次の安全な実装候補として、既存helperの[latency]行を複数回集計してCSV/Markdownへ変換するno-download diagnostics helperを提案した。"
@@ -4261,6 +4261,58 @@ tasks:
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands:
         - cmd: "rg -n \"active_task: T136|T136|next_diagnostics_candidate|latency line|CSV|Markdown|no-download\" docs/goals/talking-pets-hq-japanese/notes/T136-next-diagnostics-candidate.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T137
+    type: worker
+    assignee: Worker
+    owner_role: "速水 光莉"
+    status: active
+    reasoning_hint: default
+    objective: "保存済み[latency]行をMarkdown/CSV表へ変換するno-download helperを追加する。"
+    allowed_files:
+      - "scripts/**"
+      - "test/**"
+      - "docs/performance.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      - "package.json"
+    constraints:
+      - "TTS engineを起動しない。"
+      - "model downloadや外部APIを使わない。"
+      - "performance claimを強くしない。"
+    receipt:
+      result: active
+      decision: latency_table_helper
+      full_outcome_complete: false
+      summary: "scripts/latency-lines-to-table.mjs と npm run latency:table を追加し、保存済み[latency]行をMarkdown/CSVへ変換できるようにした。"
+      note: "notes/T137-latency-table-helper.md"
+      changed_files:
+        - "scripts/latency-lines-to-table.mjs"
+        - "test/monitor.test.mjs"
+        - "scripts/check-npm-pack.mjs"
+        - "package.json"
+        - "docs/performance.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T137-latency-table-helper.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "npm run check:syntax"
+          status: pass
+        - cmd: "npm test"
+          status: pass
+        - cmd: "npm run check:pack"
+          status: pass
+        - cmd: "printf <two sample latency lines> | npm run latency:table --"
+          status: pass
+        - cmd: "npm run check:docs"
+          status: pass
+        - cmd: "npm run check:release"
+          status: pass
+        - cmd: "npm run check:sanitize"
+          status: pass
+        - cmd: "npm run test:dry-run"
+          status: pass
+        - cmd: "rg -n \"active_task: T137|T137|latency:table|latency-lines-to-table|Markdown|CSV|latency_table_helper\" scripts package.json test/monitor.test.mjs docs/performance.md docs/goals/talking-pets-hq-japanese/notes/T137-latency-table-helper.md docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
 
   - id: T007
