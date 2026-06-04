@@ -8,14 +8,14 @@ This page is a readable snapshot of the Japanese HQ state. The authoritative sou
 
 - Board URL: `http://goalbuddy.localhost:41737/talking-pets-hq-japanese/`
 - Local board files: `docs/goals/talking-pets-hq-japanese/.goalbuddy-board/`
-- Current active task: `T175`
-- Current focus: T061由来のsherpa optional npm installだけを、model downloadなしで確認する。
+- Current active task: `T176`
+- Current focus: MeloTTSを直接installせず、external runtimeへdetect/connect-onlyで接続するhelper設計を固める。
 
 ## Kanban Snapshot
 
 | Column | Count | Meaning |
 | --- | ---: | --- |
-| Done | 175 | 完了済みの小PR、調査、判断カード、検証receipt。 |
+| Done | 176 | 完了済みの小PR、調査、判断カード、検証receipt。 |
 | Active | 1 | いまHQが追っている作業。 |
 | Blocked | 0 | 同じ停止条件が継続しており、Master判断なしに進めないもの。 |
 
@@ -26,7 +26,7 @@ This page is a readable snapshot of the Japanese HQ state. The authoritative sou
 | 相庭 愛 | HQ Producer | 57 | 0 | 判断カード、全体整理、Master確認。 |
 | 星宮 未来 | Outreach Lead | 32 | 0 | SNS/outreach、候補表、返信ドラフト、送信後記録。 |
 | 白瀬 怜奈 | Risk / Review Lead | 20 | 0 | claim境界、license/privacy/API、セルフレビュー。 |
-| 歌澄 音羽 | Voice Provider Lead | 22 | 1 | TTS provider、VOICEVOX/Irodori/sherpa/Melo/API設計。 |
+| 歌澄 音羽 | Voice Provider Lead | 23 | 1 | TTS provider、VOICEVOX/Irodori/sherpa/Melo/API設計。 |
 | 言守 詞葉 | Multilingual Lead | 16 | 0 | ko/zh fallback、多言語fixture、dedicated provider evidence境界。 |
 | 速水 光莉 | Latency Lead | 14 | 0 | latency診断、RTF、table helper、測定読み方。 |
 | 文月 栞里 | Docs / Operations Lead | 11 | 0 | docs整備、hygiene、activity index、運用導線。 |
@@ -62,7 +62,8 @@ This page is a readable snapshot of the Japanese HQ state. The authoritative sou
 | `T172` | 歌澄 音羽 | done | VOICEVOX/Irodori evidence askを追加。 |
 | `T173` | 歌澄 音羽 | done | MeloTTS Cのruntime/cache boundaryを具体化。 |
 | `T174` | 言守 詞葉 | done | Minimal Multilingual Test Packを追加。 |
-| `T175` | 歌澄 音羽 | active | sherpa optional npm installだけを確認中。 |
+| `T175` | 歌澄 音羽 | done | sherpa optional npm installだけを確認。 |
+| `T176` | 歌澄 音羽 | active | MeloTTS external runtime helper設計を進行中。 |
 
 ## Where To Look Next
 
