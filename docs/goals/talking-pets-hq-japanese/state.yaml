@@ -49,7 +49,7 @@ visual_board:
   selected: local
   local:
     status: generated
-    url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese-2/"
+    url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
 active_task: T175
