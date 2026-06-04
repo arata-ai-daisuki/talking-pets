@@ -91,6 +91,19 @@ Copy the Minimal Multilingual Report Form above and fill it with:
 
 Do not attach generated audio, private logs, local paths, model files, downloaded dictionaries, credentials, or private Codex text.
 
+## Multilingual Evidence Handling Order
+
+Use this order when a contributor shares Korean, Chinese, or another fallback-language result:
+
+1. Record the sanitized public Platform verification issue URL first.
+2. Classify the report as `fallback-only` or `provider-specific`.
+3. If it is fallback-only, keep README wording as OS speech fallback and record only follow-up notes.
+4. If it is provider-specific, check the Dedicated Provider Evidence Checklist in `docs/verification-status.md`.
+5. If the report changes runtime, cache, license, measurement, or platform assumptions, copy only a one-sentence technical summary into `docs/research/tts-provider-comparison.md#provider-feedback-intake`.
+6. Change README support wording only after the checklist is complete and the sanitized issue is linked from `docs/verification-status.md`.
+
+Do not wait on outside replies before continuing safe internal work. Missing or partial reports should stay as intake/follow-up evidence, not as a blocker.
+
 ## Quick Contributor Request
 
 When asking someone else to verify Windows or Linux, send them this short checklist:

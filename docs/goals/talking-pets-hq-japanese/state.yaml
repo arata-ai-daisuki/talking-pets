@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T189
+active_task: T190
 
 tasks:
   - id: T001
@@ -6046,7 +6046,7 @@ tasks:
     type: pm
     assignee: PM
     owner_role: "言守 詞葉"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "Minimal Multilingual Report FormとIssue導線がREADMEへ出たので、外部証跡が来た時の処理順を保つ。"
     allowed_files:
@@ -6062,11 +6062,53 @@ tasks:
       - "README support claimを外部実機証跡なしに変更しない。"
       - "provider実装、依存追加、model download、API callをしない。"
     receipt:
-      result: active
+      result: done
       decision: multilingual_evidence_watch
-      full_outcome_complete: false
-      summary: "次は多言語reportが来た時のfallback-only / provider-specific / provider feedback intake処理順を見える化する。"
+      full_outcome_complete: true
+      summary: "real-device-verification、verification-status、outreach follow-upに多言語証跡の処理順を追加し、sanitized issue URL、fallback-only/provider-specific分類、provider feedback intake、README claim判断の順番を固定した。"
       note: "notes/T189-multilingual-evidence-watch.md"
+      changed_files:
+        - "docs/real-device-verification.md"
+        - "docs/verification-status.md"
+        - "docs/research/x-outreach-targets.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T189-multilingual-evidence-watch.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T190-scorecard-evidence-follow-up.md"
+        - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+        - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n 'Multilingual Evidence Handling Order|sanitized Platform verification issue|fallback-only|provider-specific|Provider Feedback Intake|active_task: T190|multilingual_evidence_watch|scorecard_evidence_follow_up' docs/real-device-verification.md docs/verification-status.md docs/research/x-outreach-targets.md docs/goals/talking-pets-hq-japanese/notes/T189-multilingual-evidence-watch.md docs/goals/talking-pets-hq-japanese/notes/T190-scorecard-evidence-follow-up.md docs/goals/talking-pets-hq-japanese/hq-backlog-board.md docs/goals/talking-pets-hq-japanese/activity-index.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+        - cmd: "npm run check:docs"
+          status: pass
+
+  - id: T190
+    type: pm
+    assignee: PM
+    owner_role: "歌澄 音羽 / 白瀬 怜奈"
+    status: active
+    reasoning_hint: default
+    objective: "Provider scorecardのgapが明確になったので、必要ならdesign note質問へ落とし込む。"
+    allowed_files:
+      - "docs/research/tts-provider-comparison.md"
+      - "docs/research/sherpa-onnx-design.md"
+      - "docs/research/melotts-design-note.md"
+      - "docs/research/piper-design-note.md"
+      - "docs/research/api-tts-design-note.md"
+      - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+      - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "依存追加、model download、API callをしない。"
+      - "READMEに新provider対応済みclaimを追加しない。"
+      - "Master承認なしにprovider実験へ進まない。"
+    receipt:
+      result: active
+      decision: scorecard_evidence_follow_up
+      full_outcome_complete: false
+      summary: "次はscorecard evidence gapをdesign-note質問へ落とし込む。"
+      note: "notes/T190-scorecard-evidence-follow-up.md"
       changed_files:
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands: []

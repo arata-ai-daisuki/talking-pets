@@ -67,6 +67,17 @@ For quick contributor replies, use the [Minimal Multilingual Report Form](real-d
 
 If the reply includes provider-specific guidance, such as runtime setup, model cache behavior, license notes, platform friction, or which latency metric matters, also copy a one-sentence technical summary into [Provider Feedback Intake](https://github.com/arata-ai-daisuki/talking-pets/blob/main/docs/research/tts-provider-comparison.md#provider-feedback-intake). Keep the public verification issue as evidence and do not paste private messages or generated audio.
 
+### Multilingual Evidence Handling Order
+
+When a Korean, Chinese, or other fallback-language report arrives:
+
+1. Link the sanitized Platform verification issue before copying details into this status file.
+2. Mark the evidence as `fallback-only` or `provider-specific`.
+3. Keep `fallback-only` reports as routing/audio evidence only; do not use them for dedicated provider support wording.
+4. For `provider-specific` reports, run the Dedicated Provider Evidence Checklist below.
+5. Copy only technical provider guidance into Provider Feedback Intake when it changes runtime, cache, license, measurement, or platform assumptions.
+6. Update README support wording only after the checklist is complete and the verification-status row links to the sanitized issue.
+
 ### Dedicated Provider Evidence Checklist
 
 Use this checklist before changing Korean, Chinese, or any other fallback language from "OS speech fallback" to "dedicated provider support":

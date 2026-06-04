@@ -81,6 +81,12 @@ Use these on X before sending anything:
 >
 > If you share provider-specific setup advice, I will summarize only the technical point in the provider feedback intake before changing any support wording.
 
+### Multilingual evidence handling follow-up
+
+> Thanks. I will record this in the multilingual evidence flow first: sanitized issue URL -> fallback-only/provider-specific classification -> provider feedback intake only if it changes runtime/cache/license/measurement/platform assumptions.
+>
+> I will not change README support wording from this alone unless the dedicated provider checklist is complete.
+
 ### AI VTuber / companion-specific
 
 > I like this AI companion direction. I'm exploring a developer-tool version: a local-first Codex Pet voice add-on, more "coding companion" than full VTuber stack. The hard part seems to be balancing charm with not interrupting the work.
