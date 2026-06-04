@@ -215,6 +215,8 @@ Boundary watch 6: 2026-06-05. Local outreach records still show V1GPT and OpenCl
 
 Boundary watch 7: 2026-06-05. Local outreach records still show V1GPT and OpenClaw / Sogni Voice as waiting. No public reply URL or Master-approved sanitized summary was recorded in the local HQ docs during this watch. Keep the outreach lane in wait state; do not resend, nudge, DM, mention, follow, like, store private contact details, strengthen support claims, or ask for a Star before 2026-06-17 unless a public reply appears first or Master provides an approved sanitized summary.
 
+Boundary watch 8: 2026-06-05. Local outreach records still show V1GPT and OpenClaw / Sogni Voice as waiting. No public reply URL or Master-approved sanitized summary was recorded in the local HQ docs during this watch. Keep the outreach lane in wait state; do not resend, nudge, DM, mention, follow, like, store private contact details, strengthen support claims, or ask for a Star before 2026-06-17 unless a public reply appears first or Master provides an approved sanitized summary.
+
 Keep V1R4 as `reply later` until a current public thread clearly invites related project examples.
 
 ### Public Proof Route Selector
