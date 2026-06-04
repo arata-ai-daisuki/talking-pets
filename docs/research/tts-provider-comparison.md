@@ -547,3 +547,18 @@ no local ~/.cache/talking-pets/transformers cache found
 ```
 
 Do not measure Kokoro cold start without explicit approval for model download.
+
+### Local TTS Boundary Watch Result
+
+Checked: 2026-06-05.
+
+Current boundary remains unchanged:
+
+- VOICEVOX / Voicebox-compatible endpoint: keep as evidence-first. Existing maintainer measurements are useful reference data, but broader public wording still needs sanitized contributor evidence through issue #26.
+- Irodori-TTS Server: keep as evidence-first. Existing maintainer M1 measurements show provider shape, not universal performance. Contributor CPU/GPU/backend evidence is still expected through issue #25.
+- Kokoro.js: keep supported helper wording, but do not run cold-start measurement without explicit model-download approval.
+- sherpa-onnx-node: keep design-only. Do not install the dependency, download models/assets, or add helper code from current docs alone.
+- MeloTTS: keep design-only / external-runtime. Health-only detect/connect remains the boundary; do not run Python/Docker/model/unidic setup or generate audio.
+- API TTS: keep later opt-in. Do not create API keys, make paid calls, call remote endpoints, or change default routing.
+
+No dependency install, model download, API call, generated audio, README support claim change, latency guarantee claim, platform support claim, or default routing change was made in this watch.
