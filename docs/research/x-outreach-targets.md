@@ -194,6 +194,20 @@ Capture fields:
 
 Do not paste full private messages, generated audio, private logs, email addresses, Discord handles, or contact details. If the feedback is useful but private, record only `private feedback received` plus the decision impact after Master approves the summary.
 
+### Outreach Reply Intake Playbook
+
+Use this only after someone replies publicly, or after Master approves a short private-summary record.
+
+| Reply type | Record in Search Review Log | Copy to Provider Feedback Intake | Next action |
+| --- | --- | --- | --- |
+| Simple acknowledgement, like, or thanks | Mark as `sent` / `replied` in Follow-Up with the public URL. | No. | No follow-up unless they ask a question. |
+| Latency or UX opinion | Add one-sentence summary and public URL. | Only if it changes measurement assumptions. | Consider a docs-only measurement note. |
+| Provider setup guidance | Add public URL, provider family, and evidence type. | Yes, one technical sentence if it affects runtime/cache/license/measurement/platform. | Update provider design note or ask Master if it implies install/model/API work. |
+| Multilingual test offer | Add public URL and mark evidence as fallback-only or provider-specific. | Only if provider assumptions change. | Send Minimal Multilingual Report Form; do not change README wording. |
+| Private DM or unsanitized detail | Record only `private feedback received` after Master approves the summary. | Use `private summary approved by Master` only when decision impact matters. | Ask for sanitized public issue if evidence is needed. |
+
+Do not send a follow-up before 2026-06-17 for OpenClaw / Sogni Voice or V1GPT unless they reply first.
+
 Decision flow:
 
 1. `watch`: relevant person or project, but the current post is not asking for tools, examples, testing, or feedback.

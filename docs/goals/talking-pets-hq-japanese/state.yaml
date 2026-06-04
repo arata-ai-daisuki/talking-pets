@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T194
+active_task: T195
 
 tasks:
   - id: T001
@@ -6246,7 +6246,7 @@ tasks:
     type: pm
     assignee: PM
     owner_role: "星宮 未来"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "OpenClaw/V1GPTはsentなので、返信が来た時だけpublic URLとtechnical summaryを記録できる状態にする。"
     allowed_files:
@@ -6262,11 +6262,52 @@ tasks:
       - "2026-06-17より前に催促しない。"
       - "private DM本文、個人情報、contact detailsをdocsへ貼らない。"
     receipt:
-      result: active
+      result: done
       decision: outreach_reply_intake
-      full_outcome_complete: false
-      summary: "次は返信が来た時のpublic URL / technical summary記録導線を再確認する。"
+      full_outcome_complete: true
+      summary: "x-outreach-targetsにOutreach Reply Intake Playbookを追加し、simple acknowledgement、latency/UX、provider setup、multilingual test、private/unsanitized detailの記録先を分けた。Provider Feedback Intakeにもsimple acknowledgementを入れないルールを追加した。"
       note: "notes/T194-outreach-reply-intake.md"
+      changed_files:
+        - "docs/research/x-outreach-targets.md"
+        - "docs/research/tts-provider-comparison.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T194-outreach-reply-intake.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T195-verification-issue-watch.md"
+        - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+        - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n 'Outreach Reply Intake Playbook|Simple acknowledgement|private feedback received|active_task: T195|outreach_reply_intake|verification_issue_watch' docs/research/x-outreach-targets.md docs/research/tts-provider-comparison.md docs/goals/talking-pets-hq-japanese/notes/T194-outreach-reply-intake.md docs/goals/talking-pets-hq-japanese/notes/T195-verification-issue-watch.md docs/goals/talking-pets-hq-japanese/hq-backlog-board.md docs/goals/talking-pets-hq-japanese/activity-index.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+        - cmd: "npm run check:docs"
+          status: pass
+
+  - id: T195
+    type: pm
+    assignee: PM
+    owner_role: "文月 栞里 / 白瀬 怜奈"
+    status: active
+    reasoning_hint: default
+    objective: "多言語intakeとprovider approvalの波が進んだので、Issue #23-#26の受け入れ状態をclaim変更なしで見直せるようにする。"
+    allowed_files:
+      - "docs/verification-status.md"
+      - "docs/real-device-verification.md"
+      - "docs/contributor-entrypoints.md"
+      - "README.md"
+      - "README.en.md"
+      - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+      - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "GitHub issueへ自動返信しない。"
+      - "実機証跡なしにWindows/Linuxをstableへ上げない。"
+      - "VOICEVOX/Irodoriの1件データを性能保証にしない。"
+    receipt:
+      result: active
+      decision: verification_issue_watch
+      full_outcome_complete: false
+      summary: "次はIssue #23-#26の受け入れ導線をclaim変更なしで確認する。"
+      note: "notes/T195-verification-issue-watch.md"
       changed_files:
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands: []
