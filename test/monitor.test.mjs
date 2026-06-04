@@ -189,7 +189,17 @@ test("requires installer config checks on their native platforms", () => {
 
 test("keeps installer output safe for public evidence", () => {
   const workDir = "/tmp/talking-pets-install-test";
-  assert.deepEqual(installerOutputIssues("Saved config: .talking-pets.local.env\nStart: ./start\n", workDir, "installer"), []);
+  const safeInstallerOutput = [
+    "Saved config: .talking-pets.local.env",
+    "MeloTTS is not installed by this installer. If you already run an external MeloTTS runtime, health-check it with:",
+    "  npm run monitor:node -- --tts melotts --list-voices --melotts-url http://127.0.0.1:3399/health",
+    "Start: ./start",
+  ].join("\n");
+  assert.deepEqual(installerOutputIssues(safeInstallerOutput, workDir, "installer"), []);
+  assert.match(
+    installerOutputIssues("Saved config: .talking-pets.local.env\nStart: ./start\n", workDir, "installer").join("\n"),
+    /external runtime detect-only wording/,
+  );
   assert.match(
     installerOutputIssues(`Saved config: ${workDir}/.talking-pets.local.env\n`, workDir, "installer").join("\n"),
     /working directory path/,

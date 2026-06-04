@@ -128,4 +128,6 @@ TALKING_PETS_SPEECH_LANGUAGE="$SpeechLanguage"
 "@ | Set-Content -Encoding UTF8 $Config
 
 Write-Localized "Saved config: .talking-pets.local.env" "Saved config: .talking-pets.local.env"
+Write-Localized "MeloTTS is not installed by this installer. If you already run an external MeloTTS runtime, health-check it with:" "MeloTTS is not installed by this installer. If you already run an external MeloTTS runtime, health-check it with:"
+Write-Host "  npm run monitor:node -- --tts melotts --list-voices --melotts-url http://127.0.0.1:3399/health"
 Write-Localized "Start: .\start-selected-tts.ps1" "Start: .\start-selected-tts.ps1"

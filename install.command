@@ -261,6 +261,8 @@ chmod +x "$ROOT_DIR/check.command" 2>/dev/null || true
 
 echo
 say_line "Saved config: .talking-pets.local.env" "設定を保存しました: .talking-pets.local.env"
+say_line "MeloTTS is not installed by this installer. If you already run an external MeloTTS runtime, health-check it with:" "このインストーラーはMeloTTSをインストールしません。外部MeloTTS runtimeを自分で起動済みの場合だけ、次でhealth checkできます。"
+echo "  npm run monitor:node -- --tts melotts --list-voices --melotts-url http://127.0.0.1:3399/health"
 say_line "Start Talking Pets with:" "起動するには次を実行してください。"
 echo
 echo "  ./start-selected-tts.command"

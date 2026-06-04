@@ -969,6 +969,8 @@ function main() {
   checkTextContains("scripts/check-installer-configs.mjs", "requiredInstallerIssues");
   checkTextContains("scripts/check-installer-configs.mjs", "installerOutputIssues");
   checkTextContains("scripts/check-installer-configs.mjs", "Saved config: .talking-pets.local.env");
+  checkTextContains("scripts/check-installer-configs.mjs", "MeloTTS is not installed by this installer.");
+  checkTextContains("scripts/check-installer-configs.mjs", "--tts melotts --list-voices");
   checkTextContains("test/monitor.test.mjs", "requires installer config checks on their native platforms");
   checkTextContains("test/monitor.test.mjs", "keeps installer output safe for public evidence");
   checkTextContains("test/monitor.test.mjs", "validates local env values before startup");
