@@ -191,6 +191,20 @@ Use this card when Master wants to move from design notes toward a real provider
 
 If Master's wording is broader than one row, split the work into separate PRs before implementation.
 
+### Local TTS Approval Follow-Up Snapshot
+
+Checked: 2026-06-05. The current safe default is still evidence-first: keep VOICEVOX/Irodori contributor evidence open and do not add another provider path without a named approval lane.
+
+If Master wants the next local TTS movement, ask for exactly one of these choices:
+
+| Choice | What it allows next | What stays blocked | Recommended when |
+| --- | --- | --- | --- |
+| A: keep evidence-first | Keep using Issue #25/#26 and contributor reports to improve confidence in existing VOICEVOX/Irodori paths. | New provider dependency, model download, helper implementation, README support claim. | We want public proof and low risk. |
+| B: approve sherpa metadata review only | Review `sherpa-onnx-node` public package/model/vocoder/license docs and update the sherpa design note. | Installing `sherpa-onnx-node`, downloading assets, adding a helper, generated audio. | We want the most npm-native future local provider candidate. |
+| C: approve MeloTTS external-runtime design only | Refine MeloTTS CLI/server/Docker/cache questions around user-managed runtime and health-only detection. | Python/Docker setup, `unidic` or model download, synthesis, Korean/Chinese support wording. | We want multilingual quality research without pulling runtime into normal install. |
+
+Do not treat this snapshot as approval. It only defines the exact wording needed before any dependency, model, API, generated-audio, or support-claim work.
+
 ### Local TTS Next Choice Refresh
 
 Checked: 2026-06-05. This refresh incorporates the sherpa optional npm install check, MeloTTS detect/connect-only helper work, provider feedback capture path, and multilingual evidence routes.

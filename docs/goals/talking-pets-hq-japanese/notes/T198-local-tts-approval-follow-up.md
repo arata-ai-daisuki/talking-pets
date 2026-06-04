@@ -6,9 +6,9 @@ provider候補は整理済みなので、次にMaster承認が必要な実験境
 
 ## Scope
 
-- Local TTS Approval-Only CardとProvider Experiment Scorecardを確認する。
-- 依存追加、model download、API callなしで進められる候補を分ける。
-- Masterに投げるべき承認事項だけを短くする。
+- Local TTS Approval-Only CardとProvider Experiment Scorecardを確認した。
+- 依存追加、model download、API callなしで進められる候補を分けた。
+- Masterに投げるべき承認事項だけをLocal TTS Approval Follow-Up Snapshotへ短く整理した。
 
 ## Stop Lines
 
@@ -20,5 +20,5 @@ provider候補は整理済みなので、次にMaster承認が必要な実験境
 
 - decision: `local_tts_approval_follow_up`
 - owner: `歌澄 音羽 / 白瀬 怜奈`
-- status: active
-- next: review approval-only provider boundary.
+- status: done
+- next: multilingual evidence queue check.
