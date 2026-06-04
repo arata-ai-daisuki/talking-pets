@@ -147,6 +147,25 @@ The first implementation should be experimental and not default:
 - no auto model download
 - no README support claim beyond "experimental local provider"
 
+## B Design-Only Scope
+
+This is the exact scope for option B in the Local TTS Master Choice Card. It is still design-only.
+
+### Future Experiment Shape
+
+| Area | Proposed shape | Still blocked |
+| --- | --- | --- |
+| Package | Review `sherpa-onnx-node` as an optional runtime dependency candidate. | Do not add it to `package.json` yet. |
+| Model family | Start from one English Matcha-style example only, because it has public JavaScript example docs. | Do not generalize to all Sherpa models or languages. |
+| Asset cache | Keep model, vocoder, tokens, and espeak-ng data under `~/.cache/talking-pets/sherpa/`. | Do not place downloaded assets in the repo or npm package. |
+| Helper surface | Future helper may accept `--text`, `--model-dir`, `--vocoder`, `--out`, and `--profile-latency`. | Do not change default routing or normal monitor behavior. |
+| Measurement | Emit import/load/generate/write/audioDuration/RTF/playbackIncluded fields. | Do not compare against VOICEVOX/Irodori unless text and output path are aligned. |
+| License | Review package, acoustic model, vocoder, tokens, espeak-ng data, and generated-audio terms as separate items. | Do not add README support wording before the exact assets are known. |
+
+### Approval Question For Master
+
+Approve B only if the next PR may inspect package metadata and public model docs for one named Sherpa example, without installing dependencies or downloading model assets.
+
 ## Sources
 
 - Official JavaScript API install page: https://k2-fsa.github.io/sherpa/onnx/javascript-api/install.html

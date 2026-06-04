@@ -60,3 +60,34 @@ Stop and ask Master before:
 - Recommendation: keep design-only.
 - Reason: the most important unresolved risk is optional runtime and cache shape, not provider routing code.
 - Next safe action: collect public provider feedback or write a runtime/cache review note before any install, helper, or README wording change.
+
+## C Runtime Design-Only Scope
+
+This is the exact scope for option C in the Local TTS Master Choice Card. It is still design-only.
+
+### Runtime Choices To Compare
+
+| Runtime path | Why it might fit | Main risk | First proof needed |
+| --- | --- | --- | --- |
+| User-installed CLI | Keeps Talking Pets npm install clean and can fail closed when absent. | CLI name, arguments, output behavior, and cache path may vary by install. | A dry design of command args and sanitized latency fields. |
+| User-started local server | Similar to VOICEVOX/Irodori server style if a stable endpoint is available. | Server setup may require Python/Docker and may not be standard in public docs. | Health endpoint shape and local-only privacy boundary. |
+| Docker runtime | May be clearer for Windows/macOS users than native Python setup. | Docker is heavy for a small companion tool and weakens low-friction onboarding. | A no-normal-install boundary and cache cleanup plan. |
+| Python helper | Gives direct control over device, model, and timing. | Pulls Python/Torch/NLP complexity into the project if rushed. | Explicit Master approval for an isolated experiment only. |
+
+### Measurement Shape
+
+If C advances later, compare only after the runtime is already installed by the user or inside an approved isolated experiment:
+
+- `health`: CLI/server/helper is reachable.
+- `runtime`: `cli`, `server`, `docker`, or `python-helper`.
+- `device`: CPU/CUDA/MPS if the runtime reports it.
+- `prepare`: any one-time dictionary/model readiness step, excluding normal Talking Pets startup.
+- `synthesis`: warm generation time for one text fixture.
+- `audioDuration`: duration of the generated WAV if available.
+- `rtf`: synthesis divided by audio duration.
+- `playbackIncluded`: whether playback time is included.
+- `audible`: whether one spoken line was heard by the tester.
+
+### Stop Line
+
+C does not approve Korean/Chinese dedicated support wording. It only prepares the runtime/cache questions needed before any MeloTTS helper, Docker guide, Python setup, or README claim exists.

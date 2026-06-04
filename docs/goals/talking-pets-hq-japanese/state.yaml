@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T172
+active_task: T173
 
 tasks:
   - id: T001
@@ -5374,7 +5374,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "歌澄 音羽"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "Local TTS Master Choice CardのA継続として、VOICEVOX/Irodori外部検証を集めるための短い依頼文をSNS戦略に追加する。"
     allowed_files:
@@ -5389,7 +5389,7 @@ tasks:
       - "generated audioやprivate logsの添付を求めない。"
       - "VOICEVOX/Irodoriの性能保証claimを追加しない。"
     receipt:
-      result: active
+      result: done
       decision: voicevox_irodori_evidence_ask
       full_outcome_complete: false
       summary: "sns-outreach-strategyにVOICEVOX / Irodori evidence askを追加し、別端末のsanitized latency lines、device/OS、provider version、audible resultを依頼できるようにした。"
@@ -5402,6 +5402,44 @@ tasks:
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands:
         - cmd: "rg -n 'active_task: T172|T172|voicevox_irodori_evidence_ask|VOICEVOX / Irodori evidence ask|sanitized latency lines|provider version|audible|generated audio files|private logs' docs/research/sns-outreach-strategy.md docs/goals/talking-pets-hq-japanese/hq-backlog-board.md docs/goals/talking-pets-hq-japanese/activity-index.md docs/goals/talking-pets-hq-japanese/notes/T172-voicevox-irodori-evidence-ask.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T173
+    type: worker
+    assignee: Worker
+    owner_role: "歌澄 音羽"
+    status: active
+    reasoning_hint: default
+    objective: "Masterが選んだLocal TTS Master Choice CardのB/Cを、sherpa design-onlyとMeloTTS runtime design-onlyの具体scopeへ落とす。"
+    allowed_files:
+      - "docs/research/sherpa-onnx-design.md"
+      - "docs/research/melotts-design-note.md"
+      - "docs/research/tts-provider-comparison.md"
+      - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+      - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "provider実装、依存追加、model download、API callをしない。"
+      - "READMEの対応provider claimを増やさない。"
+      - "Korean / Chinese dedicated provider support claimを追加しない。"
+      - "generated audioやprivate logsの提出を求めない。"
+    receipt:
+      result: active
+      decision: local_tts_bc_design_scope
+      full_outcome_complete: false
+      summary: "sherpa-onnx-designにB Design-Only Scope、melotts-design-noteにC Runtime Design-Only Scope、tts-provider-comparisonにB/C Design Follow-Upを追加した。"
+      note: "notes/T173-local-tts-bc-design-scope.md"
+      changed_files:
+        - "docs/research/sherpa-onnx-design.md"
+        - "docs/research/melotts-design-note.md"
+        - "docs/research/tts-provider-comparison.md"
+        - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+        - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T173-local-tts-bc-design-scope.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n 'active_task: T173|T173|local_tts_bc_design_scope|B Design-Only Scope|C Runtime Design-Only Scope|B/C Design Follow-Up|sherpa design-only|MeloTTS runtime design-only|No Python stack setup|No install, model download' docs/research/sherpa-onnx-design.md docs/research/melotts-design-note.md docs/research/tts-provider-comparison.md docs/goals/talking-pets-hq-japanese/hq-backlog-board.md docs/goals/talking-pets-hq-japanese/activity-index.md docs/goals/talking-pets-hq-japanese/notes/T173-local-tts-bc-design-scope.md docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
 
   - id: T007
