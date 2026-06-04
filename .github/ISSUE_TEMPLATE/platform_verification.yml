@@ -90,15 +90,26 @@ body:
     id: irodori_latency
     attributes:
       label: Irodori latency data, if tested
-      description: Optional. If you tested Irodori-TTS Server, include device model, CPU/GPU, RAM, backend/device such as CPU/MPS/CUDA/ROCm, changed settings such as speed or num_steps, health latency, cold start or warm-up latency, three warm synthesis timings, output audio duration, and whether generated speech was audible. Do not attach generated audio, model files, private paths, local env files, private rollout JSONL, or conversation text.
-      placeholder: "Device: ...\nCPU/GPU/RAM: ...\nBackend/device: ...\nSettings changed from defaults: ...\nHealth: ...\nWarm-up: ...\nWarm runs: ...\nAudio duration: ...\nAudible: yes/no"
+      description: >-
+        Optional. If you tested Irodori-TTS Server, include device model, CPU/GPU, RAM, backend/device such as CPU/MPS/CUDA/ROCm, changed settings such as speed or num_steps, health latency, cold start or warm-up latency, three warm synthesis timings, output audio duration, derived RTF if known, and whether generated speech was audible. RTF is synthesis time divided by output audio duration. Do not attach generated audio, model files, private paths, local env files, private rollout JSONL, or conversation text.
+      placeholder: "Device: ...\nCPU/GPU/RAM: ...\nBackend/device: ...\nSettings changed from defaults: ...\nHealth: ...\nWarm-up: ...\nWarm runs: ...\nAudio duration: ...\nDerived RTF: ...\nAudible: yes/no"
+    validations:
+      required: false
+  - type: textarea
+    id: voicevox_latency
+    attributes:
+      label: VOICEVOX latency data, if tested
+      description: >-
+        Optional. If you tested VOICEVOX or a Voicebox-compatible endpoint, include OS/device, CPU/GPU/RAM, VOICEVOX Engine version if known, speaker id/name, endpoint mode, three warm synthesis timings, output audio duration, playback-included flag, derived RTF if known, and whether generated speech was audible. RTF is synthesis time divided by output audio duration. Do not attach generated audio, private paths, local env files, private rollout JSONL, or conversation text.
+      placeholder: "Device: ...\nCPU/GPU/RAM: ...\nVOICEVOX Engine version: ...\nSpeaker id/name: ...\nEndpoint mode: voicevox/generic\nWarm runs: ...\nAudio duration: ...\nPlayback included: yes/no\nDerived RTF: ...\nAudible: yes/no"
     validations:
       required: false
   - type: dropdown
     id: sanitized
     attributes:
       label: Public evidence sanitized?
-      description: Confirm every pasted command output was piped through `npm run sanitize:public-output` or manually reviewed before sharing. Choose "Yes" only when this can be copied into release evidence as `sanitized: yes`. Choose "No" for useful follow-up reports that still need cleanup; do not link unsanitized evidence from release notes.
+      description: >-
+        Confirm every pasted command output was piped through `npm run sanitize:public-output` or manually reviewed before sharing. Choose "Yes" only when this can be copied into release evidence as `sanitized: yes`. Choose "No" for useful follow-up reports that still need cleanup; do not link unsanitized evidence from release notes.
       options:
         - "Yes, no private paths, conversation text, local env values, credentials, local SQLite DBs such as state_5.sqlite, private rollout JSONL, generated audio, local recordings, archives, macOS metadata, or downloaded model files are attached"
         - "No, this evidence needs cleanup before it can be linked publicly"
@@ -108,7 +119,8 @@ body:
     id: audible
     attributes:
       label: Was one spoken line audible?
-      description: Choose "Yes" only when this can be copied into release evidence as `audible: yes`. Choose "No" for useful failure reports. A "No" result can track follow-up work, but it does not count as release evidence for graduating Windows or Linux from experimental. A "Yes" result must correspond to audible real-device output, not CI-only or fixture-only output.
+      description: >-
+        Choose "Yes" only when this can be copied into release evidence as `audible: yes`. Choose "No" for useful failure reports. A "No" result can track follow-up work, but it does not count as release evidence for graduating Windows or Linux from experimental. A "Yes" result must correspond to audible real-device output, not CI-only or fixture-only output.
       options:
         - "Yes"
         - "No"

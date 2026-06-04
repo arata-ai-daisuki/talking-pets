@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T129
+active_task: T130
 
 tasks:
   - id: T001
@@ -3991,7 +3991,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "歌澄 音羽"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "model downloadや依存追加なしで、既存VOICEVOX/Irodori測定値からRTFを出してprovider比較の土台を揃える。"
     allowed_files:
@@ -4004,7 +4004,7 @@ tasks:
       - "外部APIやAPI keyを使わない。"
       - "fast / under 1s / 性能保証を書かない。"
     receipt:
-      result: active
+      result: done
       decision: local_tts_rtf_snapshot
       full_outcome_complete: false
       summary: "VOICEVOXとIrodoriのmaintainer測定値からRTFを追記し、playback-included totalを生成速度比較に混ぜない注意を明記した。"
@@ -4015,6 +4015,39 @@ tasks:
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands:
         - cmd: "rg -n \"active_task: T129|T129|Maintainer Real-Time Factor Snapshot|Derived RTF|playback-included\" docs/research/tts-provider-comparison.md docs/goals/talking-pets-hq-japanese/notes/T129-local-tts-rtf-snapshot.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T130
+    type: worker
+    assignee: Worker
+    owner_role: "星宮 未来"
+    status: active
+    reasoning_hint: default
+    objective: "VOICEVOX/Irodoriの外部測定結果をRTFつきで集めやすい報告テンプレにする。"
+    allowed_files:
+      - ".github/ISSUE_TEMPLATE/platform_verification.yml"
+      - "docs/real-device-verification.md"
+      - "docs/verification-status.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "SNS投稿、Issue返信、DMをしない。"
+      - "RTFを必須にしない。"
+      - "private logsや生成音声添付を求めない。"
+    receipt:
+      result: active
+      decision: latency_report_template
+      full_outcome_complete: false
+      summary: "Platform verification issueとreal-device verification docsへ、VOICEVOX/IrodoriのRTFつき報告欄とVOICEVOX測定手順を追加した。"
+      note: "notes/T130-latency-report-template.md"
+      changed_files:
+        - ".github/ISSUE_TEMPLATE/platform_verification.yml"
+        - "docs/real-device-verification.md"
+        - "docs/verification-status.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T130-latency-report-template.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n \"active_task: T130|T130|VOICEVOX latency data|Derived RTF|VOICEVOX Latency Contribution|derived RTF if known\" .github/ISSUE_TEMPLATE/platform_verification.yml docs/real-device-verification.md docs/verification-status.md docs/goals/talking-pets-hq-japanese/notes/T130-latency-report-template.md docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
 
   - id: T007
