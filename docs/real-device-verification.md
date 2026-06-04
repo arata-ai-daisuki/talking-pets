@@ -64,6 +64,12 @@ To make a compact table, copy only the sanitized `[latency]` lines into a text f
 npm run latency:table -- /tmp/talking-pets-irodori-latency-lines.txt
 ```
 
+For spreadsheet import, maintainers can also generate CSV from the same sanitized lines:
+
+```bash
+npm run latency:table -- --format csv /tmp/talking-pets-irodori-latency-lines.txt
+```
+
 Record:
 
 - Device model:
@@ -131,7 +137,11 @@ For three warm runs, copy only the sanitized `[latency]` lines into a text file 
 npm run latency:table -- /tmp/talking-pets-voicevox-latency-lines.txt
 ```
 
-Paste the generated Markdown table into the issue.
+Paste the generated Markdown table into the issue. For spreadsheet import, maintainers can also run:
+
+```bash
+npm run latency:table -- --format csv /tmp/talking-pets-voicevox-latency-lines.txt
+```
 
 Record:
 
