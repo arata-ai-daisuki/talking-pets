@@ -110,6 +110,22 @@ Stop and ask before:
 3. Keep sherpa-onnx-node and API TTS as explicit opt-in design work.
 4. Use the readiness levels above before changing README claims or default routing.
 
+## Next Provider Approval Gate
+
+Use this gate before promoting any new provider candidate from design notes into code. Passing this gate does not mean the provider is supported; it only means a small experimental helper PR is safe to consider.
+
+| Gate | Required answer before implementation |
+| --- | --- |
+| Dependency boundary | Is the npm package or binary optional, and can the normal install/check path run without it? |
+| Model boundary | Are model downloads explicit, user-approved, cached outside the repo, and skipped during normal monitor runs? |
+| License boundary | Are package, model, vocoder, voice, and generated-audio terms known enough to document in `CREDITS.md` if chosen? |
+| Privacy boundary | Does the provider keep text local by default, or is any network/API path clearly opt-in with billing and privacy warnings? |
+| Platform boundary | Which OS/architecture combinations are expected to work, and which are explicitly unverified? |
+| Measurement boundary | Can the helper emit `health`, cold or warm synthesis timing, audio duration, RTF when possible, playback flag, and sanitized `[latency]` output? |
+| Public wording boundary | Can README wording stay at "experimental" or "candidate" until sanitized contributor evidence arrives? |
+
+Recommended T144 outcome: keep sherpa-onnx-node as the first design-only local provider to evaluate after approval, keep API TTS separate as an opt-in cloud/remote path, and do not add Piper/Melo/other multilingual providers until their package shape, model size, language coverage, and license terms have a matching design note.
+
 ## Maintainer Real-Time Factor Snapshot
 
 These numbers are maintainer reference data only. They are useful for comparing the shape of current local TTS paths, but they are not public performance guarantees.
