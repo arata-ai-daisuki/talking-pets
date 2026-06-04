@@ -95,6 +95,7 @@ If you paste installer output for platform verification, sanitize that output to
 
 Choose the issue template that matches the work:
 
+- Contributor entrypoints: see `docs/contributor-entrypoints.md` for good first verification and latency tasks.
 - Bug report: broken behavior after setup or a regression in existing features.
 - Install trouble: setup, first run, local config, audio path, or starter script problems.
 - Platform verification: real-device install, platform check, dry-run, and audible TTS evidence for release notes.
