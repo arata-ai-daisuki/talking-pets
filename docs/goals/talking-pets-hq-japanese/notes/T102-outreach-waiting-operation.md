@@ -2,12 +2,13 @@
 
 ## 結論
 
-現在のoutreachは返信待ち。
+現在のoutreachは投稿済み。
 
 Masterが送信済み:
 
 - V1GPT
 - OpenClaw / Sogni Voice
+- Irodori latency post
 
 ## 運用ルール
 
@@ -25,4 +26,4 @@ Masterが送信済み:
 
 ## 状態
 
-active。
+done。

@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T102
+active_task: T106
 
 tasks:
   - id: T001
@@ -3141,7 +3141,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "星宮 未来"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "V1GPT / OpenClaw送信後のoutreach返信待ち運用を、安全な手動運用として維持する。"
     allowed_files:
@@ -3161,17 +3161,24 @@ tasks:
       - "test -f docs/goals/talking-pets-hq-japanese/notes/T102-outreach-waiting-operation.md"
       - "rg -n \"V1GPT|OpenClaw|2026-06-17|送信代行はしない|Star依頼\" docs/goals/talking-pets-hq-japanese/notes/T102-outreach-waiting-operation.md"
     receipt:
-      result: active
-      decision: waiting_for_public_replies
+      result: done
+      decision: latency_post_recorded_without_url
       full_outcome_complete: false
-      summary: "V1GPT / OpenClawはMasterが手動送信済み。あいちゃん側は返信待ち運用、返答案、候補整理に留め、催促やDMはしない。"
-      note: "notes/T102-outreach-waiting-operation.md"
+      summary: "V1GPT / OpenClawに加えて、Irodori latency postもMasterが投稿済み。URLは記録せず、状態だけ投稿済みにした。返信待ちで止まらずT103へ進む。"
+      note: "notes/T104-latency-posted-and-next-provider-started.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T102-outreach-waiting-operation.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T104-latency-posted-and-next-provider-started.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n \"Irodori latency post|投稿済み|URLは記録しない|返信待ちで止まらず\" docs/goals/talking-pets-hq-japanese/notes/T102-outreach-waiting-operation.md docs/goals/talking-pets-hq-japanese/notes/T104-latency-posted-and-next-provider-started.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
 
   - id: T103
     type: worker
     assignee: Worker
     owner_role: "歌澄 音羽"
-    status: queued
+    status: done
     reasoning_hint: default
     objective: "次provider比較を、install/model download/API keyなしの候補整理として準備する。"
     allowed_files:
@@ -3183,15 +3190,105 @@ tasks:
       - "package install、model download、API key利用、有料API呼び出しをしない。"
       - "Irodoriを速いproviderとして断定しない。"
       - "licenseが曖昧なmodelを推奨しない。"
+    stop_if:
+      - "package install、model download、API key利用、有料API呼び出しが必要になった場合。"
+      - "licenseが曖昧なmodelやvoiceを推奨する必要が出た場合。"
+      - "実測していないproviderを速いとclaimする必要が出た場合。"
     verify:
       - "test -f docs/goals/talking-pets-hq-japanese/notes/T103-next-provider-comparison-prep.md"
       - "rg -n \"Irodori|VOICEVOX|Kokoro|sherpa-onnx-node|API TTS|停止線\" docs/goals/talking-pets-hq-japanese/notes/T103-next-provider-comparison-prep.md"
     receipt:
-      result: queued
+      result: done
       decision: prep_only_until_master_approves_external_work
       full_outcome_complete: false
-      summary: "次provider比較は候補整理から。install、model download、API key、有料APIはMaster承認まで停止線に置く。"
+      summary: "次provider比較は候補整理から。docs/research/tts-provider-comparison.md にprovider候補、測定軸、停止線、推奨順を整理し、macOS say control sampleも1回測定した。install、model download、API key、有料APIはしていない。"
       note: "notes/T103-next-provider-comparison-prep.md"
+      changed_files:
+        - "docs/research/tts-provider-comparison.md"
+        - "docs/performance.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T103-next-provider-comparison-prep.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T105-say-control-latency-baseline.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "npm run monitor:node -- --tts say --once --profile-latency --rollout test/fixtures/assistant-rollout.jsonl"
+          status: pass
+        - cmd: "rg -n \"VOICEVOX|Kokoro|Irodori|sherpa-onnx-node|API TTS|total=440.1ms|speak=434.9ms\" docs/research/tts-provider-comparison.md docs/performance.md docs/goals/talking-pets-hq-japanese/notes/T105-say-control-latency-baseline.md"
+          status: pass
+
+  - id: T104
+    type: pm
+    assignee: PM
+    owner_role: "相庭 愛"
+    status: done
+    reasoning_hint: default
+    objective: "Masterのlatency post完了をURLなしで記録し、返信待ちで止まらず次provider比較へ進める。"
+    expected_output:
+      - "投稿済みだけを記録する。"
+      - "返信待ちでは止まらず次へ進む。"
+    receipt:
+      result: done
+      decision: posted_and_continue_to_provider_comparison
+      full_outcome_complete: false
+      summary: "Master指示により、latency postは投稿済みだけ記録し、T103の次provider比較へ進めた。"
+      note: "notes/T104-latency-posted-and-next-provider-started.md"
+
+  - id: T105
+    type: worker
+    assignee: Worker
+    owner_role: "速水 光莉"
+    status: done
+    reasoning_hint: default
+    objective: "no-extra-install control sampleとしてmacOS sayのlatencyを1回測定する。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      - "docs/research/tts-provider-comparison.md"
+      - "docs/performance.md"
+    constraints:
+      - "package install、model download、API key、有料API呼び出しをしない。"
+      - "macOS sayの品質をIrodoriの品質と同列に扱わない。"
+    receipt:
+      result: done
+      decision: say_control_sample_recorded
+      full_outcome_complete: false
+      summary: "macOS sayのcontrol sampleとして、Node monitorで total=440.1ms / speak=434.9ms を記録した。"
+      note: "notes/T105-say-control-latency-baseline.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T105-say-control-latency-baseline.md"
+        - "docs/research/tts-provider-comparison.md"
+        - "docs/performance.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "npm run monitor:node -- --tts say --once --profile-latency --rollout test/fixtures/assistant-rollout.jsonl"
+          status: pass
+
+  - id: T106
+    type: worker
+    assignee: Worker
+    owner_role: "速水 光莉"
+    status: active
+    reasoning_hint: default
+    objective: "次に測るproviderを、VOICEVOX/voicebox engine起動済み確認から安全に判断する。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      - "docs/research/tts-provider-comparison.md"
+      - "docs/performance.md"
+    constraints:
+      - "VOICEVOX Engineが起動していない場合、勝手に起動やinstallをしない。"
+      - "package install、model download、API key、有料API呼び出しをしない。"
+      - "providerが未測定なら速いとclaimしない。"
+    stop_if:
+      - "engine起動、install、download、API key、有料APIが必要になった場合。"
+      - "local engineの規約やlicense確認が必要になった場合。"
+    verify:
+      - "rg -n \"VOICEVOX|voicebox|起動していない場合|package install|model download\" docs/goals/talking-pets-hq-japanese/state.yaml"
+    receipt:
+      result: active
+      decision: check_voicebox_readiness_next
+      full_outcome_complete: false
+      summary: "次はVOICEVOX/voiceboxが既に起動しているかだけ確認し、起動していなければ測定保留にする。"
+      note: "notes/T105-say-control-latency-baseline.md"
 
   - id: T007
     type: worker
