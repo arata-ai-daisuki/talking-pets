@@ -27,6 +27,7 @@ This is a manual outreach list for Talking Pets. Do not automate replies, DMs, f
 | P2 | Lumi, `Lumisbs/Lumi` | Local/no-cloud AI VTuber / desktop companion angle. Good cultural fit, but not Codex-specific. | X/GitHub only when local AI VTuber or no-cloud voice posts appear | Reply. Avoid DM. | "The local/no-cloud AI VTuber direction overlaps with a small Codex experiment I'm building. Talking Pets is much narrower: local Codex output -> local TTS for a coding companion. It might be interesting as a developer-tool use case for local character voice UX." |
 | P2 | Fuyuki Sakura | AI/VTuber/dev culture intersection. Better as a careful, low-frequency outreach target. | X replies only when the post is about AI coding, VTuber tools, or dev workflows | Reply only. No cold DM. | "This AI + VTuber tool angle reminded me of a small OSS experiment I'm building: Talking Pets makes Codex Pet speak through local TTS. Not a full VTuber stack, but I'm trying to bring a little character presence into coding tools without sending data to cloud TTS." |
 | P2 | VOICEVOX community / VOICEVOX users | Talking Pets has optional VOICEVOX routing and credits. Useful for Japanese TTS users, but official channels should not be used as a promo surface. | User posts about VOICEVOX integrations, not official support threads | Reply only when they ask for examples/tools | "I'm using VOICEVOX as an optional local provider in a small Codex Pet voice tool. I kept it opt-in and documented credits/usage notes. If you're collecting examples of developer tools using VOICEVOX locally, Talking Pets might be a tiny one." |
+| P2 | Multilingual local TTS experimenters | People testing Korean, Chinese, Piper-like, Melo-like, or other offline multilingual TTS can provide provider-specific evidence without broad promo. | X/GitHub/Reddit posts about local multilingual TTS benchmarks or setup notes | Reply only when they discuss provider setup or ask for tests/examples | "I'm collecting sanitized real-device evidence for a small local-first Codex voice tool. Korean/Chinese are currently OS speech fallback only, so I'm trying not to overclaim. If you have a provider-specific local TTS path for those languages, what evidence would you want a project to collect before calling it supported?" |
 | Watch only | Vedal / Neuro-sama ecosystem | Huge AI VTuber audience and technically relevant, but high risk of cold-mention noise. | Observe only at first | No DM. Avoid cold mention. | No first-touch message. Only engage if a thread explicitly asks for small open-source AI avatar/dev-tool examples. |
 | Watch only | 紡ネン / AI VTuber official accounts | AI VTuber concept fit, but official/character accounts are not good first-touch technical feedback channels. | Observe only | No DM. Avoid cold mention. | No first-touch message. |
 
@@ -41,6 +42,11 @@ Use these on X before sending anything:
 - `"local TTS" "AI agents"`
 - `"Kokoro" "TTS" "agent"`
 - `"VOICEVOX" "AI agent"`
+- `"Korean" "local TTS"`
+- `"Chinese" "local TTS"`
+- `"multilingual TTS" "offline"`
+- `"Piper" "Korean" "TTS"`
+- `"MeloTTS" "Chinese"`
 - `"AI VTuber" "open source"`
 - `"VRM" "AI companion"`
 - `"Live2D" "AI companion"`
@@ -54,6 +60,10 @@ Use these on X before sending anything:
 ### Local voice / TTS-specific
 
 > This local voice direction is very relevant to a tiny tool I'm building. Talking Pets is narrower: local Codex output -> local TTS for a coding companion. I'm trying to decide whether the key metric should be first-audio latency, full-utterance latency, or perceived interruption cost.
+
+### Provider-specific multilingual TTS
+
+> I'm collecting careful evidence for a small local-first Codex voice tool. Korean/Chinese are currently OS speech fallback only, not dedicated provider support. If you have a provider-specific local TTS setup for those languages, what would you want to see before a project claims support: provider version, source text, audible result, latency lines, model/license notes, or OS/device details?
 
 ### AI VTuber / companion-specific
 
