@@ -106,6 +106,25 @@ If DM becomes appropriate:
    - follow-up needed
 5. If no response, do not bump the same person for at least 2 weeks.
 
+## Ready-To-Send Queue
+
+These are manual send candidates only. Do not mark a row as `sent` until Master actually posts or replies and provides the public URL.
+
+| Rank | Candidate | Use when | Template | One ask | Record after sending |
+| --- | --- | --- | --- | --- | --- |
+| 1 | OpenClaw / local voice builders | A current post discusses local TTS, local APIs, OpenClaw voice, or agent voice latency. | Local voice / TTS-specific | Which latency metric matters most for coding companions? | Add public URL to Search Review Log and T007 tracking note. |
+| 2 | Multilingual local TTS experimenters | A public post discusses Korean, Chinese, Melo-like, Piper-like, or offline multilingual TTS setup. | Provider-specific multilingual TTS, then Multilingual report form follow-up only if they show interest. | What evidence should Talking Pets collect before claiming provider-specific support? | Add public URL, evidence type, and whether follow-up form was shared. |
+| 3 | Codex / voice avatar builders | A post is already about Codex, coding avatars, or voice UX for coding tools. | Codex-specific | Would voice be useful for summaries only, or normal replies too? | Add public URL and response status. |
+
+Manual send checklist:
+
+- Pick one row and one template only.
+- Confirm the post is recent and directly relevant.
+- Do not ask for a Star in the first contact.
+- Do not DM unless the DM Policy conditions are met.
+- Do not attach generated audio, private logs, or screenshots containing local paths.
+- After Master sends, update the Search Review Log as `sent` with the public URL.
+
 ## Search Review Log
 
 Use this table before posting. A row here does not mean outreach happened; it only records a public post or project that may be relevant after manual review.
