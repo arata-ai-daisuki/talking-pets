@@ -10,6 +10,8 @@ Reports with `Public evidence sanitized? = No` or `Was one spoken line audible? 
 
 CI, fixture rollouts, `npm run check:compat -- --no-state`, and sanitized dry-run output prove packaging, parser, and public-log safety. They do not prove real-device audio or stateful Codex compatibility on Windows or Linux, and they must not be used by themselves to graduate a platform.
 
+For latency reports, include generated audio duration when possible. Real-time factor, or RTF, is `synthesis time / audio duration`. RTF below `1.0x` means synthesis finished faster than the produced audio duration. RTF above `1.0x` means synthesis took longer than the audio duration.
+
 ## Quick Contributor Request
 
 When asking someone else to verify Windows or Linux, send them this short checklist:
@@ -71,6 +73,7 @@ Record:
 - Warm synthesis run 2:
 - Warm synthesis run 3:
 - Output audio duration:
+- Derived RTF, if known:
 - Was generated speech audible:
 - Notes:
 
@@ -84,6 +87,48 @@ Maintainer reference result from one local test machine:
 - Warm-up with runtime load: 33.4s client-side, 33.17s server-side
 - Warm synthesis runs: 16.7s, 10.1s, 9.6s
 - Output audio duration: about 3.92s
+
+## VOICEVOX Latency Contribution
+
+VOICEVOX performance also varies by device, engine version, speaker, and whether playback is included. Please treat each report as one data point.
+
+When asking someone to test VOICEVOX, use this short request:
+
+```text
+Could you help measure VOICEVOX latency for Talking Pets?
+
+Please start VOICEVOX Engine locally, run a voice list or health check, then run the same short synthesis 3 times with the engine already running. Open a GitHub "Platform verification" issue and paste sanitized results.
+
+Please include device specs, OS/version, CPU/GPU, RAM, Node/npm versions, VOICEVOX Engine version if known, speaker id/name, endpoint mode, warm synthesis times, output audio duration, whether playback was included, derived RTF if known, and whether generated speech was audible. Do not attach generated audio, private paths, local env files, private rollout JSONL, or conversation text.
+```
+
+Suggested commands after VOICEVOX Engine is listening on `http://127.0.0.1:50021`:
+
+```bash
+node scripts/tts-voicebox.mjs --mode voicevox --list-voices --url http://127.0.0.1:50021 --profile-latency
+node scripts/tts-voicebox.mjs --mode voicevox --speaker 3 --url http://127.0.0.1:50021 --text "こんにちは。Talking Petsのウォーム測定です。" --out /tmp/talking-pets-voicevox-warm-1.wav --profile-latency
+node scripts/tts-voicebox.mjs --mode voicevox --speaker 3 --url http://127.0.0.1:50021 --text "こんにちは。Talking Petsのウォーム測定です。" --out /tmp/talking-pets-voicevox-warm-2.wav --profile-latency
+node scripts/tts-voicebox.mjs --mode voicevox --speaker 3 --url http://127.0.0.1:50021 --text "こんにちは。Talking Petsのウォーム測定です。" --out /tmp/talking-pets-voicevox-warm-3.wav --profile-latency
+```
+
+Record:
+
+- Device model:
+- CPU / GPU:
+- RAM:
+- OS and version:
+- Node.js and npm versions:
+- VOICEVOX Engine version if known:
+- Speaker id/name:
+- Endpoint mode: `voicevox` or `generic`:
+- Warm synthesis run 1:
+- Warm synthesis run 2:
+- Warm synthesis run 3:
+- Output audio duration:
+- Playback included: yes/no:
+- Derived RTF, if known:
+- Was generated speech audible:
+- Notes:
 
 ## Evidence To Record
 
