@@ -163,6 +163,8 @@ Use these open issues to collect post-release evidence. Do not mark any row as v
 
 Checked: 2026-06-05. No maintainer reply or claim change is needed from this snapshot.
 
+Later watch: 2026-06-05. Issues #23-#26 are still open with 0 public comments, and their latest `updatedAt` timestamps remain 2026-06-04. No README, platform status, or provider performance wording should change from this later watch.
+
 | Issue | Current state | Public comments | Watch result |
 | --- | --- | ---: | --- |
 | [#23 Linux audible TTS](https://github.com/arata-ai-daisuki/talking-pets/issues/23) | Open | 0 | Waiting for contributor evidence. |

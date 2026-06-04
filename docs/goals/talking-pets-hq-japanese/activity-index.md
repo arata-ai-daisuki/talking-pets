@@ -8,14 +8,14 @@ This page is a readable snapshot of the Japanese HQ state. The authoritative sou
 
 - Board URL: `http://goalbuddy.localhost:41737/talking-pets-hq-japanese/`
 - Local board files: `docs/goals/talking-pets-hq-japanese/.goalbuddy-board/`
-- Current active task: `T201`
-- Current focus: Issue #23-#26をclaim変更なしで再確認する。
+- Current active task: `T202`
+- Current focus: OpenClaw/V1GPTの返信待ちlaneを再送なしで確認する。
 
 ## Kanban Snapshot
 
 | Column | Count | Meaning |
 | --- | ---: | --- |
-| Done | 201 | 完了済みの小PR、調査、判断カード、検証receipt。 |
+| Done | 202 | 完了済みの小PR、調査、判断カード、検証receipt。 |
 | Active | 1 | いまHQが追っている作業。 |
 | Blocked | 0 | 同じ停止条件が継続しており、Master判断なしに進めないもの。 |
 
@@ -24,12 +24,12 @@ This page is a readable snapshot of the Japanese HQ state. The authoritative sou
 | Agent | Role | Done | Active | Main lane |
 | --- | --- | ---: | ---: | --- |
 | 相庭 愛 | HQ Producer | 60 | 0 | 判断カード、全体整理、Master確認。 |
-| 星宮 未来 | Outreach Lead | 37 | 0 | SNS/outreach、候補表、返信ドラフト、送信後記録。 |
+| 星宮 未来 | Outreach Lead | 37 | 1 | SNS/outreach、候補表、返信ドラフト、送信後記録。 |
 | 白瀬 怜奈 | Risk / Review Lead | 20 | 0 | claim境界、license/privacy/API、セルフレビュー。 |
 | 歌澄 音羽 | Voice Provider Lead | 31 | 0 | TTS provider、VOICEVOX/Irodori/sherpa/Melo/API設計。 |
 | 言守 詞葉 | Multilingual Lead | 19 | 0 | ko/zh fallback、多言語fixture、dedicated provider evidence境界。 |
 | 速水 光莉 | Latency Lead | 14 | 0 | latency診断、RTF、table helper、測定読み方。 |
-| 文月 栞里 | Docs / Operations Lead | 13 | 1 | docs整備、hygiene、activity index、運用導線。 |
+| 文月 栞里 | Docs / Operations Lead | 14 | 0 | docs整備、hygiene、activity index、運用導線。 |
 | 愛坂 あい | Pet / Persona Lead | 2 | 0 | キャラクター/会話体験の方向づけ。 |
 | 月城 奏 | Release Support | 1 | 0 | release補助。 |
 
@@ -84,7 +84,8 @@ This page is a readable snapshot of the Japanese HQ state. The authoritative sou
 | `T194` | 星宮 未来 | done | Outreach reply intake playbookを追加。 |
 | `T195-T199` | 文月 栞里 / 星宮 未来 / 歌澄 音羽 / 言守 詞葉 / 白瀬 怜奈 | done | Proof/outreach/local TTS/multilingual intake refreshを完了。 |
 | `T200` | 相庭 愛 / 文月 栞里 | done | T195-T199の完了波を畳み、Next/Backlogを再整理。 |
-| `T201` | 文月 栞里 / 白瀬 怜奈 | active | Verification issue later watchを準備中。 |
+| `T201` | 文月 栞里 / 白瀬 怜奈 | done | Issue #23-#26 later watchをclaim変更なしで記録。 |
+| `T202` | 星宮 未来 / 白瀬 怜奈 | active | Outreach waiting lane refreshを準備中。 |
 
 ## Where To Look Next
 

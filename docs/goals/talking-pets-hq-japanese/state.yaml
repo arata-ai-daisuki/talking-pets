@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T201
+active_task: T202
 
 tasks:
   - id: T001
@@ -6519,7 +6519,7 @@ tasks:
     type: pm
     assignee: PM
     owner_role: "文月 栞里 / 白瀬 怜奈"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "Issue #23-#26を再確認し、新しいpublic evidenceがなければclaim変更なしで閉じる。"
     allowed_files:
@@ -6533,13 +6533,52 @@ tasks:
       - "Windows/Linuxを実機証跡なしにstableへ上げない。"
       - "VOICEVOX/Irodoriの1件データを性能保証にしない。"
     receipt:
-      result: active
+      result: done
       decision: verification_issue_later_watch
-      full_outcome_complete: false
-      summary: "次はIssue #23-#26をclaim変更なしで再確認する。"
+      full_outcome_complete: true
+      summary: "Issue #23-#26をgh issue viewで確認し、4件すべてopen/comment 0、updatedAtは2026-06-04のままだったため、verification-statusへlater watchを追記した。README/support/provider performance claimは変更していない。"
       note: "notes/T201-verification-issue-later-watch.md"
       changed_files:
+        - "docs/verification-status.md"
         - "docs/goals/talking-pets-hq-japanese/notes/T201-verification-issue-later-watch.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T202-outreach-waiting-lane-refresh.md"
+        - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+        - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "gh issue view 23 --json number,title,state,comments,updatedAt,url && gh issue view 24 --json number,title,state,comments,updatedAt,url && gh issue view 25 --json number,title,state,comments,updatedAt,url && gh issue view 26 --json number,title,state,comments,updatedAt,url"
+          status: pass
+        - cmd: "rg -n 'Later watch: 2026-06-05|Issue #23-#26|active_task: T202|verification_issue_later_watch|outreach_waiting_lane_refresh' docs/verification-status.md docs/goals/talking-pets-hq-japanese/notes/T201-verification-issue-later-watch.md docs/goals/talking-pets-hq-japanese/notes/T202-outreach-waiting-lane-refresh.md docs/goals/talking-pets-hq-japanese/hq-backlog-board.md docs/goals/talking-pets-hq-japanese/activity-index.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+        - cmd: "npm run check:docs"
+          status: pass
+
+  - id: T202
+    type: worker
+    assignee: Worker
+    owner_role: "星宮 未来 / 白瀬 怜奈"
+    status: active
+    reasoning_hint: default
+    objective: "OpenClaw/V1GPTの催促禁止日まで、返信が来た場合だけsafe intakeできる状態を再確認する。"
+    allowed_files:
+      - "docs/research/x-outreach-targets.md"
+      - "docs/research/sns-outreach-strategy.md"
+      - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+      - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "自動投稿、自動DM、自動mentionをしない。"
+      - "2026-06-17より前にOpenClaw/V1GPTへ催促しない。"
+      - "private contactや非公開DM本文をrepoへ保存しない。"
+    receipt:
+      result: active
+      decision: outreach_waiting_lane_refresh
+      full_outcome_complete: false
+      summary: "次はOpenClaw/V1GPTの返信待ちlaneを再送なしで確認する。"
+      note: "notes/T202-outreach-waiting-lane-refresh.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T202-outreach-waiting-lane-refresh.md"
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands: []
 
