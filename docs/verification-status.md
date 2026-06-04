@@ -86,6 +86,19 @@ Use these row templates only after a sanitized Platform verification issue passe
 - Windows: `<version> / <arch> / Node.js <version> / npm <version> / Codex: <version|unknown> / TTS: Windows OS speech|VOICEVOX|Kokoro.js|Voicebox-compatible endpoint|Other local TTS / speech-language: auto|ja|en|ko|zh|other / config source: <installer default|preset|custom|none> / audible: yes / sanitized: yes / Evidence link: <Platform verification issue>`
 - Linux: `<distro/version> / <arch> / Node.js <version> / npm <version> / Codex: <version|unknown> / TTS: Linux espeak|VOICEVOX|Kokoro.js|Voicebox-compatible endpoint|Other local TTS / speech-language: auto|ja|en|ko|zh|other / config source: <installer default|preset|custom|none> / audible: yes / sanitized: yes / Evidence link: <Platform verification issue>`
 
+## External Verification Intake
+
+Use these open issues to collect post-release evidence. Do not mark any row as verified until the linked issue has sanitized evidence that passes the review in "When Evidence Arrives".
+
+| Track | Issue | Current status | Required before using as evidence |
+| --- | --- | --- | --- |
+| Windows audible TTS | [#24](https://github.com/arata-ai-daisuki/talking-pets/issues/24) | Waiting for contributor evidence | Windows version, CPU architecture, Node.js/npm versions, TTS path, install/check/dry-run/audible command output, `audible: yes`, `sanitized: yes` |
+| Linux audible TTS | [#23](https://github.com/arata-ai-daisuki/talking-pets/issues/23) | Waiting for contributor evidence | distro/version, CPU architecture, Node.js/npm versions, audio command or TTS path, install/check/dry-run/audible command output, `audible: yes`, `sanitized: yes` |
+| Irodori latency | [#25](https://github.com/arata-ai-daisuki/talking-pets/issues/25) | Waiting for contributor evidence | device, CPU/GPU/backend, Irodori server version if known, cold/warm state, synthesis timing, playback-included flag, audio duration, sanitized output |
+| VOICEVOX latency | [#26](https://github.com/arata-ai-daisuki/talking-pets/issues/26) | Waiting for contributor evidence | OS/device, VOICEVOX version if known, speaker id/name, warm synthesis runs, playback-included flag, audio duration, sanitized output |
+
+VOICEVOX and Irodori reports should be treated as contributor reference results, not universal performance claims.
+
 ## Still Required Before Platform Graduation
 
 The repository can be published as a macOS stable / Windows and Linux experimental public preview before Windows or Linux audible TTS evidence arrives. Collect that post-release evidence through sanitized Platform verification issues, then update this page before changing either platform from experimental.
