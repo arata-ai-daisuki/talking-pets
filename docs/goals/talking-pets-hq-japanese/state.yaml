@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T233
+active_task: T234
 
 tasks:
   - id: T001
@@ -7761,7 +7761,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "星宮 未来 / 白瀬 怜奈"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "T232の多言語検証boundary watch後に、outreach waiting laneへ戻る。"
     allowed_files:
@@ -7777,13 +7777,53 @@ tasks:
       - "Star依頼を送らない。"
       - "2026-06-17前に催促しない。ただしpublic replyまたはMaster承認済みsanitized summaryがある場合は別カードで分類する。"
     receipt:
-      result: active
+      result: done
       decision: outreach_waiting_lane_boundary_watch
-      full_outcome_complete: false
-      summary: "次はoutreach waiting laneを、再送・催促なしで再確認する。"
+      full_outcome_complete: true
+      summary: "V1GPTのReddit URLはverification page、OpenClaw / Sogni VoiceのX URLはlogged-out app-shell HTMLで、public fetchでは返信有無を判定できなかった。両方waitを維持し、2026-06-17前の催促、再送、自動投稿、DM、mention、follow、like、Star依頼、private contact保存、DM全文保存はしていない。"
       note: "notes/T233-outreach-waiting-lane-boundary-watch.md"
       changed_files:
+        - "docs/research/x-outreach-targets.md"
+        - "docs/research/sns-outreach-strategy.md"
         - "docs/goals/talking-pets-hq-japanese/notes/T233-outreach-waiting-lane-boundary-watch.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T234-local-tts-boundary-watch.md"
+        - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+        - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "curl -L https://www.reddit.com/r/codex/comments/1s0avrn/i_gave_codex_a_3d_avatar_v1gpt_is_now_my_voice/"
+          status: pass
+        - cmd: "curl -L https://x.com/krunkosaurus/status/2015719029911220531"
+          status: pass
+        - cmd: "rg -n \"Boundary watch checked|Boundary watch:|active_task: T234|T234|local_tts_boundary_watch|verification page|logged-out app-shell|2026-06-17|Star ask|自動投稿|DM\" docs/research/x-outreach-targets.md docs/research/sns-outreach-strategy.md docs/goals/talking-pets-hq-japanese/notes/T233-outreach-waiting-lane-boundary-watch.md docs/goals/talking-pets-hq-japanese/notes/T234-local-tts-boundary-watch.md docs/goals/talking-pets-hq-japanese/activity-index.md docs/goals/talking-pets-hq-japanese/hq-backlog-board.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T234
+    type: worker
+    assignee: Worker
+    owner_role: "歌澄 音羽 / 白瀬 怜奈"
+    status: active
+    reasoning_hint: default
+    objective: "T233のoutreach waiting lane boundary watch後に、local TTS設計の境界へ戻る。"
+    allowed_files:
+      - "docs/research/tts-provider-comparison.md"
+      - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+      - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "`sherpa-onnx-node`をinstallしない。"
+      - "MeloTTSのPython/Docker/model/unidic setupをしない。"
+      - "model download、API call、生成音声をしない。"
+      - "README support claim、latency保証claim、platform support claimを強めない。"
+    receipt:
+      result: active
+      decision: local_tts_boundary_watch
+      full_outcome_complete: false
+      summary: "次はlocal TTS境界を、install/model/API/support-claim変更なしで再確認する。"
+      note: "notes/T234-local-tts-boundary-watch.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T234-local-tts-boundary-watch.md"
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands: []
 
