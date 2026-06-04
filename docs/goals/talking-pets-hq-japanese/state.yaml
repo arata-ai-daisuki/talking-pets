@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T163
+active_task: T164
 
 tasks:
   - id: T001
@@ -5084,7 +5084,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "星宮 未来"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "Search Review Logの候補ごとに、Masterが手動で送るための短い公開返信ドラフトを用意する。"
     allowed_files:
@@ -5098,7 +5098,7 @@ tasks:
       - "Korean / Chinese dedicated provider support claimを追加しない。"
       - "provider実装、依存追加、model download、API callをしない。"
     receipt:
-      result: active
+      result: done
       decision: search_review_manual_drafts
       full_outcome_complete: false
       summary: "Search Review Logの4候補向けに、短い公開返信ドラフトを追加した。送信やDM文面化はしていない。"
@@ -5109,6 +5109,36 @@ tasks:
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands:
         - cmd: "rg -n 'active_task: T163|T163|search_review_manual_drafts|Candidate-Specific Manual Drafts|MeloTTS.cpp|MOSS-TTS-Nano|first-audio latency|sent.*にはしない' docs/research/x-outreach-targets.md docs/goals/talking-pets-hq-japanese/notes/T163-search-review-manual-drafts.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T164
+    type: worker
+    assignee: Worker
+    owner_role: "歌澄 音羽"
+    status: active
+    reasoning_hint: default
+    objective: "local/API TTS候補を実装前に同じ物差しで比べられるProvider Experiment Scorecardを追加する。"
+    allowed_files:
+      - "docs/research/tts-provider-comparison.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "provider実装、依存追加、model download、API callをしない。"
+      - "READMEの対応provider claimを増やさない。"
+      - "scoreはplanning readでありpublic benchmarkとして扱わない。"
+      - "Korean / Chinese dedicated provider support claimを追加しない。"
+    receipt:
+      result: active
+      decision: provider_experiment_scorecard
+      full_outcome_complete: false
+      summary: "tts-provider-comparisonにProvider Experiment Scorecardを追加し、local-first fit、optional install、cache/license/measurement/platform/user valueで候補を事前評価できるようにした。"
+      note: "notes/T164-provider-experiment-scorecard.md"
+      changed_files:
+        - "docs/research/tts-provider-comparison.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T164-provider-experiment-scorecard.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n 'active_task: T164|T164|provider_experiment_scorecard|Provider Experiment Scorecard|Optional install|Model/cache boundary|Experiment candidate|planning read' docs/research/tts-provider-comparison.md docs/goals/talking-pets-hq-japanese/notes/T164-provider-experiment-scorecard.md docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
 
   - id: T007

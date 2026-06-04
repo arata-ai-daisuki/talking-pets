@@ -110,6 +110,46 @@ Stop and ask before:
 3. Keep sherpa-onnx-node and API TTS as explicit opt-in design work.
 4. Use the readiness levels above before changing README claims or default routing.
 
+## Provider Experiment Scorecard
+
+Use this scorecard before asking Master to approve a provider experiment. It is a planning tool, not a public ranking.
+
+Score each field from 0 to 2:
+
+- `0`: unknown, risky, or does not fit Talking Pets yet
+- `1`: plausible, but needs design or evidence
+- `2`: clear enough for a small optional experiment
+
+| Field | What to check | Pass signal |
+| --- | --- | --- |
+| Local-first fit | Text stays on the machine unless the user explicitly enables a remote/API endpoint. | Local by default, or remote path has privacy/billing warnings. |
+| Optional install | Normal `npm ci`, `npm run check:all`, and npm pack checks pass when the provider is absent. | Provider can be skipped cleanly. |
+| Model/cache boundary | Model, dictionary, and voice downloads are explicit and cached outside the repo. | No automatic model download during normal monitor runs. |
+| License clarity | Package, model, voice, vocoder, and generated-audio terms are known enough to document. | `CREDITS.md` can be updated before public support wording. |
+| Measurement shape | Helper can emit health, cold/warm synthesis, audio duration, RTF when possible, playback flag, and sanitized `[latency]` lines. | Output can be compared with the current rubric. |
+| Platform confidence | Supported OS/architecture list and unverified platforms are clear. | README can avoid overclaiming Windows/macOS/Linux support. |
+| User value | Provider improves a real gap: language, quality, setup simplicity, or latency. | The experiment has a concrete reason beyond "another TTS". |
+
+Suggested decision:
+
+| Total | Decision | Allowed next action |
+| --- | --- | --- |
+| 0-6 | Hold | Keep research-only; do not add code or README support wording. |
+| 7-10 | Design note | Write or update a provider-specific design note. |
+| 11-14 | Experiment candidate | Ask Master before a small optional helper PR. |
+
+Current planning read:
+
+| Provider | Provisional score | Why |
+| --- | --- | --- |
+| VOICEVOX / Voicebox-compatible endpoint | 12/14 | Already optional and locally measured; needs more contributor evidence for broader claims. |
+| Irodori-TTS Server | 11/14 | Strong local Japanese value and OpenAI-compatible shape; cold/warm performance needs more devices. |
+| Kokoro.js | 9/14 | Helper exists, but model download/cache and warm-process behavior need clearer approval. |
+| sherpa-onnx-node | 8/14 | Good design fit, but model/vocoder/license choices remain unresolved. |
+| MeloTTS | 7/14 | Language value is high, but Python/Docker/runtime/cache shape needs a design note before code. |
+| Piper-like path | 6/14 | Potentially useful, but current maintained project/license packaging needs careful review first. |
+| API TTS | 5/14 | Can be valuable as opt-in, but privacy, billing, and local-first positioning make it a separate P2 path. |
+
 ## Next Provider Approval Gate
 
 Use this gate before promoting any new provider candidate from design notes into code. Passing this gate does not mean the provider is supported; it only means a small experimental helper PR is safe to consider.
