@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T164
+active_task: T165
 
 tasks:
   - id: T001
@@ -5115,7 +5115,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "歌澄 音羽"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "local/API TTS候補を実装前に同じ物差しで比べられるProvider Experiment Scorecardを追加する。"
     allowed_files:
@@ -5128,7 +5128,7 @@ tasks:
       - "scoreはplanning readでありpublic benchmarkとして扱わない。"
       - "Korean / Chinese dedicated provider support claimを追加しない。"
     receipt:
-      result: active
+      result: done
       decision: provider_experiment_scorecard
       full_outcome_complete: false
       summary: "tts-provider-comparisonにProvider Experiment Scorecardを追加し、local-first fit、optional install、cache/license/measurement/platform/user valueで候補を事前評価できるようにした。"
@@ -5139,6 +5139,36 @@ tasks:
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands:
         - cmd: "rg -n 'active_task: T164|T164|provider_experiment_scorecard|Provider Experiment Scorecard|Optional install|Model/cache boundary|Experiment candidate|planning read' docs/research/tts-provider-comparison.md docs/goals/talking-pets-hq-japanese/notes/T164-provider-experiment-scorecard.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T165
+    type: worker
+    assignee: Worker
+    owner_role: "歌澄 音羽"
+    status: active
+    reasoning_hint: default
+    objective: "Provider Experiment Scorecardの結果から、次にMasterへ提示するprovider作業の選択肢をDecision Cardにまとめる。"
+    allowed_files:
+      - "docs/research/tts-provider-comparison.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "provider実装、依存追加、model download、API callをしない。"
+      - "READMEの対応provider claimを増やさない。"
+      - "選択肢はplanning decisionであり、Master承認なしに実験へ進めない。"
+      - "Korean / Chinese dedicated provider support claimを追加しない。"
+    receipt:
+      result: active
+      decision: provider_next_decision_card
+      full_outcome_complete: false
+      summary: "tts-provider-comparisonにNext Provider Decision Cardを追加し、A: contributor evidence、B: sherpa design experiment、C: MeloTTS runtime design、D: API TTS holdを整理した。"
+      note: "notes/T165-provider-next-decision-card.md"
+      changed_files:
+        - "docs/research/tts-provider-comparison.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T165-provider-next-decision-card.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n 'active_task: T165|T165|provider_next_decision_card|Next Provider Decision Card|A: keep gathering contributor evidence|B: approve a tiny sherpa-onnx design experiment|C: deepen MeloTTS runtime design|D: hold API TTS' docs/research/tts-provider-comparison.md docs/goals/talking-pets-hq-japanese/notes/T165-provider-next-decision-card.md docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
 
   - id: T007
