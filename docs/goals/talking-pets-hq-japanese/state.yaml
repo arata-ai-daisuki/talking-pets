@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T221
+active_task: T222
 
 tasks:
   - id: T001
@@ -7292,7 +7292,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "星宮 未来 / 白瀬 怜奈"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "T220の多言語検証follow-up後に、OpenClaw / V1GPTなどのoutreach返信待ちlaneへ戻る。"
     allowed_files:
@@ -7307,13 +7307,50 @@ tasks:
       - "OpenClaw / V1GPTの催促禁止日より前にnudgeしない。"
       - "private contact、private DM、未sanitized内容をrepoへ貼らない。"
     receipt:
-      result: active
+      result: done
       decision: outreach_waiting_lane_next_cycle
-      full_outcome_complete: false
-      summary: "次はoutreach返信待ちlaneを、送信なしで再確認する。"
+      full_outcome_complete: true
+      summary: "V1GPTのReddit URLはverification page、OpenClaw / Sogni VoiceのX URLはapp-shell HTMLのみで公開返信証跡として判定不能だったため、reply / no-replyを推定せずwaitを維持した。自動投稿、DM、mention、follow、like、Star依頼、2026-06-17前のnudgeはしていない。"
       note: "notes/T221-outreach-waiting-lane-next-cycle.md"
       changed_files:
+        - "docs/research/x-outreach-targets.md"
+        - "docs/research/sns-outreach-strategy.md"
         - "docs/goals/talking-pets-hq-japanese/notes/T221-outreach-waiting-lane-next-cycle.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T222-local-tts-approval-next-cycle.md"
+        - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+        - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "curl -L https://www.reddit.com/r/codex/comments/1s0avrn/i_gave_codex_a_3d_avatar_v1gpt_is_now_my_voice/"
+          status: pass
+        - cmd: "curl -L https://x.com/krunkosaurus/status/2015719029911220531"
+          status: pass
+
+  - id: T222
+    type: worker
+    assignee: Worker
+    owner_role: "歌澄 音羽 / 白瀬 怜奈"
+    status: active
+    reasoning_hint: default
+    objective: "T221のoutreach返信待ちlane確認後に、local TTSのA/B/C承認境界へ戻る。"
+    allowed_files:
+      - "docs/research/tts-provider-comparison.md"
+      - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+      - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "`sherpa-onnx-node`をinstallしない。"
+      - "MeloTTSのPython/Docker/model/unidic setupをしない。"
+      - "model download、API call、生成音声、README support claim変更をしない。"
+    receipt:
+      result: active
+      decision: local_tts_approval_next_cycle
+      full_outcome_complete: false
+      summary: "次はlocal TTSのA/B/C承認境界を、実装なしで再確認する。"
+      note: "notes/T222-local-tts-approval-next-cycle.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T222-local-tts-approval-next-cycle.md"
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands: []
 
