@@ -163,6 +163,20 @@ Use this card when asking Master what provider work should move from planning in
 
 Recommended default: choose A now, and prepare B only if Master explicitly approves a small optional local dependency/model investigation. Choose C if multilingual quality becomes more important than immediate local latency evidence.
 
+### Local TTS Master Choice Card
+
+Use this when the next action is "Local TTS design" rather than outreach.
+
+Recommended choice: **A: keep gathering VOICEVOX / Irodori contributor evidence**.
+
+| Choice | What happens next | Why choose it | Stop line |
+| --- | --- | --- | --- |
+| A: evidence-first | Ask for more sanitized VOICEVOX and Irodori reports through issues #25 and #26. | Improves confidence in already-supported optional paths without dependency or model risk. | Do not generalize maintainer numbers into universal performance claims. |
+| B: sherpa design-only | Write the exact dependency/model/vocoder/cache/license scope for a future sherpa experiment. | Good local-first fit, but package/model details are still unresolved. | No install, model download, helper, README support wording, or default routing. |
+| C: MeloTTS runtime design-only | Expand the MeloTTS note around CLI/server/Docker/cache and measurement shape. | Useful if multilingual quality becomes the next priority. | No Python stack setup, no Korean/Chinese support claim, no generated audio request. |
+
+Default next PR after this card: keep A active and prepare a contributor-evidence request/update, unless Master explicitly chooses B or C.
+
 ## Next Provider Approval Gate
 
 Use this gate before promoting any new provider candidate from design notes into code. Passing this gate does not mean the provider is supported; it only means a small experimental helper PR is safe to consider.
