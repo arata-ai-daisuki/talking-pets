@@ -140,6 +140,19 @@ Use these row templates only after a sanitized Platform verification issue passe
 - Windows: `<version> / <arch> / Node.js <version> / npm <version> / Codex: <version|unknown> / TTS: Windows OS speech|VOICEVOX|Kokoro.js|Voicebox-compatible endpoint|Other local TTS / speech-language: auto|ja|en|ko|zh|other / config source: <installer default|preset|custom|none> / audible: yes / sanitized: yes / Evidence link: <Platform verification issue>`
 - Linux: `<distro/version> / <arch> / Node.js <version> / npm <version> / Codex: <version|unknown> / TTS: Linux espeak|VOICEVOX|Kokoro.js|Voicebox-compatible endpoint|Other local TTS / speech-language: auto|ja|en|ko|zh|other / config source: <installer default|preset|custom|none> / audible: yes / sanitized: yes / Evidence link: <Platform verification issue>`
 
+## Release Proof Package Index
+
+Use this index before changing README support wording or preparing a GitHub Release. It points to the public proof sources without adding new support claims.
+
+| Proof area | Source | Use for release proof | Claim boundary |
+| --- | --- | --- | --- |
+| Current platform status | [Current Snapshot](#current-snapshot) | Show which OS/provider rows are verified, partial, or waiting. | Do not treat waiting rows as verified. |
+| External verification issues | [External Verification Intake](#external-verification-intake) | Link sanitized contributor evidence from Issue #23-#26 when it arrives. | No README support change until required evidence is present. |
+| Real-device command format | [Real Device Verification](real-device-verification.md) | Ask testers for install, check, dry-run, audible TTS, and sanitized output. | CI and fixture-only checks do not graduate Windows/Linux. |
+| Multilingual evidence | [Multilingual Evidence Handling Order](#multilingual-evidence-handling-order) | Separate fallback-only evidence from provider-specific evidence. | Korean/Chinese fallback is not dedicated provider support. |
+| Provider latency data | [Maintainer RTF Snapshot](https://github.com/arata-ai-daisuki/talking-pets/blob/main/docs/research/tts-provider-comparison.md#maintainer-real-time-factor-snapshot) | Share maintainer measurements as reference data. | VOICEVOX/Irodori numbers are not performance guarantees. |
+| Release note rows | [Release Notes Template](release-notes-template.md) | Copy only rows backed by sanitized evidence links. | Do not paste private logs, generated audio, model files, or local paths. |
+
 ## External Verification Intake
 
 Use these open issues to collect post-release evidence. Do not mark any row as verified until the linked issue has sanitized evidence that passes the review in "When Evidence Arrives".
