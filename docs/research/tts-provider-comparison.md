@@ -211,6 +211,8 @@ Talking Pets should therefore not add MeloTTS as a dependency, installer prompt,
 
 Safe next action: keep MeloTTS as a runtime-review candidate only. If Master wants to continue, create a MeloTTS-specific opt-in external CLI/server design note before any install, helper, or README wording change.
 
+Design note: `docs/research/melotts-design-note.md`
+
 ## Provider Feedback Intake
 
 Use this table when someone replies to the provider feedback ask. Record only public or voluntarily shared technical guidance; do not collect private contact details or generated audio files.
