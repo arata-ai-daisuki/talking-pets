@@ -138,6 +138,19 @@ Irodori-TTS Server is not bundled in this repository. Start it in a separate ter
 If the first request times out, start Irodori-TTS-Server with `IRODORI_PRELOAD=true` so the model loads during server startup, or increase `IRODORI_MODEL_LOAD_TIMEOUT` / `IRODORI_SYNTHESIS_WAIT_TIMEOUT` on the Irodori server side when needed. From Talking Pets, run `npm run tts:irodori -- --health --url http://127.0.0.1:8088 --profile-latency` and check `/health` fields such as `runtime.loaded` and `runtime.loading` before trying a short synthesis.
 Perceived Irodori speed depends heavily on device performance, CPU/GPU/MPS/CUDA/ROCm, Irodori settings, text length, and cold/warm state. If you can test another machine, please share results with the [Irodori latency contribution](docs/real-device-verification.md#irodori-latency-contribution) format.
 
+### Latency snapshot
+
+These are short-text measurements from the maintainer environment. They are not performance guarantees; use them as rough guidance for provider choice and further testing. See [docs/verification-status.md](docs/verification-status.md) for the current verification status.
+
+| TTS path | State | Example measurement |
+| --- | --- | --- |
+| macOS `say` | no-extra-install control | `total=440.1ms`, `speak=434.9ms` |
+| VOICEVOX speaker 3 | Engine already running, no playback | warm synthesis total `1334.3ms` / `1388.6ms` / `2206.6ms` |
+| VOICEVOX speaker 3 | Engine already running, playback included | `total=5693.8ms`, `synthesis=1127.8ms`, `play=4398.6ms` |
+| Irodori-TTS Server | runtime already loaded, no playback | warm synthesis total `9565.2ms` / `10096.2ms` / `16708.0ms` |
+
+VOICEVOX playback-included `total` includes waiting for playback to finish; it is not the same as time to first audible speech. Kokoro.js was not measured in this environment without model download because no local cache was present.
+
 ## Distribution
 
 Talking Pets is not published as an npm package yet. It is intended to be cloned from GitHub, so `package.json` intentionally remains `private: true`.

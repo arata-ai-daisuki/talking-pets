@@ -40,6 +40,7 @@ Observed result:
 - Stateful Codex compatibility reads the latest local rollout from the Codex state DB.
 - macOS audio path reports both `afplay` and `say` as available.
 - VOICEVOX Engine was not running during this snapshot; that is not a blocker for the current macOS evidence because the recorded audible TTS path is `macOS say`.
+- VOICEVOX Engine was also tested later after startup with speaker 3 as an optional local TTS path.
 - `./check.command` uses fixture-only compatibility and prints public-friendly dry-run output.
 - Stateful dry-run can read the latest local Codex assistant message.
 - Stateful dry-run output includes the local thread title, rollout path, and conversation text, so it is local verification only and must not be pasted publicly without sanitization and manual review.
@@ -61,6 +62,18 @@ Maintainer reference result:
 - Output audio duration: about 3.92s
 
 Collect more data with the [Irodori latency contribution](real-device-verification.md#irodori-latency-contribution) format and a sanitized Platform verification issue.
+
+## VOICEVOX Latency Snapshot
+
+VOICEVOX was measured with a locally running engine and speaker 3. These numbers are maintainer-environment examples, not universal VOICEVOX performance claims.
+
+- `list_voices`: 76.2ms
+- Warm synthesis totals without playback: 1388.6ms, 2206.6ms, 1334.3ms
+- Output audio duration for warm runs: 3.861333s
+- Playback-included short run: total 5693.8ms, synthesis 1127.8ms, play 4398.6ms
+- Output audio duration for playback-included run: 3.210667s
+
+The playback-included `total` waits for playback to finish, so it is not the same as time to first audible speech.
 
 ## Release Evidence Draft
 

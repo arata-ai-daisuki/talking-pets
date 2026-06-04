@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T109
+active_task: T111
 
 tasks:
   - id: T001
@@ -2917,6 +2917,7 @@ tasks:
     allowed_files:
       - "README.md"
       - "README.en.md"
+      - "docs/verification-status.md"
       - "docs/goals/talking-pets-hq-japanese/notes/**"
       - "docs/goals/talking-pets-hq-japanese/state.yaml"
     constraints:
@@ -3092,6 +3093,7 @@ tasks:
     allowed_files:
       - "README.md"
       - "README.en.md"
+      - "docs/verification-status.md"
       - "docs/goals/talking-pets-hq-japanese/notes/**"
       - "docs/goals/talking-pets-hq-japanese/state.yaml"
     constraints:
@@ -3384,7 +3386,7 @@ tasks:
     type: pm
     assignee: PM
     owner_role: "相庭 愛"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "VOICEVOX測定結果をPR化し、Kokoro model downloadを許可するか、別のno-download作業へ進むか判断する。"
     expected_output:
@@ -3392,11 +3394,62 @@ tasks:
       - "Kokoro model downloadを許可する。"
       - "Kokoroは保留して別のno-download作業へ進む。"
     receipt:
-      result: active
-      decision: waiting_for_next_after_voicevox_baseline
+      result: done
+      decision: no_download_move_to_readme_latency_snapshot
       full_outcome_complete: false
-      summary: "VOICEVOX測定は完了。Kokoroはcacheなしのためmodel download承認待ち。次はVOICEVOX測定PRをmergeしてから判断する。"
-      note: "notes/T108-kokoro-cache-stopline.md"
+      summary: "MasterがKokoro model downloadを許可しなかったためKokoro測定は保留。downloadなしで進む別作業としてREADME/README.enに実測レイテンシsnapshotを追加する方針にした。"
+      note: "notes/T109-no-download-next-decision.md"
+
+  - id: T110
+    type: worker
+    assignee: Worker
+    owner_role: "速水 光莉"
+    status: done
+    reasoning_hint: default
+    objective: "downloadなしで進む別作業として、README / README.en に実測レイテンシsnapshotを追加する。"
+    allowed_files:
+      - "README.md"
+      - "README.en.md"
+      - "docs/verification-status.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "性能保証として書かない。"
+      - "Kokoroを測定済みにしない。"
+      - "model download、package install、API key、有料API呼び出しをしない。"
+    receipt:
+      result: done
+      decision: readme_latency_snapshot_added
+      full_outcome_complete: false
+      summary: "README日英に、maintainer環境の短文latency snapshotを追加した。macOS say、VOICEVOX、Irodoriを並べ、Kokoroはcacheなしのためdownloadなしでは未測定と明記した。"
+      note: "notes/T110-readme-latency-snapshot.md"
+      changed_files:
+        - "README.md"
+        - "README.en.md"
+        - "docs/verification-status.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T109-no-download-next-decision.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T110-readme-latency-snapshot.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n \"Latency snapshot|VOICEVOX speaker 3|Kokoro|model download|performance guarantees|性能保証\" README.md README.en.md"
+          status: pass
+
+  - id: T111
+    type: pm
+    assignee: PM
+    owner_role: "相庭 愛"
+    status: active
+    reasoning_hint: default
+    objective: "README latency snapshot PRをmergeするか、次のno-download作業へ進むか判断する。"
+    expected_output:
+      - "README latency snapshot PRをmergeする。"
+      - "次のno-download作業へ進む。"
+    receipt:
+      result: active
+      decision: waiting_for_next_after_latency_snapshot
+      full_outcome_complete: false
+      summary: "Kokoro downloadなし方針を反映し、README latency snapshotを追加済み。次はPR化とmerge判断。"
+      note: "notes/T110-readme-latency-snapshot.md"
 
   - id: T007
     type: worker
