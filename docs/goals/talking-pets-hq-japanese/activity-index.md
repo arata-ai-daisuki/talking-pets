@@ -6,7 +6,7 @@ This page is a readable snapshot of the Japanese HQ state. The authoritative sou
 
 ## GoalBuddy Kanban
 
-- Board URL: `http://goalbuddy.localhost:41737/talking-pets-hq-japanese-2/`
+- Board URL: `http://goalbuddy.localhost:41737/talking-pets-hq-japanese/`
 - Local board files: `docs/goals/talking-pets-hq-japanese/.goalbuddy-board/`
 - Current active task: `T175`
 - Current focus: T061由来のsherpa optional npm installだけを、model downloadなしで確認する。
