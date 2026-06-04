@@ -195,6 +195,8 @@ Follow-up watch: 2026-06-05. V1GPT's Reddit URL returned a verification page in 
 
 Next-cycle watch: 2026-06-05. V1GPT still returns a Reddit verification page and OpenClaw / Sogni Voice still returns X app-shell HTML in the public fetch. Treat both as waiting with insufficient public evidence, not as confirmed no-reply. Continue safe internal work; do not send or nudge.
 
+Post-merge next-cycle watch: 2026-06-05. V1GPT still returns a Reddit verification page and OpenClaw / Sogni Voice still returns X logged-out app-shell HTML in the public fetch. Keep the outreach lane in wait state with insufficient public evidence; do not send, nudge, DM, mention, follow, like, or ask for a Star before 2026-06-17 unless a public reply appears first or Master provides an approved sanitized summary.
+
 Keep V1R4 as `reply later` until a current public thread clearly invites related project examples.
 
 ### Public Proof Route Selector
