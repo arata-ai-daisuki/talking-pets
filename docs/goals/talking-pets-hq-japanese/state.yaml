@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T139
+active_task: T140
 
 tasks:
   - id: T001
@@ -4348,7 +4348,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "速水 光莉"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "協力者向けVOICEVOX/Irodori測定手順にlatency:tableのCSV出力用途を補足する。"
     allowed_files:
@@ -4361,7 +4361,7 @@ tasks:
       - "外部APIやmodel downloadを増やさない。"
       - "performance claimを強くしない。"
     receipt:
-      result: active
+      result: done
       decision: latency_table_csv_docs
       full_outcome_complete: false
       summary: "VOICEVOX/Irodoriの協力者向け測定手順に、sanitized [latency] 行からCSVも生成できることをspreadsheet import用途として補足した。"
@@ -4372,6 +4372,35 @@ tasks:
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands:
         - cmd: "rg -n \"active_task: T139|T139|--format csv /tmp/talking-pets-irodori-latency-lines|--format csv /tmp/talking-pets-voicevox-latency-lines|latency_table_csv_docs|spreadsheet import\" docs/real-device-verification.md docs/goals/talking-pets-hq-japanese/notes/T139-latency-table-csv-docs.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T140
+    type: worker
+    assignee: Worker
+    owner_role: "星宮 未来"
+    status: active
+    reasoning_hint: default
+    objective: "実機検証docsにlatency tableの主要列の読み方を短く追加する。"
+    allowed_files:
+      - "docs/real-device-verification.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "新しい実測値やperformance claimを追加しない。"
+      - "Issueへ貼る主形式はMarkdown表のままにする。"
+      - "外部APIやmodel downloadを増やさない。"
+    receipt:
+      result: active
+      decision: latency_table_reading_docs
+      full_outcome_complete: false
+      summary: "生成latency tableのtotal/synthesis/audioDuration/rtf列の読み方と、durationなし行の扱いを実機検証docsに補足した。"
+      note: "notes/T140-latency-table-reading.md"
+      changed_files:
+        - "docs/real-device-verification.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T140-latency-table-reading.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n 'active_task: T140|T140|latency_table_reading_docs|partial latency evidence|audioDuration.*rtf' docs/real-device-verification.md docs/goals/talking-pets-hq-japanese/notes/T140-latency-table-reading.md docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
 
   - id: T007
