@@ -219,6 +219,18 @@ Recommended answer: **A: keep evidence-first**.
 
 Default execution if Master does not choose B or C: continue A and move the HQ board to multilingual verification intake/watch. B and C stay design-only candidates and do not become implementation approval.
 
+### Local TTS Approval Response Watch
+
+Checked: 2026-06-05. No repo-recorded Master approval selects B or C after the current decision card, so the active local TTS lane remains **A: keep evidence-first**.
+
+| Lane | Current decision | Safe next action | Still blocked |
+| --- | --- | --- | --- |
+| A: VOICEVOX / Irodori evidence-first | Active default. | Keep Issue #25/#26 open for sanitized contributor evidence and compare results by device/runtime only. | Broader performance claims, default routing changes, or support wording changes. |
+| B: sherpa metadata review | Waiting for explicit Master approval. | None until the approval names `sherpa metadata review only` or a narrower public-doc review. | Installing `sherpa-onnx-node`, downloading model/vocoder/token/espeak data, helper code, audio generation. |
+| C: MeloTTS external-runtime design | Waiting for explicit Master approval. | None until the approval names `MeloTTS external-runtime design only`. | Python/Docker setup, `unidic` or model download, synthesis, Korean/Chinese support wording. |
+
+Do not infer approval from prior design notes. If Master chooses B or C later, open a separate small PR and keep implementation, dependency, model, API, and generated-audio work behind a new gate.
+
 ### Local TTS Next Choice Refresh
 
 Checked: 2026-06-05. This refresh incorporates the sherpa optional npm install check, MeloTTS detect/connect-only helper work, provider feedback capture path, and multilingual evidence routes.
