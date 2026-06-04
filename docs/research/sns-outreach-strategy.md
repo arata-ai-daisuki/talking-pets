@@ -191,6 +191,8 @@ Later watch: 2026-06-05. V1GPT's public Reddit page was readable and did not exp
 
 Next watch: 2026-06-05. V1GPT remains readable via public Reddit HTML, with no Talking Pets reply visible in the fetched page. The OpenClaw / Sogni Voice X page still does not expose useful public HTML lines. Treat both as waiting and continue safe internal work; do not send or nudge.
 
+Follow-up watch: 2026-06-05. V1GPT's Reddit URL returned a verification page in the latest check, and the OpenClaw / Sogni Voice X URL returned only app-shell HTML. Treat both as waiting with insufficient public evidence, not as confirmed no-reply. Do not send, nudge, DM, mention, follow, like, or ask for a Star before 2026-06-17 unless a public reply appears first or Master provides an approved summary.
+
 Keep V1R4 as `reply later` until a current public thread clearly invites related project examples.
 
 ### Public Proof Route Selector

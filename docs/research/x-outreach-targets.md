@@ -171,6 +171,8 @@ Later watch checked: 2026-06-05. V1GPT Reddit public HTML was readable and did n
 
 Next watch checked: 2026-06-05. V1GPT Reddit public HTML was readable and still did not expose a Talking Pets reply in the fetched page. The OpenClaw / Sogni Voice X page returned no useful public HTML lines, so the X reply state remains unknown rather than no-reply. Keep OpenClaw / V1GPT waiting; no automated outreach, manual nudge, DM, mention, follow, like, or Star ask was made.
 
+Follow-up watch checked: 2026-06-05. V1GPT's Reddit URL now returned a verification page, so the public page did not provide readable comment evidence in this check. The OpenClaw / Sogni Voice X URL returned an app shell without usable reply text. Keep both rows in `wait`; do not infer a reply or non-reply from either page, and do not nudge before 2026-06-17 unless Master supplies a public reply URL or approved private summary.
+
 | Target | Waiting action | Next check | Safe internal work while waiting |
 | --- | --- | --- | --- |
 | OpenClaw / Sogni Voice | Do not bump before 2026-06-17 unless a public reply appears first. | Record only a public reply URL or Master-approved private summary. | Provider feedback intake, local TTS approval decision, latency docs. |
