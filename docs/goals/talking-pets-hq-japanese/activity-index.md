@@ -8,14 +8,14 @@ This page is a readable snapshot of the Japanese HQ state. The authoritative sou
 
 - Board URL: `http://goalbuddy.localhost:41737/talking-pets-hq-japanese/`
 - Local board files: `docs/goals/talking-pets-hq-japanese/.goalbuddy-board/`
-- Current active task: `T179`
-- Current focus: MeloTTS health-only helper後の次PRを、monitor health integration中心に選ぶ。
+- Current active task: `T181`
+- Current focus: MeloTTS installer/configに進む場合のdetect-only wording範囲を決める。
 
 ## Kanban Snapshot
 
 | Column | Count | Meaning |
 | --- | ---: | --- |
-| Done | 179 | 完了済みの小PR、調査、判断カード、検証receipt。 |
+| Done | 181 | 完了済みの小PR、調査、判断カード、検証receipt。 |
 | Active | 1 | いまHQが追っている作業。 |
 | Blocked | 0 | 同じ停止条件が継続しており、Master判断なしに進めないもの。 |
 
@@ -66,7 +66,9 @@ This page is a readable snapshot of the Japanese HQ state. The authoritative sou
 | `T176` | 歌澄 音羽 | done | MeloTTS external runtime helper設計を整理。 |
 | `T177` | 歌澄 音羽 | done | MeloTTS detect/connect-only実装カードを追加。 |
 | `T178` | 歌澄 音羽 | done | MeloTTS health-only helper skeletonを追加。 |
-| `T179` | 相庭 愛 | active | MeloTTS次PR候補を整理中。 |
+| `T179` | 相庭 愛 | done | MeloTTS次PR候補を整理し、monitor health integrationを推奨。 |
+| `T180` | 歌澄 音羽 | done | MeloTTS health-only helperをmonitorの`--list-voices`へ接続。 |
+| `T181` | 白瀬 怜奈 | active | installer/configへ進む場合のdetect-only wording範囲を整理中。 |
 
 ## Where To Look Next
 
