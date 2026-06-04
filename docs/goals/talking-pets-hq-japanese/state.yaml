@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T203
+active_task: T204
 
 tasks:
   - id: T001
@@ -6595,7 +6595,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "歌澄 音羽 / 白瀬 怜奈"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "Local TTS Approval Follow-Up SnapshotのA/B/Cから、Master判断が必要な次アクションを確認する。"
     allowed_files:
@@ -6609,13 +6609,50 @@ tasks:
       - "README support claimを変えない。"
       - "sherpa/MeloTTSの実装や音声生成をしない。"
     receipt:
-      result: active
+      result: done
       decision: local_tts_approval_decision
-      full_outcome_complete: false
-      summary: "次はlocal TTSのA/B/C承認判断カードを、実装なしで準備する。"
+      full_outcome_complete: true
+      summary: "Local TTS Approval Follow-Up Snapshotを確認し、A/B/Cの判断をLocal TTS Approval Decision Cardとして追加した。推奨はA: evidence-first。B/CはMaster明示承認までdesign-only候補として残し、依存追加、model download、API call、README support claim変更、音声生成はしていない。"
       note: "notes/T203-local-tts-approval-decision.md"
       changed_files:
+        - "docs/research/tts-provider-comparison.md"
         - "docs/goals/talking-pets-hq-japanese/notes/T203-local-tts-approval-decision.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T204-multilingual-verification-watch.md"
+        - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+        - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n 'Local TTS Approval Decision Card|Recommended answer: \\*\\*A: keep evidence-first\\*\\*|active_task: T204|local_tts_approval_decision|multilingual_verification_watch' docs/research/tts-provider-comparison.md docs/goals/talking-pets-hq-japanese/notes/T203-local-tts-approval-decision.md docs/goals/talking-pets-hq-japanese/notes/T204-multilingual-verification-watch.md docs/goals/talking-pets-hq-japanese/hq-backlog-board.md docs/goals/talking-pets-hq-japanese/activity-index.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+        - cmd: "npm run check:docs"
+          status: pass
+
+  - id: T204
+    type: worker
+    assignee: Worker
+    owner_role: "言守 詞葉 / 白瀬 怜奈"
+    status: active
+    reasoning_hint: default
+    objective: "多言語検証の新しいpublic evidenceが来た場合の受け口を確認する。"
+    allowed_files:
+      - "docs/real-device-verification.md"
+      - "docs/verification-status.md"
+      - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+      - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "OS speech fallbackを韓国語/中国語専用provider対応としてclaimしない。"
+      - "private contact、未承認DM、生成音声ファイルをrepoに保存しない。"
+      - "README support claimを強めない。"
+    receipt:
+      result: active
+      decision: multilingual_verification_watch
+      full_outcome_complete: false
+      summary: "次は多言語検証の受け口を、claim変更なしで確認する。"
+      note: "notes/T204-multilingual-verification-watch.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T204-multilingual-verification-watch.md"
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands: []
 
