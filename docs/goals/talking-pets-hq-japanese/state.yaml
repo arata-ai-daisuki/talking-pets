@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T097
+active_task: T099
 
 tasks:
   - id: T001
@@ -3004,7 +3004,7 @@ tasks:
     type: pm
     assignee: PM
     owner_role: "相庭 愛"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "Irodori warm latency実測を受けて、cold start timeout対策、preload導線、またはoutreach返信待ち運用へ戻るかを決める。"
     expected_output:
@@ -3013,11 +3013,74 @@ tasks:
       - "Irodoriは一旦ここで止めてoutreach返信待ち運用へ戻る。"
       - "warm latency receipt PRをmergeしてから次へ進む。"
     receipt:
-      result: active
-      decision: waiting_for_next_after_warm_latency
+      result: done
+      decision: contribution_path_selected
       full_outcome_complete: false
-      summary: "Irodoriはwarmでも9.6sから16.7s。次はtimeout対策を実装するか、preload/docs導線にするか、outreach運用に戻るかを選ぶ。"
-      note: "notes/T096-irodori-warm-latency-measurement.md"
+      summary: "Masterの提案を受け、timeout対策実装の前に試験端末スペックと外部データ提供導線を公開docsへ追加する方針を選んだ。"
+      note: "notes/T098-irodori-latency-contribution-path.md"
+
+  - id: T098
+    type: worker
+    assignee: Worker
+    owner_role: "星宮 未来"
+    status: done
+    reasoning_hint: default
+    objective: "Irodori latencyが設定と端末性能に依存することを明記し、他の人が測定データを提供しやすい導線を作る。"
+    allowed_files:
+      - "README.md"
+      - "README.en.md"
+      - "CONTRIBUTING.md"
+      - ".github/ISSUE_TEMPLATE/platform_verification.yml"
+      - "docs/real-device-verification.md"
+      - "docs/verification-status.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "生成wav、model cache、private local path、serial numberはrepoへ入れない。"
+      - "Irodoriが速いというclaimにしない。"
+      - "実装変更は混ぜない。"
+    receipt:
+      result: done
+      decision: irodori_latency_contribution_path_added
+      full_outcome_complete: false
+      summary: "README日英、real-device verification、Platform verification issue template、verification-status、CONTRIBUTINGに、試験端末スペックとIrodori latency data提供フォーマットを追加した。"
+      note: "notes/T098-irodori-latency-contribution-path.md"
+      changed_files:
+        - "README.md"
+        - "README.en.md"
+        - "CONTRIBUTING.md"
+        - ".github/ISSUE_TEMPLATE/platform_verification.yml"
+        - "docs/real-device-verification.md"
+        - "docs/verification-status.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T098-irodori-latency-contribution-path.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "npm run check:docs"
+          status: pass
+        - cmd: "npm run check:release"
+          status: pass
+        - cmd: "npm run check:syntax"
+          status: pass
+        - cmd: "npm run test:dry-run"
+          status: pass
+
+  - id: T099
+    type: pm
+    assignee: PM
+    owner_role: "相庭 愛"
+    status: active
+    reasoning_hint: default
+    objective: "Irodori latency contribution導線追加後、PR #16をmergeするか、preload/timeout実装に進むか、outreach運用へ戻るかを決める。"
+    expected_output:
+      - "PR #16をmergeしてから次へ進む。"
+      - "preload/timeout実装に進む。"
+      - "outreach返信待ち運用へ戻る。"
+    receipt:
+      result: active
+      decision: waiting_for_next_after_contribution_path
+      full_outcome_complete: false
+      summary: "Irodoriの実測と試験参加導線はPR #16に追加。次はmerge後にpreload/timeout実装かoutreach運用へ進む。"
+      note: "notes/T098-irodori-latency-contribution-path.md"
 
   - id: T007
     type: worker

@@ -135,6 +135,7 @@ If you choose a Voicebox-compatible endpoint, the installer can save the endpoin
 Kokoro.js downloads model files on first use. The default cache path is `~/.cache/talking-pets/transformers`. The default q8 model is about 92 MB, so the first run can take a little while.
 Irodori-TTS Server is not bundled in this repository. Start it in a separate terminal first and confirm that its `/health` endpoint responds.
 `/health` may respond before the model is loaded. The first real synthesis can take several minutes because Irodori may download the model and load the runtime. Even after the model is loaded, short warm synthesis can still take tens of seconds depending on CPU/GPU and device state.
+Perceived Irodori speed depends heavily on device performance, CPU/GPU/MPS/CUDA/ROCm, Irodori settings, text length, and cold/warm state. If you can test another machine, please share results with the [Irodori latency contribution](docs/real-device-verification.md#irodori-latency-contribution) format.
 
 ## Distribution
 

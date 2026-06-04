@@ -135,6 +135,7 @@ Voicebox互換endpointを選ぶ場合は、installerでendpoint URL、mode、pro
 Kokoro.js は初回読み上げ時にモデルを取得します。既定の cache path は `~/.cache/talking-pets/transformers` です。既定の q8 モデルは約92MB級なので、初回だけ時間がかかります。
 Irodori-TTS Server はこのリポジトリに同梱していません。先に別ターミナルで Irodori-TTS-Server を起動し、`/health` が返る状態にしてください。
 `/health` はモデルを読み込まずに返る場合があります。初回の実音声合成ではIrodoriモデルの取得やruntime loadが走るため、数分かかることがあります。モデル読み込み後の短文合成でも、CPU/GPUや端末状態によっては数十秒かかる可能性があります。
+Irodoriの体感速度は、端末性能、CPU/GPU/MPS/CUDA/ROCm、Irodori設定、テキスト長、cold/warm状態で大きく変わります。違う端末で試せる方は [Irodori latency contribution](docs/real-device-verification.md#irodori-latency-contribution) の形式で測定結果を共有してもらえると助かります。
 
 ## Distribution
 
