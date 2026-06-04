@@ -65,6 +65,12 @@ Use these on X before sending anything:
 
 > I'm collecting careful evidence for a small local-first Codex voice tool. Korean/Chinese are currently OS speech fallback only, not dedicated provider support. If you have a provider-specific local TTS setup for those languages, what would you want to see before a project claims support: provider version, source text, audible result, latency lines, model/license notes, or OS/device details?
 
+### Multilingual report form follow-up
+
+> Thanks, this is exactly the kind of evidence I'm trying to collect carefully. I added a short report form so it does not need a full benchmark: https://github.com/arata-ai-daisuki/talking-pets/blob/main/docs/real-device-verification.md#minimal-multilingual-report-form
+>
+> The key thing is marking whether it is fallback-only or provider-specific evidence. Please do not attach generated audio or private logs.
+
 ### AI VTuber / companion-specific
 
 > I like this AI companion direction. I'm exploring a developer-tool version: a local-first Codex Pet voice add-on, more "coding companion" than full VTuber stack. The hard part seems to be balancing charm with not interrupting the work.
