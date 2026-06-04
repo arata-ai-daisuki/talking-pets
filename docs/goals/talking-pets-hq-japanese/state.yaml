@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T158
+active_task: T159
 
 tasks:
   - id: T001
@@ -4935,7 +4935,7 @@ tasks:
     type: pm
     assignee: PM
     owner_role: "相庭 愛"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "sherpa-onnx-node実験へ進む前に、Masterが許可範囲を選べる判断カードを作る。"
     allowed_files:
@@ -4947,7 +4947,7 @@ tasks:
       - "helper実装、README support wording、default routeを追加しない。"
       - "API call、paid path、外部送信をしない。"
     receipt:
-      result: active
+      result: done
       decision: sherpa_master_approval_card
       full_outcome_complete: false
       summary: "sherpa-onnx-node実験のMaster承認カードを追加し、最小安全スコープをpackage install/import health check/no model download helper skeletonまでに限定して示した。"
@@ -4957,6 +4957,36 @@ tasks:
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands:
         - cmd: "rg -n 'active_task: T158|T158|sherpa_master_approval_card|Recommended Approval Scope|package install / import health check / no model download helper skeleton|What This Would Not Allow|Stop If' docs/goals/talking-pets-hq-japanese/notes/T158-sherpa-master-approval-card.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T159
+    type: worker
+    assignee: Worker
+    owner_role: "星宮 未来"
+    status: active
+    reasoning_hint: default
+    objective: "provider-specific multilingual TTSを検証できる人を手動outreachで探しやすくする。"
+    allowed_files:
+      - "docs/research/x-outreach-targets.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "具体アカウントの大量追加をしない。"
+      - "自動返信、DM、follow、like、mentionを追加しない。"
+      - "Korean / Chinese dedicated provider support claimを追加しない。"
+      - "provider実装、依存追加、model download、API callをしない。"
+    receipt:
+      result: active
+      decision: multilingual_tester_targets
+      full_outcome_complete: false
+      summary: "x-outreach-targetsにMultilingual local TTS experimenters segment、手動検索query、provider-specific multilingual TTS返信テンプレを追加した。"
+      note: "notes/T159-multilingual-tester-targets.md"
+      changed_files:
+        - "docs/research/x-outreach-targets.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T159-multilingual-tester-targets.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n 'active_task: T159|T159|multilingual_tester_targets|Multilingual local TTS experimenters|Provider-specific multilingual TTS|Korean.*local TTS|Chinese.*local TTS|multilingual TTS.*offline' docs/research/x-outreach-targets.md docs/goals/talking-pets-hq-japanese/notes/T159-multilingual-tester-targets.md docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
 
   - id: T007
