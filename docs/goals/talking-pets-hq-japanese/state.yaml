@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T099
+active_task: T101
 
 tasks:
   - id: T001
@@ -3068,7 +3068,7 @@ tasks:
     type: pm
     assignee: PM
     owner_role: "相庭 愛"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "Irodori latency contribution導線追加後、PR #16をmergeするか、preload/timeout実装に進むか、outreach運用へ戻るかを決める。"
     expected_output:
@@ -3076,11 +3076,66 @@ tasks:
       - "preload/timeout実装に進む。"
       - "outreach返信待ち運用へ戻る。"
     receipt:
-      result: active
-      decision: waiting_for_next_after_contribution_path
+      result: done
+      decision: preload_timeout_guidance_selected
       full_outcome_complete: false
-      summary: "Irodoriの実測と試験参加導線はPR #16に追加。次はmerge後にpreload/timeout実装かoutreach運用へ進む。"
-      note: "notes/T098-irodori-latency-contribution-path.md"
+      summary: "PR #16をmergeし、次の小PRとしてIrodori server側のpreload/timeout導線をREADMEへ追加する方針を選んだ。"
+      note: "notes/T100-irodori-preload-timeout-guidance.md"
+
+  - id: T100
+    type: worker
+    assignee: Worker
+    owner_role: "言守 詞葉"
+    status: done
+    reasoning_hint: default
+    objective: "Irodori初回request timeoutに対して、server側preloadとtimeout設定の使い分けをREADME / README.enへ追加する。"
+    allowed_files:
+      - "README.md"
+      - "README.en.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "Irodori server設定をTalking Petsのlocal env設定として誤記しない。"
+      - "実装変更は混ぜない。"
+      - "Irodoriが速いというclaimにしない。"
+    receipt:
+      result: done
+      decision: irodori_preload_timeout_guidance_added
+      full_outcome_complete: false
+      summary: "README日英に、Irodori初回request timeout時はIrodori-TTS-Server側でIRODORI_PRELOAD=trueやMODEL_LOAD/SYNTHESIS timeoutを設定し、Talking Pets側ではhealthとruntime.loaded/loadingで切り分ける説明を追加した。"
+      note: "notes/T100-irodori-preload-timeout-guidance.md"
+      changed_files:
+        - "README.md"
+        - "README.en.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T100-irodori-preload-timeout-guidance.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "npm run check:docs"
+          status: pass
+        - cmd: "npm run check:release"
+          status: pass
+        - cmd: "npm run check:syntax"
+          status: pass
+        - cmd: "npm run test:dry-run"
+          status: pass
+
+  - id: T101
+    type: pm
+    assignee: PM
+    owner_role: "相庭 愛"
+    status: active
+    reasoning_hint: default
+    objective: "Irodori preload/timeout導線PR後、PRをmergeするか、outreach返信待ち運用へ戻るか、次のprovider比較へ進むか決める。"
+    expected_output:
+      - "preload/timeout guidance PRをmergeする。"
+      - "outreach返信待ち運用へ戻る。"
+      - "次のprovider比較へ進む。"
+    receipt:
+      result: active
+      decision: waiting_for_next_after_preload_guidance
+      full_outcome_complete: false
+      summary: "Irodoriは測定、参加導線、preload/timeout導線まで整理済み。次はmerge後にoutreach運用か次provider比較へ戻る。"
+      note: "notes/T100-irodori-preload-timeout-guidance.md"
 
   - id: T007
     type: worker
