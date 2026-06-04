@@ -10,6 +10,7 @@ Codex本体や署名済みアプリを改造せず、ローカルに保存され
 役に立ちそうなら、GitHubでStarしてもらえると今後のTTS・多言語・レイテンシ改善の励みになります。
 
 Windows / Linux実機確認、VOICEVOX別環境測定、Irodori別GPU測定で協力できる方は [手伝う入口](docs/contributor-entrypoints.md) を見てください。
+すぐ参加できる検証Issue: [Linux #23](https://github.com/arata-ai-daisuki/talking-pets/issues/23) / [Windows #24](https://github.com/arata-ai-daisuki/talking-pets/issues/24) / [Irodori #25](https://github.com/arata-ai-daisuki/talking-pets/issues/25) / [VOICEVOX #26](https://github.com/arata-ai-daisuki/talking-pets/issues/26)
 
 ![Talking Pets demo preview](assets/demo-preview.png)
 

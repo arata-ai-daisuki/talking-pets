@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T125
+active_task: T126
 
 tasks:
   - id: T001
@@ -3873,7 +3873,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "白瀬 怜奈"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "docs/verification-status.mdに、Issue #23-#26の外部検証受け入れ欄を追加する。"
     allowed_files:
@@ -3886,10 +3886,10 @@ tasks:
       - "VOICEVOX/Irodoriを性能保証として書かない。"
       - "SNS投稿、Issue返信、model download、package install、API callをしない。"
     receipt:
-      result: active
+      result: done
       decision: verification_status_intake_links_added
       full_outcome_complete: false
-      summary: "verification-statusにExternal Verification Intake表を追加し、Windows/Linux/Irodori/VOICEVOXの各Issueと採用前条件を明記した。"
+      summary: "verification-statusにExternal Verification Intake表を追加し、Windows/Linux/Irodori/VOICEVOXの各Issueと採用前条件を明記した。次はREADMEから該当Issueへ直接行ける導線を追加する。"
       note: "notes/T125-verification-status-intake-links.md"
       changed_files:
         - "docs/verification-status.md"
@@ -3897,6 +3897,38 @@ tasks:
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands:
         - cmd: "rg -n \"External Verification Intake|#23|#24|#25|#26|Waiting for contributor evidence|active_task: T125\" docs/verification-status.md docs/goals/talking-pets-hq-japanese/notes/T125-verification-status-intake-links.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T126
+    type: worker
+    assignee: Worker
+    owner_role: "星宮 未来"
+    status: active
+    reasoning_hint: default
+    objective: "README / README.en の冒頭から、検証Issue #23-#26へ直接行ける短い導線を追加する。"
+    allowed_files:
+      - "README.md"
+      - "README.en.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "Star依頼を強めない。"
+      - "未受領の検証をverified扱いしない。"
+      - "VOICEVOX/Irodoriを性能保証として書かない。"
+      - "SNS投稿、Issue返信、model download、package install、API callをしない。"
+    receipt:
+      result: active
+      decision: readme_help_routes_added
+      full_outcome_complete: false
+      summary: "README日英の冒頭に、Linux #23 / Windows #24 / Irodori #25 / VOICEVOX #26 への短い直リンクを追加した。"
+      note: "notes/T126-readme-help-routes.md"
+      changed_files:
+        - "README.md"
+        - "README.en.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T126-readme-help-routes.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n \"すぐ参加できる検証Issue|Quick verification issues|Linux #23|Windows #24|Irodori #25|VOICEVOX #26|active_task: T126\" README.md README.en.md docs/goals/talking-pets-hq-japanese/notes/T126-readme-help-routes.md docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
 
   - id: T007
