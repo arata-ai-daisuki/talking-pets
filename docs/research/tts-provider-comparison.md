@@ -562,3 +562,18 @@ Current boundary remains unchanged:
 - API TTS: keep later opt-in. Do not create API keys, make paid calls, call remote endpoints, or change default routing.
 
 No dependency install, model download, API call, generated audio, README support claim change, latency guarantee claim, platform support claim, or default routing change was made in this watch.
+
+### Local TTS Boundary Watch Result 2
+
+Checked: 2026-06-05.
+
+The T237 recheck keeps the same boundary:
+
+- VOICEVOX / Voicebox-compatible endpoint: still evidence-first. Keep issue #26 as the route for sanitized contributor latency and audible reports before broadening public wording.
+- Irodori-TTS Server: still evidence-first. Keep issue #25 as the route for contributor CPU/GPU/backend reports; the maintainer M1 result remains reference data, not a universal claim.
+- Kokoro.js: keep the helper available, but do not run cold-start or cache measurement without explicit model-download approval.
+- sherpa-onnx-node: keep design-only. The previous optional npm/package information does not approve dependency changes, helper code, model/vocoder/token/espeak downloads, or generated audio.
+- MeloTTS: keep design-only / external-runtime. Health-only detect/connect remains the current boundary; no Python/Docker/model/unidic setup or synthesis.
+- API TTS: keep later opt-in. No API key creation, remote endpoint call, paid call, default route, or support claim change.
+
+No install, dependency change, model download, API call, generated audio, README support claim change, latency guarantee claim, platform support claim, or default routing change was made in this watch.
