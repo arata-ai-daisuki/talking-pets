@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T140
+active_task: T141
 
 tasks:
   - id: T001
@@ -4378,7 +4378,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "星宮 未来"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "実機検証docsにlatency tableの主要列の読み方を短く追加する。"
     allowed_files:
@@ -4390,7 +4390,7 @@ tasks:
       - "Issueへ貼る主形式はMarkdown表のままにする。"
       - "外部APIやmodel downloadを増やさない。"
     receipt:
-      result: active
+      result: done
       decision: latency_table_reading_docs
       full_outcome_complete: false
       summary: "生成latency tableのtotal/synthesis/audioDuration/rtf列の読み方と、durationなし行の扱いを実機検証docsに補足した。"
@@ -4401,6 +4401,36 @@ tasks:
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands:
         - cmd: "rg -n 'active_task: T140|T140|latency_table_reading_docs|partial latency evidence|audioDuration.*rtf' docs/real-device-verification.md docs/goals/talking-pets-hq-japanese/notes/T140-latency-table-reading.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T141
+    type: worker
+    assignee: Worker
+    owner_role: "速水 光莉"
+    status: active
+    reasoning_hint: default
+    objective: "Platform verification issueへ貼るlatency tableの形をプレースホルダーで示す。"
+    allowed_files:
+      - "docs/real-device-verification.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "サンプル値をbenchmark dataとして扱わせない。"
+      - "生成WAV添付を求めない。"
+      - "外部APIやmodel downloadを増やさない。"
+      - "performance claimを強くしない。"
+    receipt:
+      result: active
+      decision: latency_table_sample_docs
+      full_outcome_complete: false
+      summary: "Platform verification issueへ貼るlatency tableの形が分かるよう、placeholder値だけのMarkdown表サンプルを実機検証docsへ追加した。"
+      note: "notes/T141-latency-table-sample.md"
+      changed_files:
+        - "docs/real-device-verification.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T141-latency-table-sample.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n 'active_task: T141|T141|latency_table_sample_docs|placeholder values|benchmark data|generated Markdown table shape|<generated>' docs/real-device-verification.md docs/goals/talking-pets-hq-japanese/notes/T141-latency-table-sample.md docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
 
   - id: T007

@@ -14,6 +14,14 @@ For latency reports, include generated audio duration when possible. Real-time f
 
 When reading a generated latency table, compare `total` for user-visible elapsed time, `synthesis` for engine generation time, `audioDuration` for produced WAV length, and `rtf` for whether synthesis is faster or slower than the generated audio. Treat rows without `audioDuration` or `rtf` as partial latency evidence.
 
+When pasting latency results into a Platform verification issue, use the generated Markdown table shape below. Replace the placeholder values with the sanitized table from `npm run latency:table`; do not treat these placeholders as benchmark data.
+
+| run | provider | total | synthesis | audioDuration | rtf | success | play |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| warm-1 | voicevox | `<generated>` | `<generated>` | `<generated>` | `<generated>` | true | false |
+| warm-2 | voicevox | `<generated>` | `<generated>` | `<generated>` | `<generated>` | true | false |
+| warm-3 | voicevox | `<generated>` | `<generated>` | `<generated>` | `<generated>` | true | false |
+
 ## Quick Contributor Request
 
 When asking someone else to verify Windows or Linux, send them this short checklist:
