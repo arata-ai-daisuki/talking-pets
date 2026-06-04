@@ -92,6 +92,20 @@ If you have a local VOICEVOX, Irodori, Windows, or Linux setup, a sanitized GitH
 No generated audio files needed. Just sanitized command output and whether one spoken line was audible.
 ```
 
+### Dedicated provider evidence ask
+
+```text
+I'm also separating OS speech fallback from dedicated provider evidence for Korean/Chinese or other multilingual TTS.
+
+If you have a provider-specific local TTS path for those languages, a sanitized Platform verification issue would be very helpful:
+<verification issue template link>
+
+Useful details: source text or fixture, forced/detected speech-language value, provider name/version, OS/device, config source, whether one spoken line was audible, and sanitized `[latency]` lines if measured.
+
+No generated audio files, private Codex text, credentials, or local private paths needed.
+Checklist: <dedicated provider evidence checklist link>
+```
+
 ### After someone shows interest
 
 ```text
@@ -140,3 +154,4 @@ No generated audio or install test needed for this question; I'm just looking fo
 5. Add any responses or useful feedback to `implementation-notes.md` or a follow-up outreach note.
 6. When someone offers verification help, send the "After someone shows interest" template and ask them to use a sanitized Platform verification issue.
 7. When asking TTS/provider experts, use the "Provider feedback ask" template and record whether the answer affects license, runtime, cache, or measurement planning.
+8. When someone can test Korean/Chinese with a provider-specific local TTS path, use the "Dedicated provider evidence ask" template and the checklist link.

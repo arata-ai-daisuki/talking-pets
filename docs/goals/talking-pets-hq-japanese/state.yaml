@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T155
+active_task: T156
 
 tasks:
   - id: T001
@@ -4843,7 +4843,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "言守 詞葉"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "多言語fallback evidenceとdedicated provider evidenceを混同しないため、READMEから確認条件へ誘導する。"
     allowed_files:
@@ -4857,7 +4857,7 @@ tasks:
       - "provider実装、依存追加、model download、API callをしない。"
       - "private Codex text、credentials、generated audio attachmentを求めない。"
     receipt:
-      result: active
+      result: done
       decision: dedicated_provider_evidence_checklist
       full_outcome_complete: false
       summary: "verification-statusにDedicated Provider Evidence Checklistを追加し、README日英からリンクしてfallback-only evidenceとdedicated-provider evidenceを分けられるようにした。"
@@ -4870,6 +4870,36 @@ tasks:
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands:
         - cmd: "rg -n 'active_task: T155|T155|dedicated_provider_evidence_checklist|Dedicated Provider Evidence Checklist|fallback-only evidence|dedicated-provider evidence|専用provider対応|external real-device evidence' README.md README.en.md docs/verification-status.md docs/goals/talking-pets-hq-japanese/notes/T155-dedicated-provider-evidence-checklist.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T156
+    type: worker
+    assignee: Worker
+    owner_role: "星宮 未来"
+    status: active
+    reasoning_hint: default
+    objective: "Dedicated Provider Evidence Checklistを外部検証者へ手動でお願いできる文面につなげる。"
+    allowed_files:
+      - "docs/research/sns-outreach-strategy.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "自動投稿や自動DMを追加しない。"
+      - "Korean / Chinese dedicated provider support claimを追加しない。"
+      - "provider実装、依存追加、model download、API callをしない。"
+      - "private contact収集を追加しない。"
+    receipt:
+      result: active
+      decision: dedicated_provider_outreach_copy
+      full_outcome_complete: false
+      summary: "SNS outreach strategyにDedicated provider evidence askを追加し、provider-specific multilingual testerへ手動で依頼できる文面を用意した。"
+      note: "notes/T156-dedicated-provider-outreach-copy.md"
+      changed_files:
+        - "docs/research/sns-outreach-strategy.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T156-dedicated-provider-outreach-copy.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n 'active_task: T156|T156|dedicated_provider_outreach_copy|Dedicated provider evidence ask|provider-specific local TTS|No generated audio files|private Codex text|Checklist' docs/research/sns-outreach-strategy.md docs/goals/talking-pets-hq-japanese/notes/T156-dedicated-provider-outreach-copy.md docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
 
   - id: T007
