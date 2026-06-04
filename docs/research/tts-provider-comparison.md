@@ -187,6 +187,28 @@ Talking Pets should therefore not add Piper as a dependency, optional dependency
 
 Safe next action: keep Piper as a license-review candidate only. If Master wants to continue, create a Piper-specific design note before any install, helper, or README wording change.
 
+### MeloTTS Runtime And Cache Boundary
+
+Checked: 2026-06-04. Public pages show MeloTTS is promising for multilingual quality, but its runtime shape does not fit the normal npm-only Talking Pets path yet:
+
+- The repository is marked MIT and lists English, Spanish, French, Chinese, Japanese, and Korean examples.
+- The local install doc says the repo was developed and tested on Ubuntu 20.04 and Python 3.9.
+- The local install path is `git clone`, `pip install -e .`, then `python -m unidic download`.
+- The docs suggest Docker for Windows users and some macOS users.
+- The CLI can write WAV files through `melo` / `melotts`, and the Python API supports CPU/CUDA/MPS-style device choices.
+- The requirements list includes Python/Torch/audio/NLP dependencies such as `torch`, `torchaudio`, `cached_path`, `transformers`, `unidic`, `mecab-python3`, `librosa`, `gradio`, and language-specific G2P packages.
+
+Talking Pets should therefore not add MeloTTS as a dependency, installer prompt, default route, or README-supported provider until a MeloTTS-specific design note answers:
+
+- Whether Talking Pets would call a user-installed `melo` CLI, a user-started local server, Docker, or a Python helper.
+- Where MeloTTS downloads or caches model and dictionary files, including `unidic`.
+- Whether the first Talking Pets integration can remain no-normal-install and fail cleanly when MeloTTS is absent.
+- Whether model/license notices beyond the repo MIT license are needed for the exact selected voices.
+- Whether Windows/macOS Docker guidance is acceptable for a local-first optional provider.
+- Whether `health`, cold start, warm synthesis, audio duration, RTF, and playback flag can be measured without a broad provider abstraction.
+
+Safe next action: keep MeloTTS as a runtime-review candidate only. If Master wants to continue, create a MeloTTS-specific opt-in external CLI/server design note before any install, helper, or README wording change.
+
 ## Maintainer Real-Time Factor Snapshot
 
 These numbers are maintainer reference data only. They are useful for comparing the shape of current local TTS paths, but they are not public performance guarantees.
