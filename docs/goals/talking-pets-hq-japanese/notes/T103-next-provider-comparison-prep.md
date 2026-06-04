@@ -4,6 +4,8 @@
 
 次provider比較は、すぐ実装やinstallへ進まず、候補整理から始める。
 
+候補表は [docs/research/tts-provider-comparison.md](../../../research/tts-provider-comparison.md) に追加した。
+
 ## 候補
 
 - Irodori: local server / OpenAI-compatible API。実測済み。cold startが大きいのでpreload前提の案内が必要。
@@ -31,4 +33,4 @@
 
 ## 状態
 
-queued。
+done。
