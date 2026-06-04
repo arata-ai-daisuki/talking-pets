@@ -9,7 +9,7 @@ import { documentAnchors, documentLinks, shouldSkip, splitTarget } from "./check
 
 const scriptPath = fileURLToPath(import.meta.url);
 const maxPackageSize = 600_000;
-const maxEntryCount = 62;
+const maxEntryCount = 63;
 const publicFixtureRollouts = new Set([
   "test/fixtures/assistant-rollout.jsonl",
   "test/fixtures/mixed-ja-en-rollout.jsonl",
@@ -67,6 +67,7 @@ const requiredPaths = [
   "scripts/pet-rollout-monitor.swift",
   "scripts/tts-kokoro.mjs",
   "scripts/tts-voicebox.mjs",
+  "scripts/tts-melotts.mjs",
   "src/talking-pet-mvp.js",
   "start-selected-tts.command",
   "start-selected-tts.ps1",

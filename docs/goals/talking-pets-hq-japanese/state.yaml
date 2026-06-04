@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T177
+active_task: T178
 
 tasks:
   - id: T001
@@ -5569,7 +5569,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "歌澄 音羽"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "T176のMeloTTS external runtime helper designを受けて、次に実装するならどこまでを小PRにするかを固定する。"
     allowed_files:
@@ -5582,9 +5582,9 @@ tasks:
       - "helper実装、README support claim、default routing、音声生成はしない。"
       - "次に実装する場合の小PR境界だけを固定する。"
     receipt:
-      result: active
+      result: done
       decision: melotts_detect_connect_card_ready
-      full_outcome_complete: false
+      full_outcome_complete: true
       summary: "MeloTTS detect/connect-only implementation cardを追加し、health-only helper skeleton、明示config、localhost health、no install/download、no support claimの境界を固定した。"
       note: "notes/T177-melotts-detect-connect-card.md"
       changed_files:
@@ -5594,6 +5594,59 @@ tasks:
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands:
         - cmd: "rg -n 'active_task: T177|T177|MeloTTS Detect/Connect-Only Card|health-only helper skeleton|No new dependency|No installer downloads|GoalBuddy board keeps Active/Next/Backlog in Japanese' docs/goals/talking-pets-hq-japanese/notes/T177-melotts-detect-connect-card.md docs/goals/talking-pets-hq-japanese/hq-backlog-board.md docs/goals/talking-pets-hq-japanese/activity-index.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T178
+    type: worker
+    assignee: Worker
+    owner_role: "歌澄 音羽"
+    status: active
+    reasoning_hint: default
+    objective: "T177のdetect/connect-only境界に沿って、MeloTTS本体をinstall/downloadせずにhealth-only helper skeletonを追加する。"
+    allowed_files:
+      - "scripts/tts-melotts.mjs"
+      - "package.json"
+      - "scripts/check-npm-pack.mjs"
+      - "scripts/check-release-readiness.mjs"
+      - "test/monitor.test.mjs"
+      - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+      - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "MeloTTS、Python packages、Docker images、model、dictionary、language assetsをdownload/installしない。"
+      - "音声合成、音声再生、default routing、README support claimは追加しない。"
+      - "Python environment auto-discoveryをしない。"
+    receipt:
+      result: active
+      decision: melotts_health_helper_skeleton_done
+      full_outcome_complete: false
+      summary: "scripts/tts-melotts.mjsを追加し、未設定時のnot_configured clean failure、明示URL/command health check、query/hash redaction、pack/release checksを追加した。"
+      note: "notes/T178-melotts-health-helper-skeleton.md"
+      changed_files:
+        - "scripts/tts-melotts.mjs"
+        - "package.json"
+        - "scripts/check-npm-pack.mjs"
+        - "scripts/check-release-readiness.mjs"
+        - "test/monitor.test.mjs"
+        - "docs/goals/talking-pets-hq-japanese/notes/T178-melotts-health-helper-skeleton.md"
+        - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+        - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "node --check scripts/tts-melotts.mjs"
+          status: pass
+        - cmd: "npm test"
+          status: pass
+        - cmd: "npm run tts:melotts -- --health --profile-latency"
+          status: "pass_expected_exit_2"
+        - cmd: "npm run tts:melotts -- --health --command /usr/bin/true --profile-latency"
+          status: pass
+        - cmd: "npm run check:pack"
+          status: pass
+        - cmd: "npm run check:release"
+          status: pass
+        - cmd: "CLANG_MODULE_CACHE_PATH=/private/tmp/talking-pets-clang-module-cache npm run check:all"
           status: pass
 
   - id: T007

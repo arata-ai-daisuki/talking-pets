@@ -28,6 +28,7 @@ import { npmCommand, packIssues, packageDocumentLinkIssues, shouldCheckExecutabl
 import { forbiddenArtifactLabel, githubTemplateIssues, issueFieldBlock, localConfigFailureLogIssues, npmRunReferenceIssues, npmRunScriptName, npmRunScriptNamesInText, packageIssues, packageLockIssues, releaseEvidenceIssues, workflowIssues } from "../scripts/check-release-readiness.mjs";
 import { documentAnchors, documentLinks, shouldSkip, stripHtmlComments } from "../scripts/check-markdown-links.mjs";
 import { KOKORO_VOICES, parseArgs as parseKokoroArgs } from "../scripts/tts-kokoro.mjs";
+import { parseArgs as parseMeloTTSArgs, safeURLForLog as safeMeloTTSURLForLog } from "../scripts/tts-melotts.mjs";
 import { parseArgs as parseVoiceboxArgs, safeURLForLog } from "../scripts/tts-voicebox.mjs";
 import { formatAudioDurationSeconds, formatRealTimeFactor, latencyAudioFields, wavDurationSeconds } from "../scripts/wav-duration.mjs";
 import { csvCell, formatLatencyRows, latencyRowsFromText, parseLatencyLine as parseLatencyTableLine } from "../scripts/latency-lines-to-table.mjs";
@@ -440,6 +441,30 @@ test("reports audio check CLI argument errors without a stack trace", () => {
 
   assert.equal(result.status, 2);
   assert.match(result.stderr, /audio path: Unknown option: --loud/);
+  assert.doesNotMatch(result.stderr, /at parseArgs/);
+});
+
+test("MeloTTS helper is health-only and redacts URL details", () => {
+  assert.deepEqual(parseMeloTTSArgs(["--health", "--url", "http://127.0.0.1:3399/health"]), {
+    health: true,
+    url: "http://127.0.0.1:3399/health",
+  });
+  assert.throws(() => parseMeloTTSArgs(["--text", "hello"]), /Unknown option: --text/);
+  assert.equal(safeMeloTTSURLForLog("http://127.0.0.1:3399/health?text=secret#frag"), "http://127.0.0.1:3399/health");
+});
+
+test("MeloTTS helper reports missing config cleanly", () => {
+  const result = spawnSync(process.execPath, ["--no-warnings", "scripts/tts-melotts.mjs", "--health"], {
+    encoding: "utf8",
+    env: {
+      ...process.env,
+      MELOTTS_URL: "",
+      MELOTTS_COMMAND: "",
+    },
+  });
+
+  assert.equal(result.status, 2);
+  assert.match(result.stderr, /tts-melotts: not_configured/);
   assert.doesNotMatch(result.stderr, /at parseArgs/);
 });
 
@@ -1066,6 +1091,7 @@ test("detects npm pack scope drift", () => {
       { path: "scripts/pet-rollout-monitor.swift", mode: 0o644 },
       { path: "scripts/tts-kokoro.mjs", mode: 0o644 },
       { path: "scripts/tts-voicebox.mjs", mode: 0o644 },
+      { path: "scripts/tts-melotts.mjs", mode: 0o644 },
       { path: "scripts/wav-duration.mjs", mode: 0o644 },
       { path: "src/talking-pet-mvp.js", mode: 0o644 },
       { path: "start-selected-tts.command", mode: 0o755 },

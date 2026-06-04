@@ -50,6 +50,7 @@ const requiredFiles = [
   "scripts/pet-rollout-monitor.swift",
   "scripts/tts-kokoro.mjs",
   "scripts/tts-voicebox.mjs",
+  "scripts/tts-melotts.mjs",
   "scripts/audio-platform.mjs",
   "scripts/check-audio-path.mjs",
   "scripts/check-config-files.mjs",
@@ -1533,6 +1534,7 @@ function packageIssues(pkg) {
     "tts:kokoro",
     "tts:voicebox",
     "tts:voicevox",
+    "tts:melotts",
   ];
   for (const script of requiredScripts) {
     if (!pkg.scripts?.[script]) issues.push(`package.json scripts.${script} is required`);
@@ -1566,6 +1568,7 @@ function packageIssues(pkg) {
     "scripts/pet-rollout-monitor.mjs",
     "scripts/tts-kokoro.mjs",
     "scripts/tts-voicebox.mjs",
+    "scripts/tts-melotts.mjs",
     "scripts/check-node-runtime.mjs",
     "scripts/check-codex-compat.mjs",
     "scripts/check-audio-path.mjs",
