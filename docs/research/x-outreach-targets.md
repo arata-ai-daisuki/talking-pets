@@ -199,6 +199,8 @@ Boundary watch 9 checked: 2026-06-05. Local HQ docs still have no recorded publi
 
 Boundary watch 10 checked: 2026-06-05. Local HQ docs still have no recorded public reply URL or Master-approved sanitized summary for V1GPT or OpenClaw / Sogni Voice. Keep both sent rows in `wait`; this is insufficient evidence to classify a reply or no-reply. No automated outreach, manual nudge, DM, mention, follow, like, private contact storage, support-claim change, or Star ask was made.
 
+Boundary watch 11 checked: 2026-06-05. Local HQ docs still have no recorded public reply URL or Master-approved sanitized summary for V1GPT or OpenClaw / Sogni Voice. Keep both sent rows in `wait`; this is insufficient evidence to classify a reply or no-reply. No automated outreach, manual nudge, DM, mention, follow, like, private contact storage, support-claim change, or Star ask was made.
+
 | Target | Waiting action | Next check | Safe internal work while waiting |
 | --- | --- | --- | --- |
 | OpenClaw / Sogni Voice | Do not bump before 2026-06-17 unless a public reply appears first. | Record only a public reply URL or Master-approved private summary. | Provider feedback intake, local TTS approval decision, latency docs. |
