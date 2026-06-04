@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T160
+active_task: T161
 
 tasks:
   - id: T001
@@ -4993,7 +4993,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "星宮 未来"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "手動検索で見つけたoutreach候補を、送信済みと混同せず記録できる表を追加する。"
     allowed_files:
@@ -5006,7 +5006,7 @@ tasks:
       - "Korean / Chinese dedicated provider support claimを追加しない。"
       - "provider実装、依存追加、model download、API callをしない。"
     receipt:
-      result: active
+      result: done
       decision: outreach_search_review_log
       full_outcome_complete: false
       summary: "x-outreach-targetsにSearch Review Logを追加し、候補post/projectをwatch/reply later/skip/sentで記録できるようにした。"
@@ -5017,6 +5017,36 @@ tasks:
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands:
         - cmd: "rg -n 'active_task: T160|T160|outreach_search_review_log|Search Review Log|Query / Source|watch / reply later / skip / sent|Record `sent` only after Master manually posts' docs/research/x-outreach-targets.md docs/goals/talking-pets-hq-japanese/notes/T160-outreach-search-review-log.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T161
+    type: worker
+    assignee: Worker
+    owner_role: "星宮 未来"
+    status: active
+    reasoning_hint: default
+    objective: "Search Review Logの候補を、いつ送る・送らないか判断できる運用ルールへつなげる。"
+    allowed_files:
+      - "docs/research/x-outreach-targets.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "自動返信、DM、follow、like、mentionを追加しない。"
+      - "`sent` はMasterが手動投稿した後だけに限定する。"
+      - "private contact details、private DMs、scraped personal dataを記録しない。"
+      - "provider実装、依存追加、model download、API callをしない。"
+    receipt:
+      result: active
+      decision: outreach_send_decision_flow
+      full_outcome_complete: false
+      summary: "x-outreach-targetsにDecision flowを追加し、watch/reply later/skip/sentの判断とtemplate/ask選択を明確にした。"
+      note: "notes/T161-outreach-send-decision-flow.md"
+      changed_files:
+        - "docs/research/x-outreach-targets.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T161-outreach-send-decision-flow.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n 'active_task: T161|T161|outreach_send_decision_flow|Decision flow|reply later|choose exactly one template|dedicated provider evidence|sent.*Master' docs/research/x-outreach-targets.md docs/goals/talking-pets-hq-japanese/notes/T161-outreach-send-decision-flow.md docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
 
   - id: T007

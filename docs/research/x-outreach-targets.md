@@ -116,6 +116,20 @@ Review rules:
 - Record `sent` only after Master manually posts or replies.
 - Do not record private contact details, private DMs, or scraped personal data.
 
+Decision flow:
+
+1. `watch`: relevant person or project, but the current post is not asking for tools, examples, testing, or feedback.
+2. `reply later`: current post is relevant, but the message needs a concrete repo/demo/checklist link or a more specific question.
+3. `skip`: the fit is weak, promotional, private, old, official-support-only, or culturally risky.
+4. `sent`: Master manually posted or replied. Add the public URL and wait at least 2 weeks before any follow-up unless they reply first.
+
+Before moving a row to `sent`, choose exactly one template and one ask:
+
+- latency feedback
+- provider feedback
+- dedicated provider evidence
+- intro to a relevant builder
+
 ## Sources Checked
 
 - X search result for Mau Ledford / Sogni Voice: https://x.com/krunkosaurus/status/2015719029911220531
