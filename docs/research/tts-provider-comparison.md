@@ -187,6 +187,8 @@ Talking Pets should therefore not add Piper as a dependency, optional dependency
 
 Safe next action: keep Piper as a license-review candidate only. If Master wants to continue, create a Piper-specific design note before any install, helper, or README wording change.
 
+Design note: `docs/research/piper-design-note.md`
+
 ### MeloTTS Runtime And Cache Boundary
 
 Checked: 2026-06-04. Public pages show MeloTTS is promising for multilingual quality, but its runtime shape does not fit the normal npm-only Talking Pets path yet:
