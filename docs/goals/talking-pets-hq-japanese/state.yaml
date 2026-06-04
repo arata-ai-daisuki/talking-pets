@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T186
+active_task: T187
 
 tasks:
   - id: T001
@@ -5932,7 +5932,7 @@ tasks:
     type: pm
     assignee: PM
     owner_role: "歌澄 音羽 / 白瀬 怜奈"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "MeloTTS detect-only、sherpa optional install確認、provider feedback intakeを踏まえ、次に進めるlocal TTS小PR候補とMaster承認境界を再評価する。"
     allowed_files:
@@ -5950,11 +5950,47 @@ tasks:
       - "READMEに新provider対応済みclaimを追加しない。"
       - "external runtime installerのdownload/install実装へ進まない。"
     receipt:
-      result: active
+      result: done
       decision: local_tts_next_choice_refresh
-      full_outcome_complete: false
-      summary: "次はlocal TTS候補を比較し、安全な小PR候補とMaster承認が必要な境界を分ける。"
+      full_outcome_complete: true
+      summary: "VOICEVOX/Irodoriはevidence-first、Kokoroはmodel-download承認待ち、sherpa/MeloTTS/Piper/APIはdesign-onlyまたはholdとして整理し、次の安全な小PRをProvider Experiment Scorecard refreshにした。"
       note: "notes/T186-local-tts-next-choice-refresh.md"
+      changed_files:
+        - "docs/research/tts-provider-comparison.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T186-local-tts-next-choice-refresh.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T187-provider-experiment-scorecard-refresh.md"
+        - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+        - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n 'Local TTS Next Choice Refresh|Recommended next small PR|VOICEVOX / Voicebox-compatible endpoint|Irodori-TTS Server|Kokoro.js|sherpa-onnx-node|MeloTTS|Piper-like path|API TTS|active_task: T187|local_tts_next_choice_refresh' docs/research/tts-provider-comparison.md docs/goals/talking-pets-hq-japanese/notes/T186-local-tts-next-choice-refresh.md docs/goals/talking-pets-hq-japanese/notes/T187-provider-experiment-scorecard-refresh.md docs/goals/talking-pets-hq-japanese/hq-backlog-board.md docs/goals/talking-pets-hq-japanese/activity-index.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+        - cmd: "npm run check:docs"
+          status: pass
+
+  - id: T187
+    type: pm
+    assignee: PM
+    owner_role: "歌澄 音羽 / 白瀬 怜奈"
+    status: active
+    reasoning_hint: default
+    objective: "T186のlocal TTS next choice refreshを受けて、Provider Experiment Scorecardを現在の証跡と停止線に合わせて更新する。"
+    allowed_files:
+      - "docs/research/tts-provider-comparison.md"
+      - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+      - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "依存追加、model download、API callをしない。"
+      - "READMEに新provider対応済みclaimを追加しない。"
+      - "generated audioを作らない。"
+    receipt:
+      result: active
+      decision: provider_experiment_scorecard_refresh
+      full_outcome_complete: false
+      summary: "次はProvider Experiment Scorecardを現在の証跡と停止線に合わせて更新する。"
+      note: "notes/T187-provider-experiment-scorecard-refresh.md"
       changed_files:
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands: []
