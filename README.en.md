@@ -5,9 +5,11 @@ Talking Pets is a small add-on that reads Codex Pet bubbles or the latest Codex 
 It reads local conversation logs and sends short spoken lines to VOICEVOX, Kokoro, or OS speech without patching Codex or modifying a signed app bundle.
 It does not replace your existing Codex Pet. It adds a local voice layer to the pet experience you already use.
 
-Start here: [Demo recording](https://github.com/arata-ai-daisuki/talking-pets/blob/main/docs/demo/talking-pets-overlay-2026-05-28.mov) / [Quick Start](#quick-start) / [Open an issue](https://github.com/arata-ai-daisuki/talking-pets/issues)
+Start here: [Demo recording](https://github.com/arata-ai-daisuki/talking-pets/blob/main/docs/demo/talking-pets-overlay-2026-05-28.mov) / [Quick Start](#quick-start) / [ways to help](docs/contributor-entrypoints.md) / [Open an issue](https://github.com/arata-ai-daisuki/talking-pets/issues)
 
 If this looks useful, a GitHub Star helps guide the next TTS, multilingual, and latency improvements.
+
+If you can help with Windows / Linux real-device checks, VOICEVOX latency on another machine, or Irodori on another GPU, see [ways to help](docs/contributor-entrypoints.md).
 
 ![Talking Pets demo preview](assets/demo-preview.png)
 

@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T111
+active_task: T112
 
 tasks:
   - id: T001
@@ -3438,18 +3438,65 @@ tasks:
     type: pm
     assignee: PM
     owner_role: "相庭 愛"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "README latency snapshot PRをmergeするか、次のno-download作業へ進むか判断する。"
     expected_output:
       - "README latency snapshot PRをmergeする。"
       - "次のno-download作業へ進む。"
     receipt:
-      result: active
-      decision: waiting_for_next_after_latency_snapshot
+      result: done
+      decision: add_contributor_entrypoints
       full_outcome_complete: false
-      summary: "Kokoro downloadなし方針を反映し、README latency snapshotを追加済み。次はPR化とmerge判断。"
-      note: "notes/T110-readme-latency-snapshot.md"
+      summary: "README latency snapshotはPR #21でmerge済み。次はdownloadなしで協力者入口を整える方針にした。"
+      note: "notes/T111-contributor-entrypoints.md"
+
+  - id: T112
+    type: worker
+    assignee: Worker
+    owner_role: "星宮 未来"
+    status: active
+    reasoning_hint: default
+    objective: "協力者が入りやすいgood first issue相当の入口をREADME/CONTRIBUTING/docsに作る。"
+    allowed_files:
+      - "README.md"
+      - "README.en.md"
+      - "CONTRIBUTING.md"
+      - "package.json"
+      - "docs/contributor-entrypoints.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "実際のGitHub issue作成はしない。"
+      - "自動投稿、DM、follow、likeはしない。"
+      - "private contactや個人情報を集めない。"
+    stop_if:
+      - "GitHub issueを実際に作成する必要が出た場合。"
+      - "外部投稿やDM送信が必要になった場合。"
+    verify:
+      - "test -f docs/contributor-entrypoints.md"
+      - "rg -n \"Windows real-device|Linux real-device|VOICEVOX latency|Irodori latency|good first issue|Platform verification\" docs/contributor-entrypoints.md README.md README.en.md CONTRIBUTING.md"
+    receipt:
+      result: active
+      decision: contributor_entrypoints_added
+      full_outcome_complete: false
+      summary: "協力者入口docsを追加し、README日英とCONTRIBUTINGから誘導した。"
+      note: "notes/T111-contributor-entrypoints.md"
+      changed_files:
+        - "README.md"
+        - "README.en.md"
+        - "CONTRIBUTING.md"
+        - "package.json"
+        - "docs/contributor-entrypoints.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T111-contributor-entrypoints.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "npm run check:docs"
+          status: pass
+        - cmd: "npm run check:pack"
+          status: pass
+        - cmd: "rg -n \"Windows real-device|Linux real-device|VOICEVOX latency|Irodori latency|good first issue|Platform verification\" docs/contributor-entrypoints.md README.md README.en.md CONTRIBUTING.md"
+          status: pass
 
   - id: T007
     type: worker

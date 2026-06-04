@@ -5,9 +5,11 @@ Codex Pet の吹き出しや Codex の最新 assistant 発話を、ローカルT
 Codex本体や署名済みアプリを改造せず、ローカルに保存された会話ログを読み取り、VOICEVOX / Kokoro / OS標準音声へ渡します。
 既存のCodex Petを置き換えるのではなく、いま使っているPet体験へ「声」を足すための補助ツールです。
 
-まず見る: [デモ録画](https://github.com/arata-ai-daisuki/talking-pets/blob/main/docs/demo/talking-pets-overlay-2026-05-28.mov) / [Quick Start](#quick-start) / [困ったらIssue](https://github.com/arata-ai-daisuki/talking-pets/issues)
+まず見る: [デモ録画](https://github.com/arata-ai-daisuki/talking-pets/blob/main/docs/demo/talking-pets-overlay-2026-05-28.mov) / [Quick Start](#quick-start) / [手伝う入口](docs/contributor-entrypoints.md) / [困ったらIssue](https://github.com/arata-ai-daisuki/talking-pets/issues)
 
 役に立ちそうなら、GitHubでStarしてもらえると今後のTTS・多言語・レイテンシ改善の励みになります。
+
+Windows / Linux実機確認、VOICEVOX別環境測定、Irodori別GPU測定で協力できる方は [手伝う入口](docs/contributor-entrypoints.md) を見てください。
 
 ![Talking Pets demo preview](assets/demo-preview.png)
 
