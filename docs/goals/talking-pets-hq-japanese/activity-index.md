@@ -8,14 +8,14 @@ This page is a readable snapshot of the Japanese HQ state. The authoritative sou
 
 - Board URL: `http://goalbuddy.localhost:41737/talking-pets-hq-japanese/`
 - Local board files: `docs/goals/talking-pets-hq-japanese/.goalbuddy-board/`
-- Current active task: `T241`
-- Current focus: 多言語検証の境界へ戻る。
+- Current active task: `T242`
+- Current focus: outreach待ちレーンへ戻る。
 
 ## Kanban Snapshot
 
 | Column | Count | Meaning |
 | --- | ---: | --- |
-| Done | 241 | 完了済みの小PR、調査、判断カード、検証receipt。 |
+| Done | 242 | 完了済みの小PR、調査、判断カード、検証receipt。 |
 | Active | 1 | いまHQが追っている作業。 |
 | Blocked | 0 | 同じ停止条件が継続しており、Master判断なしに進めないもの。 |
 
@@ -24,10 +24,10 @@ This page is a readable snapshot of the Japanese HQ state. The authoritative sou
 | Agent | Role | Done | Active | Main lane |
 | --- | --- | ---: | ---: | --- |
 | 相庭 愛 | HQ Producer | 63 | 0 | 判断カード、全体整理、Master確認。 |
-| 星宮 未来 | Outreach Lead | 49 | 0 | SNS/outreach、候補表、返信ドラフト、送信後記録。 |
-| 白瀬 怜奈 | Risk / Review Lead | 54 | 1 | claim境界、license/privacy/API、セルフレビュー。 |
+| 星宮 未来 | Outreach Lead | 49 | 1 | SNS/outreach、候補表、返信ドラフト、送信後記録。 |
+| 白瀬 怜奈 | Risk / Review Lead | 55 | 1 | claim境界、license/privacy/API、セルフレビュー。 |
 | 歌澄 音羽 | Voice Provider Lead | 43 | 0 | TTS provider、VOICEVOX/Irodori/sherpa/Melo/API設計。 |
-| 言守 詞葉 | Multilingual Lead | 30 | 1 | ko/zh fallback、多言語fixture、dedicated provider evidence境界。 |
+| 言守 詞葉 | Multilingual Lead | 31 | 0 | ko/zh fallback、多言語fixture、dedicated provider evidence境界。 |
 | 速水 光莉 | Latency Lead | 14 | 0 | latency診断、RTF、table helper、測定読み方。 |
 | 文月 栞里 | Docs / Operations Lead | 18 | 0 | docs整備、hygiene、activity index、運用導線。 |
 | 愛坂 あい | Pet / Persona Lead | 2 | 0 | キャラクター/会話体験の方向づけ。 |
@@ -124,7 +124,8 @@ This page is a readable snapshot of the Japanese HQ state. The authoritative sou
 | `T238` | 言守 詞葉 / 白瀬 怜奈 | done | Multilingual Verification Boundary Watch Result 3を追加し、fallback-only境界を維持。 |
 | `T239` | 星宮 未来 / 白瀬 怜奈 | done | Outreach waiting lane boundary watch 3を追加し、再送・催促なしでwaitを維持。 |
 | `T240` | 歌澄 音羽 / 白瀬 怜奈 | done | Local TTS Boundary Watch Result 3を追加し、evidence-first / design-only境界を維持。 |
-| `T241` | 言守 詞葉 / 白瀬 怜奈 | active | 多言語検証の境界をclaim変更なしで再確認中。 |
+| `T241` | 言守 詞葉 / 白瀬 怜奈 | done | Multilingual Verification Boundary Watch Result 4を追加し、fallback-only境界を維持。 |
+| `T242` | 星宮 未来 / 白瀬 怜奈 | active | outreach待ちレーンを再送・催促なしで維持中。 |
 
 ## Where To Look Next
 

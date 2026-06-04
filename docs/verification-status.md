@@ -401,3 +401,18 @@ GitHub issue recheck:
 Decision: keep Korean / Chinese as OS speech fallback-only verification until sanitized contributor evidence supports a provider-specific claim.
 
 No Korean/Chinese dedicated provider support claim, README support claim, generated audio, private log, private contact, model download, API call, or fallback-to-provider wording change was added in this watch.
+
+## Multilingual Verification Boundary Watch Result 4
+
+Checked: 2026-06-05.
+
+Current local verification boundary:
+
+- Korean, Simplified Chinese, and Traditional Chinese fixtures still prove routing / fallback diagnostics only.
+- The Minimal Multilingual Report Form remains the intake path for quick sanitized reports.
+- The Dedicated Provider Evidence Checklist remains required before treating Korean / Chinese as provider-specific support.
+- GitHub issue API refresh was blocked by the local network / approval boundary in this run, so this watch does not claim new public issue evidence or changed issue state.
+
+Decision: keep Korean / Chinese as OS speech fallback-only verification until sanitized contributor evidence supports a provider-specific claim.
+
+No Korean/Chinese dedicated provider support claim, README support claim, generated audio, private log, private contact, model download, API call, or fallback-to-provider wording change was added in this watch.
