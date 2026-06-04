@@ -161,6 +161,16 @@ Checked: 2026-06-05.
 
 Do not wait on the sent rows before continuing provider design, verification intake, or docs work.
 
+### Outreach Waiting Lane Snapshot
+
+Checked: 2026-06-05. No repo-recorded reply update is available for OpenClaw / Sogni Voice or V1GPT, so the correct action remains `wait`.
+
+| Target | Waiting action | Next check | Safe internal work while waiting |
+| --- | --- | --- | --- |
+| OpenClaw / Sogni Voice | Do not bump before 2026-06-17 unless a public reply appears first. | Record only a public reply URL or Master-approved private summary. | Provider feedback intake, local TTS approval decision, latency docs. |
+| V1GPT | Do not bump before 2026-06-17 unless a public reply appears first. | Record only a public reply URL or Master-approved private summary. | Codex voice UX notes, provider comparison, verification intake. |
+| V1R4 | Keep as `reply later`; use only if a current public thread invites examples. | Re-check only when preparing a new manual outreach wave. | No GitHub issue promo, no old-thread bump. |
+
 ### Reply Waiting Intake Queue
 
 Use this queue only when a public reply arrives, or when Master approves a short private-summary record. Do not use it as a reason to send a reminder before the earliest follow-up date.
