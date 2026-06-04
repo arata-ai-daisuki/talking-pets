@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T198
+active_task: T199
 
 tasks:
   - id: T001
@@ -6406,7 +6406,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "歌澄 音羽 / 白瀬 怜奈"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "provider候補は整理済みなので、次にMaster承認が必要な実験境界だけを再確認する。"
     allowed_files:
@@ -6422,13 +6422,52 @@ tasks:
       - "README support claimを変えない。"
       - "VOICEVOX/Irodoriの1端末データを性能保証にしない。"
     receipt:
-      result: active
+      result: done
       decision: local_tts_approval_follow_up
-      full_outcome_complete: false
-      summary: "次はlocal TTS実験前のMaster承認境界を再確認する。"
+      full_outcome_complete: true
+      summary: "Local TTS Approval-Only CardとProvider Experiment Scorecardを確認し、VOICEVOX/Irodori evidence-first、sherpa metadata review、MeloTTS external-runtime designの3択へ圧縮した。依存追加、model download、API call、README support claim変更はしていない。"
       note: "notes/T198-local-tts-approval-follow-up.md"
       changed_files:
+        - "docs/research/tts-provider-comparison.md"
         - "docs/goals/talking-pets-hq-japanese/notes/T198-local-tts-approval-follow-up.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T199-multilingual-evidence-queue-check.md"
+        - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+        - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n 'Local TTS Approval Follow-Up Snapshot|A: keep evidence-first|B: approve sherpa metadata review only|C: approve MeloTTS external-runtime design only|active_task: T199|local_tts_approval_follow_up|multilingual_evidence_queue_check' docs/research/tts-provider-comparison.md docs/goals/talking-pets-hq-japanese/notes/T198-local-tts-approval-follow-up.md docs/goals/talking-pets-hq-japanese/notes/T199-multilingual-evidence-queue-check.md docs/goals/talking-pets-hq-japanese/hq-backlog-board.md docs/goals/talking-pets-hq-japanese/activity-index.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+        - cmd: "npm run check:docs"
+          status: pass
+
+  - id: T199
+    type: worker
+    assignee: Worker
+    owner_role: "言守 詞葉 / 白瀬 怜奈"
+    status: active
+    reasoning_hint: default
+    objective: "outreachやprovider返信が来た時に、fallback-only / provider-specificをすぐ分類できる状態を確認する。"
+    allowed_files:
+      - "docs/real-device-verification.md"
+      - "docs/verification-status.md"
+      - "docs/research/tts-provider-comparison.md"
+      - "docs/research/x-outreach-targets.md"
+      - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+      - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "Korean/Chinese OS speech fallbackをdedicated provider supportとして扱わない。"
+      - "README support claimを変えない。"
+      - "private logs、generated audio、private contactをrepoへ保存しない。"
+    receipt:
+      result: active
+      decision: multilingual_evidence_queue_check
+      full_outcome_complete: false
+      summary: "次は多言語証跡のfallback-only/provider-specific分類queueを確認する。"
+      note: "notes/T199-multilingual-evidence-queue-check.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T199-multilingual-evidence-queue-check.md"
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands: []
 
