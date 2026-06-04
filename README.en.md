@@ -417,6 +417,7 @@ To force a spoken language from saved config, set `TALKING_PETS_SPEECH_LANGUAGE=
 - Language support prioritizes Japanese and English. Japanese routes to VOICEVOX, English routes to Kokoro.js, and Korean, Chinese, and other languages fall back to OS speech.
 - Language detection is a short character-based heuristic. Text with kana is treated as Japanese, text with Hangul is treated as Korean, and CJK text with only Han characters is treated as Chinese. Japanese kanji-only short text or symbol-only short text may route to a different TTS than expected.
 - Use `--speech-language ja|en|ko|zh|other` to force the spoken language. `ko` and `zh` are first-class fallback paths for now, not dedicated TTS provider support.
+- Before describing Korean or Chinese as dedicated provider support, collect external real-device evidence that satisfies the [Dedicated Provider Evidence Checklist](docs/verification-status.md#dedicated-provider-evidence-checklist).
 - OS speech quality varies by platform. Talking Pets uses macOS `say`, Windows `System.Speech`, or Linux `espeak`.
 - `TALKING_PETS_SAY_VOICE` / `--voice` selects a macOS `say` voice. It is not used by the Windows / Linux OS speech fallback.
 - Windows and Linux use the experimental Node monitor path. PowerShell execution on a real Windows device and real Linux audio playback were not verified in this macOS environment.

@@ -430,6 +430,7 @@ macOS安定版のSwift monitorで同じ確認をする場合は、`npm run monit
 - 言語対応は日本語と英語を優先しています。日本語は VOICEVOX、英語は Kokoro.js、韓国語・中国語・その他はOS標準音声へのfallbackが基本です。
 - 言語判定は短い文字種ベースです。かな文字を含む文は日本語、ハングルを含む文は韓国語、漢字だけのCJK文は中国語として扱います。日本語の漢字だけの短文や記号だけの短文では期待と違うTTSへ流れることがあります。
 - `--speech-language ja|en|ko|zh|other` で言語を手動指定できます。`ko` / `zh` は現時点では専用TTS providerではなく、first-class fallback として扱います。
+- 韓国語・中国語を専用provider対応として書く前に、[Dedicated Provider Evidence Checklist](docs/verification-status.md#dedicated-provider-evidence-checklist) を満たす外部実機証跡が必要です。
 - OS標準音声の品質は環境差があります。macOSは `say`、Windowsは `System.Speech`、Linuxは `espeak` を使います。
 - `TALKING_PETS_SAY_VOICE` / `--voice` はmacOS `say` のvoice指定です。Windows / Linux のOS音声fallbackでは未使用です。
 - Windows / Linux は Node monitor の experimental ルートです。このmacOS環境ではWindows実機でのPowerShell実行とLinux実機音声再生は未確認です。

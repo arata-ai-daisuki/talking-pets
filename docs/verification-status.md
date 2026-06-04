@@ -63,6 +63,18 @@ Before changing public wording from "fallback" to dedicated Korean or Chinese su
 
 When a Platform verification issue includes Korean or Chinese testing, use the optional multilingual fallback field to record the source text or fixture, detected or forced speech-language value, chosen TTS path, audible result, and whether the evidence is fallback-only or provider-specific. This keeps `ko` / `zh` fallback evidence separate from future dedicated-provider evidence.
 
+### Dedicated Provider Evidence Checklist
+
+Use this checklist before changing Korean, Chinese, or any other fallback language from "OS speech fallback" to "dedicated provider support":
+
+- The issue uses a provider-specific TTS path, not `macOS say`, `Windows System.Speech`, or `Linux espeak`.
+- The contributor records the source text or fixture, detected or forced speech-language value, provider name, provider version if known, OS/version, CPU architecture, config source, and whether one spoken line was audible.
+- The evidence includes sanitized command output or `[latency]` lines with no private Codex text, credentials, generated audio attachments, or local private file paths.
+- The provider is already represented by a design note or a supported helper, and any dependency, model, cache, license, privacy, or billing boundary is documented.
+- The verification-status row links to the sanitized Platform verification issue before README wording changes.
+
+If any item is missing, keep the wording as fallback-only evidence.
+
 ## Irodori Latency Snapshot
 
 Irodori-TTS Server is experimental optional and should not be treated as a universal latency benchmark from one maintainer machine.
