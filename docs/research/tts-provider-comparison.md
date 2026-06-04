@@ -231,6 +231,18 @@ Checked: 2026-06-05. No repo-recorded Master approval selects B or C after the c
 
 Do not infer approval from prior design notes. If Master chooses B or C later, open a separate small PR and keep implementation, dependency, model, API, and generated-audio work behind a new gate.
 
+### Local TTS Approval Later Watch
+
+Rechecked: 2026-06-05. No repo-recorded Master approval names `sherpa metadata review only`, `MeloTTS external-runtime design only`, or a narrower B/C scope after the response watch. The local TTS lane therefore stays **A: keep evidence-first**.
+
+| Candidate | Current lane | Allowed now | Not allowed now |
+| --- | --- | --- | --- |
+| VOICEVOX / Irodori | Evidence-first. | Keep collecting sanitized #25/#26 contributor latency and audible reports. | Stronger performance guarantees, default-route changes, or broad README support wording. |
+| sherpa-onnx-node | Approval-gated. | No action until Master explicitly approves a named metadata-review scope. | Install, optional dependency change, model/vocoder/tokens/espeak download, helper code, generated audio. |
+| MeloTTS | Approval-gated external-runtime design. | No action until Master explicitly approves a named external-runtime design scope. | Python/Docker setup, `unidic` or model download, synthesis, Korean/Chinese support wording. |
+
+Next safe internal work: return to multilingual verification intake/watch or public proof docs. Do not turn older design notes, optional install history, or health-only detect paths into fresh implementation approval.
+
 ### Local TTS Next Choice Refresh
 
 Checked: 2026-06-05. This refresh incorporates the sherpa optional npm install check, MeloTTS detect/connect-only helper work, provider feedback capture path, and multilingual evidence routes.
