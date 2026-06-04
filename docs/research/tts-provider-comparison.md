@@ -280,6 +280,19 @@ Checked: 2026-06-05. Repo-recorded instructions still do not name `sherpa metada
 
 Next safe internal work: return to multilingual verification watch and keep public support wording unchanged unless sanitized evidence arrives.
 
+### Local TTS Approval Next Cycle Result
+
+Checked: 2026-06-05. Repo-recorded instructions still do not name `sherpa metadata review only`, `MeloTTS external-runtime design only`, API TTS, or another narrower B/C approval after the next-cycle watch. Keep local TTS on **A: VOICEVOX / Irodori evidence-first**.
+
+| Lane | Result | Continue | Do not do |
+| --- | --- | --- | --- |
+| A: VOICEVOX / Irodori evidence-first | Still active. | Keep #25/#26 open for sanitized contributor latency and audible evidence. | Do not turn one maintainer or one contributor number into a universal performance claim. |
+| B: sherpa metadata review | Not approved. | Wait for explicit Master approval that names the public-doc review scope. | Do not install `sherpa-onnx-node`, add optional dependencies, download model/vocoder/token/espeak data, or add helper code. |
+| C: MeloTTS external-runtime design | Not approved. | Wait for explicit Master approval that names external-runtime design refinement. | Do not run Python/Docker setup, `unidic` or model download, synthesis, or Korean/Chinese support wording. |
+| API TTS | Not approved. | Keep as later opt-in research only. | Do not create API keys, make paid calls, call remote endpoints, or change local-first wording. |
+
+Next safe internal work: return to multilingual verification watch and keep public support wording unchanged unless sanitized evidence arrives.
+
 ### Local TTS Next Choice Refresh
 
 Checked: 2026-06-05. This refresh incorporates the sherpa optional npm install check, MeloTTS detect/connect-only helper work, provider feedback capture path, and multilingual evidence routes.
