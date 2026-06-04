@@ -92,6 +92,21 @@ If you have a local VOICEVOX, Irodori, Windows, or Linux setup, a sanitized GitH
 No generated audio files needed. Just sanitized command output and whether one spoken line was audible.
 ```
 
+### VOICEVOX / Irodori evidence ask
+
+```text
+I'm collecting a few more real-device reference results for Talking Pets local TTS.
+
+The most useful data right now is:
+- VOICEVOX latency on another machine
+- Irodori-TTS Server latency on another CPU/GPU/backend
+
+If you already have either running locally, sanitized latency lines in a GitHub Platform verification issue would help:
+<real-device verification link>
+
+No generated audio files or private logs needed. Device/OS, provider version if known, warm synthesis times, audio duration/RTF if available, and whether one spoken line was audible are enough.
+```
+
 ### Dedicated provider evidence ask
 
 ```text
