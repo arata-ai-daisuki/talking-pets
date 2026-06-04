@@ -165,6 +165,8 @@ Do not wait on the sent rows before continuing provider design, verification int
 
 Checked: 2026-06-05. No repo-recorded reply update is available for OpenClaw / Sogni Voice or V1GPT, so the correct action remains `wait`.
 
+Reply watch checked: 2026-06-05. Reddit public page content for V1GPT was readable in the check and did not show a repo-recorded Talking Pets reply state. The X target page did not expose useful public HTML content to the checker, so do not infer a reply or non-reply from X alone; only record a public reply URL when Master confirms it or the public page is readable.
+
 | Target | Waiting action | Next check | Safe internal work while waiting |
 | --- | --- | --- | --- |
 | OpenClaw / Sogni Voice | Do not bump before 2026-06-17 unless a public reply appears first. | Record only a public reply URL or Master-approved private summary. | Provider feedback intake, local TTS approval decision, latency docs. |

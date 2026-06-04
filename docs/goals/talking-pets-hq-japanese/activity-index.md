@@ -8,14 +8,14 @@ This page is a readable snapshot of the Japanese HQ state. The authoritative sou
 
 - Board URL: `http://goalbuddy.localhost:41737/talking-pets-hq-japanese/`
 - Local board files: `docs/goals/talking-pets-hq-japanese/.goalbuddy-board/`
-- Current active task: `T209`
-- Current focus: outreach返信待ちをsafe intakeとして再確認する。
+- Current active task: `T210`
+- Current focus: local TTSの承認判断状態へ戻る。
 
 ## Kanban Snapshot
 
 | Column | Count | Meaning |
 | --- | ---: | --- |
-| Done | 209 | 完了済みの小PR、調査、判断カード、検証receipt。 |
+| Done | 210 | 完了済みの小PR、調査、判断カード、検証receipt。 |
 | Active | 1 | いまHQが追っている作業。 |
 | Blocked | 0 | 同じ停止条件が継続しており、Master判断なしに進めないもの。 |
 
@@ -24,9 +24,9 @@ This page is a readable snapshot of the Japanese HQ state. The authoritative sou
 | Agent | Role | Done | Active | Main lane |
 | --- | --- | ---: | ---: | --- |
 | 相庭 愛 | HQ Producer | 63 | 0 | 判断カード、全体整理、Master確認。 |
-| 星宮 未来 | Outreach Lead | 38 | 1 | SNS/outreach、候補表、返信ドラフト、送信後記録。 |
-| 白瀬 怜奈 | Risk / Review Lead | 23 | 1 | claim境界、license/privacy/API、セルフレビュー。 |
-| 歌澄 音羽 | Voice Provider Lead | 32 | 0 | TTS provider、VOICEVOX/Irodori/sherpa/Melo/API設計。 |
+| 星宮 未来 | Outreach Lead | 39 | 0 | SNS/outreach、候補表、返信ドラフト、送信後記録。 |
+| 白瀬 怜奈 | Risk / Review Lead | 24 | 1 | claim境界、license/privacy/API、セルフレビュー。 |
+| 歌澄 音羽 | Voice Provider Lead | 32 | 1 | TTS provider、VOICEVOX/Irodori/sherpa/Melo/API設計。 |
 | 言守 詞葉 | Multilingual Lead | 20 | 0 | ko/zh fallback、多言語fixture、dedicated provider evidence境界。 |
 | 速水 光莉 | Latency Lead | 14 | 0 | latency診断、RTF、table helper、測定読み方。 |
 | 文月 栞里 | Docs / Operations Lead | 18 | 0 | docs整備、hygiene、activity index、運用導線。 |
@@ -92,7 +92,8 @@ This page is a readable snapshot of the Japanese HQ state. The authoritative sou
 | `T206` | 相庭 愛 / 文月 栞里 | done | Public Proof Route Selectorを追加。 |
 | `T207` | 文月 栞里 / 白瀬 怜奈 | done | Public Proof Hubを追加し、README日英から接続。 |
 | `T208` | 相庭 愛 / 文月 栞里 | done | T206-T207のpublic proof導線整備を畳み、次activeをT209へ進行。 |
-| `T209` | 星宮 未来 / 白瀬 怜奈 | active | outreach返信待ちをsafe intakeとして再確認中。 |
+| `T209` | 星宮 未来 / 白瀬 怜奈 | done | Outreach Waiting Lane Snapshotを返信watchとして更新。 |
+| `T210` | 歌澄 音羽 / 白瀬 怜奈 | active | local TTS承認判断状態を再確認中。 |
 
 ## Where To Look Next
 
