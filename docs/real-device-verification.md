@@ -111,6 +111,14 @@ node scripts/tts-voicebox.mjs --mode voicevox --speaker 3 --url http://127.0.0.1
 node scripts/tts-voicebox.mjs --mode voicevox --speaker 3 --url http://127.0.0.1:50021 --text "こんにちは。Talking Petsのウォーム測定です。" --out /tmp/talking-pets-voicevox-warm-3.wav --profile-latency
 ```
 
+If WAV duration is readable, the latency line includes `audioDuration` and `rtf`:
+
+```text
+[latency] total=1334.3ms audio_query=120.0ms parse_audio_query=1.0ms synthesis=1100.0ms read_audio=1.0ms write_audio=1.0ms audioDuration=3.861333s rtf=0.28x provider=voicevox success=true play=false
+```
+
+Paste the sanitized `[latency]` line into the issue. Do not attach generated WAV files.
+
 Record:
 
 - Device model:
