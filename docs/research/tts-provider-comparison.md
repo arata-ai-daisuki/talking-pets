@@ -163,6 +163,26 @@ Use this card when asking Master what provider work should move from planning in
 
 Recommended default: choose A now, and prepare B only if Master explicitly approves a small optional local dependency/model investigation. Choose C if multilingual quality becomes more important than immediate local latency evidence.
 
+### Master Decision Memo
+
+Current recommendation: choose **A: keep gathering contributor evidence**.
+
+Why:
+
+- VOICEVOX and Irodori are already optional paths with maintainer measurements.
+- More contributor evidence improves public confidence without adding dependency, model, API, or license risk.
+- It keeps the local-first story clean while outreach and multilingual evidence are still being collected.
+
+When to switch:
+
+| Switch to | Trigger |
+| --- | --- |
+| B: sherpa-onnx design experiment | Master explicitly approves a small optional dependency/model investigation. |
+| C: MeloTTS runtime design | A real multilingual contributor points to MeloTTS-like evidence, or multilingual quality becomes the top priority. |
+| D: API TTS hold | Keep this as the default for cloud/remote TTS until local evidence and privacy/billing messaging are stronger. |
+
+Do not proceed from this memo to install, model download, API key creation, API call, helper implementation, README support wording, or default routing changes without a separate Master approval.
+
 ## Next Provider Approval Gate
 
 Use this gate before promoting any new provider candidate from design notes into code. Passing this gate does not mean the provider is supported; it only means a small experimental helper PR is safe to consider.

@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T168
+active_task: T169
 
 tasks:
   - id: T001
@@ -5240,7 +5240,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "星宮 未来"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "Minimal Multilingual Report Formを、手動outreachの返信で渡せる短いfollow-up文にする。"
     allowed_files:
@@ -5254,7 +5254,7 @@ tasks:
       - "generated audioやprivate logsの添付を求めない。"
       - "Korean / Chinese dedicated provider support claimを追加しない。"
     receipt:
-      result: active
+      result: done
       decision: multilingual_report_form_followup_copy
       full_outcome_complete: false
       summary: "x-outreach-targetsにMultilingual report form follow-upを追加し、fallback-only / provider-specificを分けて短く報告してもらう導線を手動返信にした。"
@@ -5266,6 +5266,38 @@ tasks:
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands:
         - cmd: "rg -n 'active_task: T168|T168|multilingual_report_form_followup_copy|Multilingual report form follow-up|fallback-only|provider-specific|generated audio|private logs|星宮 未来' docs/research/x-outreach-targets.md docs/goals/talking-pets-hq-japanese/activity-index.md docs/goals/talking-pets-hq-japanese/notes/T168-multilingual-report-form-followup.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T169
+    type: worker
+    assignee: Worker
+    owner_role: "歌澄 音羽"
+    status: active
+    reasoning_hint: default
+    objective: "Provider Decision CardをMaster向けの短い判断メモへ落とし、現時点の推奨と切り替え条件を一画面にする。"
+    allowed_files:
+      - "docs/research/tts-provider-comparison.md"
+      - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "provider実装、依存追加、model download、API callをしない。"
+      - "READMEの対応provider claimを増やさない。"
+      - "Master承認なしにsherpa/Melo/API実験へ進めない。"
+      - "Korean / Chinese dedicated provider support claimを追加しない。"
+    receipt:
+      result: active
+      decision: provider_master_decision_memo
+      full_outcome_complete: false
+      summary: "tts-provider-comparisonにMaster Decision Memoを追加し、現時点の推奨をA: contributor evidence継続、切り替え条件をB/C/Dとして整理した。"
+      note: "notes/T169-provider-master-decision-memo.md"
+      changed_files:
+        - "docs/research/tts-provider-comparison.md"
+        - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T169-provider-master-decision-memo.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n 'active_task: T169|T169|provider_master_decision_memo|Master Decision Memo|Current recommendation|keep gathering contributor evidence|When to switch|separate Master approval|歌澄 音羽' docs/research/tts-provider-comparison.md docs/goals/talking-pets-hq-japanese/activity-index.md docs/goals/talking-pets-hq-japanese/notes/T169-provider-master-decision-memo.md docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
 
   - id: T007
