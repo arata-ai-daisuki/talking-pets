@@ -468,6 +468,45 @@ test("MeloTTS helper reports missing config cleanly", () => {
   assert.doesNotMatch(result.stderr, /at parseArgs/);
 });
 
+test("monitor exposes MeloTTS health-only list path", () => {
+  const options = parseOptions([
+    "--tts", "melotts",
+    "--list-voices",
+    "--melotts-url", "http://127.0.0.1:3399/health",
+    "--melotts-health-arg", "status",
+    "--melotts-timeout-ms", "25",
+  ]);
+
+  assert.equal(options.ttsEngine, "melotts");
+  assert.equal(options.listVoices, true);
+  assert.equal(options.melottsURL, "http://127.0.0.1:3399/health");
+  assert.equal(options.melottsHealthArg, "status");
+  assert.equal(options.melottsTimeoutMs, 25);
+
+  const missing = spawnSync(process.execPath, ["--no-warnings", "scripts/pet-rollout-monitor.mjs", "--tts", "melotts", "--list-voices"], {
+    encoding: "utf8",
+    env: {
+      ...process.env,
+      MELOTTS_URL: "",
+      MELOTTS_COMMAND: "",
+    },
+  });
+  assert.equal(missing.status, 2);
+  assert.match(missing.stderr, /tts-melotts: not_configured/);
+  assert.doesNotMatch(missing.stderr, /at parseArgs/);
+
+  const configured = spawnSync(process.execPath, ["--no-warnings", "scripts/pet-rollout-monitor.mjs", "--tts", "melotts", "--list-voices", "--melotts-command", process.execPath], {
+    encoding: "utf8",
+    env: {
+      ...process.env,
+      MELOTTS_URL: "",
+      MELOTTS_COMMAND: "",
+    },
+  });
+  assert.equal(configured.status, 0);
+  assert.doesNotMatch(configured.stderr, /not_configured/);
+});
+
 test("detects release readiness package and workflow drift", () => {
   const pkg = JSON.parse(readFileSync("package.json", "utf8"));
   assert.deepEqual(packageIssues(pkg), []);

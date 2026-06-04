@@ -972,7 +972,7 @@ function main() {
   checkTextContains("test/monitor.test.mjs", "requires installer config checks on their native platforms");
   checkTextContains("test/monitor.test.mjs", "keeps installer output safe for public evidence");
   checkTextContains("test/monitor.test.mjs", "validates local env values before startup");
-  checkTextContains("scripts/pet-rollout-monitor.mjs", "--tts auto|voicevox|voicebox|kokoro|irodori|say");
+  checkTextContains("scripts/pet-rollout-monitor.mjs", "--tts auto|voicevox|voicebox|kokoro|irodori|melotts|say");
   checkTextContains("scripts/pet-rollout-monitor.swift", "choiceValue(\"--tts\"");
   checkTextContains("scripts/pet-rollout-monitor.swift", "choiceValue(\"--speech-language\"");
   checkTextContains("scripts/pet-rollout-monitor.mjs", "\"zh\"");

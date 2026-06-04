@@ -25,6 +25,10 @@ const optionFlags = new Set([
   "--irodori-voice",
   "--irodori-model",
   "--irodori-format",
+  "--melotts-url",
+  "--melotts-command",
+  "--melotts-health-arg",
+  "--melotts-timeout-ms",
   "--voicebox-url",
   "--voicebox-mode",
   "--voicebox-speaker",
@@ -136,6 +140,10 @@ function parseOptions(argv) {
     irodoriVoice: "none",
     irodoriModel: "irodori-tts",
     irodoriFormat: "wav",
+    melottsURL: null,
+    melottsCommand: null,
+    melottsHealthArg: null,
+    melottsTimeoutMs: null,
     voiceboxURL: "http://127.0.0.1:50021",
     voiceboxMode: "voicevox",
     voiceboxSpeaker: "3",
@@ -183,7 +191,7 @@ function parseOptions(argv) {
         result.voice = takeValue();
         break;
       case "--tts":
-        result.ttsEngine = choiceValue("--tts", takeValue(), ["auto", "voicevox", "voicebox", "kokoro", "irodori", "say"]);
+        result.ttsEngine = choiceValue("--tts", takeValue(), ["auto", "voicevox", "voicebox", "kokoro", "irodori", "melotts", "say"]);
         break;
       case "--kokoro-voice":
         result.kokoroVoice = takeValue();
@@ -205,6 +213,18 @@ function parseOptions(argv) {
         break;
       case "--irodori-format":
         result.irodoriFormat = takeValue();
+        break;
+      case "--melotts-url":
+        result.melottsURL = takeValue();
+        break;
+      case "--melotts-command":
+        result.melottsCommand = takeValue();
+        break;
+      case "--melotts-health-arg":
+        result.melottsHealthArg = takeValue();
+        break;
+      case "--melotts-timeout-ms":
+        result.melottsTimeoutMs = positiveIntegerValue("--melotts-timeout-ms", takeValue());
         break;
       case "--voicebox-url":
         result.voiceboxURL = takeValue();
@@ -339,7 +359,7 @@ Speech:
   --speech-style PATH            JSON style config for spoken phrasing
 
 TTS:
-  --tts auto|voicevox|voicebox|kokoro|irodori|say Select TTS engine (default: auto)
+  --tts auto|voicevox|voicebox|kokoro|irodori|melotts|say Select TTS engine (default: auto)
   --language-route               Route by detected language
   --no-language-route            Use the selected TTS without language routing
   --list-voices                  List voices for the selected TTS
@@ -349,6 +369,10 @@ TTS:
   --kokoro-voice ID              Kokoro voice id (default: af_heart)
   --irodori-url URL              Irodori-TTS-Server URL (default: http://127.0.0.1:8088)
   --irodori-voice ID             Irodori voice id (default: none)
+  --melotts-url URL              MeloTTS external runtime health URL
+  --melotts-command PATH         MeloTTS external health command
+  --melotts-health-arg ARG       MeloTTS health command arg (default: helper default)
+  --melotts-timeout-ms N         MeloTTS health timeout in milliseconds
 
 Examples:
   node scripts/pet-rollout-monitor.mjs --once --dry-run
@@ -682,6 +706,8 @@ function speak(text, opts) {
     if (!speakWithKokoro(text, opts)) speakWithFallback(text, opts, "Kokoro");
   } else if (engine === "irodori") {
     if (!speakWithIrodori(text, opts)) speakWithFallback(text, opts, "Irodori");
+  } else if (engine === "melotts") {
+    console.error("[tts-error] MeloTTS is health-only in this build; use --tts melotts --list-voices for external runtime health checks");
   } else if (engine === "voicebox" || engine === "voicevox") {
     if (!speakWithVoicebox(text, opts)) speakWithFallback(text, opts, "VOICEVOX");
   } else if (engine === "say") {
@@ -820,6 +846,14 @@ function listVoices(opts) {
     runAndPrint(process.execPath, [join(scriptDir, "tts-kokoro.mjs"), "--list-voices", "--dtype", opts.kokoroDtype, "--device", opts.kokoroDevice]);
   } else if (opts.ttsEngine === "irodori") {
     runAndPrint(process.execPath, [join(scriptDir, "tts-irodori.mjs"), "--health", "--url", opts.irodoriURL]);
+  } else if (opts.ttsEngine === "melotts") {
+    const args = [join(scriptDir, "tts-melotts.mjs"), "--health"];
+    if (opts.melottsURL) args.push("--url", opts.melottsURL);
+    if (opts.melottsCommand) args.push("--command", opts.melottsCommand);
+    if (opts.melottsHealthArg) args.push("--health-arg", opts.melottsHealthArg);
+    if (opts.melottsTimeoutMs) args.push("--timeout-ms", String(opts.melottsTimeoutMs));
+    if (opts.profileLatency) args.push("--profile-latency");
+    runAndPrint(process.execPath, args);
   } else if (opts.ttsEngine === "voicebox" || opts.ttsEngine === "voicevox") {
     runAndPrint(process.execPath, [join(scriptDir, "tts-voicebox.mjs"), "--list-voices", "--mode", opts.voiceboxMode, "--url", opts.voiceboxURL]);
   } else if (process.platform === "darwin") {

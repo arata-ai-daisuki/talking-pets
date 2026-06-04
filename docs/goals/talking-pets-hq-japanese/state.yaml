@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T179
+active_task: T181
 
 tasks:
   - id: T001
@@ -5653,7 +5653,7 @@ tasks:
     type: pm
     assignee: PM
     owner_role: "相庭 愛"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "T178のhealth-only helper skeleton後に、次の小PRをmonitor health integration、installer detect-only、provider feedbackのどれへ進めるか決める。"
     allowed_files:
@@ -5666,9 +5666,9 @@ tasks:
       - "音声合成、音声再生、default routing、README support claimは追加しない。"
       - "次PRの範囲だけを決める。"
     receipt:
-      result: active
+      result: done
       decision: melotts_next_integration_choice
-      full_outcome_complete: false
+      full_outcome_complete: true
       summary: "T178後の次PR候補として、A: monitor health integration、B: installer detect-only、C: provider feedbackを整理し、推奨をAにした。"
       note: "notes/T179-melotts-next-integration-choice.md"
       changed_files:
@@ -5678,6 +5678,91 @@ tasks:
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands:
         - cmd: "rg -n 'active_task: T179|T179|MeloTTS Next Integration Choice|monitor health integration|installer detect-only|provider feedback|recommended_next: `monitor_health_integration`' docs/goals/talking-pets-hq-japanese/notes/T179-melotts-next-integration-choice.md docs/goals/talking-pets-hq-japanese/hq-backlog-board.md docs/goals/talking-pets-hq-japanese/activity-index.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T180
+    type: worker
+    assignee: Worker
+    owner_role: "歌澄 音羽"
+    status: done
+    reasoning_hint: default
+    objective: "MeloTTS health-only helperをmonitorの--list-voices導線へ接続し、外部runtime health checkだけを確認できるようにする。"
+    allowed_files:
+      - "scripts/pet-rollout-monitor.mjs"
+      - "scripts/check-release-readiness.mjs"
+      - "test/monitor.test.mjs"
+      - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+      - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "MeloTTS、Python packages、Docker images、model、dictionary、language assetsをdownload/installしない。"
+      - "音声合成、音声再生、default routing、README support claimは追加しない。"
+      - "通常speech pathでMeloTTSを成功扱いにしない。"
+    verify:
+      - "node --check scripts/pet-rollout-monitor.mjs"
+      - "npm test"
+      - "npm run monitor:node -- --tts melotts --list-voices"
+      - "npm run monitor:node -- --tts melotts --list-voices --melotts-command \"$(command -v node)\""
+      - "npm run check:release"
+      - "CLANG_MODULE_CACHE_PATH=/private/tmp/talking-pets-clang-module-cache npm run check:all"
+    receipt:
+      result: done
+      decision: melotts_monitor_health_integration
+      full_outcome_complete: true
+      summary: "monitorにMeloTTS health-only list pathを接続し、未設定時はclean failure、明示command時はhealth ok、通常speech routingには入れないことを確認した。CI向けのhealth command testはNode runtimeを使い、OS固有commandに依存しない。"
+      note: "notes/T180-melotts-monitor-health-integration.md"
+      changed_files:
+        - "scripts/pet-rollout-monitor.mjs"
+        - "scripts/check-release-readiness.mjs"
+        - "test/monitor.test.mjs"
+        - "docs/goals/talking-pets-hq-japanese/notes/T180-melotts-monitor-health-integration.md"
+        - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+        - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "node --check scripts/pet-rollout-monitor.mjs"
+          status: pass
+        - cmd: "npm test"
+          status: pass
+        - cmd: "npm run monitor:node -- --tts melotts --list-voices"
+          status: "pass_expected_exit_2"
+        - cmd: "npm run monitor:node -- --tts melotts --list-voices --melotts-command \"$(command -v node)\""
+          status: pass
+        - cmd: "npm run check:release"
+          status: pass
+        - cmd: "rg -n 'active_task: T180|T180|MeloTTS Monitor Health Integration|melotts_monitor_health_integration|--tts melotts --list-voices|installer detect-only|provider feedback' docs/goals/talking-pets-hq-japanese/notes/T180-melotts-monitor-health-integration.md docs/goals/talking-pets-hq-japanese/hq-backlog-board.md docs/goals/talking-pets-hq-japanese/activity-index.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+        - cmd: "CLANG_MODULE_CACHE_PATH=/private/tmp/talking-pets-clang-module-cache npm run check:all"
+          status: pass
+
+  - id: T181
+    type: pm
+    assignee: PM
+    owner_role: "白瀬 怜奈"
+    status: active
+    reasoning_hint: default
+    objective: "MeloTTS monitor health integration後に、installer/configへ入れるならdetect-only wordingだけに限定する次PR範囲を決める。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+      - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "MeloTTS install/download、Python/Docker/model/dictionary/cache作成はしない。"
+      - "README support claimを増やさない。"
+      - "通常installerでMeloTTSを選択済み扱いにしない。"
+    receipt:
+      result: active
+      decision: melotts_installer_detect_only_wording_next
+      full_outcome_complete: false
+      summary: "次はinstaller/configへ入れるとしてもdetect-only wordingに限定し、外部runtime候補であることを安全に案内する範囲を決める。"
+      note: "notes/T181-melotts-installer-detect-only-next.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T181-melotts-installer-detect-only-next.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "test -f docs/goals/talking-pets-hq-japanese/notes/T181-melotts-installer-detect-only-next.md"
           status: pass
 
   - id: T007
