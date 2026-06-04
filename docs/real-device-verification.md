@@ -129,6 +129,19 @@ Checked: 2026-06-05. Issues #23-#26 are still open with 0 public comments, so no
 
 Safe internal work may continue while waiting for reports. Missing comments on #23-#26 are not a blocker and are not evidence for stronger provider claims.
 
+### Multilingual Verification Follow-Up Snapshot
+
+Rechecked: 2026-06-05. The public verification issues are still open with 0 comments:
+
+| Issue | Follow-up state | Intake result |
+| --- | --- | --- |
+| [#23 Linux audible TTS](https://github.com/arata-ai-daisuki/talking-pets/issues/23) | Open, no public reply. | Nothing to classify. |
+| [#24 Windows audible TTS](https://github.com/arata-ai-daisuki/talking-pets/issues/24) | Open, no public reply. | Nothing to classify. |
+| [#25 Irodori latency](https://github.com/arata-ai-daisuki/talking-pets/issues/25) | Open, no public reply. | No provider-specific multilingual evidence. |
+| [#26 VOICEVOX latency](https://github.com/arata-ai-daisuki/talking-pets/issues/26) | Open, no public reply. | No provider-specific multilingual evidence. |
+
+Keep using the Minimal Multilingual Report Form for quick reports. Do not change README wording from fallback-only to dedicated provider support until a sanitized public issue supplies provider-specific evidence and the verification checklist is complete.
+
 ### Multilingual Intake Routing Matrix
 
 Use this matrix after the first classification:
