@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T168
+active_task: T169
 
 tasks:
   - id: T001
@@ -5240,7 +5240,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "星宮 未来"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "Minimal Multilingual Report Formを、手動outreachの返信で渡せる短いfollow-up文にする。"
     allowed_files:
@@ -5254,7 +5254,7 @@ tasks:
       - "generated audioやprivate logsの添付を求めない。"
       - "Korean / Chinese dedicated provider support claimを追加しない。"
     receipt:
-      result: active
+      result: done
       decision: multilingual_report_form_followup_copy
       full_outcome_complete: false
       summary: "x-outreach-targetsにMultilingual report form follow-upを追加し、fallback-only / provider-specificを分けて短く報告してもらう導線を手動返信にした。"
@@ -5266,6 +5266,40 @@ tasks:
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands:
         - cmd: "rg -n 'active_task: T168|T168|multilingual_report_form_followup_copy|Multilingual report form follow-up|fallback-only|provider-specific|generated audio|private logs|星宮 未来' docs/research/x-outreach-targets.md docs/goals/talking-pets-hq-japanese/activity-index.md docs/goals/talking-pets-hq-japanese/notes/T168-multilingual-report-form-followup.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T169
+    type: worker
+    assignee: Worker
+    owner_role: "文月 栞里"
+    status: active
+    reasoning_hint: default
+    objective: "Backlog / Next / Active / Doneを日本語で一覧できるHQ Backlog Boardを追加し、未実施の全体像と完了済み波の履歴を見える化する。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+      - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+      - "docs/goals/talking-pets-hq-japanese/goal.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "provider実装、依存追加、model download、API callをしない。"
+      - "自動投稿、DM、follow、like、mentionをしない。"
+      - "READMEの対応provider claimを増やさない。"
+      - "未実施カードをdoneとして扱わない。"
+    receipt:
+      result: active
+      decision: hq_backlog_board
+      full_outcome_complete: false
+      summary: "HQ Backlog Boardを追加し、Backlog / Next / Active / Done、outreach送信準備、local TTS設計、多言語検証、provider調査、README/SNS導線をカード化した。"
+      note: "notes/T169-hq-backlog-board.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+        - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+        - "docs/goals/talking-pets-hq-japanese/goal.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T169-hq-backlog-board.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n 'active_task: T169|T169|hq_backlog_board|HQ Backlog Board|Backlog|Next|Active|Done|outreach送信準備|local TTS設計|多言語検証|provider調査|README/SNS導線' docs/goals/talking-pets-hq-japanese/hq-backlog-board.md docs/goals/talking-pets-hq-japanese/activity-index.md docs/goals/talking-pets-hq-japanese/goal.md docs/goals/talking-pets-hq-japanese/notes/T169-hq-backlog-board.md docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
 
   - id: T007

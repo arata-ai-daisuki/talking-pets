@@ -1,0 +1,59 @@
+# HQ Backlog Board
+
+Last updated: 2026-06-04
+
+Talking Pets 日本語HQの未実施全体像を見るためのボードです。GoalBuddy本体の代替ではなく、Masterが「次に何が残っているか」を一画面で掴むためのsnapshotです。
+
+## Links
+
+- GoalBuddy看板: `http://goalbuddy.localhost:41737/talking-pets-hq-japanese/`
+- HQ Activity Index: [activity-index.md](activity-index.md)
+- ROADMAP: [../../ROADMAP.md](../../ROADMAP.md)
+- Provider comparison: [../../research/tts-provider-comparison.md](../../research/tts-provider-comparison.md)
+- Verification status: [../../verification-status.md](../../verification-status.md)
+- Real-device verification: [../../real-device-verification.md](../../real-device-verification.md)
+- Outreach targets: [../../research/x-outreach-targets.md](../../research/x-outreach-targets.md)
+
+## Active
+
+| Card | Owner | Status | Proof / Link |
+| --- | --- | --- | --- |
+| HQ Backlog Board | 文月 栞里 | Active | このファイル。Backlog / Next / Active / Doneの一覧化。 |
+
+## Next
+
+| Card | Owner | Why next | Done when |
+| --- | --- | --- | --- |
+| Outreach送信準備 | 星宮 未来 | 多言語report formとfollow-up文が揃ったので、手動で送る候補を選べる。 | 送信候補、使うテンプレ、`sent`にしない下書き、送信後記録先が1つにまとまる。 |
+| Local TTS設計 | 歌澄 音羽 | Provider Decision CardではA継続が推奨。B/Cへ進む条件も見える。 | VOICEVOX/Irodori外部検証を継続するか、sherpa/Melo設計へ進むかをMasterが選べる。 |
+| 多言語検証 | 言守 詞葉 | Minimal Multilingual Report Formができたので、fallback-onlyとprovider-specificを分けて受け取れる。 | 報告フォームを使った候補issue/返信先が明確になる。 |
+
+## Backlog
+
+| Card | Owner | Current shape | Stop line |
+| --- | --- | --- | --- |
+| Provider調査 | 歌澄 音羽 / 言守 詞葉 | Piper、MeloTTS、sherpa、API TTSはdesign noteとscorecardで整理済み。 | 依存追加、model download、API call、README support claimはMaster承認までしない。 |
+| README/SNS導線 | 星宮 未来 | READMEにはdemo、Quick Start、Issue導線がある。SNS側は手動候補と返信文がある。 | Star依頼を強くしすぎない。自動投稿/DM/mentionをしない。 |
+| Latency最適化 | 速水 光莉 | VOICEVOX/IrodoriのRTFとlatency table導線はある。 | 1端末の数字を性能保証にしない。first-audioとtotalを混同しない。 |
+| Release proof package | 文月 栞里 / 白瀬 怜奈 | verification-statusとrelease templateがある。 | Windows/Linuxを実機証拠なしにstableへ上げない。 |
+| API TTS opt-in | 歌澄 音羽 / 白瀬 怜奈 | privacy/billing/secret境界は設計済み。 | API key作成、paid call、外部endpoint送信は明示承認なしにしない。 |
+
+## Done History
+
+完了済みの波はここでは畳み、詳細は [activity-index.md](activity-index.md) と `state.yaml` を見る。
+
+| Wave | Summary | Evidence |
+| --- | --- | --- |
+| T150-T154 | provider feedback intake、provider design note template、Piper/Melo/API design notes。 | [Provider comparison](../../research/tts-provider-comparison.md) |
+| T155-T158 | dedicated provider evidence checklist、outreach copy、sherpa template alignment、sherpa approval card。 | [Verification status](../../verification-status.md), [sherpa design](../../research/sherpa-onnx-design.md) |
+| T159-T163 | multilingual tester targets、Search Review Log、decision flow、候補記録、候補別返信draft。 | [Outreach targets](../../research/x-outreach-targets.md) |
+| T164-T165 | Provider Experiment Scorecard、Next Provider Decision Card。 | [Provider comparison](../../research/tts-provider-comparison.md#provider-experiment-scorecard) |
+| T166-T168 | HQ Activity Index、Minimal Multilingual Report Form、report form follow-up copy。 | [Activity Index](activity-index.md), [Real-device verification](../../real-device-verification.md#minimal-multilingual-report-form) |
+
+## Operating Rules
+
+- Backlogは「未実施候補」であり、doneではない。
+- Nextは、Master判断または小PR化が近いものだけにする。
+- Activeは原則1つにする。
+- Doneは証拠リンクがあるものだけにする。
+- 依存追加、model download、API call、自動SNS操作はこのボードだけでは許可されない。
