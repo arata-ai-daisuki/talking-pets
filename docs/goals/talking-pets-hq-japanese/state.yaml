@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T146
+active_task: T147
 
 tasks:
   - id: T001
@@ -4559,7 +4559,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "歌澄 音羽"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "Piper/MeloTTSの一次公開情報だけを確認し、design-only snapshotとして記録する。"
     allowed_files:
@@ -4573,7 +4573,7 @@ tasks:
       - "外部APIやAPI keyを使わない。"
       - "一次公開情報から確認できた範囲だけ書く。"
     receipt:
-      result: active
+      result: done
       decision: multilingual_tts_public_info_snapshot
       full_outcome_complete: false
       summary: "Piper/MeloTTSの一次公開情報をdesign-only snapshotとして追記し、Piperをlicense-sensitive、MeloTTSをruntime-sensitive候補として扱う境界を記録した。"
@@ -4584,6 +4584,37 @@ tasks:
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands:
         - cmd: "rg -n 'active_task: T146|T146|multilingual_tts_public_info_snapshot|Multilingual Candidate Public Info Snapshot|license-sensitive|runtime-sensitive|OHF-Voice/piper1-gpl|MeloTTS' docs/research/tts-provider-comparison.md docs/goals/talking-pets-hq-japanese/notes/T146-multilingual-tts-public-info.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T147
+    type: worker
+    assignee: Worker
+    owner_role: "白瀬 怜奈"
+    status: active
+    reasoning_hint: default
+    objective: "Piper系providerのlicense/package境界を公開情報ベースで整理する。"
+    allowed_files:
+      - "docs/research/tts-provider-comparison.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "Piper対応済みclaimを追加しない。"
+      - "依存追加をしない。"
+      - "model downloadをしない。"
+      - "外部APIやAPI keyを使わない。"
+      - "法的助言として断定しない。"
+    receipt:
+      result: active
+      decision: piper_license_boundary
+      full_outcome_complete: false
+      summary: "Piper系providerについて、archive済みMIT repo、現行GPL-3.0 repo、PyPI packageの境界を記録し、license-review candidateに留める停止線を追加した。"
+      note: "notes/T147-piper-license-boundary.md"
+      changed_files:
+        - "docs/research/tts-provider-comparison.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T147-piper-license-boundary.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n 'active_task: T147|T147|piper_license_boundary|Piper License And Packaging Boundary|license-review candidate|GPL-3.0|piper-tts|user-installed binary' docs/research/tts-provider-comparison.md docs/goals/talking-pets-hq-japanese/notes/T147-piper-license-boundary.md docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
 
   - id: T007
