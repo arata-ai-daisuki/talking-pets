@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T149
+active_task: T150
 
 tasks:
   - id: T001
@@ -4652,7 +4652,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "星宮 未来"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "Piper/MeloTTS provider feedbackを詳しい人へ手動で聞ける文面にする。"
     allowed_files:
@@ -4666,7 +4666,7 @@ tasks:
       - "依存追加、model download、API key、生成音声を要求しない。"
       - "法的助言として断定しない。"
     receipt:
-      result: active
+      result: done
       decision: provider_feedback_copy
       full_outcome_complete: false
       summary: "SNS outreach strategyにPiper/MeloTTS provider feedback用の手動文面を追加し、license/runtime/cache/measurement境界について詳しい人に聞けるようにした。"
@@ -4677,6 +4677,36 @@ tasks:
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands:
         - cmd: "rg -n 'active_task: T149|T149|provider_feedback_copy|Provider feedback ask|Piper|MeloTTS|license-sensitive|runtime-sensitive|No generated audio' docs/research/sns-outreach-strategy.md docs/goals/talking-pets-hq-japanese/notes/T149-provider-feedback-copy.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T150
+    type: worker
+    assignee: Worker
+    owner_role: "文月 栞里"
+    status: active
+    reasoning_hint: default
+    objective: "Provider feedbackが来た時に、license/runtime/cache/measurement/platformへ分類して記録できる受け皿を作る。"
+    allowed_files:
+      - "docs/research/tts-provider-comparison.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "private contact detailsを集めない。"
+      - "generated audio filesを求めない。"
+      - "provider対応済みclaimを追加しない。"
+      - "dependency、model download、implementationへ進まない。"
+    receipt:
+      result: active
+      decision: provider_feedback_intake
+      full_outcome_complete: false
+      summary: "TTS provider comparisonにProvider Feedback Intakeを追加し、返信をlicense/runtime/cache/measurement/platformへ分類して次の設計判断に渡せるようにした。"
+      note: "notes/T150-provider-feedback-intake.md"
+      changed_files:
+        - "docs/research/tts-provider-comparison.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T150-provider-feedback-intake.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n 'active_task: T150|T150|provider_feedback_intake|Provider Feedback Intake|license / runtime / cache / measurement / platform|private contact details|generated audio files' docs/research/tts-provider-comparison.md docs/goals/talking-pets-hq-japanese/notes/T150-provider-feedback-intake.md docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
 
   - id: T007

@@ -209,6 +209,24 @@ Talking Pets should therefore not add MeloTTS as a dependency, installer prompt,
 
 Safe next action: keep MeloTTS as a runtime-review candidate only. If Master wants to continue, create a MeloTTS-specific opt-in external CLI/server design note before any install, helper, or README wording change.
 
+## Provider Feedback Intake
+
+Use this table when someone replies to the provider feedback ask. Record only public or voluntarily shared technical guidance; do not collect private contact details or generated audio files.
+
+| Date | Source | Provider | Feedback Area | What They Said | Decision Impact | Follow-Up |
+| --- | --- | --- | --- | --- | --- | --- |
+|  |  | Piper / MeloTTS / other | license / runtime / cache / measurement / platform |  | keep design-only / write design note / ask Master / no action |  |
+
+Classification rules:
+
+- `license`: package, model, voice, generated audio, attribution, or redistribution terms.
+- `runtime`: Python, Docker, server, CLI, OS support, GPU/CPU/MPS/CUDA, or normal install impact.
+- `cache`: model, dictionary, voice, or downloaded asset location and cleanup behavior.
+- `measurement`: cold start, warm synthesis, audio duration, RTF, playback flag, or contributor evidence shape.
+- `platform`: Windows, macOS, Linux, architecture, or device-specific friction.
+
+Do not change README provider claims from feedback alone. First convert meaningful feedback into a provider-specific design note, then ask Master before dependency, model, or implementation work.
+
 ## Maintainer Real-Time Factor Snapshot
 
 These numbers are maintainer reference data only. They are useful for comparing the shape of current local TTS paths, but they are not public performance guarantees.
