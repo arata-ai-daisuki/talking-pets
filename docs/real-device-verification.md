@@ -634,3 +634,18 @@ Current routing / report boundary:
 There is still no locally recorded fallback-only or provider-specific multilingual report to route. Keep using the Minimal Multilingual Report Form and Dedicated Provider Evidence Checklist, and do not treat OS fallback as Korean/Chinese dedicated provider support.
 
 No generated audio, private rollout, private log, private contact, model download, API call, fallback-to-provider wording change, or README support claim change was made in this watch.
+
+## Multilingual Verification Boundary Watch Result 7
+
+Checked: 2026-06-05.
+
+Current routing / report boundary:
+
+- Korean, Simplified Chinese, and Traditional Chinese checks remain fallback-only unless a named provider-specific report arrives.
+- The Minimal Multilingual Report Form remains the low-friction report shape for Korean, Chinese, and other fallback-language checks.
+- The Dedicated Provider Evidence Checklist is still waiting for a named provider-specific report before public support wording changes.
+- GitHub issue API refresh was not used in this run, so this watch does not claim new public issue evidence or changed issue state.
+
+There is still no locally recorded fallback-only or provider-specific multilingual report to route. Keep using the Minimal Multilingual Report Form and Dedicated Provider Evidence Checklist, and do not treat OS fallback as Korean/Chinese dedicated provider support.
+
+No generated audio, private rollout, private log, private contact, model download, API call, fallback-to-provider wording change, or README support claim change was made in this watch.
