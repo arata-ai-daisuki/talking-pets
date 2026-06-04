@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T173
+active_task: T174
 
 tasks:
   - id: T001
@@ -5408,7 +5408,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "歌澄 音羽"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "Masterが選んだLocal TTS Master Choice CardのCについて、MeloTTS runtime/cache境界を次の承認判断に使える粒度へ固める。"
     allowed_files:
@@ -5425,7 +5425,7 @@ tasks:
       - "Korean / Chinese dedicated provider support claimを追加しない。"
       - "generated audioやprivate logsの提出を求めない。"
     receipt:
-      result: active
+      result: done
       decision: local_tts_bc_design_scope
       full_outcome_complete: false
       summary: "melotts-design-noteにRuntime Boundary、Cache Boundary、cacheOwner/cachePathKnown測定項目、次のC承認質問を追加した。"
@@ -5439,6 +5439,46 @@ tasks:
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands:
         - cmd: "rg -n 'active_task: T173|T173|Runtime Boundary|Cache Boundary|cacheOwner|cachePathKnown|metadata-review|external-runtime-helper-design|isolated-local-experiment|MeloTTS runtime/cache boundary|model files|Docker images/volumes' docs/research/melotts-design-note.md docs/research/tts-provider-comparison.md docs/goals/talking-pets-hq-japanese/hq-backlog-board.md docs/goals/talking-pets-hq-japanese/activity-index.md docs/goals/talking-pets-hq-japanese/notes/T173-local-tts-bc-design-scope.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T174
+    type: worker
+    assignee: Worker
+    owner_role: "言守 詞葉"
+    status: active
+    reasoning_hint: default
+    objective: "Backlog BoardのNextにある多言語検証を、協力者が短時間で試せるMinimal Multilingual Test Packへ進める。"
+    allowed_files:
+      - "docs/real-device-verification.md"
+      - "docs/research/x-outreach-targets.md"
+      - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+      - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "Korean / Chinese dedicated provider support claimを追加しない。"
+      - "fallback-onlyとprovider-specificを混同しない。"
+      - "generated audio、private logs、local paths、model files、downloaded dictionaries、credentials、private Codex textの添付を求めない。"
+      - "provider実装、依存追加、model download、API callをしない。"
+    receipt:
+      result: active
+      decision: minimal_multilingual_test_pack
+      full_outcome_complete: false
+      summary: "real-device-verificationにMinimal Multilingual Test Packを追加し、ko/zhの短いtest sentence、dry-run routing check、fallback-only/provider-specificの報告境界、outreach follow-up文を整えた。"
+      note: "notes/T174-minimal-multilingual-test-pack.md"
+      changed_files:
+        - "docs/real-device-verification.md"
+        - "docs/research/x-outreach-targets.md"
+        - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+        - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T174-minimal-multilingual-test-pack.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n 'active_task: T174|T174|minimal_multilingual_test_pack|Minimal Multilingual Test Pack|Minimal multilingual test pack|fallback-only|provider-specific|ko-rollout.jsonl|zh-traditional-rollout.jsonl|generated audio|private logs|downloaded dictionaries' docs/real-device-verification.md docs/research/x-outreach-targets.md docs/goals/talking-pets-hq-japanese/hq-backlog-board.md docs/goals/talking-pets-hq-japanese/activity-index.md docs/goals/talking-pets-hq-japanese/notes/T174-minimal-multilingual-test-pack.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+        - cmd: "node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --rollout test/fixtures/ko-rollout.jsonl"
+          status: pass
+        - cmd: "node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --rollout test/fixtures/zh-traditional-rollout.jsonl"
           status: pass
 
   - id: T007

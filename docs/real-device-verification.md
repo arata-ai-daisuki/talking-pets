@@ -52,6 +52,42 @@ Rules for this form:
 - Do not change README wording from fallback to dedicated support from this form alone.
 - If the report includes Korean or Chinese provider-specific evidence, also check the Dedicated Provider Evidence Checklist in `docs/verification-status.md`.
 
+## Minimal Multilingual Test Pack
+
+Use this pack when asking a contributor for a quick Korean or Chinese check. The goal is not to claim dedicated provider support. The goal is to classify the result as `fallback-only` or `provider-specific` and capture enough sanitized evidence to decide what to test next.
+
+### Test sentences
+
+| Language | Short public test sentence | Evidence type expected |
+| --- | --- | --- |
+| Korean | `안녕하세요. Talking Pets 다국어 확인입니다.` | `fallback-only` unless a named Korean-capable provider is used. |
+| Simplified Chinese | `你好。这是 Talking Pets 的多语言检查。` | `fallback-only` unless a named Chinese-capable provider is used. |
+| Traditional Chinese | `你好。這是 Talking Pets 的多語言檢查。` | `fallback-only` unless a named Chinese-capable provider is used. |
+
+### Quick commands
+
+Run the dry-run routing check first. This proves language detection and provider selection without generating audio:
+
+```bash
+node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --rollout test/fixtures/ko-rollout.jsonl
+node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --rollout test/fixtures/zh-traditional-rollout.jsonl
+```
+
+Then run one audible check using the contributor's existing local TTS path. If the contributor only has OS speech, record it as `fallback-only`. If they use a named local provider such as MeloTTS, Piper-like, or another multilingual TTS runtime, record it as `provider-specific` and include the provider name/version if known.
+
+### What to paste into the issue
+
+Copy the Minimal Multilingual Report Form above and fill it with:
+
+- the language tested
+- fallback-only or provider-specific
+- chosen provider/path
+- one sanitized routing line or latency line
+- whether one spoken line was audible
+- device/OS and Node/npm versions
+
+Do not attach generated audio, private logs, local paths, model files, downloaded dictionaries, credentials, or private Codex text.
+
 ## Quick Contributor Request
 
 When asking someone else to verify Windows or Linux, send them this short checklist:

@@ -8,14 +8,14 @@ This page is a readable snapshot of the Japanese HQ state. The authoritative sou
 
 - Board URL: `http://goalbuddy.localhost:41737/talking-pets-hq-japanese/`
 - Local board files: `docs/goals/talking-pets-hq-japanese/.goalbuddy-board/`
-- Current active task: `T173`
-- Current focus: MeloTTS Cのruntime/cache境界を、実装なしで次の承認判断に使える粒度へ固める。
+- Current active task: `T174`
+- Current focus: 多言語検証をfallback-only/provider-specificに分けて受け取れるミニ検証パックへ進める。
 
 ## Kanban Snapshot
 
 | Column | Count | Meaning |
 | --- | ---: | --- |
-| Done | 173 | 完了済みの小PR、調査、判断カード、検証receipt。 |
+| Done | 174 | 完了済みの小PR、調査、判断カード、検証receipt。 |
 | Active | 1 | いまHQが追っている作業。 |
 | Blocked | 0 | 同じ停止条件が継続しており、Master判断なしに進めないもの。 |
 
@@ -26,8 +26,8 @@ This page is a readable snapshot of the Japanese HQ state. The authoritative sou
 | 相庭 愛 | HQ Producer | 57 | 0 | 判断カード、全体整理、Master確認。 |
 | 星宮 未来 | Outreach Lead | 32 | 0 | SNS/outreach、候補表、返信ドラフト、送信後記録。 |
 | 白瀬 怜奈 | Risk / Review Lead | 20 | 0 | claim境界、license/privacy/API、セルフレビュー。 |
-| 歌澄 音羽 | Voice Provider Lead | 21 | 1 | TTS provider、VOICEVOX/Irodori/sherpa/Melo/API設計。 |
-| 言守 詞葉 | Multilingual Lead | 15 | 0 | ko/zh fallback、多言語fixture、dedicated provider evidence境界。 |
+| 歌澄 音羽 | Voice Provider Lead | 22 | 0 | TTS provider、VOICEVOX/Irodori/sherpa/Melo/API設計。 |
+| 言守 詞葉 | Multilingual Lead | 15 | 1 | ko/zh fallback、多言語fixture、dedicated provider evidence境界。 |
 | 速水 光莉 | Latency Lead | 14 | 0 | latency診断、RTF、table helper、測定読み方。 |
 | 文月 栞里 | Docs / Operations Lead | 11 | 0 | docs整備、hygiene、activity index、運用導線。 |
 | 愛坂 あい | Pet / Persona Lead | 2 | 0 | キャラクター/会話体験の方向づけ。 |
@@ -60,7 +60,8 @@ This page is a readable snapshot of the Japanese HQ state. The authoritative sou
 | `T170` | 星宮 未来 | done | Ready-To-Send Queueを追加。 |
 | `T171` | 歌澄 音羽 | done | Local TTS Master Choice Cardを追加。 |
 | `T172` | 歌澄 音羽 | done | VOICEVOX/Irodori evidence askを追加。 |
-| `T173` | 歌澄 音羽 | active | MeloTTS Cのruntime/cache boundaryを具体化中。 |
+| `T173` | 歌澄 音羽 | done | MeloTTS Cのruntime/cache boundaryを具体化。 |
+| `T174` | 言守 詞葉 | active | Minimal Multilingual Test Packを追加中。 |
 
 ## Where To Look Next
 
