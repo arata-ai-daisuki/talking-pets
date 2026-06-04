@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T106
+active_task: T109
 
 tasks:
   - id: T001
@@ -3266,7 +3266,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "速水 光莉"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "次に測るproviderを、VOICEVOX/voicebox engine起動済み確認から安全に判断する。"
     allowed_files:
@@ -3284,11 +3284,119 @@ tasks:
     verify:
       - "rg -n \"VOICEVOX|voicebox|起動していない場合|package install|model download\" docs/goals/talking-pets-hq-japanese/state.yaml"
     receipt:
-      result: active
-      decision: check_voicebox_readiness_next
+      result: done
+      decision: voicevox_running_engine_measured
       full_outcome_complete: false
-      summary: "次はVOICEVOX/voiceboxが既に起動しているかだけ確認し、起動していなければ測定保留にする。"
-      note: "notes/T105-say-control-latency-baseline.md"
+      summary: "MasterがVOICEVOX/voiceboxを起動済みだったため、list_voices疎通とspeaker 3の順番測定3回を実行した。warm synthesis totalは1334.3ms / 1388.6ms / 2206.6ms、outputは3.861333s WAV。"
+      note: "notes/T106-voicevox-readiness-and-latency.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T106-voicevox-readiness-and-latency.md"
+        - "docs/research/tts-provider-comparison.md"
+        - "docs/performance.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "npm run tts:voicevox -- --list-voices --profile-latency"
+          status: pass
+        - cmd: "npm run tts:voicevox -- --speaker 3 --text <short-ja> --out /private/tmp/talking-pets-voicevox-seq-1.wav --profile-latency"
+          status: pass
+        - cmd: "npm run tts:voicevox -- --speaker 3 --text <short-ja> --out /private/tmp/talking-pets-voicevox-seq-2.wav --profile-latency"
+          status: pass
+        - cmd: "npm run tts:voicevox -- --speaker 3 --text <short-ja> --out /private/tmp/talking-pets-voicevox-seq-3.wav --profile-latency"
+          status: pass
+        - cmd: "afinfo /private/tmp/talking-pets-voicevox-seq-1.wav /private/tmp/talking-pets-voicevox-seq-2.wav /private/tmp/talking-pets-voicevox-seq-3.wav"
+          status: pass
+
+  - id: T107
+    type: worker
+    assignee: Worker
+    owner_role: "速水 光莉"
+    status: done
+    reasoning_hint: default
+    objective: "VOICEVOXの再生込み測定を1回だけ行うか、Kokoro cold/warm測定へ進むかを安全に判断する。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      - "docs/research/tts-provider-comparison.md"
+      - "docs/performance.md"
+    constraints:
+      - "package install、model download、API key、有料API呼び出しをしない。"
+      - "Kokoro modelが未取得なら勝手にdownloadしない。"
+      - "測定値を一般化した性能claimにしない。"
+    stop_if:
+      - "Kokoro model download、API key、有料API、追加installが必要になった場合。"
+      - "大きな音量や長文再生が必要になった場合。"
+    verify:
+      - "rg -n \"VOICEVOX|Kokoro|download|API key|有料API\" docs/goals/talking-pets-hq-japanese/state.yaml"
+    receipt:
+      result: done
+      decision: voicevox_playback_included_measured
+      full_outcome_complete: false
+      summary: "VOICEVOX speaker 3で短文の再生込み測定を1回実行。total=5693.8ms、synthesis=1127.8ms、play=4398.6ms、output duration=3.210667s。totalは再生完了待ち込みで、声が出始めるまでの値ではない。"
+      note: "notes/T107-voicevox-playback-latency.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T107-voicevox-playback-latency.md"
+        - "docs/research/tts-provider-comparison.md"
+        - "docs/performance.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "npm run tts:voicevox -- --speaker 3 --text <short-ja-playback> --out /private/tmp/talking-pets-voicevox-play.wav --play --profile-latency"
+          status: pass
+        - cmd: "afinfo /private/tmp/talking-pets-voicevox-play.wav"
+          status: pass
+
+  - id: T108
+    type: worker
+    assignee: Worker
+    owner_role: "速水 光莉"
+    status: done
+    reasoning_hint: default
+    objective: "Kokoro cold/warm測定へ進めるか、model downloadなしで安全に確認する。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      - "docs/research/tts-provider-comparison.md"
+      - "docs/performance.md"
+    constraints:
+      - "Kokoro modelが未取得なら勝手にdownloadしない。"
+      - "package install、model download、API key、有料API呼び出しをしない。"
+      - "測定値を一般化した性能claimにしない。"
+    stop_if:
+      - "model downloadが必要になった場合。"
+      - "追加installや有料APIが必要になった場合。"
+    verify:
+      - "rg -n \"Kokoro|model download|追加install|有料API\" docs/goals/talking-pets-hq-japanese/state.yaml"
+    receipt:
+      result: done
+      decision: kokoro_measurement_on_hold_without_model_download_approval
+      full_outcome_complete: false
+      summary: "Kokoro測定前に既存cacheを確認したが、~/.cache/talking-pets/transformers は見つからなかった。初回実行はmodel downloadが走る可能性があるため、Master承認まで保留。"
+      note: "notes/T108-kokoro-cache-stopline.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T108-kokoro-cache-stopline.md"
+        - "docs/research/tts-provider-comparison.md"
+        - "docs/performance.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "test -d \"$HOME/.cache/talking-pets/transformers\" && find \"$HOME/.cache/talking-pets/transformers\" -maxdepth 4 -type f | head -30 || echo no-kokoro-cache"
+          status: pass
+
+  - id: T109
+    type: pm
+    assignee: PM
+    owner_role: "相庭 愛"
+    status: active
+    reasoning_hint: default
+    objective: "VOICEVOX測定結果をPR化し、Kokoro model downloadを許可するか、別のno-download作業へ進むか判断する。"
+    expected_output:
+      - "VOICEVOX測定PRをmergeする。"
+      - "Kokoro model downloadを許可する。"
+      - "Kokoroは保留して別のno-download作業へ進む。"
+    receipt:
+      result: active
+      decision: waiting_for_next_after_voicevox_baseline
+      full_outcome_complete: false
+      summary: "VOICEVOX測定は完了。Kokoroはcacheなしのためmodel download承認待ち。次はVOICEVOX測定PRをmergeしてから判断する。"
+      note: "notes/T108-kokoro-cache-stopline.md"
 
   - id: T007
     type: worker
