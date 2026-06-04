@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T119
+active_task: T121
 
 tasks:
   - id: T001
@@ -3689,7 +3689,7 @@ tasks:
     type: pm
     assignee: PM
     owner_role: "相庭 愛"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "T114のSNS募集文面をMasterが手動投稿した後のURL記録と、Issue #23-#26に来る検証報告の処理を進める。"
     expected_output:
@@ -3701,16 +3701,73 @@ tasks:
       - "private pathやconversation textを採用しない。"
       - "性能保証として書かない。"
     receipt:
-      result: active
+      result: done
       decision: public_verification_handoff_active
       full_outcome_complete: false
-      summary: "outreach送信準備、local TTS設計、多言語claim再確認まで一巡したため、次はMaster手動投稿URLとIssue報告を受けて記録・採用判定する。"
+      summary: "outreach送信準備、local TTS設計、多言語claim再確認まで一巡し、Master手動投稿URLとIssue報告を受けて記録・採用判定できる状態にした。"
       note: "notes/T119-next-public-verification-handoff.md"
       changed_files:
         - "docs/goals/talking-pets-hq-japanese/notes/T119-next-public-verification-handoff.md"
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands:
         - cmd: "rg -n \"active_task: T119|T119|public_verification_handoff_active|T114|T115|T007|Issue #23-#26\" docs/goals/talking-pets-hq-japanese/notes/T119-next-public-verification-handoff.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T120
+    type: judge
+    assignee: Judge
+    owner_role: "白瀬 怜奈"
+    status: done
+    reasoning_hint: high
+    objective: "Issue #23-#26の検証報告を週次で確認し、採用可否を分類できる運用チェックリストを作る。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "Issue返信しない。"
+      - "SNS投稿しない。"
+      - "READMEやverification-statusへ反映しない。"
+      - "private pathやconversation textを採用しない。"
+    receipt:
+      result: done
+      decision: verification_ops_checklist_ready
+      full_outcome_complete: false
+      summary: "Issue #23-#26の週次見回り、usable/needs-info/needs-sanitize/latency-unclear/not-evidence分類、Issue別の聞き返し優先順を整理した。"
+      note: "notes/T120-verification-ops-checklist.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T120-verification-ops-checklist.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n \"T120|verification_ops_checklist_ready|usable|needs-info|needs-sanitize|latency-unclear|Issue #23\" docs/goals/talking-pets-hq-japanese/notes/T120-verification-ops-checklist.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T121
+    type: pm
+    assignee: PM
+    owner_role: "相庭 愛"
+    status: active
+    reasoning_hint: default
+    objective: "Issue #23-#26の新規コメントを見回り、T120/T115に沿って分類する。"
+    expected_output:
+      - "投稿URLが来たらT007に記録する。"
+      - "Issueコメントが来たらusable/needs-info/needs-sanitize/latency-unclear/not-evidenceに分類する。"
+      - "usableならdocs/verification-status.md反映PRを切る。"
+      - "それ以外なら返信案を作りMaster確認を待つ。"
+    constraints:
+      - "自動投稿、自動DM、返信代行はしない。"
+      - "private pathやconversation textを採用しない。"
+      - "性能保証として書かない。"
+    receipt:
+      result: active
+      decision: weekly_verification_watch_active
+      full_outcome_complete: false
+      summary: "次のactive taskを、T114投稿URLまたはIssue #23-#26の新規コメントを受けてT120/T115基準で分類する週次見回りにした。"
+      note: "notes/T121-next-weekly-verification-watch.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T121-next-weekly-verification-watch.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n \"active_task: T121|T121|weekly_verification_watch_active|T120|T115|Issue #23-#26\" docs/goals/talking-pets-hq-japanese/notes/T121-next-weekly-verification-watch.md docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
 
   - id: T007
