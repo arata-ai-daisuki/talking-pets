@@ -161,7 +161,7 @@ Use this card when asking Master what provider work should move from planning in
 | C: deepen MeloTTS runtime design | Expand the MeloTTS design note around CLI/server/Docker/cache and measurement shape. | High multilingual value, but Python/Docker runtime shape is not npm-native. | No implementation and no Korean/Chinese support claim. |
 | D: hold API TTS for later | Keep API TTS as P2 opt-in with privacy/billing boundaries only. | Useful eventually, but it weakens local-first positioning if rushed. | No API key, no paid call, no remote default, no support wording. |
 
-Recommended default: choose A now, and prepare B only if Master explicitly approves a small optional local dependency/model investigation. Choose C if multilingual quality becomes more important than immediate local latency evidence.
+Recommended default: choose A now. Master has also asked to prepare B and C as design-only follow-ups, so the next safe movement is to deepen sherpa and MeloTTS notes without installing dependencies, downloading models, or changing support wording.
 
 ### Local TTS Master Choice Card
 
@@ -175,7 +175,14 @@ Recommended choice: **A: keep gathering VOICEVOX / Irodori contributor evidence*
 | B: sherpa design-only | Write the exact dependency/model/vocoder/cache/license scope for a future sherpa experiment. | Good local-first fit, but package/model details are still unresolved. | No install, model download, helper, README support wording, or default routing. |
 | C: MeloTTS runtime design-only | Expand the MeloTTS note around CLI/server/Docker/cache and measurement shape. | Useful if multilingual quality becomes the next priority. | No Python stack setup, no Korean/Chinese support claim, no generated audio request. |
 
-Default next PR after this card: keep A active and prepare a contributor-evidence request/update, unless Master explicitly chooses B or C.
+Default next PR after this card: keep A active for contributor evidence, while B and C may progress as design-only notes because Master explicitly asked for `BC`.
+
+### B/C Design Follow-Up
+
+| Choice | Current status | Evidence |
+| --- | --- | --- |
+| B: sherpa design-only | Scope refined around optional package review, one named model family, cache root, helper surface, measurement fields, and license review. | [Sherpa ONNX design](sherpa-onnx-design.md#b-design-only-scope) |
+| C: MeloTTS runtime design-only | Scope refined around CLI/server/Docker/Python runtime choices, measurement fields, and the no-support-claim stop line. | [MeloTTS design note](melotts-design-note.md#c-runtime-design-only-scope) |
 
 ## Next Provider Approval Gate
 
