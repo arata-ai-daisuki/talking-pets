@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T199
+active_task: T200
 
 tasks:
   - id: T001
@@ -6444,7 +6444,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "言守 詞葉 / 白瀬 怜奈"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "outreachやprovider返信が来た時に、fallback-only / provider-specificをすぐ分類できる状態を確認する。"
     allowed_files:
@@ -6461,13 +6461,50 @@ tasks:
       - "README support claimを変えない。"
       - "private logs、generated audio、private contactをrepoへ保存しない。"
     receipt:
-      result: active
+      result: done
       decision: multilingual_evidence_queue_check
-      full_outcome_complete: false
-      summary: "次は多言語証跡のfallback-only/provider-specific分類queueを確認する。"
+      full_outcome_complete: true
+      summary: "Multilingual Evidence Handling Order、Minimal Multilingual Report Form、Provider Feedback Intakeの接続を確認し、Multilingual Evidence Intake Queueを追加した。README claimを変えず、fallback-only/provider-specificの初期記録先を明確にした。"
       note: "notes/T199-multilingual-evidence-queue-check.md"
       changed_files:
+        - "docs/real-device-verification.md"
+        - "docs/verification-status.md"
+        - "docs/research/x-outreach-targets.md"
         - "docs/goals/talking-pets-hq-japanese/notes/T199-multilingual-evidence-queue-check.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T200-backlog-wave-refresh.md"
+        - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+        - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n 'Multilingual Evidence Intake Queue|fallback routing/audio evidence|provider-specific evidence|active_task: T200|multilingual_evidence_queue_check|backlog_wave_refresh' docs/real-device-verification.md docs/verification-status.md docs/research/x-outreach-targets.md docs/goals/talking-pets-hq-japanese/notes/T199-multilingual-evidence-queue-check.md docs/goals/talking-pets-hq-japanese/notes/T200-backlog-wave-refresh.md docs/goals/talking-pets-hq-japanese/hq-backlog-board.md docs/goals/talking-pets-hq-japanese/activity-index.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+        - cmd: "npm run check:docs"
+          status: pass
+
+  - id: T200
+    type: pm
+    assignee: PM
+    owner_role: "相庭 愛 / 文月 栞里"
+    status: active
+    reasoning_hint: default
+    objective: "T195-T199でproof/outreach/local TTS/multilingualの波が進んだので、次の候補を見直す。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+      - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "依存追加、model download、API callをしない。"
+      - "README support claimを変えない。"
+      - "外部SNS/issueへ自動投稿しない。"
+    receipt:
+      result: active
+      decision: backlog_wave_refresh
+      full_outcome_complete: false
+      summary: "次はT195-T199の完了波を畳み、Active/Next/Backlogを再整理する。"
+      note: "notes/T200-backlog-wave-refresh.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T200-backlog-wave-refresh.md"
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands: []
 
