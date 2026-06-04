@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T200
+active_task: T201
 
 tasks:
   - id: T001
@@ -6485,7 +6485,7 @@ tasks:
     type: pm
     assignee: PM
     owner_role: "相庭 愛 / 文月 栞里"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "T195-T199でproof/outreach/local TTS/multilingualの波が進んだので、次の候補を見直す。"
     allowed_files:
@@ -6498,13 +6498,48 @@ tasks:
       - "README support claimを変えない。"
       - "外部SNS/issueへ自動投稿しない。"
     receipt:
-      result: active
+      result: done
       decision: backlog_wave_refresh
-      full_outcome_complete: false
-      summary: "次はT195-T199の完了波を畳み、Active/Next/Backlogを再整理する。"
+      full_outcome_complete: true
+      summary: "HQ Backlog BoardとActivity Indexを確認し、T195-T199の完了波をDone Historyとして畳んだ。次のActiveをverification issue later watch、Nextをoutreach waiting lane refresh/local TTS approval decisionへ再整理した。"
       note: "notes/T200-backlog-wave-refresh.md"
       changed_files:
+        - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+        - "docs/goals/talking-pets-hq-japanese/activity-index.md"
         - "docs/goals/talking-pets-hq-japanese/notes/T200-backlog-wave-refresh.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T201-verification-issue-later-watch.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n 'T195-T199|Verification issue later watch|Outreach waiting lane refresh|Local TTS approval decision|active_task: T201|backlog_wave_refresh|verification_issue_later_watch' docs/goals/talking-pets-hq-japanese/hq-backlog-board.md docs/goals/talking-pets-hq-japanese/activity-index.md docs/goals/talking-pets-hq-japanese/notes/T200-backlog-wave-refresh.md docs/goals/talking-pets-hq-japanese/notes/T201-verification-issue-later-watch.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+        - cmd: "npm run check:docs"
+          status: pass
+
+  - id: T201
+    type: pm
+    assignee: PM
+    owner_role: "文月 栞里 / 白瀬 怜奈"
+    status: active
+    reasoning_hint: default
+    objective: "Issue #23-#26を再確認し、新しいpublic evidenceがなければclaim変更なしで閉じる。"
+    allowed_files:
+      - "docs/verification-status.md"
+      - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+      - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "GitHub issueへ自動返信しない。"
+      - "Windows/Linuxを実機証跡なしにstableへ上げない。"
+      - "VOICEVOX/Irodoriの1件データを性能保証にしない。"
+    receipt:
+      result: active
+      decision: verification_issue_later_watch
+      full_outcome_complete: false
+      summary: "次はIssue #23-#26をclaim変更なしで再確認する。"
+      note: "notes/T201-verification-issue-later-watch.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T201-verification-issue-later-watch.md"
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands: []
 
