@@ -356,3 +356,18 @@ After the review passes, update this page first, then copy the platform evidence
 - Update this file after adding or removing a release gate command.
 - Keep Windows and Linux marked experimental until sanitized, audible real-device evidence exists for each OS.
 - Do not replace `docs/real-device-verification.md`; link to it for reusable commands and pass criteria.
+
+## Multilingual Verification Boundary Watch Result
+
+Checked: 2026-06-05
+
+Issue #23, #24, #25, and #26 remain open with 0 comments. Their last updated timestamps remain:
+
+- #23: 2026-06-04T05:57:31Z
+- #24: 2026-06-04T05:57:33Z
+- #25: 2026-06-04T05:57:33Z
+- #26: 2026-06-04T05:57:34Z
+
+Decision: keep Korean / Chinese as OS speech fallback-only verification until sanitized contributor evidence supports a provider-specific claim.
+
+No Korean/Chinese dedicated provider support claim, README support claim, generated audio, private log, private contact, model download, or API call was added in this watch.
