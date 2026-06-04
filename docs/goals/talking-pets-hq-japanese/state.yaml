@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T127
+active_task: T128
 
 tasks:
   - id: T001
@@ -3935,7 +3935,7 @@ tasks:
     type: pm
     assignee: PM
     owner_role: "星宮 未来"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "README直リンクからIssue #23-#26へ来た人向けの補足コメント案と、投稿する条件を整理する。"
     allowed_files:
@@ -3947,16 +3947,44 @@ tasks:
       - "Star依頼を入れない。"
       - "private pathやconversation textを要求しない。"
     receipt:
-      result: active
+      result: done
       decision: issue_comment_drafts_ready
       full_outcome_complete: false
-      summary: "Issue #23-#26向けの補足コメント案を用意し、今すぐ全Issueへ貼るのではなく、SNS投稿後や情報不足発生時にMaster確認後に使う方針にした。"
+      summary: "Issue #23-#26向けの補足コメント案を用意し、今すぐ全Issueへ貼るのではなく、SNS投稿後や情報不足発生時にMaster確認後に使う方針にした。次はSNS投稿文を最終版へ絞る。"
       note: "notes/T127-issue-comment-drafts.md"
       changed_files:
         - "docs/goals/talking-pets-hq-japanese/notes/T127-issue-comment-drafts.md"
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands:
         - cmd: "rg -n \"active_task: T127|T127|issue_comment_drafts_ready|共通コメント案|投稿する条件|投稿しない条件\" docs/goals/talking-pets-hq-japanese/notes/T127-issue-comment-drafts.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T128
+    type: worker
+    assignee: Worker
+    owner_role: "星宮 未来"
+    status: active
+    reasoning_hint: default
+    objective: "T114/T123/T127を踏まえ、今すぐ手動投稿できるSNS文面を英日1本ずつに絞る。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "SNS投稿、DM、Issue返信をしない。"
+      - "初手Star依頼を入れない。"
+      - "fast / under 1s / 性能保証を書かない。"
+      - "private Codex logsを求めない。"
+    receipt:
+      result: active
+      decision: ready_to_post_social_copy
+      full_outcome_complete: false
+      summary: "手動投稿用に、English postとJapanese postを各1本へ絞り、投稿後にT007へ貼る記録行と投稿前チェックを用意した。投稿はしていない。"
+      note: "notes/T128-ready-to-post-social-copy.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T128-ready-to-post-social-copy.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n \"active_task: T128|T128|ready_to_post_social_copy|English post|Japanese post|投稿前チェック|No private Codex logs\" docs/goals/talking-pets-hq-japanese/notes/T128-ready-to-post-social-copy.md docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
 
   - id: T007
