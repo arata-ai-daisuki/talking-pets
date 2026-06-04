@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T159
+active_task: T160
 
 tasks:
   - id: T001
@@ -4963,7 +4963,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "星宮 未来"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "provider-specific multilingual TTSを検証できる人を手動outreachで探しやすくする。"
     allowed_files:
@@ -4976,7 +4976,7 @@ tasks:
       - "Korean / Chinese dedicated provider support claimを追加しない。"
       - "provider実装、依存追加、model download、API callをしない。"
     receipt:
-      result: active
+      result: done
       decision: multilingual_tester_targets
       full_outcome_complete: false
       summary: "x-outreach-targetsにMultilingual local TTS experimenters segment、手動検索query、provider-specific multilingual TTS返信テンプレを追加した。"
@@ -4987,6 +4987,36 @@ tasks:
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands:
         - cmd: "rg -n 'active_task: T159|T159|multilingual_tester_targets|Multilingual local TTS experimenters|Provider-specific multilingual TTS|Korean.*local TTS|Chinese.*local TTS|multilingual TTS.*offline' docs/research/x-outreach-targets.md docs/goals/talking-pets-hq-japanese/notes/T159-multilingual-tester-targets.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T160
+    type: worker
+    assignee: Worker
+    owner_role: "星宮 未来"
+    status: active
+    reasoning_hint: default
+    objective: "手動検索で見つけたoutreach候補を、送信済みと混同せず記録できる表を追加する。"
+    allowed_files:
+      - "docs/research/x-outreach-targets.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "自動返信、DM、follow、like、mentionを追加しない。"
+      - "private contact details、private DMs、scraped personal dataを記録しない。"
+      - "Korean / Chinese dedicated provider support claimを追加しない。"
+      - "provider実装、依存追加、model download、API callをしない。"
+    receipt:
+      result: active
+      decision: outreach_search_review_log
+      full_outcome_complete: false
+      summary: "x-outreach-targetsにSearch Review Logを追加し、候補post/projectをwatch/reply later/skip/sentで記録できるようにした。"
+      note: "notes/T160-outreach-search-review-log.md"
+      changed_files:
+        - "docs/research/x-outreach-targets.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T160-outreach-search-review-log.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n 'active_task: T160|T160|outreach_search_review_log|Search Review Log|Query / Source|watch / reply later / skip / sent|Record `sent` only after Master manually posts' docs/research/x-outreach-targets.md docs/goals/talking-pets-hq-japanese/notes/T160-outreach-search-review-log.md docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
 
   - id: T007

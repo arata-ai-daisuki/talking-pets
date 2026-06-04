@@ -100,6 +100,22 @@ If DM becomes appropriate:
    - follow-up needed
 5. If no response, do not bump the same person for at least 2 weeks.
 
+## Search Review Log
+
+Use this table before posting. A row here does not mean outreach happened; it only records a public post or project that may be relevant after manual review.
+
+| Date | Query / Source | Candidate / Post | Fit | Evidence Need | Suggested Template | Decision | Follow-Up |
+|---|---|---|---|---|---|---|---|
+|  |  |  | Codex / local voice / multilingual TTS / AI companion | latency / provider feedback / dedicated provider evidence / intro | Codex-specific / Local voice / Provider-specific multilingual TTS / AI VTuber | watch / reply later / skip / sent |  |
+
+Review rules:
+
+- Do not post from the table unless the current post is clearly relevant to Codex, local TTS, multilingual provider setup, AI companion UX, or explicit project examples.
+- Prefer `watch` when the fit is cultural but not technical.
+- Use `Provider-specific multilingual TTS` only when the person is already discussing local Korean, Chinese, or offline multilingual TTS setup.
+- Record `sent` only after Master manually posts or replies.
+- Do not record private contact details, private DMs, or scraped personal data.
+
 ## Sources Checked
 
 - X search result for Mau Ledford / Sogni Voice: https://x.com/krunkosaurus/status/2015719029911220531
