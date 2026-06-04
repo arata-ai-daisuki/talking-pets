@@ -9,7 +9,7 @@ import { documentAnchors, documentLinks, shouldSkip, splitTarget } from "./check
 
 const scriptPath = fileURLToPath(import.meta.url);
 const maxPackageSize = 600_000;
-const maxEntryCount = 61;
+const maxEntryCount = 62;
 const publicFixtureRollouts = new Set([
   "test/fixtures/assistant-rollout.jsonl",
   "test/fixtures/mixed-ja-en-rollout.jsonl",

@@ -106,6 +106,17 @@ Example:
 [latency] total=9565.2ms synthesis=9560.9ms read_audio=1.0ms write_audio=1.0ms audioDuration=3.92s rtf=2.44x provider=irodori success=true play=false
 ```
 
+### Latency line table helper
+
+複数回の `[latency]` 行を表にする場合:
+
+```bash
+npm run latency:table -- /tmp/talking-pets-latency-lines.txt
+npm run latency:table -- --format csv /tmp/talking-pets-latency-lines.txt
+```
+
+このhelperはTTS engineを起動しません。既に保存したsanitized latency lineをMarkdownまたはCSVへ変換するだけです。
+
 ## まだ測れていないもの
 
 - 実際のPet overlay表示から読み上げ開始までの体感時間。
