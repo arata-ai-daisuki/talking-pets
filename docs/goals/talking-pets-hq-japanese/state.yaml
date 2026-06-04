@@ -49,10 +49,10 @@ visual_board:
   selected: local
   local:
     status: generated
-    url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
+    url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese-2/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T174
+active_task: T175
 
 tasks:
   - id: T001
@@ -5445,7 +5445,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "言守 詞葉"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "Backlog BoardのNextにある多言語検証を、協力者が短時間で試せるMinimal Multilingual Test Packへ進める。"
     allowed_files:
@@ -5461,7 +5461,7 @@ tasks:
       - "generated audio、private logs、local paths、model files、downloaded dictionaries、credentials、private Codex textの添付を求めない。"
       - "provider実装、依存追加、model download、API callをしない。"
     receipt:
-      result: active
+      result: done
       decision: minimal_multilingual_test_pack
       full_outcome_complete: false
       summary: "real-device-verificationにMinimal Multilingual Test Packを追加し、ko/zhの短いtest sentence、dry-run routing check、fallback-only/provider-specificの報告境界、outreach follow-up文を整えた。"
@@ -5479,6 +5479,57 @@ tasks:
         - cmd: "node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --rollout test/fixtures/ko-rollout.jsonl"
           status: pass
         - cmd: "node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --rollout test/fixtures/zh-traditional-rollout.jsonl"
+          status: pass
+
+  - id: T175
+    type: worker
+    assignee: Worker
+    owner_role: "歌澄 音羽"
+    status: active
+    reasoning_hint: default
+    objective: "T061由来の判断として、sherpa-onnx-nodeをmodel downloadなしでoptional dependencyとしてnpm installだけ試す。"
+    allowed_files:
+      - "package.json"
+      - "package-lock.json"
+      - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+      - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "model、vocoder、tokens、espeak-ng dataをdownloadしない。"
+      - "import health check、音声生成、helper実装、README support claim、default routing変更をしない。"
+      - "MeloTTS installerはdownload/installまで進めず、別カードとして残す。"
+    receipt:
+      result: active
+      decision: sherpa_optional_npm_install
+      full_outcome_complete: false
+      summary: "npm install sherpa-onnx-node --save-optionalを実行し、package.json/package-lock.jsonにoptional dependencyとして追加した。macOS arm64 platform packageは約73MBで、npm auditは0 vulnerabilities。"
+      note: "notes/T175-sherpa-optional-npm-install.md"
+      changed_files:
+        - "package.json"
+        - "package-lock.json"
+        - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+        - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T175-sherpa-optional-npm-install.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "npm install sherpa-onnx-node --save-optional --cache /private/tmp/talking-pets-npm-cache --logs-dir /private/tmp/talking-pets-npm-logs --loglevel warn"
+          status: pass
+        - cmd: "npm ci --cache /private/tmp/talking-pets-npm-cache --logs-dir /private/tmp/talking-pets-npm-logs --loglevel warn"
+          status: pass
+        - cmd: "du -sh node_modules/sherpa-onnx-*"
+          status: pass
+        - cmd: "npm test"
+          status: pass
+        - cmd: "npm run check:docs"
+          status: pass
+        - cmd: "npm run check:pack"
+          status: pass
+        - cmd: "npm run check:installers"
+          status: pass
+        - cmd: "CLANG_MODULE_CACHE_PATH=/private/tmp/talking-pets-clang-module-cache npm run check:all"
+          status: pass
+        - cmd: "npx --cache /private/tmp/talking-pets-npm-cache --yes goalbuddy board docs/goals/talking-pets-hq-japanese"
           status: pass
 
   - id: T007
