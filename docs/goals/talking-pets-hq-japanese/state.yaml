@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T165
+active_task: T166
 
 tasks:
   - id: T001
@@ -5145,7 +5145,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "歌澄 音羽"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "Provider Experiment Scorecardの結果から、次にMasterへ提示するprovider作業の選択肢をDecision Cardにまとめる。"
     allowed_files:
@@ -5158,7 +5158,7 @@ tasks:
       - "選択肢はplanning decisionであり、Master承認なしに実験へ進めない。"
       - "Korean / Chinese dedicated provider support claimを追加しない。"
     receipt:
-      result: active
+      result: done
       decision: provider_next_decision_card
       full_outcome_complete: false
       summary: "tts-provider-comparisonにNext Provider Decision Cardを追加し、A: contributor evidence、B: sherpa design experiment、C: MeloTTS runtime design、D: API TTS holdを整理した。"
@@ -5169,6 +5169,37 @@ tasks:
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands:
         - cmd: "rg -n 'active_task: T165|T165|provider_next_decision_card|Next Provider Decision Card|A: keep gathering contributor evidence|B: approve a tiny sherpa-onnx design experiment|C: deepen MeloTTS runtime design|D: hold API TTS' docs/research/tts-provider-comparison.md docs/goals/talking-pets-hq-japanese/notes/T165-provider-next-decision-card.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T166
+    type: worker
+    assignee: Worker
+    owner_role: "文月 栞里"
+    status: active
+    reasoning_hint: default
+    objective: "Masterがカンバンとサブエージェント活動を一覧で見られるHQ Activity Indexを追加する。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+      - "docs/goals/talking-pets-hq-japanese/goal.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "provider実装、依存追加、model download、API callをしない。"
+      - "自動投稿、DM、follow、like、mentionをしない。"
+      - "活動一覧はstate.yamlの現在地から作ったsnapshotとして扱う。"
+    receipt:
+      result: active
+      decision: hq_activity_index
+      full_outcome_complete: false
+      summary: "HQ Activity Indexを追加し、GoalBuddy看板URL、active task、担当別活動数、直近wave、次に見る場所を一覧化した。"
+      note: "notes/T166-hq-activity-index.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+        - "docs/goals/talking-pets-hq-japanese/goal.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T166-hq-activity-index.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n 'active_task: T166|T166|hq_activity_index|HQ Activity Index|GoalBuddy Kanban|Agent Activity Summary|Recent Wave|文月 栞里' docs/goals/talking-pets-hq-japanese/activity-index.md docs/goals/talking-pets-hq-japanese/goal.md docs/goals/talking-pets-hq-japanese/notes/T166-hq-activity-index.md docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
 
   - id: T007

@@ -28,3 +28,7 @@ Talking Petsを、GoalBuddyの日本語看板で継続推進する。
 ## 看板
 
 http://goalbuddy.localhost:41737/talking-pets-hq-japanese/
+
+## 活動一覧
+
+- [HQ Activity Index](activity-index.md): カンバンの見方、現在のactive task、担当別活動数、直近の作業履歴。
