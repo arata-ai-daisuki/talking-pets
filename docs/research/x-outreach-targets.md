@@ -177,6 +177,8 @@ Next-cycle watch checked: 2026-06-05. V1GPT's Reddit URL still returned a verifi
 
 Post-merge next-cycle watch checked: 2026-06-05. V1GPT's Reddit URL still returned a verification page, and the OpenClaw / Sogni Voice X URL still returned X logged-out app-shell HTML without usable reply text. Treat both rows as waiting with insufficient public evidence; do not infer reply or no-reply, and do not nudge before 2026-06-17 unless Master supplies a public reply URL or approved sanitized summary.
 
+Cycle refresh checked: 2026-06-05. V1GPT's Reddit URL still returned a verification page, and the OpenClaw / Sogni Voice X URL still returned X logged-out app-shell HTML without usable reply text. Keep both sent rows in `wait`; no automated outreach, manual nudge, DM, mention, follow, like, or Star ask was made.
+
 | Target | Waiting action | Next check | Safe internal work while waiting |
 | --- | --- | --- | --- |
 | OpenClaw / Sogni Voice | Do not bump before 2026-06-17 unless a public reply appears first. | Record only a public reply URL or Master-approved private summary. | Provider feedback intake, local TTS approval decision, latency docs. |
