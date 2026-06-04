@@ -1,0 +1,24 @@
+# T227 Outreach Waiting Lane Cycle Refresh
+
+## Objective
+
+T226の多言語検証cycle refresh後に、outreach送信済みlaneへ戻る。
+
+## Scope
+
+- OpenClaw / V1GPT / Redditなどの送信済み・返信待ち状態を確認する。
+- 返信がなければ、再送・催促なしでwaitを維持する。
+- 返信があれば、private情報を貼らずにsanitized summaryだけを記録する。
+
+## Stop Lines
+
+- 自動投稿、DM、mention、follow、likeをしない。
+- `2026-06-17`より前に催促しない。
+- private contact、full thread、unsanitized DMをrepoへ保存しない。
+
+## Receipt
+
+- decision: `outreach_waiting_lane_cycle_refresh`
+- owner: `星宮 未来 / 白瀬 怜奈`
+- status: active
+- next: check outreach waiting lane without auto-send or nudge.
