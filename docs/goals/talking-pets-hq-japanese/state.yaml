@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T191
+active_task: T192
 
 tasks:
   - id: T001
@@ -6128,7 +6128,7 @@ tasks:
     type: pm
     assignee: PM
     owner_role: "星宮 未来"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "送信後は返信待ちで止まらず、手動ログと2週間ルールだけを保つ。"
     allowed_files:
@@ -6143,11 +6143,50 @@ tasks:
       - "返信待ちだけを理由にlocal TTSや多言語docs作業を止めない。"
       - "private DM本文や個人情報をdocsへ貼らない。"
     receipt:
-      result: active
+      result: done
       decision: outreach_watch_cadence
-      full_outcome_complete: false
-      summary: "次はoutreachのsent/watch/reply-later状態を確認し、再送せずに手動ログの見通しだけを保つ。"
+      full_outcome_complete: true
+      summary: "Search Review LogにOpenClaw / Sogni VoiceとV1GPTのMaster-sent状態、public URL、2026-06-17までの催促禁止ルールを追加し、SNS strategyにも待機期間中の安全な内部作業を明記した。"
       note: "notes/T191-outreach-watch-cadence.md"
+      changed_files:
+        - "docs/research/x-outreach-targets.md"
+        - "docs/research/sns-outreach-strategy.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T191-outreach-watch-cadence.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T192-multilingual-intake-follow-up.md"
+        - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+        - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n 'Current Outreach Cadence Snapshot|Current Outreach Watch Cadence|2026-06-17|active_task: T192|outreach_watch_cadence|multilingual_intake_follow_up' docs/research/x-outreach-targets.md docs/research/sns-outreach-strategy.md docs/goals/talking-pets-hq-japanese/notes/T191-outreach-watch-cadence.md docs/goals/talking-pets-hq-japanese/notes/T192-multilingual-intake-follow-up.md docs/goals/talking-pets-hq-japanese/hq-backlog-board.md docs/goals/talking-pets-hq-japanese/activity-index.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+        - cmd: "npm run check:docs"
+          status: pass
+
+  - id: T192
+    type: pm
+    assignee: PM
+    owner_role: "言守 詞葉"
+    status: active
+    reasoning_hint: default
+    objective: "外部証跡が届いた時に、fallback-only / provider-specific / provider feedback intakeの混線がない状態を保つ。"
+    allowed_files:
+      - "docs/real-device-verification.md"
+      - "docs/verification-status.md"
+      - "docs/research/tts-provider-comparison.md"
+      - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+      - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "実機証跡なしに韓国語/中国語をdedicated provider supportとして扱わない。"
+      - "生成音声、private logs、private DM本文をdocsへ貼らない。"
+      - "provider実装、model download、API callをしない。"
+    receipt:
+      result: active
+      decision: multilingual_intake_follow_up
+      full_outcome_complete: false
+      summary: "次は多言語証跡の記録先とstop lineを再確認する。"
+      note: "notes/T192-multilingual-intake-follow-up.md"
       changed_files:
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands: []

@@ -171,3 +171,16 @@ No generated audio or install test needed for this question; I'm just looking fo
 7. When asking TTS/provider experts, use the "Provider feedback ask" template and record whether the answer affects license, runtime, cache, or measurement planning.
 8. When someone can test Korean/Chinese with a provider-specific local TTS path, use the "Dedicated provider evidence ask" template and the checklist link.
 9. Do not wait on replies before continuing safe internal work; unanswered outreach is a watch state, not a blocker.
+
+### Current Outreach Watch Cadence
+
+Checked: 2026-06-05. OpenClaw / Sogni Voice and V1GPT are already marked as Master-sent in the Search Review Log. Do not send another nudge before 2026-06-17 unless they reply first.
+
+Use the waiting period for safe internal work:
+
+- provider design notes
+- verification intake docs
+- multilingual evidence handling
+- README/SNS route clarity
+
+Keep V1R4 as `reply later` until a current public thread clearly invites related project examples.

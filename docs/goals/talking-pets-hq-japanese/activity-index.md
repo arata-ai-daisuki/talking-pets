@@ -8,14 +8,14 @@ This page is a readable snapshot of the Japanese HQ state. The authoritative sou
 
 - Board URL: `http://goalbuddy.localhost:41737/talking-pets-hq-japanese/`
 - Local board files: `docs/goals/talking-pets-hq-japanese/.goalbuddy-board/`
-- Current active task: `T191`
-- Current focus: outreachのsent/watch/reply-later状態を再送なしで保つ。
+- Current active task: `T192`
+- Current focus: 多言語証跡の記録先とstop lineを再確認する。
 
 ## Kanban Snapshot
 
 | Column | Count | Meaning |
 | --- | ---: | --- |
-| Done | 191 | 完了済みの小PR、調査、判断カード、検証receipt。 |
+| Done | 192 | 完了済みの小PR、調査、判断カード、検証receipt。 |
 | Active | 1 | いまHQが追っている作業。 |
 | Blocked | 0 | 同じ停止条件が継続しており、Master判断なしに進めないもの。 |
 
@@ -24,10 +24,10 @@ This page is a readable snapshot of the Japanese HQ state. The authoritative sou
 | Agent | Role | Done | Active | Main lane |
 | --- | --- | ---: | ---: | --- |
 | 相庭 愛 | HQ Producer | 59 | 0 | 判断カード、全体整理、Master確認。 |
-| 星宮 未来 | Outreach Lead | 34 | 1 | SNS/outreach、候補表、返信ドラフト、送信後記録。 |
+| 星宮 未来 | Outreach Lead | 35 | 0 | SNS/outreach、候補表、返信ドラフト、送信後記録。 |
 | 白瀬 怜奈 | Risk / Review Lead | 20 | 0 | claim境界、license/privacy/API、セルフレビュー。 |
 | 歌澄 音羽 | Voice Provider Lead | 29 | 0 | TTS provider、VOICEVOX/Irodori/sherpa/Melo/API設計。 |
-| 言守 詞葉 | Multilingual Lead | 17 | 0 | ko/zh fallback、多言語fixture、dedicated provider evidence境界。 |
+| 言守 詞葉 | Multilingual Lead | 17 | 1 | ko/zh fallback、多言語fixture、dedicated provider evidence境界。 |
 | 速水 光莉 | Latency Lead | 14 | 0 | latency診断、RTF、table helper、測定読み方。 |
 | 文月 栞里 | Docs / Operations Lead | 11 | 0 | docs整備、hygiene、activity index、運用導線。 |
 | 愛坂 あい | Pet / Persona Lead | 2 | 0 | キャラクター/会話体験の方向づけ。 |
@@ -78,7 +78,8 @@ This page is a readable snapshot of the Japanese HQ state. The authoritative sou
 | `T188` | 星宮 未来 | done | Ready-To-Send Queueと送信後記録導線を現行化。 |
 | `T189` | 言守 詞葉 | done | 多言語証跡の処理順をwatch手順として整理。 |
 | `T190` | 歌澄 音羽 / 白瀬 怜奈 | done | Scorecard evidence gapをdesign-note質問へ整理。 |
-| `T191` | 星宮 未来 | active | Outreach watch cadenceを準備中。 |
+| `T191` | 星宮 未来 | done | Outreach watch cadenceを送信済み/催促禁止日つきで整理。 |
+| `T192` | 言守 詞葉 | active | Multilingual intake follow-upを準備中。 |
 
 ## Where To Look Next
 

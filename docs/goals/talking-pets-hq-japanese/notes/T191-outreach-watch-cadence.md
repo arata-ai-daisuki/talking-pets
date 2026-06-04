@@ -6,9 +6,9 @@
 
 ## Scope
 
-- Ready-To-Send QueueとSearch Review Logの状態を確認する。
-- user-sentの相手へ再送しない。
-- 返信が来た時だけ、public URL / evidence type / next actionを記録する。
+- Ready-To-Send QueueとSearch Review Logの状態を確認した。
+- user-sentの相手へ再送しない状態にした。
+- 返信が来た時だけ、public URL / evidence type / next actionを記録する流れを維持した。
 
 ## Stop Lines
 
@@ -20,5 +20,5 @@
 
 - decision: `outreach_watch_cadence`
 - owner: `星宮 未来`
-- status: active
-- next: verify sent/watch/reply-later state without sending messages.
+- status: done
+- next: multilingual intake follow-up.
