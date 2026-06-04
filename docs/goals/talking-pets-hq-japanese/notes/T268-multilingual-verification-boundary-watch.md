@@ -21,5 +21,8 @@ T267のlocal TTS boundary watch後に、多言語検証の境界へ戻る。
 
 - decision: `multilingual_verification_boundary_watch`
 - owner: `言守 詞葉 / 白瀬 怜奈`
-- status: active
-- next: recheck multilingual evidence boundaries without dedicated-provider claims, generated audio, private logs, private contact, model downloads, or API calls.
+- status: done
+- result: `Multilingual Verification Boundary Watch Result 13`
+- summary: Korean / ChineseをOS speech fallback-onlyのまま維持し、Minimal Multilingual Report FormとDedicated Provider Evidence Checklistをprovider-specific claimのgateとして再確認した。
+- safety: GitHub issue API refresh、dedicated-provider support claim、README support claim、fallback-to-provider wording変更、生成音声、private log/contact保存、model download、API call、外部TTS endpoint送信はしていない。
+- next: return to outreach waiting lane without resend, nudging, automatic posting, private logs, or Star requests.
