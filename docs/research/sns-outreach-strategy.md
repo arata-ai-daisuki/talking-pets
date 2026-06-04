@@ -187,6 +187,8 @@ If OpenClaw / Sogni Voice or V1GPT replies before 2026-06-17, record the public 
 
 The current wait-state is tracked in the [Outreach Waiting Lane Snapshot](x-outreach-targets.md#outreach-waiting-lane-snapshot). Treat unanswered outreach as watch state, not a blocker.
 
+Later watch: 2026-06-05. V1GPT's public Reddit page was readable and did not expose a Talking Pets reply in the fetched HTML. The OpenClaw / Sogni Voice X page did not expose useful public HTML content, so do not infer reply state from X. Keep both rows as waiting and do not nudge before 2026-06-17 unless a public reply appears first.
+
 Keep V1R4 as `reply later` until a current public thread clearly invites related project examples.
 
 ### Public Proof Route Selector
