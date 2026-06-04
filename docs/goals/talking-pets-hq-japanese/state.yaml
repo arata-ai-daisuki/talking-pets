@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T176
+active_task: T177
 
 tasks:
   - id: T001
@@ -5536,7 +5536,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "歌澄 音羽"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "MeloTTSをTalking Petsに直接installさせず、ユーザーが別途用意したexternal runtimeへ安全に接続するためのhelper設計を固める。"
     allowed_files:
@@ -5551,9 +5551,9 @@ tasks:
       - "README support claim、default routing、helper実装、音声生成はしない。"
       - "installer download/installは別カードとして残す。"
     receipt:
-      result: active
+      result: done
       decision: melotts_external_runtime_helper_design_active
-      full_outcome_complete: false
+      full_outcome_complete: true
       summary: "MeloTTS external runtime helper designをActiveにし、detect/connect-only、cache非所有、download/install停止線、public wording境界を整理した。"
       note: "notes/T176-melotts-external-runtime-helper-design.md"
       changed_files:
@@ -5563,6 +5563,37 @@ tasks:
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands:
         - cmd: "rg -n 'active_task: T176|T176|MeloTTS External Runtime Helper Design|detect-only|Connect-only|Do not install MeloTTS|external runtime' docs/goals/talking-pets-hq-japanese/notes/T176-melotts-external-runtime-helper-design.md docs/goals/talking-pets-hq-japanese/hq-backlog-board.md docs/goals/talking-pets-hq-japanese/activity-index.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T177
+    type: worker
+    assignee: Worker
+    owner_role: "歌澄 音羽"
+    status: active
+    reasoning_hint: default
+    objective: "T176のMeloTTS external runtime helper designを受けて、次に実装するならどこまでを小PRにするかを固定する。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+      - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "MeloTTS、Python packages、Docker images、model、dictionary、language assetsをdownload/installしない。"
+      - "helper実装、README support claim、default routing、音声生成はしない。"
+      - "次に実装する場合の小PR境界だけを固定する。"
+    receipt:
+      result: active
+      decision: melotts_detect_connect_card_ready
+      full_outcome_complete: false
+      summary: "MeloTTS detect/connect-only implementation cardを追加し、health-only helper skeleton、明示config、localhost health、no install/download、no support claimの境界を固定した。"
+      note: "notes/T177-melotts-detect-connect-card.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T177-melotts-detect-connect-card.md"
+        - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+        - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n 'active_task: T177|T177|MeloTTS Detect/Connect-Only Card|health-only helper skeleton|No new dependency|No installer downloads|GoalBuddy board keeps Active/Next/Backlog in Japanese' docs/goals/talking-pets-hq-japanese/notes/T177-melotts-detect-connect-card.md docs/goals/talking-pets-hq-japanese/hq-backlog-board.md docs/goals/talking-pets-hq-japanese/activity-index.md docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
 
   - id: T007
