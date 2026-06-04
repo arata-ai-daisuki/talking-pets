@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T204
+active_task: T205
 
 tasks:
   - id: T001
@@ -6631,7 +6631,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "言守 詞葉 / 白瀬 怜奈"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "多言語検証の新しいpublic evidenceが来た場合の受け口を確認する。"
     allowed_files:
@@ -6646,13 +6646,57 @@ tasks:
       - "private contact、未承認DM、生成音声ファイルをrepoに保存しない。"
       - "README support claimを強めない。"
     receipt:
-      result: active
+      result: done
       decision: multilingual_verification_watch
-      full_outcome_complete: false
-      summary: "次は多言語検証の受け口を、claim変更なしで確認する。"
+      full_outcome_complete: true
+      summary: "Minimal Multilingual Report FormとMultilingual Evidence Intake Queueを確認し、Issue #23-#26が全てopen / comments 0 / updatedAt 2026-06-04のままなので、新しい多言語証跡なしとしてwatch snapshotを追加した。README support claimは強めず、OS speech fallback境界を維持した。"
       note: "notes/T204-multilingual-verification-watch.md"
       changed_files:
+        - "docs/real-device-verification.md"
+        - "docs/verification-status.md"
         - "docs/goals/talking-pets-hq-japanese/notes/T204-multilingual-verification-watch.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T205-hq-wave-refresh-after-local-multilingual.md"
+        - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+        - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "gh issue view 23 --json number,state,comments,updatedAt,title,url"
+          status: pass
+        - cmd: "gh issue view 24 --json number,state,comments,updatedAt,title,url"
+          status: pass
+        - cmd: "gh issue view 25 --json number,state,comments,updatedAt,title,url"
+          status: pass
+        - cmd: "gh issue view 26 --json number,state,comments,updatedAt,title,url"
+          status: pass
+        - cmd: "rg -n 'Multilingual Verification Watch Snapshot|active_task: T205|multilingual_verification_watch|hq_wave_refresh_after_local_multilingual|comments 0|fallback-only' docs/real-device-verification.md docs/verification-status.md docs/goals/talking-pets-hq-japanese/notes/T204-multilingual-verification-watch.md docs/goals/talking-pets-hq-japanese/notes/T205-hq-wave-refresh-after-local-multilingual.md docs/goals/talking-pets-hq-japanese/hq-backlog-board.md docs/goals/talking-pets-hq-japanese/activity-index.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+        - cmd: "npm run check:docs"
+          status: pass
+
+  - id: T205
+    type: worker
+    assignee: Worker
+    owner_role: "相庭 愛 / 文月 栞里"
+    status: active
+    reasoning_hint: default
+    objective: "T203-T204のlocal TTS判断カードと多言語watchを畳み、次に進むHQ全体の波を整理する。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+      - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "自動投稿、自動DM、自動mentionをしない。"
+      - "依存追加、model download、API callをしない。"
+      - "README support claimを強めない。"
+    receipt:
+      result: active
+      decision: hq_wave_refresh_after_local_multilingual
+      full_outcome_complete: false
+      summary: "次はT203-T204の波を畳み、次の安全な小PR候補を整理する。"
+      note: "notes/T205-hq-wave-refresh-after-local-multilingual.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T205-hq-wave-refresh-after-local-multilingual.md"
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands: []
 

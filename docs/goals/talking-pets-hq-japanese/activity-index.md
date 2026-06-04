@@ -8,14 +8,14 @@ This page is a readable snapshot of the Japanese HQ state. The authoritative sou
 
 - Board URL: `http://goalbuddy.localhost:41737/talking-pets-hq-japanese/`
 - Local board files: `docs/goals/talking-pets-hq-japanese/.goalbuddy-board/`
-- Current active task: `T204`
-- Current focus: 多言語検証の新しい証跡が来た時の受け口を確認する。
+- Current active task: `T205`
+- Current focus: T203-T204の波を畳み、次のHQ候補を整理する。
 
 ## Kanban Snapshot
 
 | Column | Count | Meaning |
 | --- | ---: | --- |
-| Done | 204 | 完了済みの小PR、調査、判断カード、検証receipt。 |
+| Done | 205 | 完了済みの小PR、調査、判断カード、検証receipt。 |
 | Active | 1 | いまHQが追っている作業。 |
 | Blocked | 0 | 同じ停止条件が継続しており、Master判断なしに進めないもの。 |
 
@@ -23,13 +23,13 @@ This page is a readable snapshot of the Japanese HQ state. The authoritative sou
 
 | Agent | Role | Done | Active | Main lane |
 | --- | --- | ---: | ---: | --- |
-| 相庭 愛 | HQ Producer | 60 | 0 | 判断カード、全体整理、Master確認。 |
+| 相庭 愛 | HQ Producer | 60 | 1 | 判断カード、全体整理、Master確認。 |
 | 星宮 未来 | Outreach Lead | 38 | 0 | SNS/outreach、候補表、返信ドラフト、送信後記録。 |
-| 白瀬 怜奈 | Risk / Review Lead | 21 | 1 | claim境界、license/privacy/API、セルフレビュー。 |
+| 白瀬 怜奈 | Risk / Review Lead | 22 | 0 | claim境界、license/privacy/API、セルフレビュー。 |
 | 歌澄 音羽 | Voice Provider Lead | 32 | 0 | TTS provider、VOICEVOX/Irodori/sherpa/Melo/API設計。 |
-| 言守 詞葉 | Multilingual Lead | 19 | 1 | ko/zh fallback、多言語fixture、dedicated provider evidence境界。 |
+| 言守 詞葉 | Multilingual Lead | 20 | 0 | ko/zh fallback、多言語fixture、dedicated provider evidence境界。 |
 | 速水 光莉 | Latency Lead | 14 | 0 | latency診断、RTF、table helper、測定読み方。 |
-| 文月 栞里 | Docs / Operations Lead | 14 | 0 | docs整備、hygiene、activity index、運用導線。 |
+| 文月 栞里 | Docs / Operations Lead | 14 | 1 | docs整備、hygiene、activity index、運用導線。 |
 | 愛坂 あい | Pet / Persona Lead | 2 | 0 | キャラクター/会話体験の方向づけ。 |
 | 月城 奏 | Release Support | 1 | 0 | release補助。 |
 
@@ -87,7 +87,8 @@ This page is a readable snapshot of the Japanese HQ state. The authoritative sou
 | `T201` | 文月 栞里 / 白瀬 怜奈 | done | Issue #23-#26 later watchをclaim変更なしで記録。 |
 | `T202` | 星宮 未来 / 白瀬 怜奈 | done | Outreach Waiting Lane Snapshotを追加。 |
 | `T203` | 歌澄 音羽 / 白瀬 怜奈 | done | Local TTS Approval Decision Cardを追加。 |
-| `T204` | 言守 詞葉 / 白瀬 怜奈 | active | 多言語検証watchを準備中。 |
+| `T204` | 言守 詞葉 / 白瀬 怜奈 | done | Multilingual Verification Watch Snapshotを追加。 |
+| `T205` | 相庭 愛 / 文月 栞里 | active | T203-T204の波を畳み、次のHQ候補を整理中。 |
 
 ## Where To Look Next
 

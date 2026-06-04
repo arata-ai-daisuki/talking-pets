@@ -117,6 +117,18 @@ Use this queue before editing README wording or provider docs. It keeps quick fa
 
 Do not attach generated audio, private logs, screenshots with local paths, model files, local env files, or private contact details.
 
+### Multilingual Verification Watch Snapshot
+
+Checked: 2026-06-05. Issues #23-#26 are still open with 0 public comments, so no new multilingual evidence is ready to classify.
+
+| Surface | Current state | Action |
+| --- | --- | --- |
+| Minimal Multilingual Report Form | Ready for Korean, Chinese, or other fallback-language reports. | Keep using it for quick sanitized reports. |
+| Multilingual Evidence Intake Queue | Ready to split `fallback-only`, `provider-specific`, provider advice, and private/unsanitized reports. | Do not change README wording from queue entries alone. |
+| Dedicated Provider Evidence Checklist | Ready only when a named local TTS provider report arrives. | Leave Korean/Chinese wording as fallback-only until checklist evidence exists. |
+
+Safe internal work may continue while waiting for reports. Missing comments on #23-#26 are not a blocker and are not evidence for stronger provider claims.
+
 ### Multilingual Intake Routing Matrix
 
 Use this matrix after the first classification:

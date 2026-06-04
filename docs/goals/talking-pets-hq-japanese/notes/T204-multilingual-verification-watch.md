@@ -9,6 +9,8 @@ Local TTS承認判断カードの次に、多言語検証の新しいpublic evid
 - Minimal Multilingual Report FormとMultilingual Evidence Intake Queueを確認する。
 - 新しい報告がなければ、fallback-only claimを維持したままwatch状態を更新する。
 - 報告が来ている場合だけ、public URLまたはMaster承認済みprivate summaryとして記録する。
+- Issue #23-#26を確認し、全てopen / comments 0 / updatedAt 2026-06-04のままだった。
+- `docs/real-device-verification.md` と `docs/verification-status.md` にMultilingual Verification Watch Snapshotを追加した。
 
 ## Stop Lines
 
@@ -20,5 +22,5 @@ Local TTS承認判断カードの次に、多言語検証の新しいpublic evid
 
 - decision: `multilingual_verification_watch`
 - owner: `言守 詞葉 / 白瀬 怜奈`
-- status: active
-- next: check multilingual intake surfaces without changing provider claims.
+- status: done
+- next: refresh HQ backlog wave after T203-T204.
