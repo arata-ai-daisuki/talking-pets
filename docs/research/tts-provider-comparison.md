@@ -1,6 +1,6 @@
 # TTS Provider Comparison
 
-Last updated: 2026-06-04
+Last updated: 2026-06-05
 
 This is a prep-only comparison for Talking Pets. No package was installed, no model was downloaded, no API key was used, and no paid API call was made for this note.
 
@@ -162,6 +162,24 @@ Use this card when asking Master what provider work should move from planning in
 | D: hold API TTS for later | Keep API TTS as P2 opt-in with privacy/billing boundaries only. | Useful eventually, but it weakens local-first positioning if rushed. | No API key, no paid call, no remote default, no support wording. |
 
 Recommended default: choose A now. Master has also asked to prepare B and C as design-only follow-ups, so the next safe movement is to deepen sherpa and MeloTTS notes without installing dependencies, downloading models, or changing support wording.
+
+### Local TTS Next Choice Refresh
+
+Checked: 2026-06-05. This refresh incorporates the sherpa optional npm install check, MeloTTS detect/connect-only helper work, provider feedback capture path, and multilingual evidence routes.
+
+Recommended next small PR: **update the Provider Experiment Scorecard with a refreshed decision matrix and evidence gaps**. This is docs-only and keeps all new-provider implementation behind Master approval.
+
+| Candidate | Current lane | Safe next PR | Needs Master approval before | Why |
+| --- | --- | --- | --- | --- |
+| VOICEVOX / Voicebox-compatible endpoint | Evidence-first | Keep asking for sanitized issue #26 latency and audible reports. | Broader README wording or default-routing claims. | Already implemented; the highest value is contributor evidence, not more code. |
+| Irodori-TTS Server | Evidence-first | Keep issue #25 as the main latency contribution route and refine how results are compared. | Any performance claim beyond maintainer-reference wording. | Maintainer numbers exist, but device/config variation is large. |
+| Kokoro.js | Hold unless model-download measurement is approved. | Document the cache/download measurement plan only. | Any cold/warm run that downloads or loads a model cache. | Helper exists, but the first-run model boundary is still approval-sensitive. |
+| sherpa-onnx-node | Design-only candidate. | Refresh the scorecard and decide the exact model/vocoder/license questions. | Installing dependency, downloading model/vocoder/tokens/espeak data, or adding a helper. | Optional package install was checked separately, but useful synthesis still needs model choices. |
+| MeloTTS | Design-only / external-runtime candidate. | Expand runtime/cache measurement plan around the existing health-only detect path. | Python/Docker setup, dictionary/model download, generated audio, or support claim. | Detect/connect-only exists; real synthesis is runtime-heavy and multilingual-claim sensitive. |
+| Piper-like path | Hold / license-review candidate. | Keep license/package questions visible in the scorecard. | Adding package/binary, model download, or any README provider wording. | Current maintained route is license-sensitive and per-voice licensing is unresolved. |
+| API TTS | Later opt-in path. | Keep privacy/billing/secret gate visible only. | API key creation, paid call, remote endpoint call, or default route. | Useful eventually, but it changes local-first positioning. |
+
+Recommended T186 outcome: mark this refresh done, then open T187 for a **Provider Experiment Scorecard Refresh**. T187 should not install dependencies, download models, call APIs, or change README support wording.
 
 ### Local TTS Master Choice Card
 
