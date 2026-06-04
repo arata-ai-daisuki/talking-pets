@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T156
+active_task: T157
 
 tasks:
   - id: T001
@@ -4876,7 +4876,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "星宮 未来"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "Dedicated Provider Evidence Checklistを外部検証者へ手動でお願いできる文面につなげる。"
     allowed_files:
@@ -4889,7 +4889,7 @@ tasks:
       - "provider実装、依存追加、model download、API callをしない。"
       - "private contact収集を追加しない。"
     receipt:
-      result: active
+      result: done
       decision: dedicated_provider_outreach_copy
       full_outcome_complete: false
       summary: "SNS outreach strategyにDedicated provider evidence askを追加し、provider-specific multilingual testerへ手動で依頼できる文面を用意した。"
@@ -4900,6 +4900,35 @@ tasks:
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands:
         - cmd: "rg -n 'active_task: T156|T156|dedicated_provider_outreach_copy|Dedicated provider evidence ask|provider-specific local TTS|No generated audio files|private Codex text|Checklist' docs/research/sns-outreach-strategy.md docs/goals/talking-pets-hq-japanese/notes/T156-dedicated-provider-outreach-copy.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T157
+    type: worker
+    assignee: Worker
+    owner_role: "歌澄 音羽"
+    status: active
+    reasoning_hint: default
+    objective: "既存のsherpa-onnx design noteをprovider design note templateの観点に揃える。"
+    allowed_files:
+      - "docs/research/sherpa-onnx-design.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "`sherpa-onnx-node` dependencyを追加しない。"
+      - "acoustic model、vocoder、tokens、espeak-ng dataをdownloadしない。"
+      - "helper実装、README support wording、default routeを追加しない。"
+    receipt:
+      result: active
+      decision: sherpa_template_alignment
+      full_outcome_complete: false
+      summary: "sherpa-onnx design noteにProvider Template Alignmentを追加し、candidate、integration shape、dependency/model/cache/license/privacy/platform/measurement/README境界を明示した。"
+      note: "notes/T157-sherpa-template-alignment.md"
+      changed_files:
+        - "docs/research/sherpa-onnx-design.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T157-sherpa-template-alignment.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n 'active_task: T157|T157|sherpa_template_alignment|Provider Template Alignment|dependency-and-model-review candidate|Normal install impact|Measurement output|generated WAV files' docs/research/sherpa-onnx-design.md docs/goals/talking-pets-hq-japanese/notes/T157-sherpa-template-alignment.md docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
 
   - id: T007

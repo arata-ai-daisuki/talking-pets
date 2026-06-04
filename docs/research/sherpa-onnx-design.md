@@ -4,6 +4,38 @@ Last updated: 2026-06-02
 
 This is a design-only note. No dependency was installed and no model was downloaded.
 
+## Provider Template Alignment
+
+Use this section with `docs/research/provider-design-note-template.md` before any `sherpa-onnx-node` helper PR.
+
+### Candidate
+
+- Provider: `sherpa-onnx-node`
+- Public source: official Sherpa ONNX JavaScript API docs and npm package pages listed in "Sources"
+- Intended role: future optional local ONNX TTS provider
+- Proposed readiness level: L0 design-only / dependency-and-model-review candidate
+
+### Integration Shape
+
+- User-facing setup path: explicit optional experiment only after Master approval.
+- Talking Pets call surface: Node helper script that imports `sherpa-onnx-node`, writes WAV, then optionally uses the existing platform playback path.
+- Normal install impact: none until approved; normal `npm ci`, `npm run check:all`, and package checks must pass when Sherpa is absent.
+- Failure mode when provider is absent: helper reports unavailable and routing falls back to existing providers.
+- First helper PR scope: optional helper only, no default route, no automatic model download, no README support wording beyond experimental candidate if approved.
+
+### Boundaries
+
+| Boundary | Answer |
+| --- | --- |
+| Dependency | Do not add `sherpa-onnx-node` until Master approves an optional dependency/model experiment. |
+| Model download | Do not download acoustic model, vocoder, tokens, or espeak-ng data automatically. Downloads must be explicit, user-approved, and cached outside the repo. |
+| Cache location | Use `~/.cache/talking-pets/sherpa/` for any future model assets; never commit generated or downloaded files. |
+| License and attribution | Package, acoustic model, vocoder, tokens, espeak-ng data, generated audio, and attribution terms all need exact review before implementation. |
+| Privacy and network behavior | Intended synthesis path is local after assets are present. Future download commands must disclose source URLs and avoid normal monitor runs. |
+| Supported OS / architecture | Official docs list Linux x64/arm64, macOS x64/arm64, and Windows x64, but Talking Pets evidence is still unverified. |
+| Measurement output | Future helper should emit health/import, model load, generate, write, audio duration, RTF when possible, playback flag, and sanitized `[latency]` output. |
+| README wording | Keep README wording at "future optional experimental provider" until dependency/model/license review and real-device evidence exist. |
+
 ## Decision
 
 Use `sherpa-onnx-node` as the first package to evaluate, not `sherpa-onnx`.
@@ -92,6 +124,8 @@ Compare:
 - real-time factor if the API exposes enough data
 
 Do not compare against Kokoro/VOICEVOX claims until the same text and output path are measured.
+
+Contributor evidence should use a sanitized Platform verification issue. Do not attach generated WAV files unless the exact model and generated-audio terms are reviewed first.
 
 ## Stop Conditions
 
