@@ -80,6 +80,19 @@ When a Korean, Chinese, or other fallback-language report arrives:
 
 For quick triage, use the [Multilingual Evidence Intake Queue](real-device-verification.md#multilingual-evidence-intake-queue) before deciding whether a report belongs in verification status, provider feedback, or follow-up notes.
 
+### Multilingual Verification Watch Snapshot
+
+Checked: 2026-06-05. Public issue check found no new multilingual evidence to classify:
+
+| Issue | State | Comments | Updated | Multilingual impact |
+| --- | --- | ---: | --- | --- |
+| [#23 Linux audible TTS](https://github.com/arata-ai-daisuki/talking-pets/issues/23) | Open | 0 | 2026-06-04T05:57:31Z | No new fallback/provider-specific evidence. |
+| [#24 Windows audible TTS](https://github.com/arata-ai-daisuki/talking-pets/issues/24) | Open | 0 | 2026-06-04T05:57:33Z | No new fallback/provider-specific evidence. |
+| [#25 Irodori latency](https://github.com/arata-ai-daisuki/talking-pets/issues/25) | Open | 0 | 2026-06-04T05:57:33Z | No new provider-specific multilingual evidence. |
+| [#26 VOICEVOX latency](https://github.com/arata-ai-daisuki/talking-pets/issues/26) | Open | 0 | 2026-06-04T05:57:34Z | No new provider-specific multilingual evidence. |
+
+Result: keep Korean/Chinese and other fallback-language wording as OS speech fallback. Do not change README, provider comparison, or release wording from this watch.
+
 ### Multilingual Intake Routing Matrix
 
 | Evidence type | Verification status entry | Provider Feedback Intake | README wording |
