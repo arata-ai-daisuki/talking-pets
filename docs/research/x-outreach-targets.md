@@ -161,6 +161,16 @@ Checked: 2026-06-05.
 
 Do not wait on the sent rows before continuing provider design, verification intake, or docs work.
 
+### Reply Waiting Intake Queue
+
+Use this queue only when a public reply arrives, or when Master approves a short private-summary record. Do not use it as a reason to send a reminder before the earliest follow-up date.
+
+| Target | Waiting state | If they reply | Record location | Do not do |
+| --- | --- | --- | --- | --- |
+| OpenClaw / Sogni Voice | Sent by Master; no bump before 2026-06-17. | Classify the reply as latency, provider setup, local API, or simple acknowledgement. | Search Review Log first; Provider Feedback Capture only for technical guidance. | Do not send another nudge, ask for a Star, or copy private DM text. |
+| V1GPT | Sent by Master; no bump before 2026-06-17. | Classify the reply as Codex avatar UX, latency, integration shape, or simple acknowledgement. | Search Review Log first; Provider Feedback Capture only if it changes measurement or runtime assumptions. | Do not use GitHub issues as a promo surface or ask for private logs. |
+| V1R4 | Not sent; reply-later only. | Use only if a current public thread invites project examples. | Search Review Log with a fresh public URL. | Do not post to old or unrelated threads just to introduce Talking Pets. |
+
 | Date | Query / Source | Candidate / Post | Fit | Evidence Need | Suggested Template | Decision | Follow-Up |
 |---|---|---|---|---|---|---|---|
 |  |  |  | Codex / local voice / multilingual TTS / AI companion | latency / provider feedback / dedicated provider evidence / intro | Codex-specific / Local voice / Provider-specific multilingual TTS / AI VTuber | watch / reply later / skip / sent |  |

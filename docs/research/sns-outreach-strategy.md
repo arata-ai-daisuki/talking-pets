@@ -183,4 +183,6 @@ Use the waiting period for safe internal work:
 - multilingual evidence handling
 - README/SNS route clarity
 
+If OpenClaw / Sogni Voice or V1GPT replies before 2026-06-17, record the public URL in the [Reply Waiting Intake Queue](x-outreach-targets.md#reply-waiting-intake-queue) first. Copy only technical impact into Provider Feedback Capture; do not paste private DM text, ask for a Star, or turn the reply into another outreach push.
+
 Keep V1R4 as `reply later` until a current public thread clearly invites related project examples.

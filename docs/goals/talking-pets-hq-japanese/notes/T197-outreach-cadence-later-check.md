@@ -6,9 +6,9 @@ OpenClaw/V1GPTの催促禁止日を守りながら、返信が来た時だけ安
 
 ## Scope
 
-- Ready-To-Send Queue、Current Outreach Cadence Snapshot、Outreach Reply Intake Playbookを確認する。
-- 送信済みの相手には再送しない前提で、返信が来た場合の記録先だけを整える。
-- 次の内部作業へ進めるよう、待ち状態をBacklogで見える化する。
+- Ready-To-Send Queue、Current Outreach Cadence Snapshot、Outreach Reply Intake Playbookを確認した。
+- 送信済みの相手には再送しない前提で、Reply Waiting Intake Queueを追加した。
+- 次の内部作業へ進めるよう、待ち状態をBacklogで見える化した。
 
 ## Stop Lines
 
@@ -20,5 +20,5 @@ OpenClaw/V1GPTの催促禁止日を守りながら、返信が来た時だけ安
 
 - decision: `outreach_cadence_later_check`
 - owner: `星宮 未来 / 白瀬 怜奈`
-- status: active
-- next: check outreach queue without resending.
+- status: done
+- next: local TTS approval follow-up.

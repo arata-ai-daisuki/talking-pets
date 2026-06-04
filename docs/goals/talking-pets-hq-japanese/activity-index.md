@@ -8,14 +8,14 @@ This page is a readable snapshot of the Japanese HQ state. The authoritative sou
 
 - Board URL: `http://goalbuddy.localhost:41737/talking-pets-hq-japanese/`
 - Local board files: `docs/goals/talking-pets-hq-japanese/.goalbuddy-board/`
-- Current active task: `T197`
-- Current focus: 送信済みoutreachの返信待ちを、再送なしで確認する。
+- Current active task: `T198`
+- Current focus: local TTS実験前のMaster承認境界を再確認する。
 
 ## Kanban Snapshot
 
 | Column | Count | Meaning |
 | --- | ---: | --- |
-| Done | 197 | 完了済みの小PR、調査、判断カード、検証receipt。 |
+| Done | 198 | 完了済みの小PR、調査、判断カード、検証receipt。 |
 | Active | 1 | いまHQが追っている作業。 |
 | Blocked | 0 | 同じ停止条件が継続しており、Master判断なしに進めないもの。 |
 
@@ -24,9 +24,9 @@ This page is a readable snapshot of the Japanese HQ state. The authoritative sou
 | Agent | Role | Done | Active | Main lane |
 | --- | --- | ---: | ---: | --- |
 | 相庭 愛 | HQ Producer | 59 | 0 | 判断カード、全体整理、Master確認。 |
-| 星宮 未来 | Outreach Lead | 36 | 1 | SNS/outreach、候補表、返信ドラフト、送信後記録。 |
+| 星宮 未来 | Outreach Lead | 37 | 0 | SNS/outreach、候補表、返信ドラフト、送信後記録。 |
 | 白瀬 怜奈 | Risk / Review Lead | 20 | 0 | claim境界、license/privacy/API、セルフレビュー。 |
-| 歌澄 音羽 | Voice Provider Lead | 30 | 0 | TTS provider、VOICEVOX/Irodori/sherpa/Melo/API設計。 |
+| 歌澄 音羽 | Voice Provider Lead | 30 | 1 | TTS provider、VOICEVOX/Irodori/sherpa/Melo/API設計。 |
 | 言守 詞葉 | Multilingual Lead | 18 | 0 | ko/zh fallback、多言語fixture、dedicated provider evidence境界。 |
 | 速水 光莉 | Latency Lead | 14 | 0 | latency診断、RTF、table helper、測定読み方。 |
 | 文月 栞里 | Docs / Operations Lead | 13 | 0 | docs整備、hygiene、activity index、運用導線。 |
@@ -84,7 +84,8 @@ This page is a readable snapshot of the Japanese HQ state. The authoritative sou
 | `T194` | 星宮 未来 | done | Outreach reply intake playbookを追加。 |
 | `T195` | 文月 栞里 / 白瀬 怜奈 | done | Issue #23-#26のwatch snapshotを追加。 |
 | `T196` | 文月 栞里 / 白瀬 怜奈 | done | Release Proof Package Indexを追加。 |
-| `T197` | 星宮 未来 / 白瀬 怜奈 | active | Outreach cadence later checkを準備中。 |
+| `T197` | 星宮 未来 / 白瀬 怜奈 | done | Reply Waiting Intake Queueを追加。 |
+| `T198` | 歌澄 音羽 / 白瀬 怜奈 | active | Local TTS approval follow-upを準備中。 |
 
 ## Where To Look Next
 
