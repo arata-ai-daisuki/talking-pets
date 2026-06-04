@@ -6,9 +6,9 @@ T181-T184でMeloTTS、多言語、SNS導線が進んだ後、Backlog / Next / Ac
 
 ## Scope
 
-- 完了済みの波をDone Historyへ畳む。
-- 次に進めるlocal TTS / outreach / docs作業を見える化する。
-- GoalBuddyの日本語看板とHQ Activity Indexの整合を保つ。
+- 完了済みの波をDone Historyへ畳んだ。
+- 次に進めるlocal TTS / outreach / docs作業を見える化した。
+- GoalBuddyの日本語看板とHQ Activity Indexの整合を保った。
 
 ## Stop Lines
 
@@ -19,5 +19,5 @@ T181-T184でMeloTTS、多言語、SNS導線が進んだ後、Backlog / Next / Ac
 
 - decision: `backlog_refresh_next`
 - owner: `相庭 愛 / 文月 栞里`
-- status: active
-- next: refresh HQ Backlog Board after the README/SNS route tune-up lands.
+- status: done
+- next: local TTS next choice refresh.

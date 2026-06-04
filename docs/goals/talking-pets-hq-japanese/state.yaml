@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T185
+active_task: T186
 
 tasks:
   - id: T001
@@ -5899,7 +5899,7 @@ tasks:
     type: pm
     assignee: PM
     owner_role: "相庭 愛 / 文月 栞里"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "T181-T184でMeloTTS、多言語、SNS導線が進んだ後、Backlog / Next / Active / Doneを再整理する。"
     allowed_files:
@@ -5911,11 +5911,50 @@ tasks:
       - "実装、依存追加、model download、API call、自動SNS操作をしない。"
       - "Master判断が必要なprovider実験を勝手にactiveへ進めない。"
     receipt:
-      result: active
+      result: done
       decision: backlog_refresh_next
-      full_outcome_complete: false
-      summary: "次はT181-T184の波を畳み、local TTS / outreach / docsの次候補を見える化する。"
+      full_outcome_complete: true
+      summary: "HQ Backlog BoardでT175-T184の波をDone Historyへ畳み、ActiveをLocal TTS next choice refreshへ進め、Nextにoutreach send queue refreshとmultilingual evidence watchを置いた。"
       note: "notes/T185-backlog-refresh-next.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+        - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T185-backlog-refresh-next.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T186-local-tts-next-choice-refresh.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n 'Local TTS next choice refresh|Outreach send queue refresh|Multilingual evidence watch|T175-T181|T182-T184|active_task: T186|backlog_refresh_next' docs/goals/talking-pets-hq-japanese/hq-backlog-board.md docs/goals/talking-pets-hq-japanese/activity-index.md docs/goals/talking-pets-hq-japanese/notes/T185-backlog-refresh-next.md docs/goals/talking-pets-hq-japanese/notes/T186-local-tts-next-choice-refresh.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+        - cmd: "npm run check:docs"
+          status: pass
+
+  - id: T186
+    type: pm
+    assignee: PM
+    owner_role: "歌澄 音羽 / 白瀬 怜奈"
+    status: active
+    reasoning_hint: default
+    objective: "MeloTTS detect-only、sherpa optional install確認、provider feedback intakeを踏まえ、次に進めるlocal TTS小PR候補とMaster承認境界を再評価する。"
+    allowed_files:
+      - "docs/research/tts-provider-comparison.md"
+      - "docs/research/melotts-design-note.md"
+      - "docs/research/sherpa-onnx-design.md"
+      - "docs/research/piper-design-note.md"
+      - "docs/research/api-tts-design-note.md"
+      - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+      - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "依存追加、model download、API callをしない。"
+      - "READMEに新provider対応済みclaimを追加しない。"
+      - "external runtime installerのdownload/install実装へ進まない。"
+    receipt:
+      result: active
+      decision: local_tts_next_choice_refresh
+      full_outcome_complete: false
+      summary: "次はlocal TTS候補を比較し、安全な小PR候補とMaster承認が必要な境界を分ける。"
+      note: "notes/T186-local-tts-next-choice-refresh.md"
       changed_files:
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands: []
