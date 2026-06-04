@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T126
+active_task: T127
 
 tasks:
   - id: T001
@@ -3903,7 +3903,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "星宮 未来"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "README / README.en の冒頭から、検証Issue #23-#26へ直接行ける短い導線を追加する。"
     allowed_files:
@@ -3917,10 +3917,10 @@ tasks:
       - "VOICEVOX/Irodoriを性能保証として書かない。"
       - "SNS投稿、Issue返信、model download、package install、API callをしない。"
     receipt:
-      result: active
+      result: done
       decision: readme_help_routes_added
       full_outcome_complete: false
-      summary: "README日英の冒頭に、Linux #23 / Windows #24 / Irodori #25 / VOICEVOX #26 への短い直リンクを追加した。"
+      summary: "README日英の冒頭に、Linux #23 / Windows #24 / Irodori #25 / VOICEVOX #26 への短い直リンクを追加した。次はIssue側に補足コメントを入れるべきか判断する。"
       note: "notes/T126-readme-help-routes.md"
       changed_files:
         - "README.md"
@@ -3929,6 +3929,34 @@ tasks:
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands:
         - cmd: "rg -n \"すぐ参加できる検証Issue|Quick verification issues|Linux #23|Windows #24|Irodori #25|VOICEVOX #26|active_task: T126\" README.md README.en.md docs/goals/talking-pets-hq-japanese/notes/T126-readme-help-routes.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T127
+    type: pm
+    assignee: PM
+    owner_role: "星宮 未来"
+    status: active
+    reasoning_hint: default
+    objective: "README直リンクからIssue #23-#26へ来た人向けの補足コメント案と、投稿する条件を整理する。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "Issueコメントを投稿しない。"
+      - "SNS投稿、DM、返信代行をしない。"
+      - "Star依頼を入れない。"
+      - "private pathやconversation textを要求しない。"
+    receipt:
+      result: active
+      decision: issue_comment_drafts_ready
+      full_outcome_complete: false
+      summary: "Issue #23-#26向けの補足コメント案を用意し、今すぐ全Issueへ貼るのではなく、SNS投稿後や情報不足発生時にMaster確認後に使う方針にした。"
+      note: "notes/T127-issue-comment-drafts.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T127-issue-comment-drafts.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n \"active_task: T127|T127|issue_comment_drafts_ready|共通コメント案|投稿する条件|投稿しない条件\" docs/goals/talking-pets-hq-japanese/notes/T127-issue-comment-drafts.md docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
 
   - id: T007
