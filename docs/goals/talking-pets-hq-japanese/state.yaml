@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T122
+active_task: T123
 
 tasks:
   - id: T001
@@ -3782,7 +3782,7 @@ tasks:
     type: pm
     assignee: PM
     owner_role: "相庭 愛"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "T114のSNS投稿URLまたはIssue #23-#26の新規コメントを受け取り、T007記録またはT120/T115分類へ進める。"
     expected_output:
@@ -3794,16 +3794,51 @@ tasks:
       - "private pathやconversation textを採用しない。"
       - "性能保証として書かない。"
     receipt:
-      result: active
+      result: done
       decision: post_url_and_issue_watch_active
       full_outcome_complete: false
-      summary: "Issue #23-#26はopenかつコメントなし。次はT114投稿URLまたはIssue新規コメントを受けて記録・分類する。"
+      summary: "Issue #23-#26を再確認し、全Issueがopenかつコメント0件のままであることを確認した。次は投稿後metricsと反応別next actionを準備する。"
       note: "notes/T122-post-url-and-issue-watch-next.md"
       changed_files:
         - "docs/goals/talking-pets-hq-japanese/notes/T122-post-url-and-issue-watch-next.md"
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands:
         - cmd: "rg -n \"active_task: T122|T122|post_url_and_issue_watch_active|commentsなし|Issue #23\" docs/goals/talking-pets-hq-japanese/notes/T122-post-url-and-issue-watch-next.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+        - cmd: "gh issue view 23 --json number,title,state,comments,updatedAt,url"
+          status: pass
+        - cmd: "gh issue view 24 --json number,title,state,comments,updatedAt,url"
+          status: pass
+        - cmd: "gh issue view 25 --json number,title,state,comments,updatedAt,url"
+          status: pass
+        - cmd: "gh issue view 26 --json number,title,state,comments,updatedAt,url"
+          status: pass
+
+  - id: T123
+    type: pm
+    assignee: PM
+    owner_role: "相庭 愛"
+    status: active
+    reasoning_hint: default
+    objective: "T114のSNS投稿後に見る指標と、反応別の次アクションを準備する。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "SNS投稿、DM、Issue返信はしない。"
+      - "初手Star依頼をしない。"
+      - "性能保証として書かない。"
+    receipt:
+      result: active
+      decision: post_metrics_plan_ready
+      full_outcome_complete: false
+      summary: "投稿後24h/72h/7dで見る指標、反応別next action、次ポスト候補A/B/Cを用意した。投稿や返信はしていない。"
+      note: "notes/T123-post-metrics-and-next-actions.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T123-post-metrics-and-next-actions.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n \"active_task: T123|T123|post_metrics_plan_ready|24h|72h|7d|latency honesty|local-first privacy\" docs/goals/talking-pets-hq-japanese/notes/T123-post-metrics-and-next-actions.md docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
 
   - id: T007
