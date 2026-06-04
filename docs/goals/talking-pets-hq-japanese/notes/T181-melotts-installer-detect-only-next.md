@@ -6,9 +6,9 @@ MeloTTS monitor health integration後に、installer/configへ進む場合の小
 
 ## Candidate Scope
 
-- installerやconfigの案内に、MeloTTSはuser-managed external runtime候補であることを明記する。
+- installerやconfigの案内に、MeloTTSはuser-managed external runtime候補であることを明記した。
 - `--tts melotts --list-voices` のhealth-only導線へ誘導する。
-- 未設定時はinstall失敗ではなく `not_configured` として説明する。
+- 未設定時はinstall失敗ではなく `not_configured` として扱う。
 
 ## Stop Lines
 
@@ -21,5 +21,5 @@ MeloTTS monitor health integration後に、installer/configへ進む場合の小
 
 - decision: `melotts_installer_detect_only_wording_next`
 - owner: `白瀬 怜奈`
-- status: active
+- status: done
 - next: decide whether to implement detect-only wording or switch to provider feedback capture.

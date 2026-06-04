@@ -215,6 +215,8 @@ chmod +x "$ROOT_DIR/start-selected-tts.sh" 2>/dev/null || true
 
 echo
 echo "Saved config: .talking-pets.local.env"
+echo "MeloTTS is not installed by this installer. If you already run an external MeloTTS runtime, health-check it with:"
+echo "  npm run monitor:node -- --tts melotts --list-voices --melotts-url http://127.0.0.1:3399/health"
 echo "Start Talking Pets with:"
 echo
 echo "  ./start-selected-tts.sh"

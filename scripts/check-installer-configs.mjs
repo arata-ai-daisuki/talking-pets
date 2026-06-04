@@ -211,6 +211,12 @@ function installerOutputIssues(output, workDir, label = "installer") {
   if (!output.includes("Saved config: .talking-pets.local.env")) {
     issues.push(`${label} output must mention relative saved config path`);
   }
+  if (!output.includes("MeloTTS is not installed by this installer.")) {
+    issues.push(`${label} output must keep MeloTTS as external runtime detect-only wording`);
+  }
+  if (!output.includes("npm run monitor:node -- --tts melotts --list-voices --melotts-url http://127.0.0.1:3399/health")) {
+    issues.push(`${label} output must point MeloTTS users to the health-only monitor check`);
+  }
   if (output.includes(workDir)) {
     issues.push(`${label} output leaked working directory path`);
   }

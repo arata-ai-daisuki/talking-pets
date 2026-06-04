@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T181
+active_task: T182
 
 tasks:
   - id: T001
@@ -5740,7 +5740,7 @@ tasks:
     type: pm
     assignee: PM
     owner_role: "白瀬 怜奈"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "MeloTTS monitor health integration後に、installer/configへ入れるならdetect-only wordingだけに限定する次PR範囲を決める。"
     allowed_files:
@@ -5753,17 +5753,56 @@ tasks:
       - "README support claimを増やさない。"
       - "通常installerでMeloTTSを選択済み扱いにしない。"
     receipt:
-      result: active
+      result: done
       decision: melotts_installer_detect_only_wording_next
-      full_outcome_complete: false
-      summary: "次はinstaller/configへ入れるとしてもdetect-only wordingに限定し、外部runtime候補であることを安全に案内する範囲を決める。"
+      full_outcome_complete: true
+      summary: "installer/configにはMeloTTSを選択済みproviderとして追加せず、install/downloadなしのexternal runtime health-check案内だけを追加した。"
       note: "notes/T181-melotts-installer-detect-only-next.md"
       changed_files:
+        - "install.command"
+        - "install.sh"
+        - "install.ps1"
+        - "scripts/check-installer-configs.mjs"
+        - "scripts/check-release-readiness.mjs"
         - "docs/goals/talking-pets-hq-japanese/notes/T181-melotts-installer-detect-only-next.md"
+        - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+        - "docs/goals/talking-pets-hq-japanese/activity-index.md"
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands:
         - cmd: "test -f docs/goals/talking-pets-hq-japanese/notes/T181-melotts-installer-detect-only-next.md"
           status: pass
+        - cmd: "npm run check:installers"
+          status: pass
+        - cmd: "npm run check:release"
+          status: pass
+
+  - id: T182
+    type: worker
+    assignee: Worker
+    owner_role: "星宮 未来"
+    status: active
+    reasoning_hint: default
+    objective: "MeloTTS/Piper/sherpaなどprovider feedbackが来た時に、Search Review Logとprovider scorecardへ手動で反映するためのcapture導線を更新する。"
+    allowed_files:
+      - "docs/research/x-outreach-targets.md"
+      - "docs/research/tts-provider-comparison.md"
+      - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+      - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "自動投稿、DM、follow、like、mentionをしない。"
+      - "private contactやprivate logsを記録しない。"
+      - "未検証providerを対応済みclaimにしない。"
+    receipt:
+      result: active
+      decision: provider_feedback_capture_next
+      full_outcome_complete: false
+      summary: "次はoutreach返信や外部知見を、手動でprovider判断へ取り込む受け皿を更新する。"
+      note: "notes/T182-provider-feedback-capture-next.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands: []
 
   - id: T007
     type: worker
