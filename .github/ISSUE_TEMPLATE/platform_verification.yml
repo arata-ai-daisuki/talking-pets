@@ -104,6 +104,15 @@ body:
       placeholder: "Device: ...\nCPU/GPU/RAM: ...\nVOICEVOX Engine version: ...\nSpeaker id/name: ...\nEndpoint mode: voicevox/generic\nWarm runs: ...\nAudio duration: ...\nPlayback included: yes/no\nDerived RTF: ...\nAudible: yes/no"
     validations:
       required: false
+  - type: textarea
+    id: multilingual_fallback
+    attributes:
+      label: Multilingual fallback evidence, if tested
+      description: >-
+        Optional. If you tested `--speech-language ko`, `--speech-language zh`, or automatic Korean / Chinese routing, include the fixture or source text used, detected or forced speech-language value, chosen TTS path, whether one spoken line was audible, and whether this was OS speech fallback or a dedicated provider. Do not present Korean or Chinese OS speech fallback as dedicated Korean or Chinese TTS provider support.
+      placeholder: "Text or fixture: ...\nSpeech-language value: ko/zh/auto\nDetected/effective language if known: ...\nChosen TTS path: OS speech fallback / dedicated provider / other\nAudible: yes/no\nBoundary: fallback only / dedicated provider evidence"
+    validations:
+      required: false
   - type: dropdown
     id: sanitized
     attributes:

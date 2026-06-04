@@ -61,6 +61,8 @@ Current fixture diagnostics prove routing decisions only. They do not prove dedi
 
 Before changing public wording from "fallback" to dedicated Korean or Chinese support, collect sanitized real-device evidence with a provider-specific TTS path, one audible spoken line, OS/version, speech-language value, and config source. Fixture-only routing diagnostics are useful release gates, but they are not enough for that claim.
 
+When a Platform verification issue includes Korean or Chinese testing, use the optional multilingual fallback field to record the source text or fixture, detected or forced speech-language value, chosen TTS path, audible result, and whether the evidence is fallback-only or provider-specific. This keeps `ko` / `zh` fallback evidence separate from future dedicated-provider evidence.
+
 ## Irodori Latency Snapshot
 
 Irodori-TTS Server is experimental optional and should not be treated as a universal latency benchmark from one maintainer machine.

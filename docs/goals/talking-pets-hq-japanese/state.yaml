@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T141
+active_task: T142
 
 tasks:
   - id: T001
@@ -4407,7 +4407,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "速水 光莉"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "Platform verification issueへ貼るlatency tableの形をプレースホルダーで示す。"
     allowed_files:
@@ -4420,7 +4420,7 @@ tasks:
       - "外部APIやmodel downloadを増やさない。"
       - "performance claimを強くしない。"
     receipt:
-      result: active
+      result: done
       decision: latency_table_sample_docs
       full_outcome_complete: false
       summary: "Platform verification issueへ貼るlatency tableの形が分かるよう、placeholder値だけのMarkdown表サンプルを実機検証docsへ追加した。"
@@ -4431,6 +4431,37 @@ tasks:
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands:
         - cmd: "rg -n 'active_task: T141|T141|latency_table_sample_docs|placeholder values|benchmark data|generated Markdown table shape|<generated>' docs/real-device-verification.md docs/goals/talking-pets-hq-japanese/notes/T141-latency-table-sample.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T142
+    type: worker
+    assignee: Worker
+    owner_role: "言守 詞葉"
+    status: active
+    reasoning_hint: default
+    objective: "Platform verification issueでko/zh fallback検証とdedicated provider evidenceを分けて記録できるようにする。"
+    allowed_files:
+      - ".github/ISSUE_TEMPLATE/platform_verification.yml"
+      - "docs/verification-status.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "Korean / Chinese dedicated TTS対応済みclaimを追加しない。"
+      - "外部APIやmodel downloadを増やさない。"
+      - "生成音声ファイル添付を求めない。"
+    receipt:
+      result: active
+      decision: multilingual_issue_guidance
+      full_outcome_complete: false
+      summary: "Platform verification issue templateに多言語fallback evidenceの任意欄を追加し、ko/zh fallback-onlyとdedicated-provider evidenceを分けて記録できるようにした。"
+      note: "notes/T142-multilingual-issue-guidance.md"
+      changed_files:
+        - ".github/ISSUE_TEMPLATE/platform_verification.yml"
+        - "docs/verification-status.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T142-multilingual-issue-guidance.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n 'active_task: T142|T142|multilingual_issue_guidance|multilingual_fallback|fallback-only|dedicated provider evidence|Do not present Korean or Chinese OS speech fallback' .github/ISSUE_TEMPLATE/platform_verification.yml docs/verification-status.md docs/goals/talking-pets-hq-japanese/notes/T142-multilingual-issue-guidance.md docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
 
   - id: T007
