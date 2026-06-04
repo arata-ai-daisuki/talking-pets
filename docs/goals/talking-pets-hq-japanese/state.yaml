@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T135
+active_task: T136
 
 tasks:
   - id: T001
@@ -4208,7 +4208,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "速水 光莉"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "PR #41で追加したaudioDuration/rtfを、協力者向け測定手順から分かるようにする。"
     allowed_files:
@@ -4221,7 +4221,7 @@ tasks:
       - "性能保証を書かない。"
       - "生成WAV添付を求めない。"
     receipt:
-      result: active
+      result: done
       decision: rtf_output_examples
       full_outcome_complete: false
       summary: "VOICEVOX/Irodori helperのRTF付きlatency出力例をperformance docsに、VOICEVOX協力者向け手順にsanitized latency lineの貼り方を追加した。"
@@ -4233,6 +4233,34 @@ tasks:
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands:
         - cmd: "rg -n \"active_task: T135|T135|audioDuration=|rtf=|Do not attach generated WAV|生成WAV|rtf_output_examples\" docs/performance.md docs/real-device-verification.md docs/goals/talking-pets-hq-japanese/notes/T135-rtf-output-examples.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T136
+    type: pm
+    assignee: PM
+    owner_role: "愛坂 あい"
+    status: active
+    reasoning_hint: default
+    objective: "次のno-download diagnostics改善として、TTS helper複数回測定を表にしやすくする小実装候補を定義する。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "このTでは実装変更しない。"
+      - "model downloadや外部APIを使わない。"
+      - "VOICEVOX/Irodori server起動を前提にしない。"
+      - "性能保証を書かない。"
+    receipt:
+      result: active
+      decision: next_diagnostics_candidate
+      full_outcome_complete: false
+      summary: "次の安全な実装候補として、既存helperの[latency]行を複数回集計してCSV/Markdownへ変換するno-download diagnostics helperを提案した。"
+      note: "notes/T136-next-diagnostics-candidate.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T136-next-diagnostics-candidate.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n \"active_task: T136|T136|next_diagnostics_candidate|latency line|CSV|Markdown|no-download\" docs/goals/talking-pets-hq-japanese/notes/T136-next-diagnostics-candidate.md docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
 
   - id: T007
