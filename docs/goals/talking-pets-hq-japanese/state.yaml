@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T175
+active_task: T176
 
 tasks:
   - id: T001
@@ -5485,7 +5485,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "歌澄 音羽"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "T061由来の判断として、sherpa-onnx-nodeをmodel downloadなしでoptional dependencyとしてnpm installだけ試す。"
     allowed_files:
@@ -5500,9 +5500,9 @@ tasks:
       - "import health check、音声生成、helper実装、README support claim、default routing変更をしない。"
       - "MeloTTS installerはdownload/installまで進めず、別カードとして残す。"
     receipt:
-      result: active
+      result: done
       decision: sherpa_optional_npm_install
-      full_outcome_complete: false
+      full_outcome_complete: true
       summary: "npm install sherpa-onnx-node --save-optionalを実行し、package.json/package-lock.jsonにoptional dependencyとして追加した。macOS arm64 platform packageは約73MBで、npm auditは0 vulnerabilities。"
       note: "notes/T175-sherpa-optional-npm-install.md"
       changed_files:
@@ -5530,6 +5530,39 @@ tasks:
         - cmd: "CLANG_MODULE_CACHE_PATH=/private/tmp/talking-pets-clang-module-cache npm run check:all"
           status: pass
         - cmd: "npx --cache /private/tmp/talking-pets-npm-cache --yes goalbuddy board docs/goals/talking-pets-hq-japanese"
+          status: pass
+
+  - id: T176
+    type: worker
+    assignee: Worker
+    owner_role: "歌澄 音羽"
+    status: active
+    reasoning_hint: default
+    objective: "MeloTTSをTalking Petsに直接installさせず、ユーザーが別途用意したexternal runtimeへ安全に接続するためのhelper設計を固める。"
+    allowed_files:
+      - "docs/research/melotts-design-note.md"
+      - "docs/research/tts-provider-comparison.md"
+      - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+      - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "MeloTTS、Python packages、Docker images、model、dictionary、language assetsをdownload/installしない。"
+      - "README support claim、default routing、helper実装、音声生成はしない。"
+      - "installer download/installは別カードとして残す。"
+    receipt:
+      result: active
+      decision: melotts_external_runtime_helper_design_active
+      full_outcome_complete: false
+      summary: "MeloTTS external runtime helper designをActiveにし、detect/connect-only、cache非所有、download/install停止線、public wording境界を整理した。"
+      note: "notes/T176-melotts-external-runtime-helper-design.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T176-melotts-external-runtime-helper-design.md"
+        - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+        - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n 'active_task: T176|T176|MeloTTS External Runtime Helper Design|detect-only|Connect-only|Do not install MeloTTS|external runtime' docs/goals/talking-pets-hq-japanese/notes/T176-melotts-external-runtime-helper-design.md docs/goals/talking-pets-hq-japanese/hq-backlog-board.md docs/goals/talking-pets-hq-japanese/activity-index.md docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
 
   - id: T007
