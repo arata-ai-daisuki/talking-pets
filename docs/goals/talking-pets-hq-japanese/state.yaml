@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T193
+active_task: T194
 
 tasks:
   - id: T001
@@ -6206,7 +6206,7 @@ tasks:
     type: pm
     assignee: PM
     owner_role: "歌澄 音羽 / 白瀬 怜奈"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "scorecard gapはdesign-note質問へ落ちたので、実験へ進む場合のMaster承認範囲を確認できる形にする。"
     allowed_files:
@@ -6224,11 +6224,49 @@ tasks:
       - "sherpa/MeloTTS/Piper/API TTSを対応済みproviderとしてclaimしない。"
       - "実験を始める場合は別PRに分ける。"
     receipt:
-      result: active
+      result: done
       decision: local_tts_approval_check
-      full_outcome_complete: false
-      summary: "次はLocal TTS実験へ進む場合のapproval-only cardを準備する。"
+      full_outcome_complete: true
+      summary: "Provider comparisonにLocal TTS Approval-Only Cardを追加し、evidence-first、sherpa metadata、sherpa optional experiment、MeloTTS design、Piper license review、API TTS provider designの承認文ごとに許可範囲と停止線を分けた。"
       note: "notes/T193-local-tts-approval-check.md"
+      changed_files:
+        - "docs/research/tts-provider-comparison.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T193-local-tts-approval-check.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T194-outreach-reply-intake.md"
+        - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+        - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n 'Local TTS Approval-Only Card|Approve sherpa metadata review only|Approve MeloTTS external-runtime design only|active_task: T194|local_tts_approval_check|outreach_reply_intake' docs/research/tts-provider-comparison.md docs/goals/talking-pets-hq-japanese/notes/T193-local-tts-approval-check.md docs/goals/talking-pets-hq-japanese/notes/T194-outreach-reply-intake.md docs/goals/talking-pets-hq-japanese/hq-backlog-board.md docs/goals/talking-pets-hq-japanese/activity-index.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+        - cmd: "npm run check:docs"
+          status: pass
+
+  - id: T194
+    type: pm
+    assignee: PM
+    owner_role: "星宮 未来"
+    status: active
+    reasoning_hint: default
+    objective: "OpenClaw/V1GPTはsentなので、返信が来た時だけpublic URLとtechnical summaryを記録できる状態にする。"
+    allowed_files:
+      - "docs/research/x-outreach-targets.md"
+      - "docs/research/sns-outreach-strategy.md"
+      - "docs/research/tts-provider-comparison.md"
+      - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+      - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "自動返信、自動DM、自動mentionをしない。"
+      - "2026-06-17より前に催促しない。"
+      - "private DM本文、個人情報、contact detailsをdocsへ貼らない。"
+    receipt:
+      result: active
+      decision: outreach_reply_intake
+      full_outcome_complete: false
+      summary: "次は返信が来た時のpublic URL / technical summary記録導線を再確認する。"
+      note: "notes/T194-outreach-reply-intake.md"
       changed_files:
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands: []
