@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T116
+active_task: T119
 
 tasks:
   - id: T001
@@ -3584,7 +3584,7 @@ tasks:
     type: pm
     assignee: PM
     owner_role: "相庭 愛"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "T112-T115で整えた協力者入口、実Issue、募集文面、採用基準を使い、公開検証ループを運用する。"
     expected_output:
@@ -3596,16 +3596,121 @@ tasks:
       - "model download、npm install、API callはしない。"
       - "性能保証として書かない。"
     receipt:
-      result: active
+      result: done
       decision: public_verification_loop_ready
       full_outcome_complete: false
-      summary: "協力者入口、実Issue、SNS募集文面、採用基準が揃ったため、次はMaster手動投稿とIssue報告待ちの公開検証ループをactiveにする。"
+      summary: "協力者入口、実Issue、SNS募集文面、採用基準が揃い、Master手動投稿とIssue報告待ちの公開検証ループを運用可能にした。"
       note: "notes/T116-next-public-verification-loop.md"
       changed_files:
         - "docs/goals/talking-pets-hq-japanese/notes/T116-next-public-verification-loop.md"
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands:
         - cmd: "rg -n \"active_task: T116|T116|public_verification_loop_ready|自動投稿|docs/verification-status.md\" docs/goals/talking-pets-hq-japanese/notes/T116-next-public-verification-loop.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T117
+    type: worker
+    assignee: Worker
+    owner_role: "速水 光莉"
+    status: done
+    reasoning_hint: default
+    objective: "downloadなしで進められるlocal TTS設計として、provider比較表の測定軸とreadiness levelを揃える。"
+    allowed_files:
+      - "docs/research/tts-provider-comparison.md"
+      - "docs/performance.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "package install、model download、API call、有料APIをしない。"
+      - "READMEの性能claimを強めない。"
+      - "default routingを変更しない。"
+      - "VOICEVOX/Irodoriを性能保証として書かない。"
+    receipt:
+      result: done
+      decision: provider_measurement_rubric_added
+      full_outcome_complete: false
+      summary: "provider比較表にMeasurement RubricとReadiness Levelsを追加し、VOICEVOX/Irodoriはmaintainer measured、Kokoroはmodel download承認待ち、sherpa/API TTSはdesign-onlyとして整理した。"
+      note: "notes/T117-provider-measurement-rubric.md"
+      changed_files:
+        - "docs/research/tts-provider-comparison.md"
+        - "docs/performance.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T117-provider-measurement-rubric.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n \"Measurement Rubric|Readiness Levels|L2 maintainer measured|L3 contributor verified|active_task: T119\" docs/research/tts-provider-comparison.md docs/performance.md docs/goals/talking-pets-hq-japanese/notes/T117-provider-measurement-rubric.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T118
+    type: judge
+    assignee: Judge
+    owner_role: "言守 詞葉"
+    status: done
+    reasoning_hint: high
+    objective: "多言語対応の公開claimが、実際のrouting/fallback証拠より強くなっていないか再確認する。"
+    allowed_files:
+      - "README.md"
+      - "README.en.md"
+      - "docs/contributor-entrypoints.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      - "test/fixtures/**"
+    constraints:
+      - "Korean/Chinese専用TTS対応済みclaimを追加しない。"
+      - "new provider install、model download、API callをしない。"
+      - "READMEのclaimを証拠なしに強めない。"
+    receipt:
+      result: done
+      decision: multilingual_public_claim_recheck_pass
+      full_outcome_complete: false
+      summary: "README日英とcontributor entrypointsの多言語claimを確認し、ja=VOICEVOX、en=Kokoro、ko/zh/other=OS speech fallbackのrouting診断がpassした。ko/zh専用TTS対応済みclaimは追加していない。"
+      note: "notes/T118-multilingual-public-claim-recheck.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T118-multilingual-public-claim-recheck.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n \"active_task: T119|T118|multilingual_public_claim_recheck_pass|VOICEVOX = Japanese|OS speech fallback\" docs/goals/talking-pets-hq-japanese/notes/T118-multilingual-public-claim-recheck.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+        - cmd: "node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --rollout test/fixtures/ja-rollout.jsonl"
+          status: pass
+        - cmd: "node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --rollout test/fixtures/en-rollout.jsonl"
+          status: pass
+        - cmd: "node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --rollout test/fixtures/ko-rollout.jsonl"
+          status: pass
+        - cmd: "node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --rollout test/fixtures/zh-rollout.jsonl"
+          status: pass
+        - cmd: "node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --rollout test/fixtures/zh-traditional-rollout.jsonl"
+          status: pass
+        - cmd: "node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --rollout test/fixtures/symbol-only-rollout.jsonl"
+          status: pass
+        - cmd: "npm run test:dry-run"
+          status: pass
+
+  - id: T119
+    type: pm
+    assignee: PM
+    owner_role: "相庭 愛"
+    status: active
+    reasoning_hint: default
+    objective: "T114のSNS募集文面をMasterが手動投稿した後のURL記録と、Issue #23-#26に来る検証報告の処理を進める。"
+    expected_output:
+      - "投稿URLが来たらT007へ記録する。"
+      - "外部検証報告が来たらT115基準で採用可否を判定する。"
+      - "採用できる検証結果だけdocs/verification-status.mdへ反映する。"
+    constraints:
+      - "自動投稿、自動DM、返信代行はしない。"
+      - "private pathやconversation textを採用しない。"
+      - "性能保証として書かない。"
+    receipt:
+      result: active
+      decision: public_verification_handoff_active
+      full_outcome_complete: false
+      summary: "outreach送信準備、local TTS設計、多言語claim再確認まで一巡したため、次はMaster手動投稿URLとIssue報告を受けて記録・採用判定する。"
+      note: "notes/T119-next-public-verification-handoff.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T119-next-public-verification-handoff.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n \"active_task: T119|T119|public_verification_handoff_active|T114|T115|T007|Issue #23-#26\" docs/goals/talking-pets-hq-japanese/notes/T119-next-public-verification-handoff.md docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
 
   - id: T007

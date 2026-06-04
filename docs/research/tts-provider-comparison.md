@@ -18,16 +18,46 @@ First, make the measurement shape consistent:
 - `playback start`: time until audible playback begins, when tested
 - `setup friction`: install, engine start, model cache, license, and platform notes
 
+## Measurement Rubric
+
+Use the same rubric for every provider before changing README claims or default routing.
+
+| Field | Meaning | Required before public claim |
+| --- | --- | --- |
+| `health` | Endpoint, CLI, helper, or OS voice path is reachable. | Yes |
+| `cold start` | First startup, first model load, or first synthesis after a clean start. | Yes for model-based providers |
+| `warm synthesis` | Repeated synthesis after runtime is ready. | Yes |
+| `audio duration` | Duration of generated speech. | Yes for generated WAV paths |
+| `real-time factor` | `warm synthesis / audio duration`, when both values exist. | Recommended |
+| `playback included` | Whether total time waits for playback completion. | Yes |
+| `first audible speech` | Time until sound starts, if measurable. | Optional until tooling supports it |
+| `setup friction` | Install, model cache, engine start, license, and platform notes. | Yes |
+| `privacy boundary` | Whether text stays local or leaves the machine. | Yes |
+
+Do not compare `playback-included total` against synthesis-only totals. A playback-included value often grows with the length of the spoken audio, so it is useful for user-perceived completion time but not for generation speed.
+
+## Readiness Levels
+
+| Level | Meaning | Allowed public wording |
+| --- | --- | --- |
+| L0 design-only | Package, license, or model shape is still being researched. | "Candidate", "under review" |
+| L1 supported helper | Helper exists, but broad real-device evidence is still missing. | "Optional", "experimental" |
+| L2 maintainer measured | Maintainer has a sanitized local measurement. | "Maintainer reference result" |
+| L3 contributor verified | At least one external sanitized report exists. | "Verified on one contributor machine" |
+| L4 default candidate | Multiple OS/device results support a default path. | "Candidate for default routing" |
+
+Current provider claims should stay at L1-L2 unless contributor evidence arrives through a sanitized issue.
+
 ## Current Candidates
 
-| Priority | Provider | Role | Strength | Main Risk | Next Safe Action |
-| --- | --- | --- | --- | --- | --- |
-| P0 | VOICEVOX / Voicebox-compatible endpoint | Japanese local TTS baseline | Mature local Japanese voice path; already supported through voicebox helper | Requires a running local engine; voice and license notices must stay clear | Done on maintainer macOS with running VOICEVOX: warm synthesis total 1.33s / 1.39s / 2.21s |
-| P0 | macOS `say` / OS speech fallback | No-extra-install baseline | Fast setup, useful control sample, no model download | Voice quality and language coverage vary by OS | Done once on maintainer macOS: total 440.1ms, speak 434.9ms |
-| P1 | Kokoro.js | English local TTS | Already has helper and profile output; useful for English demo path | First run may download/load a model; warm mode may need process reuse | Blocked for now: no local `~/.cache/talking-pets/transformers` cache found, so measurement may require model download |
-| P1 | Irodori-TTS Server | Japanese-oriented local server / OpenAI-compatible API | High-quality local Japanese candidate; now has health and contribution docs | Cold start and warm synthesis were slow on the maintainer M1 test device | Keep as experimental and collect more real-device data before optimizing |
-| P2 | sherpa-onnx-node | Future local ONNX provider | Cross-platform package looks promising from design notes | Needs dependency, model, vocoder, tokens, espeak data, and license confirmation | Stay design-only until Master approves dependency/model experiment |
-| P2 | API TTS | Optional cloud or remote fallback | Can be fast and high quality on good networks | Privacy, cost, API key management, and local-first positioning | Design opt-in boundary first; do not implement by default |
+| Priority | Provider | Role | Readiness | Strength | Main Risk | Next Safe Action |
+| --- | --- | --- | --- | --- | --- | --- |
+| P0 | VOICEVOX / Voicebox-compatible endpoint | Japanese local TTS baseline | L2 maintainer measured | Mature local Japanese voice path; already supported through voicebox helper | Requires a running local engine; voice and license notices must stay clear | Collect L3 contributor data through issue #26 |
+| P0 | macOS `say` / OS speech fallback | No-extra-install baseline | L2 maintainer measured | Fast setup, useful control sample, no model download | Voice quality and language coverage vary by OS | Keep as control sample, not quality benchmark |
+| P1 | Kokoro.js | English local TTS | L1 supported helper | Already has helper and profile output; useful for English demo path | First run may download/load a model; warm mode may need process reuse | Ask before model download; otherwise keep on hold |
+| P1 | Irodori-TTS Server | Japanese-oriented local server / OpenAI-compatible API | L2 maintainer measured | High-quality local Japanese candidate; now has health and contribution docs | Cold start and warm synthesis were slow on the maintainer M1 test device | Collect L3 contributor data through issue #25 |
+| P2 | sherpa-onnx-node | Future local ONNX provider | L0 design-only | Cross-platform package looks promising from design notes | Needs dependency, model, vocoder, tokens, espeak data, and license confirmation | Stay design-only until Master approves dependency/model experiment |
+| P2 | API TTS | Optional cloud or remote fallback | L0 design-only | Can be fast and high quality on good networks | Privacy, cost, API key management, and local-first positioning | Keep opt-in only; do not implement by default |
 
 ## Measurement Text
 
@@ -75,10 +105,10 @@ Stop and ask before:
 
 ## Recommended Order
 
-1. Add one playback-included VOICEVOX run if audible timing is needed.
+1. Keep VOICEVOX and Irodori public wording at maintainer-reference level until issues #25 and #26 receive sanitized contributor evidence.
 2. Ask Master before Kokoro model download if Kokoro cold/warm measurement is still desired.
-3. Wait for Irodori contribution data before claiming it is fast or slow generally.
-4. Keep sherpa-onnx-node and API TTS as explicit opt-in design work.
+3. Keep sherpa-onnx-node and API TTS as explicit opt-in design work.
+4. Use the readiness levels above before changing README claims or default routing.
 
 ## Maintainer Control Sample
 
