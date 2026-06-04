@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T061
+active_task: T093
 
 tasks:
   - id: T001
@@ -1956,17 +1956,17 @@ tasks:
     type: pm
     assignee: PM
     owner_role: "相庭 愛"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "sherpa-onnx-nodeのpackage確認、model公開metadata、license公開情報調査後に、npm installだけ試すか、local TTSを保留してoutreach/README改善を優先するかMaster判断を受ける。"
     expected_output:
       - "package確認とlicense公開情報はOK。npm installだけ試して。model downloadはまだしない。"
       - "model downloadはまだしない。local TTSは保留してoutreachを優先して。"
     receipt:
-      result: active
-      decision: waiting_for_install_or_outreach_priority
+      result: done
+      decision: superseded_by_irodori_after_outreach
       full_outcome_complete: false
-      summary: "T053の公開情報調査ルートは完了。次はnpm installだけ試すか、local TTSを保留してoutreach/README改善を優先するかの2択。"
+      summary: "T053の公開情報調査ルートは完了し、Day 1 outreachはT086で送信済み。PR #13でIrodori-TTS Server providerが追加されたため、sherpa install判断はT087/T088へ引き継ぐ。"
       note: "notes/T061-local-tts-next-scope-after-license.md"
       changed_files:
         - "docs/goals/talking-pets-hq-japanese/notes/T061-local-tts-next-scope-after-license.md"
@@ -2706,6 +2706,206 @@ tasks:
           status: pass
         - cmd: "rg -n \"T086|V1GPT|OpenClaw|送信済み|2026-06-03|2026-06-17|outreach_day1_two_public_replies_sent_by_master\" docs/goals/talking-pets-hq-japanese/notes/T007-outreach-tracking-template.md docs/goals/talking-pets-hq-japanese/notes/T086-outreach-day1-sent.md docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
+
+  - id: T087
+    type: judge
+    assignee: Judge
+    owner_role: "白瀬 怜奈"
+    status: done
+    reasoning_hint: high
+    objective: "PR #13でIrodori-TTS Server providerが追加された後のlocal TTS現在地を確認し、T061のsherpa前提判断を更新する。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "Irodori serverを起動しない。"
+      - "音声生成しない。"
+      - "npm install、model download、API callはしない。"
+      - "README claim変更はしない。"
+    receipt:
+      result: done
+      decision: local_tts_scope_updated_after_irodori
+      full_outcome_complete: false
+      summary: "Irodoriはexperimental optional providerとして追加済みで、auto routingはja=VOICEVOX/en=Kokoro/ko-zh-other=say fallbackのまま。T061のsherpa install判断は古くなったためT088へ引き継いだ。"
+      note: "notes/T087-local-tts-current-state-after-irodori.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T087-local-tts-current-state-after-irodori.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T061-local-tts-next-scope-after-license.md"
+      commands:
+        - cmd: "npm run check:syntax"
+          status: pass
+        - cmd: "npm run test:dry-run"
+          status: pass
+        - cmd: "node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --rollout test/fixtures/ja-rollout.jsonl"
+          status: pass
+        - cmd: "node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --rollout test/fixtures/en-rollout.jsonl"
+          status: pass
+        - cmd: "node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --rollout test/fixtures/ko-rollout.jsonl"
+          status: pass
+        - cmd: "node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --rollout test/fixtures/zh-rollout.jsonl"
+          status: pass
+        - cmd: "node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --rollout test/fixtures/zh-traditional-rollout.jsonl"
+          status: pass
+        - cmd: "node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --rollout test/fixtures/symbol-only-rollout.jsonl"
+          status: pass
+
+  - id: T088
+    type: pm
+    assignee: PM
+    owner_role: "相庭 愛"
+    status: done
+    reasoning_hint: default
+    objective: "Irodori追加後、返信待ち中に進めるlocal TTS次アクションを、Irodori smoke test、no-extra-install latency baseline、sherpa後回しdocs整理の3択からMaster判断する。"
+    expected_output:
+      - "Irodori-TTS Serverはローカルで起動した。health checkと短文1つの合成だけ試して。model取得や外部APIは追加しない。"
+      - "Irodoriはまだ起動しない。追加インストールなしでsay/autoのlatency baselineだけ測って。"
+      - "sherpa-onnx-nodeは後回し。Irodoriと既存providerのdocs/issue/README整理を優先して。"
+    receipt:
+      result: done
+      decision: no_extra_install_latency_baseline_selected
+      full_outcome_complete: false
+      summary: "Masterの返信待ち中に進める方針として、あいちゃん推奨のno-extra-install latency baselineを選択し、T089へ引き継いだ。"
+      note: "notes/T088-next-local-tts-scope-after-irodori.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T088-next-local-tts-scope-after-irodori.md"
+
+  - id: T089
+    type: worker
+    assignee: Worker
+    owner_role: "速水 光莉"
+    status: done
+    reasoning_hint: default
+    objective: "追加インストール、Irodori server起動、音声生成なしで、言語別fixtureのdry-run latency baselineを取得する。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "npm install、model download、API callはしない。"
+      - "Irodori serverを起動しない。"
+      - "実音声生成、実音声再生はしない。"
+      - "README claim変更はしない。"
+    receipt:
+      result: done
+      decision: monitor_dry_run_baseline_recorded
+      full_outcome_complete: false
+      summary: "ja/en/ko/zh fixtureで30-run dry-run latency baselineを取得した。monitor側のtotal p95は3.8msから6.6msで、TTS生成・再生時間は含まない。"
+      note: "notes/T089-no-extra-install-latency-baseline.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T089-no-extra-install-latency-baseline.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T088-next-local-tts-scope-after-irodori.md"
+      commands:
+        - cmd: "npm run benchmark:latency -- --runs 30 --rollout test/fixtures/ja-rollout.jsonl --out /private/tmp/talking-pets-ja-latency-baseline.json"
+          status: pass
+        - cmd: "npm run benchmark:latency -- --runs 30 --rollout test/fixtures/en-rollout.jsonl --out /private/tmp/talking-pets-en-latency-baseline.json"
+          status: pass
+        - cmd: "npm run benchmark:latency -- --runs 30 --rollout test/fixtures/ko-rollout.jsonl --out /private/tmp/talking-pets-ko-latency-baseline.json"
+          status: pass
+        - cmd: "npm run benchmark:latency -- --runs 30 --rollout test/fixtures/zh-rollout.jsonl --out /private/tmp/talking-pets-zh-latency-baseline.json"
+          status: pass
+
+  - id: T090
+    type: pm
+    assignee: PM
+    owner_role: "相庭 愛"
+    status: done
+    reasoning_hint: default
+    objective: "実音声provider latency測定へ進む前に、Irodori smoke test、say実音声baseline、latency caveat/docs整理のどれを優先するか決める。"
+    expected_output:
+      - "Irodori serverを起動したので、localhost healthと短文1つの合成だけ試す。"
+      - "Irodoriはまだ触らず、macOS sayだけ実音声latency baselineを取る。"
+      - "実音声はまだ触らず、測定設計とREADME caveat整理を先にやる。"
+    receipt:
+      result: done
+      decision: irodori_smoke_test_selected
+      full_outcome_complete: false
+      summary: "MasterがIrodori server smoke testを依頼したため、worktree整理をT091、Irodori smoke testをT092へ進めた。"
+      note: "notes/T092-irodori-server-smoke-test.md"
+
+  - id: T091
+    type: worker
+    assignee: Worker
+    owner_role: "文月 栞里"
+    status: done
+    reasoning_hint: default
+    objective: "Irodori smoke test前に、閉じられるworktreeを整理する。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "未整理差分のあるworktreeは触らない。"
+      - "OPEN PRの作業worktreeは閉じない。"
+    receipt:
+      result: done
+      decision: clean_merged_worktrees_removed
+      full_outcome_complete: false
+      summary: "prunable worktree参照を掃除し、cleanでmain取り込み済みのf886/f024 worktreeをremoveした。dirty worktreeとPR #14 worktreeは残した。"
+      note: "notes/T091-worktree-cleanup-before-irodori-smoke.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T091-worktree-cleanup-before-irodori-smoke.md"
+      commands:
+        - cmd: "git worktree prune"
+          status: pass
+        - cmd: "git worktree remove <codex-worktree>/f886/talking-pets"
+          status: pass
+        - cmd: "git worktree remove <codex-worktree>/f024/talking-pets"
+          status: pass
+        - cmd: "git worktree list --porcelain"
+          status: pass
+
+  - id: T092
+    type: worker
+    assignee: Worker
+    owner_role: "速水 光莉"
+    status: done
+    reasoning_hint: default
+    objective: "Irodori-TTS-Serverをローカルで起動し、healthと短文合成のsmoke testを行う。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "repoに生成wavやIrodori server本体を含めない。"
+      - "再生はしない。"
+      - "public README claimはこのPRでは変更しない。"
+    receipt:
+      result: done
+      decision: irodori_health_and_warm_synthesis_passed
+      full_outcome_complete: false
+      summary: "Irodori-TTS-Serverを/private/tmpにcloneし、uvでlocalhost:8088起動。healthは37.2msでpass。初回ロード後、短文合成は29.45sでpassし、4.04sのwavを/private/tmpへ保存した。"
+      note: "notes/T092-irodori-server-smoke-test.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T092-irodori-server-smoke-test.md"
+      commands:
+        - cmd: "git clone https://github.com/Aratako/Irodori-TTS-Server.git /private/tmp/Irodori-TTS-Server"
+          status: pass
+        - cmd: "uv run --extra cpu python -m irodori_openai_tts --host 127.0.0.1 --port 8088"
+          status: pass
+        - cmd: "npm run tts:irodori -- --health --url http://127.0.0.1:8088 --profile-latency"
+          status: pass
+        - cmd: "npm run tts:irodori -- --url http://127.0.0.1:8088 --voice none --model irodori-tts --format wav --text <short-ja-smoke> --out /private/tmp/talking-pets-irodori-smoke.wav --profile-latency"
+          status: pass
+        - cmd: "file /private/tmp/talking-pets-irodori-smoke.wav"
+          status: pass
+        - cmd: "afinfo /private/tmp/talking-pets-irodori-smoke.wav"
+          status: pass
+
+  - id: T093
+    type: pm
+    assignee: PM
+    owner_role: "相庭 愛"
+    status: active
+    reasoning_hint: default
+    objective: "Irodori smoke test結果を受けて、cold start対策、warm latency改善、README caveat、次PR分割のどれを優先するか決める。"
+    expected_output:
+      - "cold start timeout対策を実装する。"
+      - "warm synthesis latencyをもう少し測る。"
+      - "README caveatとトラブルシュートを先に更新する。"
+      - "PR #14をmergeしてから次PRに分ける。"
+    receipt:
+      result: active
+      decision: waiting_for_post_irodori_smoke_priority
+      full_outcome_complete: false
+      summary: "Irodoriはhealthとwarm synthesisが通ったが、初回ロードは数分かかりclient timeoutしやすい。次はcold/warmを分けた改善かdocs整理を選ぶ。"
+      note: "notes/T092-irodori-server-smoke-test.md"
 
   - id: T007
     type: worker
