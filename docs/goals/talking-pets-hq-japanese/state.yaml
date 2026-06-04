@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T132
+active_task: T133
 
 tasks:
   - id: T001
@@ -4085,7 +4085,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "言守 詞葉"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "多言語routingで、fixture診断が証明する範囲と実機audible証跡が必要な範囲を分けて記録する。"
     allowed_files:
@@ -4097,7 +4097,7 @@ tasks:
       - "model downloadや外部APIを使わない。"
       - "fixture-only証跡を実機audible証跡として扱わない。"
     receipt:
-      result: active
+      result: done
       decision: multilingual_evidence_boundary
       full_outcome_complete: false
       summary: "ja/en/ko/zh/繁体字/記号のみfixtureのrouting診断を再実行し、verification-statusにrouting-onlyとreal-device evidenceの境界を追加した。"
@@ -4120,6 +4120,33 @@ tasks:
         - cmd: "node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --rollout test/fixtures/symbol-only-rollout.jsonl"
           status: pass
         - cmd: "rg -n \"active_task: T132|T132|Multilingual Routing Evidence Boundary|fixture diagnostics prove routing decisions only|not dedicated Korean|not dedicated Chinese|symbol-only\" docs/verification-status.md docs/goals/talking-pets-hq-japanese/notes/T132-multilingual-evidence-boundary.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T133
+    type: pm
+    assignee: PM
+    owner_role: "愛坂 あい"
+    status: active
+    reasoning_hint: default
+    objective: "PR #36-#39で進んだoutreach/local TTS/multilingualの波を整理し、次に安全に進める実行キューを日本語HQへ置く。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "SNS投稿、Issue返信、DMをしない。"
+      - "model downloadや外部APIを使わない。"
+      - "外部証跡がないものをverified扱いしない。"
+    receipt:
+      result: active
+      decision: next_wave_queue
+      full_outcome_complete: false
+      summary: "PR #36-#39の完了内容をまとめ、次に進める候補をpost metrics、external verification intake、no-download local TTSの3本へ整理した。"
+      note: "notes/T133-next-wave-queue.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T133-next-wave-queue.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n \"active_task: T133|T133|PR #36|PR #37|PR #38|PR #39|post metrics|external verification|no-download local TTS\" docs/goals/talking-pets-hq-japanese/notes/T133-next-wave-queue.md docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
 
   - id: T007
