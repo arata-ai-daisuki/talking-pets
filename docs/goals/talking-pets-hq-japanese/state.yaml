@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T142
+active_task: T143
 
 tasks:
   - id: T001
@@ -4437,7 +4437,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "言守 詞葉"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "Platform verification issueでko/zh fallback検証とdedicated provider evidenceを分けて記録できるようにする。"
     allowed_files:
@@ -4450,7 +4450,7 @@ tasks:
       - "外部APIやmodel downloadを増やさない。"
       - "生成音声ファイル添付を求めない。"
     receipt:
-      result: active
+      result: done
       decision: multilingual_issue_guidance
       full_outcome_complete: false
       summary: "Platform verification issue templateに多言語fallback evidenceの任意欄を追加し、ko/zh fallback-onlyとdedicated-provider evidenceを分けて記録できるようにした。"
@@ -4462,6 +4462,36 @@ tasks:
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands:
         - cmd: "rg -n 'active_task: T142|T142|multilingual_issue_guidance|multilingual_fallback|fallback-only|dedicated provider evidence|Do not present Korean or Chinese OS speech fallback' .github/ISSUE_TEMPLATE/platform_verification.yml docs/verification-status.md docs/goals/talking-pets-hq-japanese/notes/T142-multilingual-issue-guidance.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T143
+    type: worker
+    assignee: Worker
+    owner_role: "月城 奏"
+    status: active
+    reasoning_hint: default
+    objective: "測定協力者へ送る手動outreach返信文をSNS戦略に追加する。"
+    allowed_files:
+      - "docs/research/sns-outreach-strategy.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "自動投稿や自動DMを追加しない。"
+      - "private contact収集を追加しない。"
+      - "performance claimを強くしない。"
+      - "Korean / Chinese dedicated TTS対応済みclaimを追加しない。"
+    receipt:
+      result: active
+      decision: verification_reply_drafts
+      full_outcome_complete: false
+      summary: "SNS outreach strategyに、測定協力をお願いする返信文と、反応後にPlatform verification issueへ誘導する文面を追加した。"
+      note: "notes/T143-verification-reply-drafts.md"
+      changed_files:
+        - "docs/research/sns-outreach-strategy.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T143-verification-reply-drafts.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n 'active_task: T143|T143|verification_reply_drafts|Verification help ask|After someone shows interest|Platform verification|OS speech fallback' docs/research/sns-outreach-strategy.md docs/goals/talking-pets-hq-japanese/notes/T143-verification-reply-drafts.md docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
 
   - id: T007
