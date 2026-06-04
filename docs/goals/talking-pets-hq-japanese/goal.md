@@ -27,7 +27,7 @@ Talking Petsを、GoalBuddyの日本語看板で継続推進する。
 
 ## 看板
 
-http://goalbuddy.localhost:41737/talking-pets-hq-japanese/
+http://goalbuddy.localhost:41737/talking-pets-hq-japanese-2/
 
 ## 活動一覧
 
