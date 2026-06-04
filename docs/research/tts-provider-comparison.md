@@ -126,6 +126,30 @@ Use this gate before promoting any new provider candidate from design notes into
 
 Recommended T144 outcome: keep sherpa-onnx-node as the first design-only local provider to evaluate after approval, keep API TTS separate as an opt-in cloud/remote path, and do not add Piper/Melo/other multilingual providers until their package shape, model size, language coverage, and license terms have a matching design note.
 
+## Multilingual Provider Research Cards
+
+Use these cards before adding Piper, Melo, or another multilingual local TTS provider to `Current Candidates`. These are research placeholders, not support claims.
+
+| Candidate family | Why to research | Required proof before shortlist | Stop line |
+| --- | --- | --- | --- |
+| Piper-like lightweight local TTS | Potentially small, offline-friendly fallback for languages beyond Japanese and English | Current package or binary shape, supported OS/architectures, exact model source, model size, language list, license terms, and a no-download helper sketch | Stop if model license, voice license, or platform packaging is unclear. |
+| Melo-like multilingual neural TTS | Potential quality path for broader multilingual voices | Current install path, runtime requirements, model cache policy, supported languages, license terms, and whether Node can call it without a broad provider abstraction | Stop if setup requires a large Python/runtime stack that cannot remain clearly optional. |
+| Other local multilingual TTS | Captures community suggestions without overfitting to a named provider | Public project link, offline behavior, supported languages, model size, license, integration surface, and expected latency measurement shape | Stop if it needs cloud inference, unknown redistribution rights, or normal install-path changes. |
+
+For every research card, record:
+
+- public source URL and checked date
+- package/binary name and version, if known
+- supported languages and whether Korean / Chinese are first-class or fallback only
+- model and voice license notes
+- model size and cache location
+- install/runtime requirements
+- expected command shape for a future helper
+- whether `npm run check:all` can remain green without the provider installed
+- which Platform verification issue fields would collect contributor evidence
+
+Do not add README support wording, default routing, dependencies, install prompts, or model downloads from a research card alone.
+
 ## Maintainer Real-Time Factor Snapshot
 
 These numbers are maintainer reference data only. They are useful for comparing the shape of current local TTS paths, but they are not public performance guarantees.
