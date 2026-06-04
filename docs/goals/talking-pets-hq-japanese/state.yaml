@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T131
+active_task: T132
 
 tasks:
   - id: T001
@@ -4054,7 +4054,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "歌澄 音羽"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "READMEのLatency snapshotからRTFの詳しい読み方へ迷わず辿れるようにする。"
     allowed_files:
@@ -4067,7 +4067,7 @@ tasks:
       - "RTF表をREADMEへ重複展開しない。"
       - "model downloadや外部APIを使わない。"
     receipt:
-      result: active
+      result: done
       decision: readme_rtf_link
       full_outcome_complete: false
       summary: "README / README.en のLatency snapshotに、RTFの意味とTTS Provider ComparisonのRTF snapshotへのリンクを追加した。"
@@ -4079,6 +4079,47 @@ tasks:
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands:
         - cmd: "rg -n \"active_task: T131|T131|maintainer-real-time-factor-snapshot|RTF|synthesis / audio duration|synthesis time divided\" README.md README.en.md docs/goals/talking-pets-hq-japanese/notes/T131-readme-rtf-link.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T132
+    type: worker
+    assignee: Worker
+    owner_role: "言守 詞葉"
+    status: active
+    reasoning_hint: default
+    objective: "多言語routingで、fixture診断が証明する範囲と実機audible証跡が必要な範囲を分けて記録する。"
+    allowed_files:
+      - "docs/verification-status.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "専用Korean/Chinese TTS対応済みclaimを追加しない。"
+      - "model downloadや外部APIを使わない。"
+      - "fixture-only証跡を実機audible証跡として扱わない。"
+    receipt:
+      result: active
+      decision: multilingual_evidence_boundary
+      full_outcome_complete: false
+      summary: "ja/en/ko/zh/繁体字/記号のみfixtureのrouting診断を再実行し、verification-statusにrouting-onlyとreal-device evidenceの境界を追加した。"
+      note: "notes/T132-multilingual-evidence-boundary.md"
+      changed_files:
+        - "docs/verification-status.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T132-multilingual-evidence-boundary.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --rollout test/fixtures/ja-rollout.jsonl"
+          status: pass
+        - cmd: "node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --rollout test/fixtures/en-rollout.jsonl"
+          status: pass
+        - cmd: "node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --rollout test/fixtures/ko-rollout.jsonl"
+          status: pass
+        - cmd: "node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --rollout test/fixtures/zh-rollout.jsonl"
+          status: pass
+        - cmd: "node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --rollout test/fixtures/zh-traditional-rollout.jsonl"
+          status: pass
+        - cmd: "node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --rollout test/fixtures/symbol-only-rollout.jsonl"
+          status: pass
+        - cmd: "rg -n \"active_task: T132|T132|Multilingual Routing Evidence Boundary|fixture diagnostics prove routing decisions only|not dedicated Korean|not dedicated Chinese|symbol-only\" docs/verification-status.md docs/goals/talking-pets-hq-japanese/notes/T132-multilingual-evidence-boundary.md docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
 
   - id: T007

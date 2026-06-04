@@ -46,6 +46,21 @@ Observed result:
 - Stateful dry-run output includes the local thread title, rollout path, and conversation text, so it is local verification only and must not be pasted publicly without sanitization and manual review.
 - A macOS `say` fixture TTS command is recorded as the current audible local TTS evidence for the release draft.
 
+## Multilingual Routing Evidence Boundary
+
+Current fixture diagnostics prove routing decisions only. They do not prove dedicated Korean or Chinese TTS provider support, real-device audio quality, or first audible speech timing.
+
+| Fixture | Detected / effective language | Chosen engine | Evidence boundary |
+| --- | --- | --- | --- |
+| `test/fixtures/ja-rollout.jsonl` | `ja` / `ja` | `voicevox` | Routing only; requires a running VOICEVOX Engine for audible TTS. |
+| `test/fixtures/en-rollout.jsonl` | `en` / `en` | `kokoro` | Routing only; Kokoro first use may need model download. |
+| `test/fixtures/ko-rollout.jsonl` | `ko` / `ko` | `say` | OS speech fallback, not dedicated Korean provider support. |
+| `test/fixtures/zh-rollout.jsonl` | `zh` / `zh` | `say` | OS speech fallback, not dedicated Chinese provider support. |
+| `test/fixtures/zh-traditional-rollout.jsonl` | `zh` / `zh` | `say` | OS speech fallback, not dedicated Traditional Chinese provider support. |
+| `test/fixtures/symbol-only-rollout.jsonl` | `other` / `other` | `say` | Fallback message path for non-language text. |
+
+Before changing public wording from "fallback" to dedicated Korean or Chinese support, collect sanitized real-device evidence with a provider-specific TTS path, one audible spoken line, OS/version, speech-language value, and config source. Fixture-only routing diagnostics are useful release gates, but they are not enough for that claim.
+
 ## Irodori Latency Snapshot
 
 Irodori-TTS Server is experimental optional and should not be treated as a universal latency benchmark from one maintainer machine.
