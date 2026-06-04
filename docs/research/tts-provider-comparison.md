@@ -578,6 +578,21 @@ The T237 recheck keeps the same boundary:
 
 No install, dependency change, model download, API call, generated audio, README support claim change, latency guarantee claim, platform support claim, or default routing change was made in this watch.
 
+### Local TTS Boundary Watch Result 4
+
+Checked: 2026-06-05.
+
+The T243 recheck keeps the same boundary:
+
+- VOICEVOX / Voicebox-compatible endpoint: still evidence-first. Keep issue #26 and sanitized contributor reports as the path for broader latency/audibility confidence.
+- Irodori-TTS Server: still evidence-first. Keep issue #25 and contributor CPU/GPU/backend reports as the path for comparing device-sensitive results.
+- Kokoro.js: helper remains available, but cold-start/cache measurement still needs explicit model-download approval.
+- sherpa-onnx-node: still design-only. Do not treat prior package research or npm-install-only planning as approval for dependency changes, optional dependency changes, model/vocoder/token/espeak downloads, helper code, or generated audio.
+- MeloTTS: still design-only / external-runtime. Health-only detect/connect remains the limit; no Python/Docker/model/unidic setup or synthesis.
+- API TTS: still later opt-in. No API key creation, remote endpoint call, paid call, default route, or support claim change.
+
+No install, dependency change, optional dependency change, model download, API call, generated audio, README support claim change, latency guarantee claim, platform support claim, or default routing change was made in this watch.
+
 ### Local TTS Boundary Watch Result 3
 
 Checked: 2026-06-05.
