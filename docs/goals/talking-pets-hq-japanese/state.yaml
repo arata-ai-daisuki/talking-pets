@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T202
+active_task: T203
 
 tasks:
   - id: T001
@@ -6557,7 +6557,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "星宮 未来 / 白瀬 怜奈"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "OpenClaw/V1GPTの催促禁止日まで、返信が来た場合だけsafe intakeできる状態を再確認する。"
     allowed_files:
@@ -6572,13 +6572,50 @@ tasks:
       - "2026-06-17より前にOpenClaw/V1GPTへ催促しない。"
       - "private contactや非公開DM本文をrepoへ保存しない。"
     receipt:
-      result: active
+      result: done
       decision: outreach_waiting_lane_refresh
-      full_outcome_complete: false
-      summary: "次はOpenClaw/V1GPTの返信待ちlaneを再送なしで確認する。"
+      full_outcome_complete: true
+      summary: "Reply Waiting Intake QueueとCurrent Outreach Cadence Snapshotを確認し、OpenClaw/V1GPTは2026-06-17より前に催促しないwait状態を維持した。Outreach Waiting Lane Snapshotを追加し、SNS strategyから同snapshotへ接続した。外部投稿やDMはしていない。"
       note: "notes/T202-outreach-waiting-lane-refresh.md"
       changed_files:
+        - "docs/research/x-outreach-targets.md"
+        - "docs/research/sns-outreach-strategy.md"
         - "docs/goals/talking-pets-hq-japanese/notes/T202-outreach-waiting-lane-refresh.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T203-local-tts-approval-decision.md"
+        - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+        - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n 'Outreach Waiting Lane Snapshot|Do not bump before 2026-06-17|active_task: T203|outreach_waiting_lane_refresh|local_tts_approval_decision' docs/research/x-outreach-targets.md docs/research/sns-outreach-strategy.md docs/goals/talking-pets-hq-japanese/notes/T202-outreach-waiting-lane-refresh.md docs/goals/talking-pets-hq-japanese/notes/T203-local-tts-approval-decision.md docs/goals/talking-pets-hq-japanese/hq-backlog-board.md docs/goals/talking-pets-hq-japanese/activity-index.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+        - cmd: "npm run check:docs"
+          status: pass
+
+  - id: T203
+    type: worker
+    assignee: Worker
+    owner_role: "歌澄 音羽 / 白瀬 怜奈"
+    status: active
+    reasoning_hint: default
+    objective: "Local TTS Approval Follow-Up SnapshotのA/B/Cから、Master判断が必要な次アクションを確認する。"
+    allowed_files:
+      - "docs/research/tts-provider-comparison.md"
+      - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+      - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "依存追加、model download、API callをしない。"
+      - "README support claimを変えない。"
+      - "sherpa/MeloTTSの実装や音声生成をしない。"
+    receipt:
+      result: active
+      decision: local_tts_approval_decision
+      full_outcome_complete: false
+      summary: "次はlocal TTSのA/B/C承認判断カードを、実装なしで準備する。"
+      note: "notes/T203-local-tts-approval-decision.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T203-local-tts-approval-decision.md"
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands: []
 
