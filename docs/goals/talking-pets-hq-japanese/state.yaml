@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T162
+active_task: T163
 
 tasks:
   - id: T001
@@ -5053,7 +5053,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "星宮 未来"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "公開検索で見つけたprovider-specific / local multilingual TTS候補をSearch Review Logへ記録する。"
     allowed_files:
@@ -5067,7 +5067,7 @@ tasks:
       - "Korean / Chinese dedicated provider support claimを追加しない。"
       - "provider実装、依存追加、model download、API callをしない。"
     receipt:
-      result: active
+      result: done
       decision: search_review_candidates
       full_outcome_complete: false
       summary: "Search Review LogにMeloTTS、MeloTTS.cpp、MOSS-TTS-Nano、offline TTS CPU benchmark threadをreply later/watch候補として記録した。"
@@ -5078,6 +5078,37 @@ tasks:
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands:
         - cmd: "rg -n 'active_task: T162|T162|search_review_candidates|MeloTTS.cpp|MOSS-TTS-Nano|Offline TTS CPU benchmark|reply later|watch' docs/research/x-outreach-targets.md docs/goals/talking-pets-hq-japanese/notes/T162-search-review-candidates.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T163
+    type: worker
+    assignee: Worker
+    owner_role: "星宮 未来"
+    status: active
+    reasoning_hint: default
+    objective: "Search Review Logの候補ごとに、Masterが手動で送るための短い公開返信ドラフトを用意する。"
+    allowed_files:
+      - "docs/research/x-outreach-targets.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "自動返信、DM、follow、like、mentionをしない。"
+      - "`sent` にはしない。"
+      - "private contact details、private DMs、scraped personal dataを記録しない。"
+      - "Korean / Chinese dedicated provider support claimを追加しない。"
+      - "provider実装、依存追加、model download、API callをしない。"
+    receipt:
+      result: active
+      decision: search_review_manual_drafts
+      full_outcome_complete: false
+      summary: "Search Review Logの4候補向けに、短い公開返信ドラフトを追加した。送信やDM文面化はしていない。"
+      note: "notes/T163-search-review-manual-drafts.md"
+      changed_files:
+        - "docs/research/x-outreach-targets.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T163-search-review-manual-drafts.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n 'active_task: T163|T163|search_review_manual_drafts|Candidate-Specific Manual Drafts|MeloTTS.cpp|MOSS-TTS-Nano|first-audio latency|sent.*にはしない' docs/research/x-outreach-targets.md docs/goals/talking-pets-hq-japanese/notes/T163-search-review-manual-drafts.md docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
 
   - id: T007
