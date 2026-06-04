@@ -63,6 +63,8 @@ Before changing public wording from "fallback" to dedicated Korean or Chinese su
 
 When a Platform verification issue includes Korean or Chinese testing, use the optional multilingual fallback field to record the source text or fixture, detected or forced speech-language value, chosen TTS path, audible result, and whether the evidence is fallback-only or provider-specific. This keeps `ko` / `zh` fallback evidence separate from future dedicated-provider evidence.
 
+For quick contributor replies, use the [Minimal Multilingual Report Form](real-device-verification.md#minimal-multilingual-report-form). It is enough for intake and triage, but it does not by itself graduate fallback language wording to dedicated provider support.
+
 ### Dedicated Provider Evidence Checklist
 
 Use this checklist before changing Korean, Chinese, or any other fallback language from "OS speech fallback" to "dedicated provider support":

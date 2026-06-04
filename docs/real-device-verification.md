@@ -22,6 +22,36 @@ When pasting latency results into a Platform verification issue, use the generat
 | warm-2 | voicevox | `<generated>` | `<generated>` | `<generated>` | `<generated>` | true | false |
 | warm-3 | voicevox | `<generated>` | `<generated>` | `<generated>` | `<generated>` | true | false |
 
+## Minimal Multilingual Report Form
+
+Use this compact form when someone only has time to report Korean, Chinese, or another fallback-language check. It is intentionally shorter than a full platform graduation report. It helps maintainers separate fallback evidence from future dedicated-provider evidence.
+
+```text
+Talking Pets multilingual check
+
+- OS/version:
+- Device / CPU architecture:
+- Node.js / npm:
+- TTS path tested: OS speech / VOICEVOX / Irodori / Kokoro / other:
+- Speech language tested: ko / zh / other:
+- Source: fixture name or short public test sentence:
+- Detected or forced speech-language value:
+- Chosen provider/path:
+- Was one spoken line audible: yes/no:
+- Evidence type: fallback-only / provider-specific:
+- Sanitized command output or latency line:
+- Private text, paths, credentials, generated audio, model files removed: yes/no:
+- Notes:
+```
+
+Rules for this form:
+
+- `OS speech`, `macOS say`, `Windows System.Speech`, and `Linux espeak` are fallback-only evidence.
+- Provider-specific evidence must name the provider and version if known.
+- Do not attach generated audio unless the exact model and generated-audio terms have already been reviewed.
+- Do not change README wording from fallback to dedicated support from this form alone.
+- If the report includes Korean or Chinese provider-specific evidence, also check the Dedicated Provider Evidence Checklist in `docs/verification-status.md`.
+
 ## Quick Contributor Request
 
 When asking someone else to verify Windows or Linux, send them this short checklist:

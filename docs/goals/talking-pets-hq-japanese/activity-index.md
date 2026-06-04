@@ -8,14 +8,14 @@ This page is a readable snapshot of the Japanese HQ state. The authoritative sou
 
 - Board URL: `http://goalbuddy.localhost:41737/talking-pets-hq-japanese/`
 - Local board files: `docs/goals/talking-pets-hq-japanese/.goalbuddy-board/`
-- Current active task: `T166`
-- Current focus: カンバンとサブエージェント活動を一覧で見られるようにする。
+- Current active task: `T167`
+- Current focus: 多言語fallback / dedicated provider evidenceを外部協力者が短く報告できる形にする。
 
 ## Kanban Snapshot
 
 | Column | Count | Meaning |
 | --- | ---: | --- |
-| Done | 166 | 完了済みの小PR、調査、判断カード、検証receipt。 |
+| Done | 167 | 完了済みの小PR、調査、判断カード、検証receipt。 |
 | Active | 1 | いまHQが追っている作業。 |
 | Blocked | 0 | 同じ停止条件が継続しており、Master判断なしに進めないもの。 |
 
@@ -27,9 +27,9 @@ This page is a readable snapshot of the Japanese HQ state. The authoritative sou
 | 星宮 未来 | Outreach Lead | 30 | 0 | SNS/outreach、候補表、返信ドラフト、送信後記録。 |
 | 白瀬 怜奈 | Risk / Review Lead | 20 | 0 | claim境界、license/privacy/API、セルフレビュー。 |
 | 歌澄 音羽 | Voice Provider Lead | 19 | 0 | TTS provider、VOICEVOX/Irodori/sherpa/Melo/API設計。 |
-| 言守 詞葉 | Multilingual Lead | 14 | 0 | ko/zh fallback、多言語fixture、dedicated provider evidence境界。 |
+| 言守 詞葉 | Multilingual Lead | 14 | 1 | ko/zh fallback、多言語fixture、dedicated provider evidence境界。 |
 | 速水 光莉 | Latency Lead | 14 | 0 | latency診断、RTF、table helper、測定読み方。 |
-| 文月 栞里 | Docs / Operations Lead | 9 | 1 | docs整備、hygiene、activity index、運用導線。 |
+| 文月 栞里 | Docs / Operations Lead | 10 | 0 | docs整備、hygiene、activity index、運用導線。 |
 | 愛坂 あい | Pet / Persona Lead | 2 | 0 | キャラクター/会話体験の方向づけ。 |
 | 月城 奏 | Release Support | 1 | 0 | release補助。 |
 
@@ -53,7 +53,8 @@ This page is a readable snapshot of the Japanese HQ state. The authoritative sou
 | `T163` | 星宮 未来 | done | 候補別の手動返信ドラフトを追加。 |
 | `T164` | 歌澄 音羽 | done | Provider Experiment Scorecardを追加。 |
 | `T165` | 歌澄 音羽 | done | Next Provider Decision Cardを追加。 |
-| `T166` | 文月 栞里 | active | このHQ Activity Indexを追加中。 |
+| `T166` | 文月 栞里 | done | HQ Activity Indexを追加。 |
+| `T167` | 言守 詞葉 | active | Minimal Multilingual Report Formを追加中。 |
 
 ## Where To Look Next
 

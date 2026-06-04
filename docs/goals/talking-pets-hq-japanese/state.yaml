@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T166
+active_task: T167
 
 tasks:
   - id: T001
@@ -5175,7 +5175,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "文月 栞里"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "Masterがカンバンとサブエージェント活動を一覧で見られるHQ Activity Indexを追加する。"
     allowed_files:
@@ -5188,7 +5188,7 @@ tasks:
       - "自動投稿、DM、follow、like、mentionをしない。"
       - "活動一覧はstate.yamlの現在地から作ったsnapshotとして扱う。"
     receipt:
-      result: active
+      result: done
       decision: hq_activity_index
       full_outcome_complete: false
       summary: "HQ Activity Indexを追加し、GoalBuddy看板URL、active task、担当別活動数、直近wave、次に見る場所を一覧化した。"
@@ -5200,6 +5200,40 @@ tasks:
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands:
         - cmd: "rg -n 'active_task: T166|T166|hq_activity_index|HQ Activity Index|GoalBuddy Kanban|Agent Activity Summary|Recent Wave|文月 栞里' docs/goals/talking-pets-hq-japanese/activity-index.md docs/goals/talking-pets-hq-japanese/goal.md docs/goals/talking-pets-hq-japanese/notes/T166-hq-activity-index.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T167
+    type: worker
+    assignee: Worker
+    owner_role: "言守 詞葉"
+    status: active
+    reasoning_hint: default
+    objective: "多言語fallback / dedicated provider evidenceを、外部協力者が短く報告できるMinimal Multilingual Report Formとして追加する。"
+    allowed_files:
+      - "docs/real-device-verification.md"
+      - "docs/verification-status.md"
+      - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "Korean / Chinese dedicated provider support claimを追加しない。"
+      - "provider実装、依存追加、model download、API callをしない。"
+      - "generated audio添付を推奨しない。"
+      - "READMEの対応provider claimを増やさない。"
+    receipt:
+      result: active
+      decision: minimal_multilingual_report_form
+      full_outcome_complete: false
+      summary: "real-device-verificationにMinimal Multilingual Report Formを追加し、verification-statusからfallback-only / provider-specificの簡易報告導線へリンクした。"
+      note: "notes/T167-minimal-multilingual-report-form.md"
+      changed_files:
+        - "docs/real-device-verification.md"
+        - "docs/verification-status.md"
+        - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T167-minimal-multilingual-report-form.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n 'active_task: T167|T167|minimal_multilingual_report_form|Minimal Multilingual Report Form|fallback-only|provider-specific|generated audio|言守 詞葉' docs/real-device-verification.md docs/verification-status.md docs/goals/talking-pets-hq-japanese/activity-index.md docs/goals/talking-pets-hq-japanese/notes/T167-minimal-multilingual-report-form.md docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
 
   - id: T007
