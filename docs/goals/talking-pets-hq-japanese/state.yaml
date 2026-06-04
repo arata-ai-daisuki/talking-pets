@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T242
+active_task: T243
 
 tasks:
   - id: T001
@@ -8119,7 +8119,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "星宮 未来 / 白瀬 怜奈"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "T241のmultilingual verification boundary watch後に、outreach待ちレーンへ戻る。"
     allowed_files:
@@ -8135,13 +8135,49 @@ tasks:
       - "private contact、DM全文、private thread全文を保存しない。"
       - "README support claimを強めない。"
     receipt:
-      result: active
+      result: done
       decision: outreach_waiting_lane_boundary_watch
-      full_outcome_complete: false
-      summary: "次はoutreach待ちレーンを、再送、催促、自動DM、private evidence保存、claim変更なしで維持する。"
+      full_outcome_complete: true
+      summary: "Boundary watch 4を追加し、V1GPT / OpenClawはlocal HQ docs上ではwaitingのまま、public reply URLまたはMaster承認済みsanitized summary未記録として扱った。2026-06-17前の催促、再送、自動DM/reply/follow/like、Star依頼、private contact / DM全文 / private thread保存、README/SNS support claim変更はしていない。"
       note: "notes/T242-outreach-waiting-lane-boundary-watch.md"
       changed_files:
+        - "docs/research/sns-outreach-strategy.md"
         - "docs/goals/talking-pets-hq-japanese/notes/T242-outreach-waiting-lane-boundary-watch.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T243-local-tts-boundary-watch.md"
+        - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+        - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n \"Boundary watch 4|active_task: T243|T243|local_tts_boundary_watch|V1GPT / OpenClaw|2026-06-17|Star依頼|自動DM|model download|API call\" docs/research/sns-outreach-strategy.md docs/goals/talking-pets-hq-japanese/notes/T242-outreach-waiting-lane-boundary-watch.md docs/goals/talking-pets-hq-japanese/notes/T243-local-tts-boundary-watch.md docs/goals/talking-pets-hq-japanese/activity-index.md docs/goals/talking-pets-hq-japanese/hq-backlog-board.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T243
+    type: worker
+    assignee: Worker
+    owner_role: "歌澄 音羽 / 白瀬 怜奈"
+    status: active
+    reasoning_hint: default
+    objective: "T242のoutreach waiting lane boundary watch後に、local TTS設計の境界へ戻る。"
+    allowed_files:
+      - "docs/research/tts-provider-comparison.md"
+      - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+      - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "install、dependency change、optional dependency changeをしない。"
+      - "`sherpa-onnx-node`をinstallしない。"
+      - "MeloTTSのPython/Docker/model/unidic setupをしない。"
+      - "model download、API call、生成音声をしない。"
+      - "README support claim、latency保証claim、platform support claim、default routingを強めない。"
+    receipt:
+      result: active
+      decision: local_tts_boundary_watch
+      full_outcome_complete: false
+      summary: "次はlocal TTS境界を、install、dependency change、model download、API call、生成音声、support-claim変更なしで再確認する。"
+      note: "notes/T243-local-tts-boundary-watch.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T243-local-tts-boundary-watch.md"
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands: []
 
