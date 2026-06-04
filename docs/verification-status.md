@@ -65,6 +65,8 @@ When a Platform verification issue includes Korean or Chinese testing, use the o
 
 For quick contributor replies, use the [Minimal Multilingual Report Form](real-device-verification.md#minimal-multilingual-report-form). It is enough for intake and triage, but it does not by itself graduate fallback language wording to dedicated provider support.
 
+If the reply includes provider-specific guidance, such as runtime setup, model cache behavior, license notes, platform friction, or which latency metric matters, also copy a one-sentence technical summary into [Provider Feedback Intake](https://github.com/arata-ai-daisuki/talking-pets/blob/main/docs/research/tts-provider-comparison.md#provider-feedback-intake). Keep the public verification issue as evidence and do not paste private messages or generated audio.
+
 ### Dedicated Provider Evidence Checklist
 
 Use this checklist before changing Korean, Chinese, or any other fallback language from "OS speech fallback" to "dedicated provider support":
@@ -72,6 +74,7 @@ Use this checklist before changing Korean, Chinese, or any other fallback langua
 - The issue uses a provider-specific TTS path, not `macOS say`, `Windows System.Speech`, or `Linux espeak`.
 - The contributor records the source text or fixture, detected or forced speech-language value, provider name, provider version if known, OS/version, CPU architecture, config source, and whether one spoken line was audible.
 - The evidence includes sanitized command output or `[latency]` lines with no private Codex text, credentials, generated audio attachments, or local private file paths.
+- Any provider-specific guidance that changes runtime, cache, license, measurement, or platform assumptions is summarized in Provider Feedback Intake before README wording changes.
 - The provider is already represented by a design note or a supported helper, and any dependency, model, cache, license, privacy, or billing boundary is documented.
 - The verification-status row links to the sanitized Platform verification issue before README wording changes.
 

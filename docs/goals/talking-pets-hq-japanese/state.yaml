@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T183
+active_task: T184
 
 tasks:
   - id: T001
@@ -5817,7 +5817,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "言守 詞葉"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "Multilingual evidence refreshとして、ko/zh dedicated provider evidenceの小テスト導線と報告フォームを最新のprovider feedback導線に合わせる。"
     allowed_files:
@@ -5833,11 +5833,51 @@ tasks:
       - "generated audioやprivate logsを求めない。"
       - "新しいTTS provider実装、依存追加、model downloadをしない。"
     receipt:
-      result: active
+      result: done
       decision: multilingual_evidence_refresh_next
-      full_outcome_complete: false
-      summary: "次は多言語検証フォームと小テスト導線をprovider feedback captureに合わせて更新する。"
+      full_outcome_complete: true
+      summary: "Minimal Multilingual Report Form、verification-status、outreach follow-up文をprovider feedback intakeに接続し、fallback-only/provider-specific境界を維持した。"
       note: "notes/T183-multilingual-evidence-refresh-next.md"
+      changed_files:
+        - "docs/real-device-verification.md"
+        - "docs/verification-status.md"
+        - "docs/research/x-outreach-targets.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T183-multilingual-evidence-refresh-next.md"
+        - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+        - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n 'Provider feedback intake needed|Provider Feedback Intake|provider feedback intake|fallback-only|provider-specific|generated audio|private logs|multilingual_evidence_refresh_next' docs/real-device-verification.md docs/verification-status.md docs/research/x-outreach-targets.md docs/goals/talking-pets-hq-japanese/notes/T183-multilingual-evidence-refresh-next.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+        - cmd: "npm run check:docs"
+          status: pass
+
+  - id: T184
+    type: pm
+    assignee: PM
+    owner_role: "星宮 未来"
+    status: active
+    reasoning_hint: default
+    objective: "TTS設計と多言語検証が進んだ後のREADME/SNS導線を、過大claimなしで現在地に合うか再点検する。"
+    allowed_files:
+      - "README.md"
+      - "README.en.md"
+      - "docs/research/sns-outreach-strategy.md"
+      - "docs/research/x-outreach-targets.md"
+      - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+      - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "MeloTTS/Piper/sherpaを対応済みproviderとしてclaimしない。"
+      - "Star依頼を強くしすぎない。"
+      - "自動投稿、DM、follow、like、mentionをしない。"
+    receipt:
+      result: active
+      decision: readme_sns_route_tuneup_next
+      full_outcome_complete: false
+      summary: "次はREADME/SNS導線が現在地に合っているか、Star導線とverification導線を中心に再点検する。"
+      note: "notes/T184-readme-sns-route-tuneup-next.md"
       changed_files:
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands: []
