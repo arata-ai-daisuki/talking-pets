@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T206
+active_task: T207
 
 tasks:
   - id: T001
@@ -6711,7 +6711,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "相庭 愛 / 文月 栞里"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "返信待ちや外部証跡待ちで止まらず、次のpublic proof向け小PR候補を選べる状態にする。"
     allowed_files:
@@ -6727,13 +6727,54 @@ tasks:
       - "Issue催促、外部返信、Star依頼を自動化しない。"
       - "README support claimを強めない。"
     receipt:
-      result: active
+      result: done
       decision: public_proof_route_selector
-      full_outcome_complete: false
-      summary: "次はpublic proof向けの小PR候補を、外部待ちに依存しない形で選ぶ。"
+      full_outcome_complete: true
+      summary: "outreach waiting、verification watch、README/SNS導線、provider feedbackを比較し、次の安全な小PR候補としてA: public proof hub polishを選ぶPublic Proof Route Selectorを追加した。外部投稿、Issue催促、Star依頼、README support claim変更はしていない。"
       note: "notes/T206-public-proof-route-selector.md"
       changed_files:
+        - "docs/research/sns-outreach-strategy.md"
         - "docs/goals/talking-pets-hq-japanese/notes/T206-public-proof-route-selector.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T207-public-proof-hub-polish.md"
+        - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+        - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n 'Public Proof Route Selector|Recommended route: \\*\\*A: public proof hub polish\\*\\*|active_task: T207|public_proof_route_selector|public_proof_hub_polish|support claim' docs/research/sns-outreach-strategy.md docs/goals/talking-pets-hq-japanese/notes/T206-public-proof-route-selector.md docs/goals/talking-pets-hq-japanese/notes/T207-public-proof-hub-polish.md docs/goals/talking-pets-hq-japanese/hq-backlog-board.md docs/goals/talking-pets-hq-japanese/activity-index.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+        - cmd: "npm run check:docs"
+          status: pass
+
+  - id: T207
+    type: worker
+    assignee: Worker
+    owner_role: "文月 栞里 / 白瀬 怜奈"
+    status: active
+    reasoning_hint: default
+    objective: "README/SNS/verificationのpublic proof導線を、support claimを強めずに初見ユーザーが追いやすい形へ磨く。"
+    allowed_files:
+      - "README.md"
+      - "README.en.md"
+      - "docs/contributor-entrypoints.md"
+      - "docs/verification-status.md"
+      - "docs/real-device-verification.md"
+      - "docs/research/sns-outreach-strategy.md"
+      - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+      - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "Windows/Linux stable claimを追加しない。"
+      - "VOICEVOX/Irodoriの性能保証claimを追加しない。"
+      - "Korean/Chinese dedicated provider support claimを追加しない。"
+    receipt:
+      result: active
+      decision: public_proof_hub_polish
+      full_outcome_complete: false
+      summary: "次はpublic proof導線をsupport claimなしで磨く。"
+      note: "notes/T207-public-proof-hub-polish.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T207-public-proof-hub-polish.md"
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands: []
 
