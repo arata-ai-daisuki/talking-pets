@@ -21,5 +21,8 @@ T256の多言語検証boundary watch後に、outreach送信準備 / 返信待ち
 
 - decision: `outreach_waiting_lane_boundary_watch`
 - owner: `星宮 未来 / 白瀬 怜奈`
-- status: active
-- next: recheck the outreach waiting lane only from public reply evidence or Master-approved sanitized summaries.
+- status: done
+- result: Boundary watch 9
+- summary: V1GPT / OpenClawはlocal HQ docs上ではwaitingのまま、public reply URLまたはMaster承認済みsanitized summary未記録として扱った。
+- safety: 2026-06-17前の催促、再送、自動DM/reply/follow/like、private contact保存、DM全文/private thread保存、README/SNS support claim変更、Star askはしていない。
+- next: return to local TTS boundary watch without dependency changes, model downloads, API calls, generated audio, or stronger support claims.
