@@ -8,6 +8,7 @@ import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { windowsPowerShellCommand } from "./audio-platform.mjs";
+import { latencyAudioFields, setLatencyAudioDurationFromWav } from "./wav-duration.mjs";
 
 const scriptPath = fileURLToPath(import.meta.url);
 
@@ -76,6 +77,7 @@ async function speakWithVoicevox({ args, baseURL, text, latencyProfile, mode }) 
   const audio = Buffer.from(await measureLatency(latencyProfile, "read_audio", () => audioResponse.arrayBuffer()));
   const out = args.out ?? join(mkdtempSync(join(tmpdir(), "talking-pets-voicevox-")), "speech.wav");
   measureLatency(latencyProfile, "write_audio", () => writeFileSync(out, audio));
+  setLatencyAudioDurationFromWav(latencyProfile, audio);
   console.log(out);
 
   if (args.play) {
@@ -212,7 +214,7 @@ function printLatencyProfile(profile, fields) {
   if (!profile) return;
   const totalMs = performance.now() - profile.startedAt;
   const steps = profile.steps.map(step => `${step.name}=${formatLatencyMs(step.ms)}`).join(" ");
-  const metadata = Object.entries(fields).map(([key, value]) => `${key}=${value}`).join(" ");
+  const metadata = Object.entries({ ...latencyAudioFields(profile), ...fields }).map(([key, value]) => `${key}=${value}`).join(" ");
   console.error(`[latency] total=${formatLatencyMs(totalMs)} ${steps} ${metadata}`.trim());
 }
 

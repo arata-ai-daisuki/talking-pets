@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T133
+active_task: T134
 
 tasks:
   - id: T001
@@ -4126,7 +4126,7 @@ tasks:
     type: pm
     assignee: PM
     owner_role: "愛坂 あい"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "PR #36-#39で進んだoutreach/local TTS/multilingualの波を整理し、次に安全に進める実行キューを日本語HQへ置く。"
     allowed_files:
@@ -4137,7 +4137,7 @@ tasks:
       - "model downloadや外部APIを使わない。"
       - "外部証跡がないものをverified扱いしない。"
     receipt:
-      result: active
+      result: done
       decision: next_wave_queue
       full_outcome_complete: false
       summary: "PR #36-#39の完了内容をまとめ、次に進める候補をpost metrics、external verification intake、no-download local TTSの3本へ整理した。"
@@ -4147,6 +4147,61 @@ tasks:
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands:
         - cmd: "rg -n \"active_task: T133|T133|PR #36|PR #37|PR #38|PR #39|post metrics|external verification|no-download local TTS\" docs/goals/talking-pets-hq-japanese/notes/T133-next-wave-queue.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T134
+    type: worker
+    assignee: Worker
+    owner_role: "速水 光莉"
+    status: active
+    reasoning_hint: default
+    objective: "downloadなしで、既存VOICEVOX/Irodori helperのprofile latencyにaudio durationとRTFを出す。"
+    allowed_files:
+      - "scripts/**"
+      - "test/**"
+      - "docs/performance.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      - "package.json"
+    constraints:
+      - "model downloadをしない。"
+      - "外部APIやAPI keyを使わない。"
+      - "stdoutの通常出力を壊さない。"
+      - "RTFはWAV durationが読める場合だけ出す。"
+    receipt:
+      result: active
+      decision: tts_rtf_diagnostics
+      full_outcome_complete: false
+      summary: "VOICEVOX/Irodori helperの--profile-latencyにWAV由来のaudioDurationとrtfを追加し、stdout互換性を保った。"
+      note: "notes/T134-tts-rtf-diagnostics.md"
+      changed_files:
+        - "scripts/wav-duration.mjs"
+        - "scripts/tts-voicebox.mjs"
+        - "scripts/tts-irodori.mjs"
+        - "test/monitor.test.mjs"
+        - "docs/performance.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T134-tts-rtf-diagnostics.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+        - "package.json"
+      commands:
+        - cmd: "npm run check:syntax"
+          status: pass
+        - cmd: "npm test"
+          status: pass
+        - cmd: "npm run check:docs"
+          status: pass
+        - cmd: "npm run check:pack"
+          status: pass
+        - cmd: "npm run check:release"
+          status: pass
+        - cmd: "npm run check:sanitize"
+          status: pass
+        - cmd: "npm run test:dry-run"
+          status: pass
+        - cmd: "npm run check:all"
+          status: fail
+          note: "local check:platform-scripts Swift CLI error expectation failed; individual Node/docs/pack/release/sanitize/dry-run gates passed."
+        - cmd: "rg -n \"active_task: T134|T134|audioDuration|rtf|wav-duration|tts_rtf_diagnostics\" scripts package.json test/monitor.test.mjs docs/performance.md docs/goals/talking-pets-hq-japanese/notes/T134-tts-rtf-diagnostics.md docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
 
   - id: T007

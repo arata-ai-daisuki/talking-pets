@@ -29,6 +29,7 @@ import { forbiddenArtifactLabel, githubTemplateIssues, issueFieldBlock, localCon
 import { documentAnchors, documentLinks, shouldSkip, stripHtmlComments } from "../scripts/check-markdown-links.mjs";
 import { KOKORO_VOICES, parseArgs as parseKokoroArgs } from "../scripts/tts-kokoro.mjs";
 import { parseArgs as parseVoiceboxArgs, safeURLForLog } from "../scripts/tts-voicebox.mjs";
+import { formatAudioDurationSeconds, formatRealTimeFactor, latencyAudioFields, wavDurationSeconds } from "../scripts/wav-duration.mjs";
 import { sanitizePublicOutput, stripURLQuery } from "../scripts/sanitize-public-output.mjs";
 import { forbiddenText as sanitizerForbiddenText, requiredText as sanitizerRequiredText, sample as sanitizerSample } from "../scripts/check-public-output-sanitizer.mjs";
 
@@ -217,6 +218,18 @@ test("redacts spoken text from voicebox error URLs", () => {
     safeURLForLog("not-a-url?text=private#token"),
     "not-a-url?[redacted]",
   );
+});
+
+test("reads WAV duration and formats latency audio fields", () => {
+  const wav = samplePCM16Wav({ sampleRate: 24000, channels: 1, durationSeconds: 1.5 });
+  assert.equal(wavDurationSeconds(wav), 1.5);
+  assert.equal(formatAudioDurationSeconds(1.5), "1.5s");
+  assert.equal(formatRealTimeFactor(0.5), "0.50x");
+  assert.deepEqual(
+    latencyAudioFields({ audioDurationSeconds: 1.5, steps: [{ name: "synthesis", ms: 750 }] }),
+    { audioDuration: "1.5s", rtf: "0.50x" },
+  );
+  assert.equal(wavDurationSeconds(Buffer.from("not wav")), null);
 });
 
 test("sanitizes public check output before issue sharing", () => {
@@ -975,7 +988,7 @@ test("detects npm pack scope drift", () => {
   }).join("\n"), /missing required file: test\/fixtures\/mixed-ja-en-rollout\.jsonl/);
   const completePackIssues = packIssues({
     size: 300_000,
-    entryCount: 60,
+    entryCount: 61,
     files: [
       { path: ".talking-pets.local.env.example", mode: 0o644 },
       { path: "README.md", mode: 0o644 },
@@ -1027,6 +1040,7 @@ test("detects npm pack scope drift", () => {
       { path: "scripts/pet-rollout-monitor.swift", mode: 0o644 },
       { path: "scripts/tts-kokoro.mjs", mode: 0o644 },
       { path: "scripts/tts-voicebox.mjs", mode: 0o644 },
+      { path: "scripts/wav-duration.mjs", mode: 0o644 },
       { path: "src/talking-pet-mvp.js", mode: 0o644 },
       { path: "start-selected-tts.command", mode: 0o755 },
       { path: "start-selected-tts.ps1", mode: 0o644 },
@@ -1279,6 +1293,27 @@ function tempRollout(objects) {
   const path = join(dir, "rollout.jsonl");
   writeFileSync(path, `${objects.map(object => JSON.stringify(object)).join("\n")}\n`);
   return path;
+}
+
+function samplePCM16Wav({ sampleRate, channels, durationSeconds }) {
+  const bitsPerSample = 16;
+  const byteRate = sampleRate * channels * (bitsPerSample / 8);
+  const dataSize = Math.round(byteRate * durationSeconds);
+  const buffer = Buffer.alloc(44 + dataSize);
+  buffer.write("RIFF", 0, "ascii");
+  buffer.writeUInt32LE(36 + dataSize, 4);
+  buffer.write("WAVE", 8, "ascii");
+  buffer.write("fmt ", 12, "ascii");
+  buffer.writeUInt32LE(16, 16);
+  buffer.writeUInt16LE(1, 20);
+  buffer.writeUInt16LE(channels, 22);
+  buffer.writeUInt32LE(sampleRate, 24);
+  buffer.writeUInt32LE(byteRate, 28);
+  buffer.writeUInt16LE(channels * (bitsPerSample / 8), 32);
+  buffer.writeUInt16LE(bitsPerSample, 34);
+  buffer.write("data", 36, "ascii");
+  buffer.writeUInt32LE(dataSize, 40);
+  return buffer;
 }
 
 function removeLine(text, line) {
