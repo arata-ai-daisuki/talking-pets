@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T209
+active_task: T210
 
 tasks:
   - id: T001
@@ -6826,7 +6826,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "星宮 未来 / 白瀬 怜奈"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "OpenClaw/V1GPTの催促禁止期間中に、返信が来た場合だけsafe intakeできる状態を再確認する。"
     allowed_files:
@@ -6841,13 +6841,49 @@ tasks:
       - "2026-06-17より前にOpenClaw/V1GPTへ催促しない。"
       - "private DM本文やprivate contactをrepoへ保存しない。"
     receipt:
-      result: active
+      result: done
       decision: outreach_reply_watch
-      full_outcome_complete: false
-      summary: "次はoutreach返信待ちをsafe intakeとして再確認する。"
+      full_outcome_complete: true
+      summary: "Outreach Waiting Lane SnapshotとReply Waiting Intake Queueを確認し、repo記録上はOpenClaw/V1GPTの返信更新なしとしてwaitを維持した。Reddit public page contentは確認できたが、X target pageはpublic HTMLとして有用な内容を取得できなかったため、Xの返信有無は推定していない。2026-06-17より前の催促、自動投稿、DM、Star依頼はしていない。"
       note: "notes/T209-outreach-reply-watch.md"
       changed_files:
+        - "docs/research/x-outreach-targets.md"
         - "docs/goals/talking-pets-hq-japanese/notes/T209-outreach-reply-watch.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T210-local-tts-approval-response-watch.md"
+        - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+        - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n 'Reply watch checked: 2026-06-05|active_task: T210|outreach_reply_watch|local_tts_approval_response_watch|Do not bump before 2026-06-17|X target page|Reddit public page' docs/research/x-outreach-targets.md docs/goals/talking-pets-hq-japanese/notes/T209-outreach-reply-watch.md docs/goals/talking-pets-hq-japanese/notes/T210-local-tts-approval-response-watch.md docs/goals/talking-pets-hq-japanese/hq-backlog-board.md docs/goals/talking-pets-hq-japanese/activity-index.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+        - cmd: "npm run check:docs"
+          status: pass
+
+  - id: T210
+    type: worker
+    assignee: Worker
+    owner_role: "歌澄 音羽 / 白瀬 怜奈"
+    status: active
+    reasoning_hint: default
+    objective: "T209のoutreach待ち確認後、local TTSのA/B/C承認判断に戻れる状態を確認する。"
+    allowed_files:
+      - "docs/research/tts-provider-comparison.md"
+      - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+      - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "sherpa/MeloTTS実装へ進まない。"
+      - "依存追加、model download、API callをしない。"
+      - "README support claimを強めない。"
+    receipt:
+      result: active
+      decision: local_tts_approval_response_watch
+      full_outcome_complete: false
+      summary: "次はlocal TTS承認判断状態を、実装なしで再確認する。"
+      note: "notes/T210-local-tts-approval-response-watch.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T210-local-tts-approval-response-watch.md"
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands: []
 
