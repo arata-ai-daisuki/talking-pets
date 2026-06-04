@@ -150,6 +150,24 @@ For every research card, record:
 
 Do not add README support wording, default routing, dependencies, install prompts, or model downloads from a research card alone.
 
+## Multilingual Candidate Public Info Snapshot
+
+Checked: 2026-06-04. This snapshot used public project pages only. No dependency was installed, no model was downloaded, no API key was used, and no audio was generated.
+
+| Candidate | Public source checked | Observed fit | Main unresolved risk | Next safe action |
+| --- | --- | --- | --- | --- |
+| Piper / `piper-tts` | `rhasspy/piper` archive and `OHF-Voice/piper1-gpl` current repo | Fast local TTS shape; current repo documents `pip install piper-tts`, embedded `espeak-ng`, CLI/web/Python API surfaces | Project moved from archived MIT repo to current GPL-3.0 repo; voice/model licenses and bundling implications need exact per-voice review | Keep design-only; if revisited, write a Piper-specific license/cache/package note before any dependency PR |
+| MeloTTS | `myshell-ai/MeloTTS` repo and install docs | Multi-lingual library with English, Spanish, French, Chinese, Japanese, and Korean examples; MIT repo license; CLI and Python API exist | Python-first install, `python -m unidic download`, Docker suggestion for Windows/macOS, and model cache behavior need opt-in design before local-first use | Keep as candidate for multilingual quality research; require a no-normal-install helper sketch before implementation |
+
+Source URLs:
+
+- `https://github.com/rhasspy/piper`
+- `https://github.com/OHF-Voice/piper1-gpl`
+- `https://github.com/myshell-ai/MeloTTS`
+- `https://github.com/myshell-ai/MeloTTS/blob/main/docs/install.md`
+
+Do not add either candidate to default routing from this snapshot. Treat Piper as license-sensitive because the current maintained repo is GPL-3.0, and treat MeloTTS as runtime-sensitive because the published install path is Python/Docker oriented.
+
 ## Maintainer Real-Time Factor Snapshot
 
 These numbers are maintainer reference data only. They are useful for comparing the shape of current local TTS paths, but they are not public performance guarantees.

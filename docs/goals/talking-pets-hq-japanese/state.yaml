@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T145
+active_task: T146
 
 tasks:
   - id: T001
@@ -4528,7 +4528,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "言守 詞葉"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "Piper/Melo/その他多言語local TTS候補を調べる前のresearch cardを追加する。"
     allowed_files:
@@ -4542,7 +4542,7 @@ tasks:
       - "外部APIやAPI keyを使わない。"
       - "公開package/license事実を未確認のまま断定しない。"
     receipt:
-      result: active
+      result: done
       decision: multilingual_tts_research_cards
       full_outcome_complete: false
       summary: "TTS provider comparisonに、Piper-like、Melo-like、Other local multilingual TTSを調べるためのresearch cardと停止線を追加した。"
@@ -4553,6 +4553,37 @@ tasks:
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands:
         - cmd: "rg -n 'active_task: T145|T145|multilingual_tts_research_cards|Multilingual Provider Research Cards|Piper-like|Melo-like|research placeholders|Do not add README support wording' docs/research/tts-provider-comparison.md docs/goals/talking-pets-hq-japanese/notes/T145-multilingual-tts-research-cards.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T146
+    type: worker
+    assignee: Worker
+    owner_role: "歌澄 音羽"
+    status: active
+    reasoning_hint: default
+    objective: "Piper/MeloTTSの一次公開情報だけを確認し、design-only snapshotとして記録する。"
+    allowed_files:
+      - "docs/research/tts-provider-comparison.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "対応済みclaimを追加しない。"
+      - "依存追加をしない。"
+      - "model downloadをしない。"
+      - "外部APIやAPI keyを使わない。"
+      - "一次公開情報から確認できた範囲だけ書く。"
+    receipt:
+      result: active
+      decision: multilingual_tts_public_info_snapshot
+      full_outcome_complete: false
+      summary: "Piper/MeloTTSの一次公開情報をdesign-only snapshotとして追記し、Piperをlicense-sensitive、MeloTTSをruntime-sensitive候補として扱う境界を記録した。"
+      note: "notes/T146-multilingual-tts-public-info.md"
+      changed_files:
+        - "docs/research/tts-provider-comparison.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T146-multilingual-tts-public-info.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n 'active_task: T146|T146|multilingual_tts_public_info_snapshot|Multilingual Candidate Public Info Snapshot|license-sensitive|runtime-sensitive|OHF-Voice/piper1-gpl|MeloTTS' docs/research/tts-provider-comparison.md docs/goals/talking-pets-hq-japanese/notes/T146-multilingual-tts-public-info.md docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
 
   - id: T007
