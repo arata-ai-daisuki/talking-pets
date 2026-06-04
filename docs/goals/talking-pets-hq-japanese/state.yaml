@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T170
+active_task: T171
 
 tasks:
   - id: T001
@@ -5306,7 +5306,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "星宮 未来"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "Backlog BoardのNext列にあるoutreach送信準備を、候補、使うテンプレ、one ask、送信後記録先が見えるReady-To-Send Queueへ落とす。"
     allowed_files:
@@ -5321,7 +5321,7 @@ tasks:
       - "Star依頼をfirst contactにしない。"
       - "generated audio、private logs、local path入りscreenshotを求めない。"
     receipt:
-      result: active
+      result: done
       decision: outreach_ready_to_send_queue
       full_outcome_complete: false
       summary: "x-outreach-targetsにReady-To-Send Queueを追加し、OpenClaw/local voice、multilingual local TTS、Codex voice avatar向けの候補、template、one ask、送信後記録先を整理した。"
@@ -5334,6 +5334,40 @@ tasks:
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands:
         - cmd: "rg -n 'active_task: T170|T170|outreach_ready_to_send_queue|Ready-To-Send Queue|OpenClaw / local voice builders|Multilingual local TTS experimenters|Codex / voice avatar builders|one template only|sent.*public URL' docs/research/x-outreach-targets.md docs/goals/talking-pets-hq-japanese/hq-backlog-board.md docs/goals/talking-pets-hq-japanese/activity-index.md docs/goals/talking-pets-hq-japanese/notes/T170-outreach-ready-to-send-queue.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T171
+    type: worker
+    assignee: Worker
+    owner_role: "歌澄 音羽"
+    status: active
+    reasoning_hint: default
+    objective: "Backlog BoardのNext列にあるLocal TTS設計を、VOICEVOX/Irodori evidence継続、sherpa設計、MeloTTS設計からMasterが選べるChoice Cardへ落とす。"
+    allowed_files:
+      - "docs/research/tts-provider-comparison.md"
+      - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+      - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "provider実装、依存追加、model download、API callをしない。"
+      - "READMEの対応provider claimを増やさない。"
+      - "Master承認なしにsherpa/Melo実験へ進めない。"
+      - "Korean / Chinese dedicated provider support claimを追加しない。"
+    receipt:
+      result: active
+      decision: local_tts_master_choice_card
+      full_outcome_complete: false
+      summary: "tts-provider-comparisonにLocal TTS Master Choice Cardを追加し、A: VOICEVOX/Irodori evidence継続、B: sherpa design-only、C: MeloTTS runtime design-onlyを整理した。"
+      note: "notes/T171-local-tts-master-choice-card.md"
+      changed_files:
+        - "docs/research/tts-provider-comparison.md"
+        - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+        - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T171-local-tts-master-choice-card.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n 'active_task: T171|T171|local_tts_master_choice_card|Local TTS Master Choice Card|A: evidence-first|B: sherpa design-only|C: MeloTTS runtime design-only|Default next PR' docs/research/tts-provider-comparison.md docs/goals/talking-pets-hq-japanese/hq-backlog-board.md docs/goals/talking-pets-hq-japanese/activity-index.md docs/goals/talking-pets-hq-japanese/notes/T171-local-tts-master-choice-card.md docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
 
   - id: T007
