@@ -9,6 +9,8 @@ T209のoutreach待ち確認後、local TTSのA/B/C承認判断に戻れる状態
 - Local TTS Approval Decision Cardを再確認する。
 - MasterがB/Cを明示していない限り、A: evidence-firstを維持する。
 - 依存追加、model download、API callなしで次の内部作業候補を整理する。
+- `docs/research/tts-provider-comparison.md` にLocal TTS Approval Response Watchを追加した。
+- B/Cの明示承認はrepo記録上ないため、A: evidence-firstを維持した。
 
 ## Stop Lines
 
@@ -20,5 +22,5 @@ T209のoutreach待ち確認後、local TTSのA/B/C承認判断に戻れる状態
 
 - decision: `local_tts_approval_response_watch`
 - owner: `歌澄 音羽 / 白瀬 怜奈`
-- status: active
-- next: verify local TTS approval state without implementation.
+- status: done
+- next: return to multilingual verification watch.
