@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T213
+active_task: T214
 
 tasks:
   - id: T001
@@ -6983,7 +6983,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "歌澄 音羽 / 白瀬 怜奈"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "T212のoutreach待機確認後に、local TTSのA/B/C承認判断へ戻る。"
     allowed_files:
@@ -6997,13 +6997,50 @@ tasks:
       - "MeloTTSのPython/Docker/model/unidic setupをしない。"
       - "model download、API call、生成音声、README support claim変更をしない。"
     receipt:
-      result: active
+      result: done
       decision: local_tts_approval_later_watch
-      full_outcome_complete: false
-      summary: "次はlocal TTS承認判断状態を、実装なしで再確認する。"
+      full_outcome_complete: true
+      summary: "Local TTS Approval Response Watchと関連design notesを確認し、repo記録上B/Cの明示承認が増えていないためA: evidence-firstを維持するLocal TTS Approval Later Watchを追加した。sherpa-onnx-node install、MeloTTS Python/Docker/model/unidic setup、model download、API call、生成音声、README support claim変更はしていない。"
       note: "notes/T213-local-tts-approval-later-watch.md"
       changed_files:
+        - "docs/research/tts-provider-comparison.md"
         - "docs/goals/talking-pets-hq-japanese/notes/T213-local-tts-approval-later-watch.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T214-multilingual-verification-later-watch.md"
+        - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+        - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n 'Local TTS Approval Later Watch|active_task: T214|local_tts_approval_later_watch|multilingual_verification_later_watch|A: keep evidence-first|sherpa metadata review only|MeloTTS external-runtime design only|approval-gated' docs/research/tts-provider-comparison.md docs/goals/talking-pets-hq-japanese/notes/T213-local-tts-approval-later-watch.md docs/goals/talking-pets-hq-japanese/notes/T214-multilingual-verification-later-watch.md docs/goals/talking-pets-hq-japanese/hq-backlog-board.md docs/goals/talking-pets-hq-japanese/activity-index.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+        - cmd: "npm run check:docs"
+          status: pass
+
+  - id: T214
+    type: worker
+    assignee: Worker
+    owner_role: "言守 詞葉 / 白瀬 怜奈"
+    status: active
+    reasoning_hint: default
+    objective: "T213のlocal TTS approval later watch後に、多言語検証の受け口へ戻る。"
+    allowed_files:
+      - "docs/real-device-verification.md"
+      - "docs/verification-status.md"
+      - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+      - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "Korean/Chinese dedicated provider support claimを追加しない。"
+      - "README support claimを強めない。"
+      - "生成音声、private logs、private contactをrepoへ保存しない。"
+    receipt:
+      result: active
+      decision: multilingual_verification_later_watch
+      full_outcome_complete: false
+      summary: "次は多言語検証の受け口をclaim変更なしで再確認する。"
+      note: "notes/T214-multilingual-verification-later-watch.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T214-multilingual-verification-later-watch.md"
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands: []
 
