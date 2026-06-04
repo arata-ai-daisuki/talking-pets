@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T152
+active_task: T153
 
 tasks:
   - id: T001
@@ -4746,7 +4746,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "白瀬 怜奈"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "Piperをprovider-specific design noteへ落とし、実装前のlicense/package停止線を明確にする。"
     allowed_files:
@@ -4760,7 +4760,7 @@ tasks:
       - "README support wordingやdefault routingを追加しない。"
       - "法的助言として断定しない。"
     receipt:
-      result: active
+      result: done
       decision: piper_design_note
       full_outcome_complete: false
       summary: "Piper design noteを追加し、L0 design-only / license-review candidateとしてuser-installed external CLI/service候補に留める停止線を明記した。"
@@ -4772,6 +4772,38 @@ tasks:
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands:
         - cmd: "rg -n 'active_task: T152|T152|piper_design_note|Piper Design Note|L0 design-only|license-review candidate|user-installed external|Do not add README support wording|No dependency was installed' docs/research/piper-design-note.md docs/research/tts-provider-comparison.md docs/goals/talking-pets-hq-japanese/notes/T152-piper-design-note.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T153
+    type: worker
+    assignee: Worker
+    owner_role: "歌澄 音羽"
+    status: active
+    reasoning_hint: default
+    objective: "MeloTTSをprovider-specific design noteへ落とし、実装前のruntime/cache停止線を明確にする。"
+    allowed_files:
+      - "docs/research/melotts-design-note.md"
+      - "docs/research/tts-provider-comparison.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "MeloTTS installをしない。"
+      - "Python/Torch/audio/NLP dependencies、Docker setup、`python -m unidic download`を実行しない。"
+      - "model、dictionary、voice、language assetをdownloadしない。"
+      - "README support wordingやdefault routingを追加しない。"
+    receipt:
+      result: active
+      decision: melotts_design_note
+      full_outcome_complete: false
+      summary: "MeloTTS design noteを追加し、L0 design-only / runtime-review candidateとしてuser-managed external runtime候補に留める停止線を明記した。"
+      note: "notes/T153-melotts-design-note.md"
+      changed_files:
+        - "docs/research/melotts-design-note.md"
+        - "docs/research/tts-provider-comparison.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T153-melotts-design-note.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n 'active_task: T153|T153|melotts_design_note|MeloTTS Design Note|L0 design-only|runtime-review candidate|user-managed external|python -m unidic download|No dependency was installed' docs/research/melotts-design-note.md docs/research/tts-provider-comparison.md docs/goals/talking-pets-hq-japanese/notes/T153-melotts-design-note.md docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
 
   - id: T007
