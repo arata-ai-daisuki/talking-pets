@@ -144,6 +144,19 @@ Use these row templates only after a sanitized Platform verification issue passe
 
 Use these open issues to collect post-release evidence. Do not mark any row as verified until the linked issue has sanitized evidence that passes the review in "When Evidence Arrives".
 
+### Issue Watch Snapshot
+
+Checked: 2026-06-05. No maintainer reply or claim change is needed from this snapshot.
+
+| Issue | Current state | Public comments | Watch result |
+| --- | --- | ---: | --- |
+| [#23 Linux audible TTS](https://github.com/arata-ai-daisuki/talking-pets/issues/23) | Open | 0 | Waiting for contributor evidence. |
+| [#24 Windows audible TTS](https://github.com/arata-ai-daisuki/talking-pets/issues/24) | Open | 0 | Waiting for contributor evidence. |
+| [#25 Irodori latency](https://github.com/arata-ai-daisuki/talking-pets/issues/25) | Open | 0 | Waiting for contributor evidence. |
+| [#26 VOICEVOX latency](https://github.com/arata-ai-daisuki/talking-pets/issues/26) | Open | 0 | Waiting for contributor evidence. |
+
+Do not change Windows/Linux experimental wording, VOICEVOX/Irodori performance wording, or README support wording until a sanitized public issue includes the required evidence below.
+
 | Track | Issue | Current status | Required before using as evidence |
 | --- | --- | --- | --- |
 | Windows audible TTS | [#24](https://github.com/arata-ai-daisuki/talking-pets/issues/24) | Waiting for contributor evidence | Windows version, CPU architecture, Node.js/npm versions, TTS path, install/check/dry-run/audible command output, `audible: yes`, `sanitized: yes` |
