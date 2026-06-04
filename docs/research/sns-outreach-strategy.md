@@ -188,3 +188,18 @@ If OpenClaw / Sogni Voice or V1GPT replies before 2026-06-17, record the public 
 The current wait-state is tracked in the [Outreach Waiting Lane Snapshot](x-outreach-targets.md#outreach-waiting-lane-snapshot). Treat unanswered outreach as watch state, not a blocker.
 
 Keep V1R4 as `reply later` until a current public thread clearly invites related project examples.
+
+### Public Proof Route Selector
+
+Checked: 2026-06-05. Use this selector when the next step is public visibility but current outreach and verification issues are still waiting.
+
+Recommended route: **A: polish the public proof hub**.
+
+| Route | Next small PR | Why choose it now | Stop line |
+| --- | --- | --- | --- |
+| A: public proof hub polish | Make README/SNS/verification links easier to follow without changing support claims. | It improves trust for new visitors and future outreach while Issues #23-#26 and OpenClaw/V1GPT are waiting. | Do not claim Windows/Linux stable, broader TTS performance, or dedicated Korean/Chinese provider support. |
+| B: verification watch only | Re-check Issues #23-#26 and update watch snapshots only if public evidence appears. | Useful on a cadence, but not enough to improve the first-visitor path when there are still 0 comments. | Do not nudge issues automatically. |
+| C: outreach waiting lane only | Keep OpenClaw/V1GPT wait state current and intake replies if they arrive. | Safe but mostly reactive until 2026-06-17. | Do not send another nudge before 2026-06-17 unless there is a public reply first. |
+| D: provider feedback capture | Prepare provider-feedback intake if someone replies with runtime/cache/license guidance. | Good follow-up path, but currently no new feedback is recorded. | Do not turn provider feedback into implementation approval. |
+
+Default next action: choose A and improve the proof hub/navigation. It is docs-only, does not depend on external replies, and keeps all public claims inside the existing evidence boundaries.

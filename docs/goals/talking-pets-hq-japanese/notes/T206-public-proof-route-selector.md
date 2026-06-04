@@ -9,6 +9,8 @@
 - Outreach waiting、verification watch、README/SNS導線、provider feedbackの候補を比較する。
 - すぐ動けるdocs-only候補と、Master判断が必要な候補を分ける。
 - 次のPR候補を1つ選ぶための日本語カードにする。
+- `docs/research/sns-outreach-strategy.md` にPublic Proof Route Selectorを追加した。
+- Recommended routeはA: public proof hub polish。
 
 ## Stop Lines
 
@@ -20,5 +22,5 @@
 
 - decision: `public_proof_route_selector`
 - owner: `相庭 愛 / 文月 栞里`
-- status: active
-- next: choose the next proof/outreach/docs lane without external actions.
+- status: done
+- next: public proof hub polish.
