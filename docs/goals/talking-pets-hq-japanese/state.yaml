@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T157
+active_task: T158
 
 tasks:
   - id: T001
@@ -4906,7 +4906,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "歌澄 音羽"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "既存のsherpa-onnx design noteをprovider design note templateの観点に揃える。"
     allowed_files:
@@ -4918,7 +4918,7 @@ tasks:
       - "acoustic model、vocoder、tokens、espeak-ng dataをdownloadしない。"
       - "helper実装、README support wording、default routeを追加しない。"
     receipt:
-      result: active
+      result: done
       decision: sherpa_template_alignment
       full_outcome_complete: false
       summary: "sherpa-onnx design noteにProvider Template Alignmentを追加し、candidate、integration shape、dependency/model/cache/license/privacy/platform/measurement/README境界を明示した。"
@@ -4929,6 +4929,34 @@ tasks:
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands:
         - cmd: "rg -n 'active_task: T157|T157|sherpa_template_alignment|Provider Template Alignment|dependency-and-model-review candidate|Normal install impact|Measurement output|generated WAV files' docs/research/sherpa-onnx-design.md docs/goals/talking-pets-hq-japanese/notes/T157-sherpa-template-alignment.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T158
+    type: pm
+    assignee: PM
+    owner_role: "相庭 愛"
+    status: active
+    reasoning_hint: default
+    objective: "sherpa-onnx-node実験へ進む前に、Masterが許可範囲を選べる判断カードを作る。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "`sherpa-onnx-node` dependencyを追加しない。"
+      - "acoustic model、vocoder、tokens、espeak-ng dataをdownloadしない。"
+      - "helper実装、README support wording、default routeを追加しない。"
+      - "API call、paid path、外部送信をしない。"
+    receipt:
+      result: active
+      decision: sherpa_master_approval_card
+      full_outcome_complete: false
+      summary: "sherpa-onnx-node実験のMaster承認カードを追加し、最小安全スコープをpackage install/import health check/no model download helper skeletonまでに限定して示した。"
+      note: "notes/T158-sherpa-master-approval-card.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T158-sherpa-master-approval-card.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n 'active_task: T158|T158|sherpa_master_approval_card|Recommended Approval Scope|package install / import health check / no model download helper skeleton|What This Would Not Allow|Stop If' docs/goals/talking-pets-hq-japanese/notes/T158-sherpa-master-approval-card.md docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
 
   - id: T007
