@@ -103,6 +103,20 @@ Useful reports include OS/device, Node/npm versions, TTS path, speech-language v
 For Korean/Chinese tests, please mark whether it was OS speech fallback or a dedicated provider so I don't overclaim multilingual support.
 ```
 
+### Provider feedback ask
+
+```text
+I'm comparing local multilingual TTS candidates for Talking Pets, but I'm intentionally not adding a new dependency or model download yet.
+
+Current notes:
+- Piper looks license-sensitive because the current maintained repo is GPL-3.0 while older Piper sources were MIT.
+- MeloTTS looks runtime-sensitive because the public install path is Python/Docker oriented.
+
+If you have used either one, what would you verify before integrating it into a small local-first tool: voice/model license, install size, cache path, CLI/server boundary, or latency measurement?
+
+No generated audio or install test needed for this question; I'm just looking for integration/packaging advice.
+```
+
 ## Suggested Weekly Rhythm
 
 - Pick 3 to 5 relevant posts or projects.
@@ -125,3 +139,4 @@ For Korean/Chinese tests, please mark whether it was OS speech fallback or a ded
 4. Send 3 careful replies in the first week.
 5. Add any responses or useful feedback to `implementation-notes.md` or a follow-up outreach note.
 6. When someone offers verification help, send the "After someone shows interest" template and ask them to use a sanitized Platform verification issue.
+7. When asking TTS/provider experts, use the "Provider feedback ask" template and record whether the answer affects license, runtime, cache, or measurement planning.
