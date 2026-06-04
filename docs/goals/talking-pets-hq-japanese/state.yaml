@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T143
+active_task: T144
 
 tasks:
   - id: T001
@@ -4468,7 +4468,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "月城 奏"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "測定協力者へ送る手動outreach返信文をSNS戦略に追加する。"
     allowed_files:
@@ -4481,7 +4481,7 @@ tasks:
       - "performance claimを強くしない。"
       - "Korean / Chinese dedicated TTS対応済みclaimを追加しない。"
     receipt:
-      result: active
+      result: done
       decision: verification_reply_drafts
       full_outcome_complete: false
       summary: "SNS outreach strategyに、測定協力をお願いする返信文と、反応後にPlatform verification issueへ誘導する文面を追加した。"
@@ -4492,6 +4492,36 @@ tasks:
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands:
         - cmd: "rg -n 'active_task: T143|T143|verification_reply_drafts|Verification help ask|After someone shows interest|Platform verification|OS speech fallback' docs/research/sns-outreach-strategy.md docs/goals/talking-pets-hq-japanese/notes/T143-verification-reply-drafts.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T144
+    type: worker
+    assignee: Worker
+    owner_role: "歌澄 音羽"
+    status: active
+    reasoning_hint: default
+    objective: "次のlocal TTS provider候補を実装へ進める前のapproval gateを整理する。"
+    allowed_files:
+      - "docs/research/tts-provider-comparison.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "依存追加をしない。"
+      - "model downloadをしない。"
+      - "外部APIやAPI keyを使わない。"
+      - "新provider対応済みclaimを追加しない。"
+    receipt:
+      result: active
+      decision: local_tts_next_provider_gate
+      full_outcome_complete: false
+      summary: "TTS provider comparisonに、dependency/model/license/privacy/platform/measurement/public wordingを確認するapproval gateを追加した。"
+      note: "notes/T144-local-tts-next-provider-gate.md"
+      changed_files:
+        - "docs/research/tts-provider-comparison.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T144-local-tts-next-provider-gate.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n 'active_task: T144|T144|local_tts_next_provider_gate|Next Provider Approval Gate|Dependency boundary|Model boundary|License boundary|Piper / Melo' docs/research/tts-provider-comparison.md docs/goals/talking-pets-hq-japanese/notes/T144-local-tts-next-provider-gate.md docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
 
   - id: T007
