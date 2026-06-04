@@ -71,6 +71,12 @@ Use these on X before sending anything:
 >
 > The key thing is marking whether it is fallback-only or provider-specific evidence. Please do not attach generated audio or private logs.
 
+### Minimal multilingual test pack
+
+> I added a tiny Korean/Chinese test pack so this does not need to become a full benchmark: https://github.com/arata-ai-daisuki/talking-pets/blob/main/docs/real-device-verification.md#minimal-multilingual-test-pack
+>
+> The useful distinction is fallback-only vs provider-specific. A sanitized routing or latency line, OS/device, provider name/version if known, and whether one spoken line was audible are enough. No generated audio or private logs needed.
+
 ### AI VTuber / companion-specific
 
 > I like this AI companion direction. I'm exploring a developer-tool version: a local-first Codex Pet voice add-on, more "coding companion" than full VTuber stack. The hard part seems to be balancing charm with not interrupting the work.
@@ -113,7 +119,7 @@ These are manual send candidates only. Do not mark a row as `sent` until Master 
 | Rank | Candidate | Use when | Template | One ask | Record after sending |
 | --- | --- | --- | --- | --- | --- |
 | 1 | OpenClaw / local voice builders | A current post discusses local TTS, local APIs, OpenClaw voice, or agent voice latency. | Local voice / TTS-specific | Which latency metric matters most for coding companions? | Add public URL to Search Review Log and T007 tracking note. |
-| 2 | Multilingual local TTS experimenters | A public post discusses Korean, Chinese, Melo-like, Piper-like, or offline multilingual TTS setup. | Provider-specific multilingual TTS, then Multilingual report form follow-up only if they show interest. | What evidence should Talking Pets collect before claiming provider-specific support? | Add public URL, evidence type, and whether follow-up form was shared. |
+| 2 | Multilingual local TTS experimenters | A public post discusses Korean, Chinese, Melo-like, Piper-like, or offline multilingual TTS setup. | Provider-specific multilingual TTS, then Minimal multilingual test pack only if they show interest. | What evidence should Talking Pets collect before claiming provider-specific support? | Add public URL, evidence type, and whether test pack was shared. |
 | 3 | Codex / voice avatar builders | A post is already about Codex, coding avatars, or voice UX for coding tools. | Codex-specific | Would voice be useful for summaries only, or normal replies too? | Add public URL and response status. |
 
 Manual send checklist:
