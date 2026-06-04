@@ -106,6 +106,19 @@ Rechecked: 2026-06-05. Issues #23-#26 remain open with 0 public comments, so the
 
 Decision: keep the Minimal Multilingual Report Form and Evidence Intake Queue as the active intake path. Korean, Chinese, and other fallback-language wording remains OS speech fallback until a sanitized public issue completes the provider-specific checklist below.
 
+### Multilingual Verification Later Watch
+
+Rechecked: 2026-06-05. The public issue check still shows no new multilingual evidence:
+
+| Issue | Current result | Intake decision |
+| --- | --- | --- |
+| [#23 Linux audible TTS](https://github.com/arata-ai-daisuki/talking-pets/issues/23) | Open, 0 comments, updated 2026-06-04T05:57:31Z. | Nothing to classify. |
+| [#24 Windows audible TTS](https://github.com/arata-ai-daisuki/talking-pets/issues/24) | Open, 0 comments, updated 2026-06-04T05:57:33Z. | Nothing to classify. |
+| [#25 Irodori latency](https://github.com/arata-ai-daisuki/talking-pets/issues/25) | Open, 0 comments, updated 2026-06-04T05:57:33Z. | No provider-specific multilingual evidence. |
+| [#26 VOICEVOX latency](https://github.com/arata-ai-daisuki/talking-pets/issues/26) | Open, 0 comments, updated 2026-06-04T05:57:34Z. | No provider-specific multilingual evidence. |
+
+Decision: keep multilingual support wording at OS speech fallback. Do not change README, release notes, provider comparison, or platform status from this later watch.
+
 ### Multilingual Intake Routing Matrix
 
 | Evidence type | Verification status entry | Provider Feedback Intake | README wording |
