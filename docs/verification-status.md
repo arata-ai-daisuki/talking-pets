@@ -171,6 +171,19 @@ Rechecked: 2026-06-05. Issues #23-#26 remain open with 0 public comments and no 
 
 Decision: keep Korean, Chinese, and other fallback-language wording at OS speech fallback. Do not change README, release notes, provider comparison, platform status, or dedicated-provider wording from this cycle refresh.
 
+### Multilingual Verification Cycle Watch Result
+
+Rechecked: 2026-06-05. GitHub issue #23-#26 remain open with 0 public comments and the same `updatedAt` timestamps as the previous cycle refresh.
+
+| Issue | Current result | Intake decision |
+| --- | --- | --- |
+| [#23 Ubuntu 24.04 x64 audible TTS](https://github.com/arata-ai-daisuki/talking-pets/issues/23) | Open, 0 comments, updated 2026-06-04T05:57:31Z. | Nothing to classify. |
+| [#24 Windows 11 x64 audible TTS](https://github.com/arata-ai-daisuki/talking-pets/issues/24) | Open, 0 comments, updated 2026-06-04T05:57:33Z. | Nothing to classify. |
+| [#25 Irodori latency on another GPU or CPU](https://github.com/arata-ai-daisuki/talking-pets/issues/25) | Open, 0 comments, updated 2026-06-04T05:57:33Z. | No provider-specific multilingual evidence. |
+| [#26 VOICEVOX latency on another machine](https://github.com/arata-ai-daisuki/talking-pets/issues/26) | Open, 0 comments, updated 2026-06-04T05:57:34Z. | No provider-specific multilingual evidence. |
+
+Decision: keep Korean, Chinese, and other fallback-language wording at OS speech fallback. Do not change README, release notes, provider comparison, platform status, or dedicated-provider wording from this cycle watch.
+
 ### Multilingual Intake Routing Matrix
 
 | Evidence type | Verification status entry | Provider Feedback Intake | README wording |
