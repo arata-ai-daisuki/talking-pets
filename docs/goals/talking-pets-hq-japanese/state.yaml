@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T148
+active_task: T149
 
 tasks:
   - id: T001
@@ -4621,7 +4621,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "歌澄 音羽"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "MeloTTSのruntime/cache境界を公開情報ベースで整理する。"
     allowed_files:
@@ -4635,7 +4635,7 @@ tasks:
       - "外部APIやAPI keyを使わない。"
       - "normal npm install pathに混ぜない。"
     receipt:
-      result: active
+      result: done
       decision: melotts_runtime_boundary
       full_outcome_complete: false
       summary: "MeloTTSについて、Python-first install、unidic download、Docker導線、Python/Torch系requirementsを記録し、runtime-review candidateに留める停止線を追加した。"
@@ -4646,6 +4646,37 @@ tasks:
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands:
         - cmd: "rg -n 'active_task: T148|T148|melotts_runtime_boundary|MeloTTS Runtime And Cache Boundary|runtime-review candidate|python -m unidic download|user-started local server|normal npm' docs/research/tts-provider-comparison.md docs/goals/talking-pets-hq-japanese/notes/T148-melotts-runtime-boundary.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T149
+    type: worker
+    assignee: Worker
+    owner_role: "星宮 未来"
+    status: active
+    reasoning_hint: default
+    objective: "Piper/MeloTTS provider feedbackを詳しい人へ手動で聞ける文面にする。"
+    allowed_files:
+      - "docs/research/sns-outreach-strategy.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "自動投稿や自動DMを追加しない。"
+      - "private contact収集を追加しない。"
+      - "Piper/MeloTTS対応済みclaimを追加しない。"
+      - "依存追加、model download、API key、生成音声を要求しない。"
+      - "法的助言として断定しない。"
+    receipt:
+      result: active
+      decision: provider_feedback_copy
+      full_outcome_complete: false
+      summary: "SNS outreach strategyにPiper/MeloTTS provider feedback用の手動文面を追加し、license/runtime/cache/measurement境界について詳しい人に聞けるようにした。"
+      note: "notes/T149-provider-feedback-copy.md"
+      changed_files:
+        - "docs/research/sns-outreach-strategy.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T149-provider-feedback-copy.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n 'active_task: T149|T149|provider_feedback_copy|Provider feedback ask|Piper|MeloTTS|license-sensitive|runtime-sensitive|No generated audio' docs/research/sns-outreach-strategy.md docs/goals/talking-pets-hq-japanese/notes/T149-provider-feedback-copy.md docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
 
   - id: T007
