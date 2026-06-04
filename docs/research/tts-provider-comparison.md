@@ -150,6 +150,19 @@ Current planning read:
 | Piper-like path | 6/14 | Potentially useful, but current maintained project/license packaging needs careful review first. |
 | API TTS | 5/14 | Can be valuable as opt-in, but privacy, billing, and local-first positioning make it a separate P2 path. |
 
+## Next Provider Decision Card
+
+Use this card when asking Master what provider work should move from planning into an experiment. Choosing an option here does not install packages, download models, call APIs, or change README support wording.
+
+| Option | Best next action | Why now | What stays blocked |
+| --- | --- | --- | --- |
+| A: keep gathering contributor evidence | Ask for sanitized VOICEVOX and Irodori reports through the existing verification issues. | Highest score, already supported, and improves public claims without new provider risk. | No new provider helper, dependency, or default routing change. |
+| B: approve a tiny sherpa-onnx design experiment | Let a future PR inspect the exact optional dependency/model/vocoder plan before code. | Good local-first fit, but still below experiment score because license/model details are unresolved. | No install, model download, or helper until Master approves the exact scope. |
+| C: deepen MeloTTS runtime design | Expand the MeloTTS design note around CLI/server/Docker/cache and measurement shape. | High multilingual value, but Python/Docker runtime shape is not npm-native. | No implementation and no Korean/Chinese support claim. |
+| D: hold API TTS for later | Keep API TTS as P2 opt-in with privacy/billing boundaries only. | Useful eventually, but it weakens local-first positioning if rushed. | No API key, no paid call, no remote default, no support wording. |
+
+Recommended default: choose A now, and prepare B only if Master explicitly approves a small optional local dependency/model investigation. Choose C if multilingual quality becomes more important than immediate local latency evidence.
+
 ## Next Provider Approval Gate
 
 Use this gate before promoting any new provider candidate from design notes into code. Passing this gate does not mean the provider is supported; it only means a small experimental helper PR is safe to consider.
