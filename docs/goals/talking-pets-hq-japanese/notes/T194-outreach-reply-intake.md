@@ -6,9 +6,9 @@ OpenClaw/V1GPTはsentなので、返信が来た時だけpublic URLとtechnical 
 
 ## Scope
 
-- Search Review LogとProvider Feedback Captureの記録先を再確認する。
-- private本文を貼らずに、public URLかMaster-approved summaryだけを使う。
-- 返信がない場合は何もしない。
+- Search Review LogとProvider Feedback Captureの記録先を再確認した。
+- private本文を貼らずに、public URLかMaster-approved summaryだけを使う流れにした。
+- 返信がない場合は何もしない状態を維持した。
 
 ## Stop Lines
 
@@ -20,5 +20,5 @@ OpenClaw/V1GPTはsentなので、返信が来た時だけpublic URLとtechnical 
 
 - decision: `outreach_reply_intake`
 - owner: `星宮 未来`
-- status: active
-- next: verify reply-intake path without sending messages.
+- status: done
+- next: verification issue watch.

@@ -339,6 +339,8 @@ Use this table when someone replies to the provider feedback ask. Record only pu
 
 Multilingual intake rule: fallback-only OS speech reports stay in verification status as routing/audio evidence. Add a Provider Feedback Intake row only when the report changes a provider assumption such as runtime setup, cache ownership, license, measurement shape, or platform friction.
 
+Outreach reply rule: do not copy simple acknowledgements, likes, or general encouragement into this table. Use it only when the reply changes a provider decision or measurement assumption.
+
 | Date | Source | Provider | Feedback Area | Evidence Summary | Decision Impact | Follow-Up |
 | --- | --- | --- | --- | --- | --- | --- |
 |  | Public URL or `private summary approved by Master` | Piper / MeloTTS / sherpa-onnx / other | license / runtime / cache / measurement / platform | One-sentence technical summary only | keep design-only / update design note / ask Master / no action | Link to Search Review Log row or next note |
