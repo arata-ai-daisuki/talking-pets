@@ -10,6 +10,7 @@ This page lists small, concrete ways to help Talking Pets without needing to und
 | P0 | Linux real-device verification | Linux users | Run install, checks, dry-run, and one audible TTS command with `espeak`, `aplay`, `paplay`, or `ffplay`. Paste sanitized output. | Platform verification |
 | P0 | VOICEVOX latency on another machine | Japanese TTS users | Start VOICEVOX Engine, run the short synthesis checks, and report timings plus device specs. | Platform verification |
 | P1 | Irodori latency on another GPU / CPU | Irodori users | Run the Irodori latency contribution commands and report health, cold/warm, backend, and audio duration. | Platform verification |
+| P1 | Korean / Chinese dedicated-provider evidence | Multilingual local TTS users | Use the Minimal Multilingual Report Form, then mark fallback-only vs provider-specific evidence. | Platform verification |
 | P1 | Installer feedback | First-time users | Try `install.command`, `install.ps1`, or `install.sh` and report unclear prompts or failures. | Install trouble |
 | P2 | New local TTS provider suggestion | TTS builders | Share provider URL, license notes, local setup shape, and whether it supports CLI or HTTP. | TTS provider request |
 
@@ -21,6 +22,7 @@ Use these titles if you want a quick issue:
 - `[Verify]: Ubuntu 24.04 x64 audible TTS`
 - `[Verify]: VOICEVOX latency on <device>`
 - `[Verify]: Irodori latency on <device>`
+- `[Verify]: Korean/Chinese provider-specific TTS on <device>`
 - `[Install]: macOS installer feedback`
 - `[TTS]: <provider name> local TTS support`
 
@@ -38,6 +40,7 @@ Useful verification evidence includes:
 - known limitation or follow-up
 
 Use the `Platform verification` issue template for real-device evidence. For Irodori, include the optional Irodori latency fields in that template.
+For Korean, Chinese, or other multilingual provider evidence, start from the [Minimal Multilingual Report Form](real-device-verification.md#minimal-multilingual-report-form) and state whether the evidence is fallback-only or provider-specific. Do not ask maintainers to infer dedicated provider support from OS speech fallback.
 
 ## Safety Rules
 

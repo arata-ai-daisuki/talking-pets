@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T184
+active_task: T185
 
 tasks:
   - id: T001
@@ -5856,7 +5856,7 @@ tasks:
     type: pm
     assignee: PM
     owner_role: "星宮 未来"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "TTS設計と多言語検証が進んだ後のREADME/SNS導線を、過大claimなしで現在地に合うか再点検する。"
     allowed_files:
@@ -5873,11 +5873,49 @@ tasks:
       - "Star依頼を強くしすぎない。"
       - "自動投稿、DM、follow、like、mentionをしない。"
     receipt:
-      result: active
+      result: done
       decision: readme_sns_route_tuneup_next
-      full_outcome_complete: false
-      summary: "次はREADME/SNS導線が現在地に合っているか、Star導線とverification導線を中心に再点検する。"
+      full_outcome_complete: true
+      summary: "README / README.en / contributor入口 / SNS strategyを、現行Issue #23-#26、多言語report form、dedicated provider checklistへ接続し、Star依頼とprovider support claimは強めなかった。"
       note: "notes/T184-readme-sns-route-tuneup-next.md"
+      changed_files:
+        - "README.md"
+        - "README.en.md"
+        - "docs/contributor-entrypoints.md"
+        - "docs/research/sns-outreach-strategy.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T184-readme-sns-route-tuneup-next.md"
+        - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+        - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "gh issue list --state open --limit 30 --json number,title,labels,url"
+          status: pass
+        - cmd: "rg -n 'Minimal Multilingual Report Form|fallback-only|provider-specific|platform_verification.yml|Dedicated Provider Evidence Checklist|Please star|GitHub Star' README.md README.en.md docs/contributor-entrypoints.md docs/research/sns-outreach-strategy.md docs/goals/talking-pets-hq-japanese/notes/T184-readme-sns-route-tuneup-next.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+        - cmd: "npm run check:docs"
+          status: pass
+
+  - id: T185
+    type: pm
+    assignee: PM
+    owner_role: "相庭 愛 / 文月 栞里"
+    status: active
+    reasoning_hint: default
+    objective: "T181-T184でMeloTTS、多言語、SNS導線が進んだ後、Backlog / Next / Active / Doneを再整理する。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+      - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "実装、依存追加、model download、API call、自動SNS操作をしない。"
+      - "Master判断が必要なprovider実験を勝手にactiveへ進めない。"
+    receipt:
+      result: active
+      decision: backlog_refresh_next
+      full_outcome_complete: false
+      summary: "次はT181-T184の波を畳み、local TTS / outreach / docsの次候補を見える化する。"
+      note: "notes/T185-backlog-refresh-next.md"
       changed_files:
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands: []
