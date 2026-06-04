@@ -142,6 +142,18 @@ Rechecked: 2026-06-05. The public verification issues are still open with 0 comm
 
 Keep using the Minimal Multilingual Report Form for quick reports. Do not change README wording from fallback-only to dedicated provider support until a sanitized public issue supplies provider-specific evidence and the verification checklist is complete.
 
+### Multilingual Verification Later Watch
+
+Rechecked: 2026-06-05. Issues #23-#26 are still open with 0 comments. There is no new fallback-only or provider-specific multilingual report to route.
+
+| Surface | Current state | Action |
+| --- | --- | --- |
+| Minimal Multilingual Report Form | Ready. | Keep using it for quick sanitized reports. |
+| Multilingual Evidence Intake Queue | Ready. | Keep separating fallback-only, provider-specific, provider advice, and private/unsanitized reports. |
+| Dedicated Provider Evidence Checklist | Waiting for a named provider-specific report. | Do not change Korean/Chinese wording until the checklist is complete. |
+
+Missing reports are not blockers and are not evidence for stronger support wording.
+
 ### Multilingual Intake Routing Matrix
 
 Use this matrix after the first classification:
