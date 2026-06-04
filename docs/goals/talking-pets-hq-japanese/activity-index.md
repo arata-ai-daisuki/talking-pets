@@ -9,7 +9,7 @@ This page is a readable snapshot of the Japanese HQ state. The authoritative sou
 - Board URL: `http://goalbuddy.localhost:41737/talking-pets-hq-japanese/`
 - Local board files: `docs/goals/talking-pets-hq-japanese/.goalbuddy-board/`
 - Current active task: `T173`
-- Current focus: Local TTS Master Choice CardのB/Cを、実装なしの設計scopeへ具体化する。
+- Current focus: MeloTTS Cのruntime/cache境界を、実装なしで次の承認判断に使える粒度へ固める。
 
 ## Kanban Snapshot
 
@@ -60,7 +60,7 @@ This page is a readable snapshot of the Japanese HQ state. The authoritative sou
 | `T170` | 星宮 未来 | done | Ready-To-Send Queueを追加。 |
 | `T171` | 歌澄 音羽 | done | Local TTS Master Choice Cardを追加。 |
 | `T172` | 歌澄 音羽 | done | VOICEVOX/Irodori evidence askを追加。 |
-| `T173` | 歌澄 音羽 | active | sherpa B / MeloTTS Cのdesign-only scopeを具体化中。 |
+| `T173` | 歌澄 音羽 | active | MeloTTS Cのruntime/cache boundaryを具体化中。 |
 
 ## Where To Look Next
 

@@ -182,7 +182,7 @@ Default next PR after this card: keep A active for contributor evidence, while B
 | Choice | Current status | Evidence |
 | --- | --- | --- |
 | B: sherpa design-only | Scope refined around optional package review, one named model family, cache root, helper surface, measurement fields, and license review. | [Sherpa ONNX design](sherpa-onnx-design.md#b-design-only-scope) |
-| C: MeloTTS runtime design-only | Scope refined around CLI/server/Docker/Python runtime choices, measurement fields, and the no-support-claim stop line. | [MeloTTS design note](melotts-design-note.md#c-runtime-design-only-scope) |
+| C: MeloTTS runtime design-only | Scope refined around CLI/server/Docker/Python runtime choices, cache ownership, measurement fields, and the no-support-claim stop line. | [MeloTTS design note](melotts-design-note.md#c-runtime-design-only-scope) |
 
 ## Next Provider Approval Gate
 

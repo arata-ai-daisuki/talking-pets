@@ -74,6 +74,33 @@ This is the exact scope for option C in the Local TTS Master Choice Card. It is 
 | Docker runtime | May be clearer for Windows/macOS users than native Python setup. | Docker is heavy for a small companion tool and weakens low-friction onboarding. | A no-normal-install boundary and cache cleanup plan. |
 | Python helper | Gives direct control over device, model, and timing. | Pulls Python/Torch/NLP complexity into the project if rushed. | Explicit Master approval for an isolated experiment only. |
 
+### Runtime Boundary
+
+Talking Pets should treat MeloTTS as an external runtime unless Master approves a separate isolated experiment.
+
+| Boundary | Allowed in a future design PR | Not allowed yet |
+| --- | --- | --- |
+| Discovery | Detect a user-provided CLI command, local server URL, or Docker endpoint from explicit config. | Auto-detect broad Python environments, scan user home directories, or mutate shell profiles. |
+| Invocation | Run a configured command/server only when the user explicitly selects the MeloTTS candidate path. | Route normal monitor output to MeloTTS by default. |
+| Failure | Report unavailable, missing config, timeout, or non-zero exit as a clean fallback reason. | Treat missing MeloTTS as an install error for Talking Pets. |
+| Output | Write generated WAV to a user-selected temp/output path during an approved experiment. | Commit generated audio, cache files, models, dictionaries, or Docker artifacts. |
+| Documentation | Keep wording as `candidate`, `external runtime`, or `design-only`. | Claim Korean, Chinese, or multilingual provider support in README. |
+
+### Cache Boundary
+
+MeloTTS cache behavior remains unresolved, so Talking Pets must not own or create a MeloTTS cache yet.
+
+| Asset or cache | Current boundary | Required proof before implementation |
+| --- | --- | --- |
+| Python packages | User-managed outside Talking Pets. | Exact install command, supported Python versions, and cleanup path. |
+| Torch/audio/NLP packages | User-managed outside Talking Pets. | Normal `npm ci` and package checks stay unaffected when absent. |
+| `unidic` dictionary | Never downloaded by Talking Pets at this stage. | Where it downloads, size, license/attribution, and cleanup command. |
+| Model files | Never downloaded or cached by Talking Pets at this stage. | Model source URL, size, license, cache directory, and update behavior. |
+| Generated WAV files | Temporary experiment output only. | Output path is explicit, ignored by git, and not requested as public evidence. |
+| Docker images/volumes | User-managed outside Talking Pets. | Image source, volume/cache path, size, GPU/CPU behavior, and cleanup command. |
+
+If a later experiment needs a Talking Pets-owned cache, propose it separately as `~/.cache/talking-pets/melotts/` and keep it empty until explicit download approval. Do not reuse this proposed path as evidence that MeloTTS cache behavior is known.
+
 ### Measurement Shape
 
 If C advances later, compare only after the runtime is already installed by the user or inside an approved isolated experiment:
@@ -87,6 +114,16 @@ If C advances later, compare only after the runtime is already installed by the 
 - `rtf`: synthesis divided by audio duration.
 - `playbackIncluded`: whether playback time is included.
 - `audible`: whether one spoken line was heard by the tester.
+- `cacheOwner`: `user-managed`, `docker-managed`, or `talking-pets-approved-cache`.
+- `cachePathKnown`: yes/no, with sanitized path category only.
+
+### Approval Question For Master
+
+Approve the next C step only if the PR is limited to one of these:
+
+1. `metadata-review`: inspect public MeloTTS docs for CLI/server/cache facts, with no install.
+2. `external-runtime-helper-design`: draft a helper interface that assumes the user already installed MeloTTS, with no executable implementation.
+3. `isolated-local-experiment`: run MeloTTS locally on a disposable environment, after explicit approval for Python/Docker setup and downloads.
 
 ### Stop Line
 
