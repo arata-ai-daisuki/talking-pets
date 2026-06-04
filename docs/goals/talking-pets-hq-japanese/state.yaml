@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T190
+active_task: T191
 
 tasks:
   - id: T001
@@ -6086,7 +6086,7 @@ tasks:
     type: pm
     assignee: PM
     owner_role: "歌澄 音羽 / 白瀬 怜奈"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "Provider scorecardのgapが明確になったので、必要ならdesign note質問へ落とし込む。"
     allowed_files:
@@ -6104,11 +6104,50 @@ tasks:
       - "READMEに新provider対応済みclaimを追加しない。"
       - "Master承認なしにprovider実験へ進まない。"
     receipt:
-      result: active
+      result: done
       decision: scorecard_evidence_follow_up
-      full_outcome_complete: false
-      summary: "次はscorecard evidence gapをdesign-note質問へ落とし込む。"
+      full_outcome_complete: true
+      summary: "Provider Experiment ScorecardにEvidence Gap Question Queueを追加し、sherpa/MeloTTS/Piper/API TTSの未解決点をdesign-note質問へ落とし込んだ。PiperとAPI TTSのdesign noteにも質問欄を追加した。"
       note: "notes/T190-scorecard-evidence-follow-up.md"
+      changed_files:
+        - "docs/research/tts-provider-comparison.md"
+        - "docs/research/piper-design-note.md"
+        - "docs/research/api-tts-design-note.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T190-scorecard-evidence-follow-up.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T191-outreach-watch-cadence.md"
+        - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+        - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n 'Evidence Gap Question Queue|Evidence Gap Questions|active_task: T191|scorecard_evidence_follow_up|outreach_watch_cadence' docs/research/tts-provider-comparison.md docs/research/piper-design-note.md docs/research/api-tts-design-note.md docs/goals/talking-pets-hq-japanese/notes/T190-scorecard-evidence-follow-up.md docs/goals/talking-pets-hq-japanese/notes/T191-outreach-watch-cadence.md docs/goals/talking-pets-hq-japanese/hq-backlog-board.md docs/goals/talking-pets-hq-japanese/activity-index.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+        - cmd: "npm run check:docs"
+          status: pass
+
+  - id: T191
+    type: pm
+    assignee: PM
+    owner_role: "星宮 未来"
+    status: active
+    reasoning_hint: default
+    objective: "送信後は返信待ちで止まらず、手動ログと2週間ルールだけを保つ。"
+    allowed_files:
+      - "docs/research/x-outreach-targets.md"
+      - "docs/research/sns-outreach-strategy.md"
+      - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+      - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "自動投稿、自動DM、自動mentionをしない。"
+      - "返信待ちだけを理由にlocal TTSや多言語docs作業を止めない。"
+      - "private DM本文や個人情報をdocsへ貼らない。"
+    receipt:
+      result: active
+      decision: outreach_watch_cadence
+      full_outcome_complete: false
+      summary: "次はoutreachのsent/watch/reply-later状態を確認し、再送せずに手動ログの見通しだけを保つ。"
+      note: "notes/T191-outreach-watch-cadence.md"
       changed_files:
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands: []

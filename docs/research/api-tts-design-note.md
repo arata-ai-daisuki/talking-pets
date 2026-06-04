@@ -51,6 +51,16 @@ This is a design-only note. No API key was used, no paid API call was made, no t
 - Sanitized `[latency]` fields: include provider alias, remote=true, request, download, write, audioDuration, rtf when possible, playbackIncluded, and whether speech was audible.
 - Contributor evidence path: Platform verification issue with sanitized command output and no attached generated audio unless provider terms and user consent are clear.
 
+## Evidence Gap Questions
+
+Answer these in a provider-specific note before API TTS moves beyond design-only:
+
+1. Which provider is the exact opt-in target, and why does it justify weakening the default local-first story?
+2. How will Talking Pets warn the user before text leaves the machine or billing can occur?
+3. Where will credentials live, and how will dry-run checks prove config shape without validating or logging real secrets?
+4. Will generated remote audio ever be cached locally, and if so, what opt-in path, cleanup rule, and release exclusion prove it is safe?
+5. Which latency fields can be measured without confusing network request time, provider synthesis time, download/write time, and playback?
+
 ## Stop Lines
 
 Stop and ask Master before:
