@@ -135,6 +135,7 @@ Voicebox互換endpointを選ぶ場合は、installerでendpoint URL、mode、pro
 Kokoro.js は初回読み上げ時にモデルを取得します。既定の cache path は `~/.cache/talking-pets/transformers` です。既定の q8 モデルは約92MB級なので、初回だけ時間がかかります。
 Irodori-TTS Server はこのリポジトリに同梱していません。先に別ターミナルで Irodori-TTS-Server を起動し、`/health` が返る状態にしてください。
 `/health` はモデルを読み込まずに返る場合があります。初回の実音声合成ではIrodoriモデルの取得やruntime loadが走るため、数分かかることがあります。モデル読み込み後の短文合成でも、CPU/GPUや端末状態によっては数十秒かかる可能性があります。
+初回requestでtimeoutする場合は、Irodori-TTS-Server側で `IRODORI_PRELOAD=true` にして起動時にモデルを読み込むか、必要に応じて `IRODORI_MODEL_LOAD_TIMEOUT` / `IRODORI_SYNTHESIS_WAIT_TIMEOUT` を伸ばしてください。Talking Pets側では、`npm run tts:irodori -- --health --url http://127.0.0.1:8088 --profile-latency` で疎通を確認し、`/health` の `runtime.loaded` / `runtime.loading` を見てから短文合成を試すと切り分けやすいです。
 Irodoriの体感速度は、端末性能、CPU/GPU/MPS/CUDA/ROCm、Irodori設定、テキスト長、cold/warm状態で大きく変わります。違う端末で試せる方は [Irodori latency contribution](docs/real-device-verification.md#irodori-latency-contribution) の形式で測定結果を共有してもらえると助かります。
 
 ## Distribution
@@ -398,6 +399,7 @@ macOS安定版のSwift monitorで同じ確認をする場合は、`npm run monit
 - `Irodori-TTS Server: not reachable`: Irodori-TTS-Serverを起動し、URLが `http://127.0.0.1:8088` か確認してください。
 - Irodoriの `/health` は成功するが合成が遅い: 初回はモデル取得とruntime loadが入ります。まず短文1つで試し、cold start後の再試行と分けて見てください。
 - Irodori合成がtimeoutする: server側でモデルロードが続いている可能性があります。server logと `/health` の `runtime.loaded` / `runtime.loading` を確認してください。
+- Irodori初回requestがserver timeoutに当たる: Irodori-TTS-Server側の `IRODORI_PRELOAD=true`、`IRODORI_MODEL_LOAD_TIMEOUT`、`IRODORI_SYNTHESIS_WAIT_TIMEOUT` を確認してください。設定名はIrodori-TTS-Server側のものなので、このrepoの `.talking-pets.local.env` ではなくIrodori serverの起動環境に設定します。
 - `[wait] Codex thread not found`: Codex Desktop / Codex CLI がローカル会話ログを保存しているか確認してください。
 - `[wait] rollout unreadable`: rollout JSONL のパスが存在するか、`CODEX_HOME` が通常と違わないか確認してください。
 - `--interval` / `--rate` / `--max-source-chars` のエラー: 数値には正の値を指定してください。`--max-source-chars` は正の整数だけ受け付けます。
