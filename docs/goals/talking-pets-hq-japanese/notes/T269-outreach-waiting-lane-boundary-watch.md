@@ -16,7 +16,8 @@ T268の多言語検証 boundary watch後に、outreach waiting laneへ戻る。
 
 - decision: `outreach_waiting_lane_boundary_watch`
 - owner: `星宮 未来 / 白瀬 怜奈`
-- status: active
-- result: pending
-- summary: 次は送信済みoutreachの待機境界を、再送・催促・自動SNS操作なしで確認する。
-- next: 返信が来ていなければwaitを維持し、次のlocal TTS boundaryへhandoffする。
+- status: done
+- result: Boundary watch 13
+- summary: Local HQ docs上ではV1GPT / OpenClaw / Sogni Voiceのpublic reply URLまたはMaster承認済みsanitized summaryは未記録。返信・未返信を断定せず、waitを維持した。
+- safety: 2026-06-17前の催促、再送、自動投稿、DM、reply、mention、follow、like、private contact保存、DM全文/private thread保存、README/SNS support claim変更、Star askはしていない。
+- next: local TTS boundary watchへ戻る。
