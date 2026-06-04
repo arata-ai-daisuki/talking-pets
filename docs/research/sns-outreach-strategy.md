@@ -81,6 +81,28 @@ I'm looking for developers who enjoy AI coding tools, local-first TTS, or anime-
 It's a small open-source Codex companion experiment, not a commercial pitch.
 ```
 
+### Verification help ask
+
+```text
+I'm collecting real-device data for Talking Pets, especially local TTS latency and Windows/Linux audible TTS checks.
+
+If you have a local VOICEVOX, Irodori, Windows, or Linux setup, a sanitized GitHub verification issue would help a lot:
+<verification issue template link>
+
+No generated audio files needed. Just sanitized command output and whether one spoken line was audible.
+```
+
+### After someone shows interest
+
+```text
+Thank you! The cleanest way to share results is this GitHub "Platform verification" issue template:
+<verification issue template link>
+
+Useful reports include OS/device, Node/npm versions, TTS path, speech-language value, sanitized `[latency]` lines if measured, and whether one spoken line was audible.
+
+For Korean/Chinese tests, please mark whether it was OS speech fallback or a dedicated provider so I don't overclaim multilingual support.
+```
+
 ## Suggested Weekly Rhythm
 
 - Pick 3 to 5 relevant posts or projects.
@@ -102,3 +124,4 @@ It's a small open-source Codex companion experiment, not a commercial pitch.
 3. Manually verify 10 candidate accounts/projects.
 4. Send 3 careful replies in the first week.
 5. Add any responses or useful feedback to `implementation-notes.md` or a follow-up outreach note.
+6. When someone offers verification help, send the "After someone shows interest" template and ask them to use a sanitized Platform verification issue.
