@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T208
+active_task: T209
 
 tasks:
   - id: T001
@@ -6792,7 +6792,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "相庭 愛 / 文月 栞里"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "T206-T207のpublic proof導線整備を畳み、次のHQ activeを整理する。"
     allowed_files:
@@ -6805,13 +6805,49 @@ tasks:
       - "README support claimを強めない。"
       - "依存追加、model download、API callをしない。"
     receipt:
-      result: active
+      result: done
       decision: hq_wave_refresh_after_proof_hub
-      full_outcome_complete: false
-      summary: "次はT206-T207のpublic proof導線整備を畳み、次のHQ activeを整理する。"
+      full_outcome_complete: true
+      summary: "T206-T207のpublic proof導線整備をDone履歴へ畳み、HQ Backlog BoardとActivity IndexをT209 Outreach Reply Watchへ進めた。外部投稿、Issue催促、README support claim変更、依存追加、model download、API callはしていない。"
       note: "notes/T208-hq-wave-refresh-after-proof-hub.md"
       changed_files:
         - "docs/goals/talking-pets-hq-japanese/notes/T208-hq-wave-refresh-after-proof-hub.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T209-outreach-reply-watch.md"
+        - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+        - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n 'active_task: T209|hq_wave_refresh_after_proof_hub|outreach_reply_watch|T208|T209|2026-06-17|催促しない' docs/goals/talking-pets-hq-japanese/notes/T208-hq-wave-refresh-after-proof-hub.md docs/goals/talking-pets-hq-japanese/notes/T209-outreach-reply-watch.md docs/goals/talking-pets-hq-japanese/hq-backlog-board.md docs/goals/talking-pets-hq-japanese/activity-index.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+        - cmd: "npm run check:docs"
+          status: pass
+
+  - id: T209
+    type: worker
+    assignee: Worker
+    owner_role: "星宮 未来 / 白瀬 怜奈"
+    status: active
+    reasoning_hint: default
+    objective: "OpenClaw/V1GPTの催促禁止期間中に、返信が来た場合だけsafe intakeできる状態を再確認する。"
+    allowed_files:
+      - "docs/research/x-outreach-targets.md"
+      - "docs/research/sns-outreach-strategy.md"
+      - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+      - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "自動投稿、自動DM、自動mentionをしない。"
+      - "2026-06-17より前にOpenClaw/V1GPTへ催促しない。"
+      - "private DM本文やprivate contactをrepoへ保存しない。"
+    receipt:
+      result: active
+      decision: outreach_reply_watch
+      full_outcome_complete: false
+      summary: "次はoutreach返信待ちをsafe intakeとして再確認する。"
+      note: "notes/T209-outreach-reply-watch.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T209-outreach-reply-watch.md"
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands: []
 
