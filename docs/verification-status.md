@@ -4,7 +4,7 @@ This page records the current verification state for public review and release p
 
 ## Current Snapshot
 
-- Date: 2026-05-31
+- Date: 2026-06-04
 - Maintainer environment: macOS 26.5, arm64
 - Node.js: v24.2.0
 - npm: 11.6.4
@@ -44,6 +44,23 @@ Observed result:
 - Stateful dry-run can read the latest local Codex assistant message.
 - Stateful dry-run output includes the local thread title, rollout path, and conversation text, so it is local verification only and must not be pasted publicly without sanitization and manual review.
 - A macOS `say` fixture TTS command is recorded as the current audible local TTS evidence for the release draft.
+
+## Irodori Latency Snapshot
+
+Irodori-TTS Server is experimental optional and should not be treated as a universal latency benchmark from one maintainer machine.
+
+Maintainer reference result:
+
+- Device: MacBook Air, Apple M1, 8 CPU cores, 7-core Apple M1 GPU, 8 GB RAM
+- OS: macOS 26.5.1 / arm64
+- Node.js / npm: v24.2.0 / 11.6.4
+- Irodori backend observed in server log: MPS, fp32
+- Health: 49.8ms
+- Warm-up with runtime load: 33.4s client-side, 33.17s server-side
+- Warm synthesis runs: 16.7s, 10.1s, 9.6s
+- Output audio duration: about 3.92s
+
+Collect more data with the [Irodori latency contribution](real-device-verification.md#irodori-latency-contribution) format and a sanitized Platform verification issue.
 
 ## Release Evidence Draft
 

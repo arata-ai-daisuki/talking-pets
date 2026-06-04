@@ -52,6 +52,7 @@ body:
         - Linux espeak
         - VOICEVOX
         - Kokoro.js
+        - Irodori-TTS Server
         - Voicebox-compatible endpoint
         - Other local TTS
     validations:
@@ -85,6 +86,14 @@ body:
       render: shell
     validations:
       required: true
+  - type: textarea
+    id: irodori_latency
+    attributes:
+      label: Irodori latency data, if tested
+      description: Optional. If you tested Irodori-TTS Server, include device model, CPU/GPU, RAM, backend/device such as CPU/MPS/CUDA/ROCm, changed settings such as speed or num_steps, health latency, cold start or warm-up latency, three warm synthesis timings, output audio duration, and whether generated speech was audible. Do not attach generated audio, model files, private paths, local env files, private rollout JSONL, or conversation text.
+      placeholder: "Device: ...\nCPU/GPU/RAM: ...\nBackend/device: ...\nSettings changed from defaults: ...\nHealth: ...\nWarm-up: ...\nWarm runs: ...\nAudio duration: ...\nAudible: yes/no"
+    validations:
+      required: false
   - type: dropdown
     id: sanitized
     attributes:

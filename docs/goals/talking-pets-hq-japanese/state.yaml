@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T095
+active_task: T099
 
 tasks:
   - id: T001
@@ -2948,7 +2948,7 @@ tasks:
     type: pm
     assignee: PM
     owner_role: "相庭 愛"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "Irodori caveat PR後に、cold start timeout対策、warm latency追加測定、またはoutreach返信待ち運用のどれを次にするか決める。"
     expected_output:
@@ -2957,11 +2957,130 @@ tasks:
       - "outreach返信待ちに戻り、反応ログだけ見る。"
       - "README caveat PRをmergeしてから次へ進む。"
     receipt:
-      result: active
-      decision: waiting_for_next_after_irodori_caveat
+      result: done
+      decision: warm_synthesis_latency_selected
       full_outcome_complete: false
-      summary: "Irodori caveatは小さくPR化する。次はmerge後にcold/warm改善かoutreach運用へ戻るかを選ぶ。"
-      note: "notes/T094-irodori-readme-caveat.md"
+      summary: "PR #15 merge後のおすすめとして、cold start対策実装前にwarm synthesisを複数回測る方針を選んだ。"
+      note: "notes/T096-irodori-warm-latency-measurement.md"
+
+  - id: T096
+    type: worker
+    assignee: Worker
+    owner_role: "速水 光莉"
+    status: done
+    reasoning_hint: default
+    objective: "Irodori-TTS-Serverのruntime loaded後のwarm synthesis latencyを複数回測り、README caveatが実測と矛盾しないか確認する。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "生成wavをrepoへ入れない。"
+      - "Irodori server本体やmodel cacheをrepoへ入れない。"
+      - "README変更や実装変更は混ぜない。"
+    receipt:
+      result: done
+      decision: irodori_warm_latency_recorded
+      full_outcome_complete: false
+      summary: "Irodori warm synthesisを3回測定し、totalは16.7s、10.1s、9.6sだった。warmでも数十秒かかる可能性があるというREADME caveatと矛盾しない。"
+      note: "notes/T096-irodori-warm-latency-measurement.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T096-irodori-warm-latency-measurement.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "npm run tts:irodori -- --health --url http://127.0.0.1:8088 --profile-latency"
+          status: pass
+        - cmd: "npm run tts:irodori -- --url http://127.0.0.1:8088 --voice none --model irodori-tts --format wav --text <warmup-ja> --out /private/tmp/talking-pets-irodori-warmup.wav --profile-latency"
+          status: pass
+        - cmd: "npm run tts:irodori -- --url http://127.0.0.1:8088 --voice none --model irodori-tts --format wav --text <warm-ja> --out /private/tmp/talking-pets-irodori-warm-1.wav --profile-latency"
+          status: pass
+        - cmd: "npm run tts:irodori -- --url http://127.0.0.1:8088 --voice none --model irodori-tts --format wav --text <warm-ja> --out /private/tmp/talking-pets-irodori-warm-2.wav --profile-latency"
+          status: pass
+        - cmd: "npm run tts:irodori -- --url http://127.0.0.1:8088 --voice none --model irodori-tts --format wav --text <warm-ja> --out /private/tmp/talking-pets-irodori-warm-3.wav --profile-latency"
+          status: pass
+        - cmd: "afinfo /private/tmp/talking-pets-irodori-warm-1.wav"
+          status: pass
+
+  - id: T097
+    type: pm
+    assignee: PM
+    owner_role: "相庭 愛"
+    status: done
+    reasoning_hint: default
+    objective: "Irodori warm latency実測を受けて、cold start timeout対策、preload導線、またはoutreach返信待ち運用へ戻るかを決める。"
+    expected_output:
+      - "cold start timeout対策を実装する。"
+      - "Irodori preload/health guidanceをREADMEへ足す。"
+      - "Irodoriは一旦ここで止めてoutreach返信待ち運用へ戻る。"
+      - "warm latency receipt PRをmergeしてから次へ進む。"
+    receipt:
+      result: done
+      decision: contribution_path_selected
+      full_outcome_complete: false
+      summary: "Masterの提案を受け、timeout対策実装の前に試験端末スペックと外部データ提供導線を公開docsへ追加する方針を選んだ。"
+      note: "notes/T098-irodori-latency-contribution-path.md"
+
+  - id: T098
+    type: worker
+    assignee: Worker
+    owner_role: "星宮 未来"
+    status: done
+    reasoning_hint: default
+    objective: "Irodori latencyが設定と端末性能に依存することを明記し、他の人が測定データを提供しやすい導線を作る。"
+    allowed_files:
+      - "README.md"
+      - "README.en.md"
+      - "CONTRIBUTING.md"
+      - ".github/ISSUE_TEMPLATE/platform_verification.yml"
+      - "docs/real-device-verification.md"
+      - "docs/verification-status.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "生成wav、model cache、private local path、serial numberはrepoへ入れない。"
+      - "Irodoriが速いというclaimにしない。"
+      - "実装変更は混ぜない。"
+    receipt:
+      result: done
+      decision: irodori_latency_contribution_path_added
+      full_outcome_complete: false
+      summary: "README日英、real-device verification、Platform verification issue template、verification-status、CONTRIBUTINGに、試験端末スペックとIrodori latency data提供フォーマットを追加した。"
+      note: "notes/T098-irodori-latency-contribution-path.md"
+      changed_files:
+        - "README.md"
+        - "README.en.md"
+        - "CONTRIBUTING.md"
+        - ".github/ISSUE_TEMPLATE/platform_verification.yml"
+        - "docs/real-device-verification.md"
+        - "docs/verification-status.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T098-irodori-latency-contribution-path.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "npm run check:docs"
+          status: pass
+        - cmd: "npm run check:release"
+          status: pass
+        - cmd: "npm run check:syntax"
+          status: pass
+        - cmd: "npm run test:dry-run"
+          status: pass
+
+  - id: T099
+    type: pm
+    assignee: PM
+    owner_role: "相庭 愛"
+    status: active
+    reasoning_hint: default
+    objective: "Irodori latency contribution導線追加後、PR #16をmergeするか、preload/timeout実装に進むか、outreach運用へ戻るかを決める。"
+    expected_output:
+      - "PR #16をmergeしてから次へ進む。"
+      - "preload/timeout実装に進む。"
+      - "outreach返信待ち運用へ戻る。"
+    receipt:
+      result: active
+      decision: waiting_for_next_after_contribution_path
+      full_outcome_complete: false
+      summary: "Irodoriの実測と試験参加導線はPR #16に追加。次はmerge後にpreload/timeout実装かoutreach運用へ進む。"
+      note: "notes/T098-irodori-latency-contribution-path.md"
 
   - id: T007
     type: worker

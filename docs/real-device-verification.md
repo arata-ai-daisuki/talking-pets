@@ -32,6 +32,59 @@ Then open a GitHub "Platform verification" issue and include OS/version, CPU arc
 Only evidence marked audible: yes and sanitized: yes can be used to graduate Windows or Linux from experimental. Failed or inaudible reports are still useful follow-up reports.
 ```
 
+## Irodori Latency Contribution
+
+Irodori-TTS Server performance is expected to vary a lot by device and settings. Please treat each report as one data point, not a universal benchmark.
+
+When asking someone to test Irodori, use this short request:
+
+```text
+Could you help measure Irodori-TTS Server latency for Talking Pets?
+
+Please start Irodori-TTS-Server locally, run the health check, run one warm-up synthesis, then run the same short synthesis 3 times after the runtime is loaded. Open a GitHub "Platform verification" issue and paste sanitized results.
+
+Please include device specs, OS/version, CPU/GPU, RAM, Node/npm versions, Irodori backend/device if known, whether the run was CPU/MPS/CUDA/ROCm, cold-start time, warm synthesis times, output audio duration, and whether generated speech was audible. Do not attach generated audio, model files, private paths, local env files, private rollout JSONL, or conversation text.
+```
+
+Suggested commands after Irodori-TTS-Server is listening on `http://127.0.0.1:8088`:
+
+```bash
+npm run tts:irodori -- --health --url http://127.0.0.1:8088 --profile-latency
+npm run tts:irodori -- --url http://127.0.0.1:8088 --voice none --model irodori-tts --format wav --text "こんにちは。これはウォームアップです。" --out /tmp/talking-pets-irodori-warmup.wav --profile-latency
+npm run tts:irodori -- --url http://127.0.0.1:8088 --voice none --model irodori-tts --format wav --text "こんにちは。Talking Petsのウォーム測定です。" --out /tmp/talking-pets-irodori-warm-1.wav --profile-latency
+npm run tts:irodori -- --url http://127.0.0.1:8088 --voice none --model irodori-tts --format wav --text "こんにちは。Talking Petsのウォーム測定です。" --out /tmp/talking-pets-irodori-warm-2.wav --profile-latency
+npm run tts:irodori -- --url http://127.0.0.1:8088 --voice none --model irodori-tts --format wav --text "こんにちは。Talking Petsのウォーム測定です。" --out /tmp/talking-pets-irodori-warm-3.wav --profile-latency
+```
+
+Record:
+
+- Device model:
+- CPU / GPU:
+- RAM:
+- OS and version:
+- Node.js and npm versions:
+- Irodori backend/device if known: CPU, MPS, CUDA, ROCm, or unknown:
+- Irodori settings changed from defaults: `speed`, `num_steps`, precision, reference voice, preload, or none:
+- Health latency:
+- Cold start or warm-up latency:
+- Warm synthesis run 1:
+- Warm synthesis run 2:
+- Warm synthesis run 3:
+- Output audio duration:
+- Was generated speech audible:
+- Notes:
+
+Maintainer reference result from one local test machine:
+
+- Device: MacBook Air, Apple M1, 8 CPU cores, 7-core Apple M1 GPU, 8 GB RAM
+- OS: macOS 26.5.1 / arm64
+- Node.js / npm: v24.2.0 / 11.6.4
+- Irodori backend observed in server log: MPS, fp32
+- Health: 49.8ms
+- Warm-up with runtime load: 33.4s client-side, 33.17s server-side
+- Warm synthesis runs: 16.7s, 10.1s, 9.6s
+- Output audio duration: about 3.92s
+
 ## Evidence To Record
 
 - OS and version:
@@ -39,7 +92,7 @@ Only evidence marked audible: yes and sanitized: yes can be used to graduate Win
 - Node.js version:
 - npm version:
 - Codex Desktop / CLI version if known:
-- TTS path tested: `macOS say`, `Windows OS speech`, `Linux espeak`, `VOICEVOX`, `Kokoro.js`, `Voicebox-compatible endpoint`, or `Other local TTS`:
+- TTS path tested: `macOS say`, `Windows OS speech`, `Linux espeak`, `VOICEVOX`, `Kokoro.js`, `Irodori-TTS Server`, `Voicebox-compatible endpoint`, or `Other local TTS`:
 - Speech-language value: `auto`, `ja`, `en`, `ko`, `zh`, or `other`:
 - Config source: installer default, `.talking-pets.local.env.example`, `presets/examples/<name>.env`, or custom:
 - Commands run:

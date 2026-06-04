@@ -99,6 +99,7 @@ Choose the issue template that matches the work:
 - Install trouble: setup, first run, local config, audio path, or starter script problems.
 - Platform verification: real-device install, platform check, dry-run, and audible TTS evidence for release notes.
 - TTS provider request: a new local TTS provider, voice library, endpoint, or voice integration.
+- Irodori latency data: use Platform verification and include the optional Irodori latency fields from `docs/real-device-verification.md#irodori-latency-contribution`.
 
 When reporting a problem, include:
 
