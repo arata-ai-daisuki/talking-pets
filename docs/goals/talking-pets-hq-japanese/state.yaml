@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T196
+active_task: T197
 
 tasks:
   - id: T001
@@ -6327,7 +6327,7 @@ tasks:
     type: pm
     assignee: PM
     owner_role: "文月 栞里 / 白瀬 怜奈"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "routing/evidence/approvalの波が進んだので、README claimを変えずに公開証跡リンクを確認できる状態にする。"
     allowed_files:
@@ -6345,13 +6345,51 @@ tasks:
       - "VOICEVOX/Irodoriの性能保証claimを追加しない。"
       - "releaseやGitHub issueへ自動投稿しない。"
     receipt:
-      result: active
+      result: done
       decision: release_proof_package_refresh
-      full_outcome_complete: false
-      summary: "次はREADME claimを変えずに公開証跡リンクを確認する。"
+      full_outcome_complete: true
+      summary: "README/README.enの既存導線とverification-status/real-device-verificationの証跡リンクを確認し、README claimを変えずにverification-statusへRelease Proof Package Indexを追加した。Windows/Linux experimental、VOICEVOX/Irodori reference-only、多言語fallback境界を維持した。"
       note: "notes/T196-release-proof-package-refresh.md"
       changed_files:
+        - "docs/verification-status.md"
         - "docs/goals/talking-pets-hq-japanese/notes/T196-release-proof-package-refresh.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T197-outreach-cadence-later-check.md"
+        - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+        - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n 'Release Proof Package Index|External Verification Intake|Real Device Verification|Multilingual Evidence Handling Order|Maintainer RTF Snapshot|Release Notes Template|active_task: T197|release_proof_package_refresh|outreach_cadence_later_check' docs/verification-status.md docs/goals/talking-pets-hq-japanese/notes/T196-release-proof-package-refresh.md docs/goals/talking-pets-hq-japanese/notes/T197-outreach-cadence-later-check.md docs/goals/talking-pets-hq-japanese/hq-backlog-board.md docs/goals/talking-pets-hq-japanese/activity-index.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+        - cmd: "npm run check:docs"
+          status: pass
+
+  - id: T197
+    type: worker
+    assignee: Worker
+    owner_role: "星宮 未来 / 白瀬 怜奈"
+    status: active
+    reasoning_hint: default
+    objective: "OpenClaw/V1GPTの催促禁止日を守りながら、返信が来た時だけ安全にintakeへ回せる状態を確認する。"
+    allowed_files:
+      - "docs/research/x-outreach-targets.md"
+      - "docs/research/sns-outreach-strategy.md"
+      - "docs/research/tts-provider-comparison.md"
+      - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+      - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "自動投稿、自動DM、自動mentionはしない。"
+      - "2026-06-17より前にOpenClaw/V1GPTへ催促しない。"
+      - "private contactや非公開DM本文をrepoへ保存しない。"
+    receipt:
+      result: active
+      decision: outreach_cadence_later_check
+      full_outcome_complete: false
+      summary: "次は送信済みoutreachの返信待ちを、再送なしで確認する。"
+      note: "notes/T197-outreach-cadence-later-check.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T197-outreach-cadence-later-check.md"
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands: []
 
