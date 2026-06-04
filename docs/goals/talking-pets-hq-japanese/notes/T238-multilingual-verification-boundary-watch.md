@@ -21,5 +21,8 @@ T237のlocal TTS boundary watch後に、多言語検証の境界へ戻る。
 
 - decision: `multilingual_verification_boundary_watch`
 - owner: `言守 詞葉 / 白瀬 怜奈`
-- status: active
-- next: recheck multilingual verification evidence without support-claim changes, generated audio, private logs, model downloads, or API calls.
+- status: done
+- result: Multilingual Verification Boundary Watch Result 3を追加し、#23-#25はAPI JSONでopen / 0 commentsを確認した。#26はpublic HTML fetch成功、API JSON再確認はlocal network/approval boundaryで止まったため、既存正本のopen / 0 comments / updatedAtを維持した。
+- kept: Korean / Chinese remain OS speech fallback-only until sanitized contributor evidence supports provider-specific claims.
+- not done: Korean/Chinese dedicated provider support claim, README support claim change, generated audio, private logs, private contact, model download, API call, fallback-to-provider wording change.
+- next: return to outreach waiting lane without auto-send, nudge, DM, mention, follow, like, or Star ask.

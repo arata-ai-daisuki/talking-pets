@@ -560,8 +560,6 @@ Current public verification issues remain waiting-only:
 
 Korean / Chinese verification remains fallback-only until a sanitized real-device report includes speech-language value, fixture or source text, audible result, platform details, and a public issue link. Do not treat OS fallback as Korean/Chinese dedicated provider support.
 
-No generated audio, private rollout, private log, private contact, model download, API call, or README support claim change was made in this watch.
-
 ## Multilingual Verification Boundary Watch Result 2
 
 Checked: 2026-06-05
@@ -574,5 +572,20 @@ Current public verification issues remain waiting-only:
 - #26 VOICEVOX latency: open, 0 comments, updated 2026-06-04T05:57:34Z.
 
 Korean / Chinese verification remains fallback-only until a sanitized real-device report includes speech-language value, fixture or source text, audible result, platform details, and a public issue link. Do not treat OS fallback as Korean/Chinese dedicated provider support.
+
+No generated audio, private rollout, private log, private contact, model download, API call, or README support claim change was made in this watch.
+
+## Multilingual Verification Boundary Watch Result 3
+
+Checked: 2026-06-05.
+
+Current public evidence status:
+
+- #23 Ubuntu audible TTS: API JSON confirmed open, 0 comments, updated 2026-06-04T05:57:31Z.
+- #24 Windows audible TTS: API JSON confirmed open, 0 comments, updated 2026-06-04T05:57:33Z.
+- #25 Irodori latency: API JSON confirmed open, 0 comments, updated 2026-06-04T05:57:33Z.
+- #26 VOICEVOX latency: public HTML fetch succeeded, but API JSON recheck was blocked by the local network/approval boundary in this run. Keep the previous recorded value instead of treating this as new contributor evidence: open, 0 comments, updated 2026-06-04T05:57:34Z.
+
+There is still no new fallback-only or provider-specific multilingual report to route. Keep using the Minimal Multilingual Report Form and Dedicated Provider Evidence Checklist, and do not treat OS fallback as Korean/Chinese dedicated provider support.
 
 No generated audio, private rollout, private log, private contact, model download, API call, or README support claim change was made in this watch.

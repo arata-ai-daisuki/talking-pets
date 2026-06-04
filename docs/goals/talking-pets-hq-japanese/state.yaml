@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T238
+active_task: T239
 
 tasks:
   - id: T001
@@ -7958,7 +7958,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "言守 詞葉 / 白瀬 怜奈"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "T237のlocal TTS boundary watch後に、多言語検証の境界へ戻る。"
     allowed_files:
@@ -7974,13 +7974,61 @@ tasks:
       - "README support claimを強めない。"
       - "model download、API call、生成音声をしない。"
     receipt:
-      result: active
+      result: done
       decision: multilingual_verification_boundary_watch
-      full_outcome_complete: false
-      summary: "次は多言語検証の境界を、support-claim変更、生成音声、private logs、model download、API callなしで再確認する。"
+      full_outcome_complete: true
+      summary: "#23-#25はAPI JSONでOpen / 0 commentsを確認した。#26はpublic HTML fetch成功、API JSON再確認はlocal network/approval boundaryで止まったため、既存正本のOpen / 0 comments / updatedAtを維持した。Korean / Chineseはfallback-only境界を維持し、README support claim、Korean/Chinese dedicated provider support claim、生成音声、private log、private contact、model download、API call、fallback-to-provider wording changeは追加していない。"
       note: "notes/T238-multilingual-verification-boundary-watch.md"
       changed_files:
+        - "docs/verification-status.md"
+        - "docs/real-device-verification.md"
         - "docs/goals/talking-pets-hq-japanese/notes/T238-multilingual-verification-boundary-watch.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T239-outreach-waiting-lane-boundary-watch.md"
+        - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+        - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "gh issue view 23 --json number,title,state,comments,updatedAt,url"
+          status: pass
+        - cmd: "gh issue view 24 --json number,title,state,comments,updatedAt,url"
+          status: pass
+        - cmd: "gh issue view 25 --json number,title,state,comments,updatedAt,url"
+          status: pass
+        - cmd: "gh issue view 26 --json number,title,state,comments,updatedAt,url"
+          status: blocked
+          note: "Sandbox DNS failed and escalated API retry was rejected; public HTML fetch succeeded, so the existing recorded #26 value was kept rather than treated as new evidence."
+        - cmd: "curl -L https://github.com/arata-ai-daisuki/talking-pets/issues/26"
+          status: pass
+        - cmd: "rg -n \"Multilingual Verification Boundary Watch Result 3|active_task: T239|T239|outreach_waiting_lane_boundary_watch|0 comments|fallback-only|Korean/Chinese dedicated provider support|README support claim|#26\" docs/verification-status.md docs/real-device-verification.md docs/goals/talking-pets-hq-japanese/notes/T238-multilingual-verification-boundary-watch.md docs/goals/talking-pets-hq-japanese/notes/T239-outreach-waiting-lane-boundary-watch.md docs/goals/talking-pets-hq-japanese/activity-index.md docs/goals/talking-pets-hq-japanese/hq-backlog-board.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T239
+    type: worker
+    assignee: Worker
+    owner_role: "星宮 未来 / 白瀬 怜奈"
+    status: active
+    reasoning_hint: default
+    objective: "T238のmultilingual verification boundary watch後に、outreach waiting laneへ戻る。"
+    allowed_files:
+      - "docs/research/x-outreach-targets.md"
+      - "docs/research/sns-outreach-strategy.md"
+      - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+      - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "自動投稿、自動DM、自動mentionをしない。"
+      - "private contact、DM全文、private threadを保存しない。"
+      - "Star依頼を送らない。"
+      - "2026-06-17前に催促しない。ただしpublic replyまたはMaster承認済みsanitized summaryがある場合は別カードで分類する。"
+    receipt:
+      result: active
+      decision: outreach_waiting_lane_boundary_watch
+      full_outcome_complete: false
+      summary: "次はoutreach waiting laneを、再送・催促なしで再確認する。"
+      note: "notes/T239-outreach-waiting-lane-boundary-watch.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T239-outreach-waiting-lane-boundary-watch.md"
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands: []
 
