@@ -255,6 +255,18 @@ Rechecked: 2026-06-05. No repo-recorded Master approval names `sherpa metadata r
 
 Do not treat optional install history, existing design notes, or health-only detect/connect paths as implementation approval.
 
+### Local TTS Approval Follow-Up Watch
+
+Next active lane after the outreach waiting follow-up. Recheck the A/B/C approval boundary before any provider implementation work.
+
+| Lane | Current decision | Allowed next | Still blocked |
+| --- | --- | --- | --- |
+| A: VOICEVOX / Irodori evidence-first | Active default unless Master says otherwise. | Keep comparing sanitized #25/#26 latency and audible reports by device/runtime. | Universal latency claims, default routing changes, or broader README support wording. |
+| B: sherpa metadata review | Approval-gated. | Only a named public-doc metadata review if Master explicitly asks for it. | `sherpa-onnx-node` install, optional dependency changes, model/vocoder/tokens/espeak downloads, helper code, generated audio. |
+| C: MeloTTS external-runtime design | Approval-gated. | Only a named external-runtime design refinement if Master explicitly asks for it. | Python/Docker setup, `unidic` or model download, synthesis, Korean/Chinese support wording. |
+
+Do not use the outreach waiting period as implicit approval for new provider implementation.
+
 ### Local TTS Next Choice Refresh
 
 Checked: 2026-06-05. This refresh incorporates the sherpa optional npm install check, MeloTTS detect/connect-only helper work, provider feedback capture path, and multilingual evidence routes.

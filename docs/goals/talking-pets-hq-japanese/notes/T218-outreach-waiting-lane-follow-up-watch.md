@@ -9,6 +9,9 @@ T217の多言語検証next watch後に、OpenClaw / V1GPTなどのoutreach返信
 - Outreach Waiting Lane Snapshotを確認する。
 - 返信がなければ再送・催促なしで待機を維持する。
 - 返信がある場合だけpublic-safe intakeまたはProvider Feedback Intakeへ回す。
+- V1GPTのReddit URLはverification pageになり、公開コメント証跡としては判定不能だった。
+- OpenClaw / Sogni VoiceのX URLはapp shellのみで、reply textを判定できなかった。
+- どちらもreply / no-replyを推定せず、2026-06-17までwaitを維持する。
 
 ## Stop Lines
 
@@ -20,5 +23,5 @@ T217の多言語検証next watch後に、OpenClaw / V1GPTなどのoutreach返信
 
 - decision: `outreach_waiting_lane_follow_up_watch`
 - owner: `星宮 未来 / 白瀬 怜奈`
-- status: active
-- next: check outreach waiting lane without sending.
+- status: done
+- next: return to local TTS approval follow-up watch.
