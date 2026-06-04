@@ -110,6 +110,18 @@ Stop and ask before:
 3. Keep sherpa-onnx-node and API TTS as explicit opt-in design work.
 4. Use the readiness levels above before changing README claims or default routing.
 
+## Maintainer Real-Time Factor Snapshot
+
+These numbers are maintainer reference data only. They are useful for comparing the shape of current local TTS paths, but they are not public performance guarantees.
+
+| Provider | Device | Warm synthesis | Audio duration | Derived RTF | Notes |
+| --- | --- | --- | --- | --- | --- |
+| VOICEVOX / voicebox helper | Maintainer machine, local engine already running | 1388.6ms, 2206.6ms, 1334.3ms | 3.861333s | 0.36x, 0.57x, 0.35x | Generation-only comparison. Playback-included total is tracked separately. |
+| VOICEVOX / voicebox helper | Maintainer machine, local engine already running | 1127.8ms | 3.210667s | 0.35x | Short playback-included run; RTF uses synthesis only. |
+| Irodori-TTS Server | Maintainer M1 reference device | 16.7s, 10.1s, 9.6s | about 3.92s | 4.26x, 2.58x, 2.45x | Warm synthesis was slower than real time on this device. Collect contributor CPU/GPU data before judging the provider. |
+
+RTF below `1.0x` means synthesis finished faster than the produced audio duration. RTF above `1.0x` means synthesis took longer than the audio duration.
+
 ## Maintainer Control Sample
 
 macOS `say` via the Node monitor:
