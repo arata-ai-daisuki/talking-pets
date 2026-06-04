@@ -151,6 +151,20 @@ Review rules:
 - Record `sent` only after Master manually posts or replies.
 - Do not record private contact details, private DMs, or scraped personal data.
 
+### Provider Feedback Capture
+
+When a public reply includes provider-specific guidance, add only the technical summary here first, then copy the distilled evidence into [Provider Feedback Intake](tts-provider-comparison.md#provider-feedback-intake).
+
+Capture fields:
+
+- public source URL, not a private profile or private DM
+- provider family: `Piper`, `MeloTTS`, `sherpa-onnx`, `other`
+- feedback area: `license`, `runtime`, `cache`, `measurement`, `platform`
+- one-sentence technical summary
+- whether it changes a stop line, design note, or next experiment
+
+Do not paste full private messages, generated audio, private logs, email addresses, Discord handles, or contact details. If the feedback is useful but private, record only `private feedback received` plus the decision impact after Master approves the summary.
+
 Decision flow:
 
 1. `watch`: relevant person or project, but the current post is not asking for tools, examples, testing, or feedback.
