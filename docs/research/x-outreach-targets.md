@@ -1,6 +1,6 @@
 # X Outreach Targets
 
-Last updated: 2026-06-02
+Last updated: 2026-06-05
 
 This is a manual outreach list for Talking Pets. Do not automate replies, DMs, follows, likes, or mentions from this list.
 
@@ -122,9 +122,10 @@ These are manual send candidates only. Do not mark a row as `sent` until Master 
 
 | Rank | Candidate | Use when | Template | One ask | Record after sending |
 | --- | --- | --- | --- | --- | --- |
-| 1 | OpenClaw / local voice builders | A current post discusses local TTS, local APIs, OpenClaw voice, or agent voice latency. | Local voice / TTS-specific | Which latency metric matters most for coding companions? | Add public URL to Search Review Log and T007 tracking note. |
-| 2 | Multilingual local TTS experimenters | A public post discusses Korean, Chinese, Melo-like, Piper-like, or offline multilingual TTS setup. | Provider-specific multilingual TTS, then Minimal multilingual test pack only if they show interest. | What evidence should Talking Pets collect before claiming provider-specific support? | Add public URL, evidence type, and whether test pack was shared. |
-| 3 | Codex / voice avatar builders | A post is already about Codex, coding avatars, or voice UX for coding tools. | Codex-specific | Would voice be useful for summaries only, or normal replies too? | Add public URL and response status. |
+| 1 | OpenClaw / local voice builders | A current post discusses local TTS, local APIs, OpenClaw voice, or agent voice latency. | Local voice / TTS-specific | Which latency metric matters most for coding companions: first audio, full utterance, or interruption cost? | Add public URL to Search Review Log as `sent`; if technical provider advice arrives, summarize it in Provider Feedback Capture. |
+| 2 | Multilingual local TTS experimenters | A public post discusses Korean, Chinese, Melo-like, Piper-like, or offline multilingual TTS setup. | Provider-specific multilingual TTS, then Minimal multilingual test pack only if they show interest. | What evidence should Talking Pets collect before claiming provider-specific support? | Add public URL, evidence type, and whether the Minimal Multilingual Report Form/Test Pack was shared. |
+| 3 | Codex / voice avatar builders | A post is already about Codex, coding avatars, or voice UX for coding tools. | Codex-specific | Would voice be useful for summaries only, or normal replies too? | Add public URL and response status; do not ask for a Star in the first contact. |
+| 4 | VOICEVOX / Irodori users | A current post shows local VOICEVOX/Irodori setup, latency, or user testing. | VOICEVOX / Irodori evidence ask from SNS strategy | Can they share sanitized latency or audible evidence through issue #25 or #26? | Add public URL and issue link if they open one; do not request generated audio. |
 
 Manual send checklist:
 
@@ -134,6 +135,8 @@ Manual send checklist:
 - Do not DM unless the DM Policy conditions are met.
 - Do not attach generated audio, private logs, or screenshots containing local paths.
 - After Master sends, update the Search Review Log as `sent` with the public URL.
+- If a reply changes license, runtime, cache, measurement, or platform assumptions, add only the technical summary to Provider Feedback Capture.
+- If a reply offers Korean/Chinese or other multilingual test data, send the Minimal Multilingual Report Form before changing any support wording.
 
 ## Search Review Log
 
@@ -154,6 +157,7 @@ Review rules:
 - Use `Provider-specific multilingual TTS` only when the person is already discussing local Korean, Chinese, or offline multilingual TTS setup.
 - Record `sent` only after Master manually posts or replies.
 - Do not record private contact details, private DMs, or scraped personal data.
+- Do not treat unanswered outreach as blocked work; continue safe docs, provider-design, or verification-intake tasks.
 
 ### Provider Feedback Capture
 
