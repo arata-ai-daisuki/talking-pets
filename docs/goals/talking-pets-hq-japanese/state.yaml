@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T188
+active_task: T189
 
 tasks:
   - id: T001
@@ -6008,7 +6008,7 @@ tasks:
     type: pm
     assignee: PM
     owner_role: "星宮 未来"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "README/SNS導線とprovider scorecardが現行化されたので、手動送信候補の優先順と送信後の記録場所を再点検する。"
     allowed_files:
@@ -6023,11 +6023,50 @@ tasks:
       - "private contact detailsを集めない。"
       - "送信済み扱いはMasterが実際に投稿したURLを渡した時だけにする。"
     receipt:
-      result: active
+      result: done
       decision: outreach_send_queue_refresh
-      full_outcome_complete: false
-      summary: "次はReady-To-Send QueueとSearch Review Log guidanceを現行リンクと現在のaskに合わせて更新する。"
+      full_outcome_complete: true
+      summary: "Ready-To-Send Queueを現行askと送信後記録先に合わせ、SNS strategyのNext ActionsをQueue起点、Search Review Log sent記録、返信待ち非blockerへ更新した。"
       note: "notes/T188-outreach-send-queue-refresh.md"
+      changed_files:
+        - "docs/research/x-outreach-targets.md"
+        - "docs/research/sns-outreach-strategy.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T188-outreach-send-queue-refresh.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T189-multilingual-evidence-watch.md"
+        - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+        - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n 'Ready-To-Send Queue|Search Review Log|Provider Feedback Capture|Minimal Multilingual Report Form|Do not wait on replies|active_task: T189|outreach_send_queue_refresh|multilingual_evidence_watch' docs/research/x-outreach-targets.md docs/research/sns-outreach-strategy.md docs/goals/talking-pets-hq-japanese/notes/T188-outreach-send-queue-refresh.md docs/goals/talking-pets-hq-japanese/notes/T189-multilingual-evidence-watch.md docs/goals/talking-pets-hq-japanese/hq-backlog-board.md docs/goals/talking-pets-hq-japanese/activity-index.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+        - cmd: "npm run check:docs"
+          status: pass
+
+  - id: T189
+    type: pm
+    assignee: PM
+    owner_role: "言守 詞葉"
+    status: active
+    reasoning_hint: default
+    objective: "Minimal Multilingual Report FormとIssue導線がREADMEへ出たので、外部証跡が来た時の処理順を保つ。"
+    allowed_files:
+      - "docs/real-device-verification.md"
+      - "docs/verification-status.md"
+      - "docs/research/x-outreach-targets.md"
+      - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+      - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "generated audio、private logs、private contact detailsを求めない。"
+      - "README support claimを外部実機証跡なしに変更しない。"
+      - "provider実装、依存追加、model download、API callをしない。"
+    receipt:
+      result: active
+      decision: multilingual_evidence_watch
+      full_outcome_complete: false
+      summary: "次は多言語reportが来た時のfallback-only / provider-specific / provider feedback intake処理順を見える化する。"
+      note: "notes/T189-multilingual-evidence-watch.md"
       changed_files:
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands: []

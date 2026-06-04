@@ -162,11 +162,12 @@ No generated audio or install test needed for this question; I'm just looking fo
 
 ## Next Actions
 
-1. Choose the first demo link: normal README recording or X speed-ramp version.
-2. Prepare one pinned X post in English and one Japanese quote post.
-3. Manually verify 10 candidate accounts/projects.
-4. Send 3 careful replies in the first week.
-5. Add any responses or useful feedback to `implementation-notes.md` or a follow-up outreach note.
-6. When someone offers verification help, send the "After someone shows interest" template and ask them to use a sanitized Platform verification issue.
+1. Pick one row from [Ready-To-Send Queue](x-outreach-targets.md#ready-to-send-queue), not a broad target segment.
+2. Confirm the current post is recent and directly relevant before replying.
+3. Use exactly one ask: latency feedback, provider feedback, dedicated provider evidence, or intro to a relevant builder.
+4. Send manually; do not automate replies, DMs, follows, likes, or mentions.
+5. After sending, add the public URL to [Search Review Log](x-outreach-targets.md#search-review-log) as `sent`.
+6. If someone offers verification help, send the "After someone shows interest" template and ask them to use a sanitized Platform verification issue.
 7. When asking TTS/provider experts, use the "Provider feedback ask" template and record whether the answer affects license, runtime, cache, or measurement planning.
 8. When someone can test Korean/Chinese with a provider-specific local TTS path, use the "Dedicated provider evidence ask" template and the checklist link.
+9. Do not wait on replies before continuing safe internal work; unanswered outreach is a watch state, not a blocker.
