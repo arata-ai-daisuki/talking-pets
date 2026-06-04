@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T197
+active_task: T198
 
 tasks:
   - id: T001
@@ -6367,7 +6367,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "星宮 未来 / 白瀬 怜奈"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "OpenClaw/V1GPTの催促禁止日を守りながら、返信が来た時だけ安全にintakeへ回せる状態を確認する。"
     allowed_files:
@@ -6383,13 +6383,52 @@ tasks:
       - "2026-06-17より前にOpenClaw/V1GPTへ催促しない。"
       - "private contactや非公開DM本文をrepoへ保存しない。"
     receipt:
-      result: active
+      result: done
       decision: outreach_cadence_later_check
-      full_outcome_complete: false
-      summary: "次は送信済みoutreachの返信待ちを、再送なしで確認する。"
+      full_outcome_complete: true
+      summary: "Ready-To-Send Queue、Current Outreach Cadence Snapshot、Outreach Reply Intake Playbookを確認し、OpenClaw/V1GPTへ再送しないまま返信時だけ処理するReply Waiting Intake Queueを追加した。SNS strategyからも同queueへ接続した。"
       note: "notes/T197-outreach-cadence-later-check.md"
       changed_files:
+        - "docs/research/x-outreach-targets.md"
+        - "docs/research/sns-outreach-strategy.md"
         - "docs/goals/talking-pets-hq-japanese/notes/T197-outreach-cadence-later-check.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T198-local-tts-approval-follow-up.md"
+        - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+        - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n 'Reply Waiting Intake Queue|Do not send another nudge before 2026-06-17|Provider Feedback Capture only|active_task: T198|outreach_cadence_later_check|local_tts_approval_follow_up' docs/research/x-outreach-targets.md docs/research/sns-outreach-strategy.md docs/goals/talking-pets-hq-japanese/notes/T197-outreach-cadence-later-check.md docs/goals/talking-pets-hq-japanese/notes/T198-local-tts-approval-follow-up.md docs/goals/talking-pets-hq-japanese/hq-backlog-board.md docs/goals/talking-pets-hq-japanese/activity-index.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+        - cmd: "npm run check:docs"
+          status: pass
+
+  - id: T198
+    type: worker
+    assignee: Worker
+    owner_role: "歌澄 音羽 / 白瀬 怜奈"
+    status: active
+    reasoning_hint: default
+    objective: "provider候補は整理済みなので、次にMaster承認が必要な実験境界だけを再確認する。"
+    allowed_files:
+      - "docs/research/tts-provider-comparison.md"
+      - "docs/research/sherpa-onnx-design.md"
+      - "docs/research/melotts-design-note.md"
+      - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+      - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "依存追加、model download、API callをしない。"
+      - "README support claimを変えない。"
+      - "VOICEVOX/Irodoriの1端末データを性能保証にしない。"
+    receipt:
+      result: active
+      decision: local_tts_approval_follow_up
+      full_outcome_complete: false
+      summary: "次はlocal TTS実験前のMaster承認境界を再確認する。"
+      note: "notes/T198-local-tts-approval-follow-up.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T198-local-tts-approval-follow-up.md"
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands: []
 
