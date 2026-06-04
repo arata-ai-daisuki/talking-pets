@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T137
+active_task: T138
 
 tasks:
   - id: T001
@@ -4267,7 +4267,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "速水 光莉"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "保存済み[latency]行をMarkdown/CSV表へ変換するno-download helperを追加する。"
     allowed_files:
@@ -4282,7 +4282,7 @@ tasks:
       - "model downloadや外部APIを使わない。"
       - "performance claimを強くしない。"
     receipt:
-      result: active
+      result: done
       decision: latency_table_helper
       full_outcome_complete: false
       summary: "scripts/latency-lines-to-table.mjs と npm run latency:table を追加し、保存済み[latency]行をMarkdown/CSVへ変換できるようにした。"
@@ -4313,6 +4313,35 @@ tasks:
         - cmd: "npm run test:dry-run"
           status: pass
         - cmd: "rg -n \"active_task: T137|T137|latency:table|latency-lines-to-table|Markdown|CSV|latency_table_helper\" scripts package.json test/monitor.test.mjs docs/performance.md docs/goals/talking-pets-hq-japanese/notes/T137-latency-table-helper.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T138
+    type: worker
+    assignee: Worker
+    owner_role: "星宮 未来"
+    status: active
+    reasoning_hint: default
+    objective: "協力者向けVOICEVOX/Irodori測定手順にlatency:tableの使い方を接続する。"
+    allowed_files:
+      - "docs/real-device-verification.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "生成WAV添付を求めない。"
+      - "外部APIやmodel downloadを増やさない。"
+      - "performance claimを強くしない。"
+    receipt:
+      result: active
+      decision: latency_table_docs
+      full_outcome_complete: false
+      summary: "VOICEVOX/Irodoriの協力者向け測定手順に、sanitized [latency] 行をnpm run latency:tableでMarkdown表へ変換する手順を追加した。"
+      note: "notes/T138-latency-table-docs.md"
+      changed_files:
+        - "docs/real-device-verification.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T138-latency-table-docs.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n \"active_task: T138|T138|talking-pets-irodori-latency-lines|talking-pets-voicevox-latency-lines|latency_table_docs|Markdown table\" docs/real-device-verification.md docs/goals/talking-pets-hq-japanese/notes/T138-latency-table-docs.md docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
 
   - id: T007

@@ -58,6 +58,12 @@ npm run tts:irodori -- --url http://127.0.0.1:8088 --voice none --model irodori-
 npm run tts:irodori -- --url http://127.0.0.1:8088 --voice none --model irodori-tts --format wav --text "こんにちは。Talking Petsのウォーム測定です。" --out /tmp/talking-pets-irodori-warm-3.wav --profile-latency
 ```
 
+To make a compact table, copy only the sanitized `[latency]` lines into a text file and run:
+
+```bash
+npm run latency:table -- /tmp/talking-pets-irodori-latency-lines.txt
+```
+
 Record:
 
 - Device model:
@@ -118,6 +124,14 @@ If WAV duration is readable, the latency line includes `audioDuration` and `rtf`
 ```
 
 Paste the sanitized `[latency]` line into the issue. Do not attach generated WAV files.
+
+For three warm runs, copy only the sanitized `[latency]` lines into a text file and run:
+
+```bash
+npm run latency:table -- /tmp/talking-pets-voicevox-latency-lines.txt
+```
+
+Paste the generated Markdown table into the issue.
 
 Record:
 
