@@ -6,9 +6,9 @@ scorecard gapはdesign-note質問へ落ちたので、実験へ進む場合のMa
 
 ## Scope
 
-- Local TTS候補のapproval gateを再確認する。
-- dependency/model/APIなしで、次に聞くべき承認質問だけを整理する。
-- README support claimやdefault routingを変えない。
+- Local TTS候補のapproval gateを再確認した。
+- dependency/model/APIなしで、次に聞くべき承認質問だけを整理した。
+- README support claimやdefault routingを変えない状態を維持した。
 
 ## Stop Lines
 
@@ -20,5 +20,5 @@ scorecard gapはdesign-note質問へ落ちたので、実験へ進む場合のMa
 
 - decision: `local_tts_approval_check`
 - owner: `歌澄 音羽 / 白瀬 怜奈`
-- status: active
-- next: prepare approval-only card for any provider experiment.
+- status: done
+- next: outreach reply intake.

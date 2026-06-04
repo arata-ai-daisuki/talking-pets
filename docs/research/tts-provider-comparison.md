@@ -176,6 +176,21 @@ Use this card when asking Master what provider work should move from planning in
 
 Recommended default: choose A now. Master has also asked to prepare B and C as design-only follow-ups, so the next safe movement is to deepen sherpa and MeloTTS notes without installing dependencies, downloading models, or changing support wording.
 
+### Local TTS Approval-Only Card
+
+Use this card when Master wants to move from design notes toward a real provider experiment. The approval phrase must name the lane. Anything not named stays blocked.
+
+| Approval phrase | Allowed in the next PR | Still not allowed |
+| --- | --- | --- |
+| "Keep evidence-first." | Update docs, issue asks, and comparison tables for VOICEVOX/Irodori contributor evidence. | New provider code, default routing changes, broad performance claims. |
+| "Approve sherpa metadata review only." | Review public package/model/vocoder/license docs and update `sherpa-onnx-design.md`. | Installing `sherpa-onnx-node`, downloading assets, adding helper code. |
+| "Approve sherpa optional experiment." | A separate PR may propose optional dependency scope and explicit asset/cache commands. | Auto download, default routing, README support wording, generated audio claims. |
+| "Approve MeloTTS external-runtime design only." | Update CLI/server/Docker/cache questions and health-only integration docs. | Python/Docker setup, dictionary/model download, synthesis, Korean/Chinese support claim. |
+| "Approve Piper license review only." | Review package/binary/voice/model/generated-audio license and cache questions. | Installing/bundling Piper, model download, helper implementation, support wording. |
+| "Approve API TTS provider-specific design only." | Pick one provider for a privacy/billing/secret/dry-run design note. | API key handling, paid call, remote synthesis, generated audio cache, default route. |
+
+If Master's wording is broader than one row, split the work into separate PRs before implementation.
+
 ### Local TTS Next Choice Refresh
 
 Checked: 2026-06-05. This refresh incorporates the sherpa optional npm install check, MeloTTS detect/connect-only helper work, provider feedback capture path, and multilingual evidence routes.
