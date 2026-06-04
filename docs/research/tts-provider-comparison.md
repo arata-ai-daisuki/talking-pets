@@ -168,6 +168,25 @@ Source URLs:
 
 Do not add either candidate to default routing from this snapshot. Treat Piper as license-sensitive because the current maintained repo is GPL-3.0, and treat MeloTTS as runtime-sensitive because the published install path is Python/Docker oriented.
 
+### Piper License And Packaging Boundary
+
+Checked: 2026-06-04. Public pages show two Piper lines that must not be mixed together:
+
+- `rhasspy/piper` is archived and marked MIT, with its README pointing to `OHF-Voice/piper1-gpl`.
+- `OHF-Voice/piper1-gpl` is the current maintained repo seen in this check, marked GPL-3.0, and documents `pip install piper-tts`.
+- PyPI has a `piper-tts` package page, but this note did not inspect wheel contents, bundled libraries, model download behavior, or per-voice license files.
+
+Talking Pets should therefore not add Piper as a dependency, optional dependency, installer choice, default route, or README-supported provider until a Piper-specific design note answers:
+
+- Which package or binary would be used: current `piper-tts`, archived MIT source, external user-installed binary, or another route.
+- Whether GPL-3.0 obligations are compatible with the intended distribution path.
+- Whether each selected voice/model has a clear license and attribution requirement.
+- Whether models are user-approved downloads cached outside the repo.
+- Whether normal `npm ci`, `npm run check:all`, and package checks stay green when Piper is absent.
+- Whether the first helper can shell out to a user-installed binary instead of bundling Piper.
+
+Safe next action: keep Piper as a license-review candidate only. If Master wants to continue, create a Piper-specific design note before any install, helper, or README wording change.
+
 ## Maintainer Real-Time Factor Snapshot
 
 These numbers are maintainer reference data only. They are useful for comparing the shape of current local TTS paths, but they are not public performance guarantees.
