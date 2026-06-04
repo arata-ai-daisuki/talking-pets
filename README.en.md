@@ -10,6 +10,7 @@ Start here: [Demo recording](https://github.com/arata-ai-daisuki/talking-pets/bl
 If this looks useful, a GitHub Star helps guide the next TTS, multilingual, and latency improvements.
 
 If you can help with Windows / Linux real-device checks, VOICEVOX latency on another machine, or Irodori on another GPU, see [ways to help](docs/contributor-entrypoints.md).
+Quick verification issues: [Linux #23](https://github.com/arata-ai-daisuki/talking-pets/issues/23) / [Windows #24](https://github.com/arata-ai-daisuki/talking-pets/issues/24) / [Irodori #25](https://github.com/arata-ai-daisuki/talking-pets/issues/25) / [VOICEVOX #26](https://github.com/arata-ai-daisuki/talking-pets/issues/26)
 
 ![Talking Pets demo preview](assets/demo-preview.png)
 
