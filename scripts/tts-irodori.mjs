@@ -6,6 +6,8 @@ import { tmpdir } from "node:os";
 import { performance } from "node:perf_hooks";
 import { join } from "node:path";
 
+import { latencyAudioFields, setLatencyAudioDurationFromWav } from "./wav-duration.mjs";
+
 const args = parseArgs(process.argv.slice(2));
 const latencyProfile = startLatencyProfile(args["profile-latency"]);
 const baseURL = (args.url ?? process.env.IRODORI_TTS_URL ?? "http://127.0.0.1:8088").replace(/\/$/, "");
@@ -85,6 +87,9 @@ async function synthesize() {
   const audio = Buffer.from(await measureLatency(latencyProfile, "read_audio", () => response.arrayBuffer()));
   const out = args.out ?? join(mkdtempSync(join(tmpdir(), "talking-pets-irodori-")), `speech.${format}`);
   measureLatency(latencyProfile, "write_audio", () => writeFileSync(out, audio));
+  if (format === "wav") {
+    setLatencyAudioDurationFromWav(latencyProfile, audio);
+  }
   return out;
 }
 
@@ -162,7 +167,7 @@ function printLatencyProfile(profile, fields) {
   if (!profile) return;
   const totalMs = performance.now() - profile.startedAt;
   const steps = profile.steps.map(step => `${step.name}=${formatLatencyMs(step.ms)}`).join(" ");
-  const metadata = Object.entries(fields).map(([key, value]) => `${key}=${value}`).join(" ");
+  const metadata = Object.entries({ ...latencyAudioFields(profile), ...fields }).map(([key, value]) => `${key}=${value}`).join(" ");
   console.error(`[latency] total=${formatLatencyMs(totalMs)} ${steps} ${metadata}`.trim());
 }
 
