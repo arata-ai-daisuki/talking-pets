@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T123
+active_task: T125
 
 tasks:
   - id: T001
@@ -3818,7 +3818,7 @@ tasks:
     type: pm
     assignee: PM
     owner_role: "相庭 愛"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "T114のSNS投稿後に見る指標と、反応別の次アクションを準備する。"
     allowed_files:
@@ -3829,16 +3829,74 @@ tasks:
       - "初手Star依頼をしない。"
       - "性能保証として書かない。"
     receipt:
-      result: active
+      result: done
       decision: post_metrics_plan_ready
       full_outcome_complete: false
-      summary: "投稿後24h/72h/7dで見る指標、反応別next action、次ポスト候補A/B/Cを用意した。投稿や返信はしていない。"
+      summary: "投稿後24h/72h/7dで見る指標、反応別next action、次ポスト候補A/B/Cを用意した。投稿や返信はしていない。次は外部入力待ちの間に進める内部作業を選ぶ。"
       note: "notes/T123-post-metrics-and-next-actions.md"
       changed_files:
         - "docs/goals/talking-pets-hq-japanese/notes/T123-post-metrics-and-next-actions.md"
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands:
         - cmd: "rg -n \"active_task: T123|T123|post_metrics_plan_ready|24h|72h|7d|latency honesty|local-first privacy\" docs/goals/talking-pets-hq-japanese/notes/T123-post-metrics-and-next-actions.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T124
+    type: pm
+    assignee: PM
+    owner_role: "相庭 愛"
+    status: done
+    reasoning_hint: default
+    objective: "T114投稿URLやIssueコメントを待つ間に進める内部作業候補を整理し、次の小PR候補を決める。"
+    expected_output:
+      - "outreach / local TTS / multilingual の次候補を比較する。"
+      - "downloadなし、投稿なしで進められる次作業を選ぶ。"
+      - "Master判断が必要な停止線を明記する。"
+    constraints:
+      - "SNS投稿、Issue返信、DMをしない。"
+      - "model download、package install、API callをしない。"
+      - "性能保証やko/zh専用provider claimを追加しない。"
+    receipt:
+      result: done
+      decision: next_internal_work_queue_ready
+      full_outcome_complete: false
+      summary: "外部入力待ちの間に進める候補を整理し、次はdocs/verification-status.mdの外部報告受け入れ欄をIssue #23-#26に合わせる方針を選んだ。"
+      note: "notes/T124-next-internal-work-queue.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T124-next-internal-work-queue.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n \"active_task: T124|T124|next_internal_work_queue_ready|verification-status|Issue #23-#26|model download\" docs/goals/talking-pets-hq-japanese/notes/T124-next-internal-work-queue.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T125
+    type: worker
+    assignee: Worker
+    owner_role: "白瀬 怜奈"
+    status: active
+    reasoning_hint: default
+    objective: "docs/verification-status.mdに、Issue #23-#26の外部検証受け入れ欄を追加する。"
+    allowed_files:
+      - "docs/verification-status.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "未受領の報告をverified扱いしない。"
+      - "Windows/Linuxをexperimentalから変更しない。"
+      - "VOICEVOX/Irodoriを性能保証として書かない。"
+      - "SNS投稿、Issue返信、model download、package install、API callをしない。"
+    receipt:
+      result: active
+      decision: verification_status_intake_links_added
+      full_outcome_complete: false
+      summary: "verification-statusにExternal Verification Intake表を追加し、Windows/Linux/Irodori/VOICEVOXの各Issueと採用前条件を明記した。"
+      note: "notes/T125-verification-status-intake-links.md"
+      changed_files:
+        - "docs/verification-status.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T125-verification-status-intake-links.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n \"External Verification Intake|#23|#24|#25|#26|Waiting for contributor evidence|active_task: T125\" docs/verification-status.md docs/goals/talking-pets-hq-japanese/notes/T125-verification-status-intake-links.md docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
 
   - id: T007
