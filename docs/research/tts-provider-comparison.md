@@ -140,15 +140,17 @@ Suggested decision:
 
 Current planning read:
 
-| Provider | Provisional score | Why |
-| --- | --- | --- |
-| VOICEVOX / Voicebox-compatible endpoint | 12/14 | Already optional and locally measured; needs more contributor evidence for broader claims. |
-| Irodori-TTS Server | 11/14 | Strong local Japanese value and OpenAI-compatible shape; cold/warm performance needs more devices. |
-| Kokoro.js | 9/14 | Helper exists, but model download/cache and warm-process behavior need clearer approval. |
-| sherpa-onnx-node | 8/14 | Good design fit, but model/vocoder/license choices remain unresolved. |
-| MeloTTS | 7/14 | Language value is high, but Python/Docker/runtime/cache shape needs a design note before code. |
-| Piper-like path | 6/14 | Potentially useful, but current maintained project/license packaging needs careful review first. |
-| API TTS | 5/14 | Can be valuable as opt-in, but privacy, billing, and local-first positioning make it a separate P2 path. |
+| Provider | Provisional score | Lane | Evidence gap | Approval gate before code | Safe next action |
+| --- | ---: | --- | --- | --- | --- |
+| VOICEVOX / Voicebox-compatible endpoint | 12/14 | Evidence-first | External issue #26 contributor latency and audible reports. | Broader README wording, default routing, or universal performance wording. | Keep asking for sanitized reports; no new provider code needed. |
+| Irodori-TTS Server | 11/14 | Evidence-first | External issue #25 contributor CPU/GPU/backend reports and warm/cold separation. | Any performance claim beyond maintainer-reference wording. | Keep contribution route active and compare only like-for-like latency fields. |
+| Kokoro.js | 9/14 | Approval-gated measurement | Cold/warm model-download behavior, cache size/path, and warm-process reuse. | Any run that downloads or loads model cache for measurement. | Write a cache/download measurement plan only. |
+| sherpa-onnx-node | 8/14 | Design-only | Exact model/vocoder/tokens/espeak data choice, size, cache root, and license evidence. | Installing dependency, downloading assets, or adding a helper. | Refresh design note questions before asking for an experiment. |
+| MeloTTS | 7/14 | Design-only / external-runtime | CLI/server/Docker path, dictionary/model cache ownership, and multilingual support evidence. | Python/Docker setup, dictionary/model download, generated audio, or support claim. | Expand runtime/cache measurement plan around health-only detect. |
+| Piper-like path | 6/14 | Hold / license review | Current package/binary choice, GPL/MIT boundary, voice/model licenses, and cache behavior. | Adding package/binary, model download, or README provider wording. | Keep license/package questions visible; no implementation. |
+| API TTS | 5/14 | Later opt-in | Privacy, billing, secret handling, dry-run, and remote audio/cache policy. | API key creation, paid call, remote endpoint call, or default route. | Keep as separate opt-in design path. |
+
+Scorecard refresh result: no candidate should move to implementation from this table alone. VOICEVOX and Irodori need contributor evidence; Kokoro needs explicit model-download approval; sherpa, MeloTTS, Piper, and API TTS stay behind design or approval gates.
 
 ## Next Provider Decision Card
 

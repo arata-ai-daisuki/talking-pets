@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T187
+active_task: T188
 
 tasks:
   - id: T001
@@ -5972,7 +5972,7 @@ tasks:
     type: pm
     assignee: PM
     owner_role: "歌澄 音羽 / 白瀬 怜奈"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "T186のlocal TTS next choice refreshを受けて、Provider Experiment Scorecardを現在の証跡と停止線に合わせて更新する。"
     allowed_files:
@@ -5986,11 +5986,48 @@ tasks:
       - "READMEに新provider対応済みclaimを追加しない。"
       - "generated audioを作らない。"
     receipt:
-      result: active
+      result: done
       decision: provider_experiment_scorecard_refresh
-      full_outcome_complete: false
-      summary: "次はProvider Experiment Scorecardを現在の証跡と停止線に合わせて更新する。"
+      full_outcome_complete: true
+      summary: "Provider Experiment Scorecardをlane / evidence gap / approval gate / safe next actionつきに更新し、VOICEVOX/Irodoriはevidence-first、Kokoroはmodel-download承認待ち、sherpa/MeloTTS/Piper/APIはdesign-onlyまたはholdに整理した。"
       note: "notes/T187-provider-experiment-scorecard-refresh.md"
+      changed_files:
+        - "docs/research/tts-provider-comparison.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T187-provider-experiment-scorecard-refresh.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T188-outreach-send-queue-refresh.md"
+        - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+        - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n 'Lane|Evidence gap|Approval gate before code|Safe next action|Scorecard refresh result|active_task: T188|provider_experiment_scorecard_refresh|outreach_send_queue_refresh' docs/research/tts-provider-comparison.md docs/goals/talking-pets-hq-japanese/notes/T187-provider-experiment-scorecard-refresh.md docs/goals/talking-pets-hq-japanese/notes/T188-outreach-send-queue-refresh.md docs/goals/talking-pets-hq-japanese/hq-backlog-board.md docs/goals/talking-pets-hq-japanese/activity-index.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+        - cmd: "npm run check:docs"
+          status: pass
+
+  - id: T188
+    type: pm
+    assignee: PM
+    owner_role: "星宮 未来"
+    status: active
+    reasoning_hint: default
+    objective: "README/SNS導線とprovider scorecardが現行化されたので、手動送信候補の優先順と送信後の記録場所を再点検する。"
+    allowed_files:
+      - "docs/research/x-outreach-targets.md"
+      - "docs/research/sns-outreach-strategy.md"
+      - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+      - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "自動投稿、DM、follow、like、mentionをしない。"
+      - "private contact detailsを集めない。"
+      - "送信済み扱いはMasterが実際に投稿したURLを渡した時だけにする。"
+    receipt:
+      result: active
+      decision: outreach_send_queue_refresh
+      full_outcome_complete: false
+      summary: "次はReady-To-Send QueueとSearch Review Log guidanceを現行リンクと現在のaskに合わせて更新する。"
+      note: "notes/T188-outreach-send-queue-refresh.md"
       changed_files:
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands: []

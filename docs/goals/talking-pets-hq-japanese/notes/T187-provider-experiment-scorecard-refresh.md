@@ -6,9 +6,10 @@ T186のlocal TTS next choice refreshを受けて、Provider Experiment Scorecard
 
 ## Scope
 
-- VOICEVOX / Irodoriはevidence-firstとして扱う。
-- sherpa / MeloTTS / Piper / API TTSはdesign-only、license/runtime/privacyの境界を保つ。
-- 次の小PR候補とMaster承認が必要な実験を分ける。
+- VOICEVOX / Irodoriはevidence-firstとして扱った。
+- Kokoroはmodel-download承認待ちのmeasurement-onlyに留めた。
+- sherpa / MeloTTS / Piper / API TTSはdesign-only、license/runtime/privacyの境界を保った。
+- 次の小PR候補とMaster承認が必要な実験を分けた。
 
 ## Stop Lines
 
@@ -20,5 +21,5 @@ T186のlocal TTS next choice refreshを受けて、Provider Experiment Scorecard
 
 - decision: `provider_experiment_scorecard_refresh`
 - owner: `歌澄 音羽 / 白瀬 怜奈`
-- status: active
-- next: update provider scorecard and HQ board with refreshed evidence gaps.
+- status: done
+- next: outreach send queue refresh.
