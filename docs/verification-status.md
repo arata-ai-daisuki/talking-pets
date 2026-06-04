@@ -78,6 +78,15 @@ When a Korean, Chinese, or other fallback-language report arrives:
 5. Copy only technical provider guidance into Provider Feedback Intake when it changes runtime, cache, license, measurement, or platform assumptions.
 6. Update README support wording only after the checklist is complete and the verification-status row links to the sanitized issue.
 
+### Multilingual Intake Routing Matrix
+
+| Evidence type | Verification status entry | Provider Feedback Intake | README wording |
+| --- | --- | --- | --- |
+| `fallback-only` OS speech | Record as routing/audio evidence with source text, speech-language, chosen fallback path, OS/device, and audible result. | Not needed unless the report also includes provider design guidance. | Keep OS speech fallback wording. |
+| `provider-specific` local TTS | Record only after the public issue links a named provider path and audible result. | Add one sentence only if runtime, cache, license, measurement, or platform assumptions change. | Do not change until the checklist below is complete. |
+| Private or unsanitized feedback | Do not paste details. Ask for a sanitized public issue or Master-approved summary. | Use `private summary approved by Master` only when needed. | No wording change. |
+| Partial report | Keep as follow-up evidence and ask for missing fields. | Not needed until it changes a provider assumption. | No wording change. |
+
 ### Dedicated Provider Evidence Checklist
 
 Use this checklist before changing Korean, Chinese, or any other fallback language from "OS speech fallback" to "dedicated provider support":
