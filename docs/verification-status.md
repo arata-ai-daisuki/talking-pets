@@ -78,6 +78,8 @@ When a Korean, Chinese, or other fallback-language report arrives:
 5. Copy only technical provider guidance into Provider Feedback Intake when it changes runtime, cache, license, measurement, or platform assumptions.
 6. Update README support wording only after the checklist is complete and the verification-status row links to the sanitized issue.
 
+For quick triage, use the [Multilingual Evidence Intake Queue](real-device-verification.md#multilingual-evidence-intake-queue) before deciding whether a report belongs in verification status, provider feedback, or follow-up notes.
+
 ### Multilingual Intake Routing Matrix
 
 | Evidence type | Verification status entry | Provider Feedback Intake | README wording |

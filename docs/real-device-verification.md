@@ -104,6 +104,19 @@ Use this order when a contributor shares Korean, Chinese, or another fallback-la
 
 Do not wait on outside replies before continuing safe internal work. Missing or partial reports should stay as intake/follow-up evidence, not as a blocker.
 
+### Multilingual Evidence Intake Queue
+
+Use this queue before editing README wording or provider docs. It keeps quick fallback reports separate from provider-specific evidence.
+
+| Incoming evidence | First record | Copy to provider feedback? | Next action |
+| --- | --- | --- | --- |
+| OS speech fallback with Korean/Chinese text and one audible line | Platform verification issue plus `docs/verification-status.md` as fallback routing/audio evidence. | No, unless the report includes provider setup guidance. | Keep README wording as OS speech fallback. |
+| Named local TTS provider with Korean/Chinese text and audible result | Platform verification issue plus Dedicated Provider Evidence Checklist. | Yes, only one technical sentence if runtime/cache/license/measurement/platform assumptions change. | Keep README wording unchanged until the checklist is complete. |
+| Provider setup advice without an audible run | Search Review Log or Provider Feedback Intake, depending on whether it changes a provider assumption. | Yes, if it affects a design note or stop line. | Treat as design input, not verification evidence. |
+| Private or unsanitized report | No repo details until Master approves a short summary. | Only after Master approves `private summary approved by Master`. | Ask for a sanitized public issue if evidence is needed. |
+
+Do not attach generated audio, private logs, screenshots with local paths, model files, local env files, or private contact details.
+
 ### Multilingual Intake Routing Matrix
 
 Use this matrix after the first classification:

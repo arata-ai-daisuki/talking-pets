@@ -8,14 +8,14 @@ This page is a readable snapshot of the Japanese HQ state. The authoritative sou
 
 - Board URL: `http://goalbuddy.localhost:41737/talking-pets-hq-japanese/`
 - Local board files: `docs/goals/talking-pets-hq-japanese/.goalbuddy-board/`
-- Current active task: `T199`
-- Current focus: 多言語証跡のfallback-only/provider-specific分類queueを確認する。
+- Current active task: `T200`
+- Current focus: T195-T199の完了波を畳み、Active/Next/Backlogを再整理する。
 
 ## Kanban Snapshot
 
 | Column | Count | Meaning |
 | --- | ---: | --- |
-| Done | 199 | 完了済みの小PR、調査、判断カード、検証receipt。 |
+| Done | 200 | 完了済みの小PR、調査、判断カード、検証receipt。 |
 | Active | 1 | いまHQが追っている作業。 |
 | Blocked | 0 | 同じ停止条件が継続しており、Master判断なしに進めないもの。 |
 
@@ -23,11 +23,11 @@ This page is a readable snapshot of the Japanese HQ state. The authoritative sou
 
 | Agent | Role | Done | Active | Main lane |
 | --- | --- | ---: | ---: | --- |
-| 相庭 愛 | HQ Producer | 59 | 0 | 判断カード、全体整理、Master確認。 |
+| 相庭 愛 | HQ Producer | 59 | 1 | 判断カード、全体整理、Master確認。 |
 | 星宮 未来 | Outreach Lead | 37 | 0 | SNS/outreach、候補表、返信ドラフト、送信後記録。 |
 | 白瀬 怜奈 | Risk / Review Lead | 20 | 0 | claim境界、license/privacy/API、セルフレビュー。 |
 | 歌澄 音羽 | Voice Provider Lead | 31 | 0 | TTS provider、VOICEVOX/Irodori/sherpa/Melo/API設計。 |
-| 言守 詞葉 | Multilingual Lead | 18 | 1 | ko/zh fallback、多言語fixture、dedicated provider evidence境界。 |
+| 言守 詞葉 | Multilingual Lead | 19 | 0 | ko/zh fallback、多言語fixture、dedicated provider evidence境界。 |
 | 速水 光莉 | Latency Lead | 14 | 0 | latency診断、RTF、table helper、測定読み方。 |
 | 文月 栞里 | Docs / Operations Lead | 13 | 0 | docs整備、hygiene、activity index、運用導線。 |
 | 愛坂 あい | Pet / Persona Lead | 2 | 0 | キャラクター/会話体験の方向づけ。 |
@@ -86,7 +86,8 @@ This page is a readable snapshot of the Japanese HQ state. The authoritative sou
 | `T196` | 文月 栞里 / 白瀬 怜奈 | done | Release Proof Package Indexを追加。 |
 | `T197` | 星宮 未来 / 白瀬 怜奈 | done | Reply Waiting Intake Queueを追加。 |
 | `T198` | 歌澄 音羽 / 白瀬 怜奈 | done | Local TTS Approval Follow-Up Snapshotを追加。 |
-| `T199` | 言守 詞葉 / 白瀬 怜奈 | active | Multilingual evidence queue checkを準備中。 |
+| `T199` | 言守 詞葉 / 白瀬 怜奈 | done | Multilingual Evidence Intake Queueを追加。 |
+| `T200` | 相庭 愛 / 文月 栞里 | active | Backlog wave refreshを準備中。 |
 
 ## Where To Look Next
 
