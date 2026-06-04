@@ -227,6 +227,8 @@ Classification rules:
 
 Do not change README provider claims from feedback alone. First convert meaningful feedback into a provider-specific design note, then ask Master before dependency, model, or implementation work.
 
+Use `docs/research/provider-design-note-template.md` for the provider-specific note so every candidate answers the same dependency, model, cache, license, privacy, platform, measurement, and README wording questions before implementation.
+
 ## Maintainer Real-Time Factor Snapshot
 
 These numbers are maintainer reference data only. They are useful for comparing the shape of current local TTS paths, but they are not public performance guarantees.

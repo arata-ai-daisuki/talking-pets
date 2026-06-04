@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T150
+active_task: T151
 
 tasks:
   - id: T001
@@ -4683,7 +4683,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "文月 栞里"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "Provider feedbackが来た時に、license/runtime/cache/measurement/platformへ分類して記録できる受け皿を作る。"
     allowed_files:
@@ -4696,7 +4696,7 @@ tasks:
       - "provider対応済みclaimを追加しない。"
       - "dependency、model download、implementationへ進まない。"
     receipt:
-      result: active
+      result: done
       decision: provider_feedback_intake
       full_outcome_complete: false
       summary: "TTS provider comparisonにProvider Feedback Intakeを追加し、返信をlicense/runtime/cache/measurement/platformへ分類して次の設計判断に渡せるようにした。"
@@ -4707,6 +4707,39 @@ tasks:
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands:
         - cmd: "rg -n 'active_task: T150|T150|provider_feedback_intake|Provider Feedback Intake|license / runtime / cache / measurement / platform|private contact details|generated audio files' docs/research/tts-provider-comparison.md docs/goals/talking-pets-hq-japanese/notes/T150-provider-feedback-intake.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T151
+    type: worker
+    assignee: Worker
+    owner_role: "歌澄 音羽"
+    status: active
+    reasoning_hint: default
+    objective: "provider-specific design noteを同じ観点で書けるテンプレを追加する。"
+    allowed_files:
+      - "docs/research/provider-design-note-template.md"
+      - "docs/research/tts-provider-comparison.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "dependency installをしない。"
+      - "model downloadをしない。"
+      - "API usageやAPI keyを使わない。"
+      - "generated audio attachmentを求めない。"
+      - "README support claimやdefault routingへ進まない。"
+    receipt:
+      result: active
+      decision: provider_design_note_template
+      full_outcome_complete: false
+      summary: "provider-specific design noteテンプレを追加し、dependency/model/cache/license/privacy/platform/measurement/README wordingの確認を実装前に揃えられるようにした。"
+      note: "notes/T151-provider-design-note-template.md"
+      changed_files:
+        - "docs/research/provider-design-note-template.md"
+        - "docs/research/tts-provider-comparison.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T151-provider-design-note-template.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n 'active_task: T151|T151|provider_design_note_template|Provider Design Note Template|Dependency|Model download|Cache location|README wording|Stop Lines' docs/research/provider-design-note-template.md docs/research/tts-provider-comparison.md docs/goals/talking-pets-hq-japanese/notes/T151-provider-design-note-template.md docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
 
   - id: T007
