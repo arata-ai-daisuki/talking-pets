@@ -134,6 +134,7 @@ If you choose VOICEVOX, start VOICEVOX Engine first and make sure it is listenin
 If you choose a Voicebox-compatible endpoint, the installer can save the endpoint URL, mode, profile, and language.
 Kokoro.js downloads model files on first use. The default cache path is `~/.cache/talking-pets/transformers`. The default q8 model is about 92 MB, so the first run can take a little while.
 Irodori-TTS Server is not bundled in this repository. Start it in a separate terminal first and confirm that its `/health` endpoint responds.
+`/health` may respond before the model is loaded. The first real synthesis can take several minutes because Irodori may download the model and load the runtime. Even after the model is loaded, short warm synthesis can still take tens of seconds depending on CPU/GPU and device state.
 
 ## Distribution
 
@@ -381,6 +382,8 @@ To force a spoken language from saved config, set `TALKING_PETS_SPEECH_LANGUAGE=
 - `node_modules: not found`: run `npm ci` if you use Kokoro.js.
 - `VOICEVOX: not reachable`: start VOICEVOX Engine and confirm the URL is `http://127.0.0.1:50021`.
 - `Irodori-TTS Server: not reachable`: start Irodori-TTS-Server and confirm the URL is `http://127.0.0.1:8088`.
+- Irodori `/health` passes but synthesis is slow: the first request may include model download and runtime loading. Test with one short sentence and separate cold-start timing from a warm retry.
+- Irodori synthesis times out: the server may still be loading the model. Check the server log and `/health` fields such as `runtime.loaded` and `runtime.loading`.
 - `[wait] Codex thread not found`: confirm Codex Desktop or Codex CLI is saving local conversation logs.
 - `[wait] rollout unreadable`: confirm the rollout JSONL path exists and whether `CODEX_HOME` points somewhere custom.
 - `--interval` / `--rate` / `--max-source-chars` errors: pass positive numeric values. `--max-source-chars` accepts only positive integers.
