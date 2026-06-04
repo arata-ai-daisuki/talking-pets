@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T147
+active_task: T148
 
 tasks:
   - id: T001
@@ -4590,7 +4590,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "白瀬 怜奈"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "Piper系providerのlicense/package境界を公開情報ベースで整理する。"
     allowed_files:
@@ -4604,7 +4604,7 @@ tasks:
       - "外部APIやAPI keyを使わない。"
       - "法的助言として断定しない。"
     receipt:
-      result: active
+      result: done
       decision: piper_license_boundary
       full_outcome_complete: false
       summary: "Piper系providerについて、archive済みMIT repo、現行GPL-3.0 repo、PyPI packageの境界を記録し、license-review candidateに留める停止線を追加した。"
@@ -4615,6 +4615,37 @@ tasks:
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands:
         - cmd: "rg -n 'active_task: T147|T147|piper_license_boundary|Piper License And Packaging Boundary|license-review candidate|GPL-3.0|piper-tts|user-installed binary' docs/research/tts-provider-comparison.md docs/goals/talking-pets-hq-japanese/notes/T147-piper-license-boundary.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T148
+    type: worker
+    assignee: Worker
+    owner_role: "歌澄 音羽"
+    status: active
+    reasoning_hint: default
+    objective: "MeloTTSのruntime/cache境界を公開情報ベースで整理する。"
+    allowed_files:
+      - "docs/research/tts-provider-comparison.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "MeloTTS対応済みclaimを追加しない。"
+      - "依存追加をしない。"
+      - "model downloadをしない。"
+      - "外部APIやAPI keyを使わない。"
+      - "normal npm install pathに混ぜない。"
+    receipt:
+      result: active
+      decision: melotts_runtime_boundary
+      full_outcome_complete: false
+      summary: "MeloTTSについて、Python-first install、unidic download、Docker導線、Python/Torch系requirementsを記録し、runtime-review candidateに留める停止線を追加した。"
+      note: "notes/T148-melotts-runtime-boundary.md"
+      changed_files:
+        - "docs/research/tts-provider-comparison.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T148-melotts-runtime-boundary.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n 'active_task: T148|T148|melotts_runtime_boundary|MeloTTS Runtime And Cache Boundary|runtime-review candidate|python -m unidic download|user-started local server|normal npm' docs/research/tts-provider-comparison.md docs/goals/talking-pets-hq-japanese/notes/T148-melotts-runtime-boundary.md docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
 
   - id: T007
