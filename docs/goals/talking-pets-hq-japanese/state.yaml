@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T101
+active_task: T102
 
 tasks:
   - id: T001
@@ -3123,7 +3123,7 @@ tasks:
     type: pm
     assignee: PM
     owner_role: "相庭 愛"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "Irodori preload/timeout導線PR後、PRをmergeするか、outreach返信待ち運用へ戻るか、次のprovider比較へ進むか決める。"
     expected_output:
@@ -3131,11 +3131,67 @@ tasks:
       - "outreach返信待ち運用へ戻る。"
       - "次のprovider比較へ進む。"
     receipt:
-      result: active
-      decision: waiting_for_next_after_preload_guidance
+      result: done
+      decision: return_to_outreach_waiting_operation
       full_outcome_complete: false
-      summary: "Irodoriは測定、参加導線、preload/timeout導線まで整理済み。次はmerge後にoutreach運用か次provider比較へ戻る。"
-      note: "notes/T100-irodori-preload-timeout-guidance.md"
+      summary: "PR #17をmergeし、Irodoriは測定、参加導線、preload/timeout導線まで整理済みになった。次はoutreach返信待ち運用へ戻り、次provider比較は候補整理から進める。"
+      note: "notes/T101-pr17-merged-next-decision.md"
+
+  - id: T102
+    type: worker
+    assignee: Worker
+    owner_role: "星宮 未来"
+    status: active
+    reasoning_hint: default
+    objective: "V1GPT / OpenClaw送信後のoutreach返信待ち運用を、安全な手動運用として維持する。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      - "docs/research/x-outreach-targets.md"
+      - "docs/research/sns-outreach-strategy.md"
+    constraints:
+      - "自動投稿、follow、like、DM送信、mention送信をしない。"
+      - "Star依頼を初手で送らない。"
+      - "返信がない相手へ2026-06-17より前に催促しない。"
+    stop_if:
+      - "自動投稿、follow、like、DM、mention送信が必要になった場合。"
+      - "private contact収集が必要になった場合。"
+      - "返信がない同一相手への催促が2026-06-17より前に必要になった場合。"
+    verify:
+      - "test -f docs/goals/talking-pets-hq-japanese/notes/T102-outreach-waiting-operation.md"
+      - "rg -n \"V1GPT|OpenClaw|2026-06-17|送信代行はしない|Star依頼\" docs/goals/talking-pets-hq-japanese/notes/T102-outreach-waiting-operation.md"
+    receipt:
+      result: active
+      decision: waiting_for_public_replies
+      full_outcome_complete: false
+      summary: "V1GPT / OpenClawはMasterが手動送信済み。あいちゃん側は返信待ち運用、返答案、候補整理に留め、催促やDMはしない。"
+      note: "notes/T102-outreach-waiting-operation.md"
+
+  - id: T103
+    type: worker
+    assignee: Worker
+    owner_role: "歌澄 音羽"
+    status: queued
+    reasoning_hint: default
+    objective: "次provider比較を、install/model download/API keyなしの候補整理として準備する。"
+    allowed_files:
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      - "docs/research/**"
+      - "docs/performance.md"
+    constraints:
+      - "package install、model download、API key利用、有料API呼び出しをしない。"
+      - "Irodoriを速いproviderとして断定しない。"
+      - "licenseが曖昧なmodelを推奨しない。"
+    verify:
+      - "test -f docs/goals/talking-pets-hq-japanese/notes/T103-next-provider-comparison-prep.md"
+      - "rg -n \"Irodori|VOICEVOX|Kokoro|sherpa-onnx-node|API TTS|停止線\" docs/goals/talking-pets-hq-japanese/notes/T103-next-provider-comparison-prep.md"
+    receipt:
+      result: queued
+      decision: prep_only_until_master_approves_external_work
+      full_outcome_complete: false
+      summary: "次provider比較は候補整理から。install、model download、API key、有料APIはMaster承認まで停止線に置く。"
+      note: "notes/T103-next-provider-comparison-prep.md"
 
   - id: T007
     type: worker
