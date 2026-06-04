@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T154
+active_task: T155
 
 tasks:
   - id: T001
@@ -4810,7 +4810,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "白瀬 怜奈"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "API TTSをprovider-specific design noteへ落とし、実装前のprivacy/billing/credential停止線を明確にする。"
     allowed_files:
@@ -4825,7 +4825,7 @@ tasks:
       - "SDK/dependencyを追加しない。"
       - "README support wordingやdefault routingを追加しない。"
     receipt:
-      result: active
+      result: done
       decision: api_tts_design_note
       full_outcome_complete: false
       summary: "API TTS design noteを追加し、L0 design-only / privacy-and-billing-review candidateとしてAPI key、paid call、外部送信、remote audio cacheの停止線を明記した。"
@@ -4837,6 +4837,39 @@ tasks:
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands:
         - cmd: "rg -n 'active_task: T154|T154|api_tts_design_note|API TTS Design Note|privacy-and-billing-review candidate|No API key was used|paid API call|text leaves the machine|Stop Lines' docs/research/api-tts-design-note.md docs/research/tts-provider-comparison.md docs/goals/talking-pets-hq-japanese/notes/T154-api-tts-design-note.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T155
+    type: worker
+    assignee: Worker
+    owner_role: "言守 詞葉"
+    status: active
+    reasoning_hint: default
+    objective: "多言語fallback evidenceとdedicated provider evidenceを混同しないため、READMEから確認条件へ誘導する。"
+    allowed_files:
+      - "README.md"
+      - "README.en.md"
+      - "docs/verification-status.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "Korean / Chinese dedicated provider support claimを追加しない。"
+      - "provider実装、依存追加、model download、API callをしない。"
+      - "private Codex text、credentials、generated audio attachmentを求めない。"
+    receipt:
+      result: active
+      decision: dedicated_provider_evidence_checklist
+      full_outcome_complete: false
+      summary: "verification-statusにDedicated Provider Evidence Checklistを追加し、README日英からリンクしてfallback-only evidenceとdedicated-provider evidenceを分けられるようにした。"
+      note: "notes/T155-dedicated-provider-evidence-checklist.md"
+      changed_files:
+        - "README.md"
+        - "README.en.md"
+        - "docs/verification-status.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T155-dedicated-provider-evidence-checklist.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n 'active_task: T155|T155|dedicated_provider_evidence_checklist|Dedicated Provider Evidence Checklist|fallback-only evidence|dedicated-provider evidence|専用provider対応|external real-device evidence' README.md README.en.md docs/verification-status.md docs/goals/talking-pets-hq-japanese/notes/T155-dedicated-provider-evidence-checklist.md docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
 
   - id: T007
