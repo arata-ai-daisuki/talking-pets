@@ -189,6 +189,8 @@ The current wait-state is tracked in the [Outreach Waiting Lane Snapshot](x-outr
 
 Later watch: 2026-06-05. V1GPT's public Reddit page was readable and did not expose a Talking Pets reply in the fetched HTML. The OpenClaw / Sogni Voice X page did not expose useful public HTML content, so do not infer reply state from X. Keep both rows as waiting and do not nudge before 2026-06-17 unless a public reply appears first.
 
+Next watch: 2026-06-05. V1GPT remains readable via public Reddit HTML, with no Talking Pets reply visible in the fetched page. The OpenClaw / Sogni Voice X page still does not expose useful public HTML lines. Treat both as waiting and continue safe internal work; do not send or nudge.
+
 Keep V1R4 as `reply later` until a current public thread clearly invites related project examples.
 
 ### Public Proof Route Selector
