@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T151
+active_task: T152
 
 tasks:
   - id: T001
@@ -4713,7 +4713,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "歌澄 音羽"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "provider-specific design noteを同じ観点で書けるテンプレを追加する。"
     allowed_files:
@@ -4728,7 +4728,7 @@ tasks:
       - "generated audio attachmentを求めない。"
       - "README support claimやdefault routingへ進まない。"
     receipt:
-      result: active
+      result: done
       decision: provider_design_note_template
       full_outcome_complete: false
       summary: "provider-specific design noteテンプレを追加し、dependency/model/cache/license/privacy/platform/measurement/README wordingの確認を実装前に揃えられるようにした。"
@@ -4740,6 +4740,38 @@ tasks:
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands:
         - cmd: "rg -n 'active_task: T151|T151|provider_design_note_template|Provider Design Note Template|Dependency|Model download|Cache location|README wording|Stop Lines' docs/research/provider-design-note-template.md docs/research/tts-provider-comparison.md docs/goals/talking-pets-hq-japanese/notes/T151-provider-design-note-template.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+
+  - id: T152
+    type: worker
+    assignee: Worker
+    owner_role: "白瀬 怜奈"
+    status: active
+    reasoning_hint: default
+    objective: "Piperをprovider-specific design noteへ落とし、実装前のlicense/package停止線を明確にする。"
+    allowed_files:
+      - "docs/research/piper-design-note.md"
+      - "docs/research/tts-provider-comparison.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "`piper-tts` installをしない。"
+      - "model、voice、vocoder、language dataをdownloadしない。"
+      - "README support wordingやdefault routingを追加しない。"
+      - "法的助言として断定しない。"
+    receipt:
+      result: active
+      decision: piper_design_note
+      full_outcome_complete: false
+      summary: "Piper design noteを追加し、L0 design-only / license-review candidateとしてuser-installed external CLI/service候補に留める停止線を明記した。"
+      note: "notes/T152-piper-design-note.md"
+      changed_files:
+        - "docs/research/piper-design-note.md"
+        - "docs/research/tts-provider-comparison.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T152-piper-design-note.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n 'active_task: T152|T152|piper_design_note|Piper Design Note|L0 design-only|license-review candidate|user-installed external|Do not add README support wording|No dependency was installed' docs/research/piper-design-note.md docs/research/tts-provider-comparison.md docs/goals/talking-pets-hq-japanese/notes/T152-piper-design-note.md docs/goals/talking-pets-hq-japanese/state.yaml"
           status: pass
 
   - id: T007
