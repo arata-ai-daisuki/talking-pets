@@ -13,6 +13,7 @@ Talking Petsを、ユーザーの好みに合わせて声・言語・TTS/Voice A
 - 日本語/英語だけでなく、韓国語/中国語などのfallbackまたはprovider-specific対応を安全に広げられる。
 - Voice系LLM/APIやOpenAI-compatible local APIを、明示opt-inで接続できる設計にする。
 - latencyやfirst-audioを測り、性能改善をclaimできる証拠を残す。
+- インストール、更新、アンインストールを安全に扱い、既存設定やキャッシュを壊さず管理できる。
 
 ## 完了条件
 
@@ -24,12 +25,14 @@ Talking Petsを、ユーザーの好みに合わせて声・言語・TTS/Voice A
 4. 多言語routing diagnosticsが、fallback-onlyとprovider-specificを分けて表示できる。
 5. Voice/API providerはsecret/privacy/billing境界を守ったopt-in設計または実装PRまで進む。
 6. latency benchmarkの出力が、機能アップデートとして公開できる形になる。
+7. macOS / Linux / Windows向けに、install / update / uninstall の導線が整理され、既存設定の保持、キャッシュ削除の選択、provider別外部runtimeの扱い、rollback手順がdocsまたはCLIで確認できる。
 
 ## 成功の証拠
 
 - `npm run check:all` が通る。
 - READMEまたはdocsに、対応provider、対応言語、設定例、未対応/承認待ち境界がある。
 - CLIまたはdry-runで、provider選択理由、fallback理由、ユーザー設定の反映結果が見える。
+- install / update / uninstall のdry-runまたはdocsで、保持される設定、削除候補、キャッシュ、外部runtime境界が分かる。
 - model download、paid API call、外部endpoint送信は、明示承認なしに発生しない。
 
 ## 禁止事項
@@ -39,6 +42,7 @@ Talking Petsを、ユーザーの好みに合わせて声・言語・TTS/Voice A
 - secretをdocs、logs、fixturesへ保存すること。
 - 韓国語/中国語などを証拠なしにdedicated provider supportとしてclaimすること。
 - 既存の運用HQ履歴を壊すこと。
+- uninstall/updateでユーザー設定、provider設定、キャッシュを確認なしに削除すること。
 
 ## 看板
 

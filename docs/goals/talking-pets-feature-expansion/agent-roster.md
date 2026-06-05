@@ -19,6 +19,7 @@ Talking Pets機能拡張ゴールのサブエージェント編成です。
 | 星宮 未来 | Growth / Demo Lead | ユーザーに伝わる見せ方を考える。 | 機能アップデートとして出せるdemo文脈。 |
 | 文月 栞里 | Docs / Operations Lead | README、導線、release notesを整える。 | README/CLI help/docsの読みやすさ。 |
 | 愛坂 あい | Pet / Persona Lead | ペットの会話体験とユーザー好みを気にする。 | user preference config、voice persona presets。 |
+| 月城 奏 | Installer / Release Lead | 導入、更新、削除の事故を嫌う。地味だけど頼れる。 | install/update/uninstall、rollback、cache/config保持。 |
 
 ## Visibility Rules
 
@@ -37,3 +38,4 @@ Talking Pets機能拡張ゴールのサブエージェント編成です。
 | 言守 詞葉 | 「韓国語/中国語はまだfallback-onlyです。provider-specific supportに上げる条件をregistryにも反映します。」 |
 | 速水 光莉 | 「機能として出すならlatency表も必要です。first audio、total、RTF、端末情報を分けます。」 |
 | 白瀬 怜奈 | 「model download、API call、secret保存は承認ゲートを通すまで禁止です。」 |
+| 月城 奏 | 「インストールだけでなく、更新とアンインストールまで含めて初見ユーザーの安心材料にします。」 |
