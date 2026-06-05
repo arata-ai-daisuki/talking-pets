@@ -410,6 +410,12 @@ macOS安定版のSwift monitorで同じ確認をする場合は、`npm run monit
 保存済み設定から言語を固定したい場合は、`TALKING_PETS_SPEECH_LANGUAGE="ja|en|ko|zh|other"` を設定できます。
 `TALKING_PETS_SAY_VOICE` はmacOS `say` のvoice名です。Windows `System.Speech` と Linux `espeak` では、現在この値はvoice選択に使われません。
 
+ユーザーの好みをJSONで試したい場合は [presets/preferences.local-first.json](presets/preferences.local-first.json) を使えます。API keyやsecretは入れず、provider優先度、声、速度/品質の希望、API opt-inの有無だけを表現します。
+
+```bash
+npm run monitor:node -- --once --dry-run --diagnose-routing --preferences presets/preferences.local-first.json --rollout test/fixtures/ko-zh-rollout.jsonl
+```
+
 ## Troubleshooting
 
 - `node: not found`: Node.js 22 以上をインストールしてください。macOS sayだけで試す場合はインストーラーで `4` を選びます。

@@ -58,7 +58,7 @@ agent_visibility:
   activity_log: "docs/goals/talking-pets-feature-expansion/activity-log.md"
   rule: "各タスクのreceiptに担当agentコメントとhandoff summaryを残す。"
 
-active_task: T003
+active_task: T004
 
 tasks:
   - id: T001
@@ -156,7 +156,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "相庭 愛 / 歌澄 音羽"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "user preference configの最小schemaを追加し、language、voice/provider優先度、speed/quality preference、API opt-inをdry-runで反映できるようにする。"
     depends_on:
@@ -184,24 +184,69 @@ tasks:
       - "外部API送信、paid call、model downloadが必要になった。"
       - "既存installer configを確認なしに上書きする必要が出た。"
     receipt:
-      result: active
+      result: done
       decision: user_preference_config
-      full_outcome_complete: false
-      summary: "T002 provider registryとT006 installer安全境界を受けて、次はuser preference configの最小schemaへ進む。言語、声、provider優先度、速度/品質、API opt-inをdry-runで見えるようにする。"
+      full_outcome_complete: true
+      summary: "user preference configの最小schemaを追加した。`--preferences`でlocal-first JSONを読み、provider優先度、声、速度/品質、API opt-inのsafe summaryをrouting diagnosticsに表示する。API key、secret、外部送信、paid callは扱わない。"
       note: "notes/T003-user-preference-config.md"
-      commands: []
+      changed_files:
+        - "src/user-preferences.js"
+        - "presets/preferences.local-first.json"
+        - "scripts/pet-rollout-monitor.mjs"
+        - "scripts/check-config-files.mjs"
+        - "test/monitor.test.mjs"
+        - "package.json"
+        - "README.md"
+        - "README.en.md"
+        - "docs/goals/talking-pets-feature-expansion/notes/T003-user-preference-config.md"
+        - "docs/goals/talking-pets-feature-expansion/activity-log.md"
+        - "docs/goals/talking-pets-feature-expansion/state.yaml"
+      commands:
+        - cmd: "npm run check:config"
+          status: pass
+        - cmd: "node --no-warnings --test"
+          status: pass
+        - cmd: "node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --preferences presets/preferences.local-first.json --rollout test/fixtures/ko-zh-rollout.jsonl"
+          status: pass
+        - cmd: "CLANG_MODULE_CACHE_PATH=/private/tmp/talking-pets-clang-module-cache npm run check:all"
+          status: pass
 
   - id: T004
     type: worker
     assignee: Worker
     owner_role: "速水 光莉"
-    status: queued
+    status: active
     reasoning_hint: default
     objective: "latency benchmark出力を機能アップデートとして見せられる形に改善する。first audio、total、RTF、device infoを表とCSVで扱う。"
     depends_on:
       - T001
     constraints:
       - "1端末の数字を性能保証として書かない。"
+    allowed_files:
+      - "scripts/**"
+      - "src/**"
+      - "test/**"
+      - "docs/performance.md"
+      - "docs/research/tts-provider-comparison.md"
+      - "docs/goals/talking-pets-feature-expansion/**"
+      - "README.md"
+      - "README.en.md"
+      - "package.json"
+    verify:
+      - "npm run benchmark:dry-run"
+      - "node --no-warnings --test"
+      - "CLANG_MODULE_CACHE_PATH=/private/tmp/talking-pets-clang-module-cache npm run check:all"
+    stop_if:
+      - "実音声やmodel downloadが必要になった。"
+      - "1端末のlatencyを保証値として書く必要が出た。"
+      - "private pathや未sanitizedログを公開docsへ貼る必要が出た。"
+    receipt:
+      result: active
+      decision: latency_benchmark_output
+      full_outcome_complete: false
+      summary: "次はlatency benchmark出力改善。first audio、total、RTF、端末情報を表/CSVへ出せるようにし、公開機能アップデートで説明できる証拠形にする。"
+      note: "notes/T004-latency-benchmark-output.md"
+      commands: []
 
   - id: T005
     type: scout

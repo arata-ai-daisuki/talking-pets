@@ -32,6 +32,37 @@ user preference configの最小schemaを追加し、language、voice/provider優
 
 - decision: `user_preference_config`
 - owner: `相庭 愛 / 歌澄 音羽`
-- status: active
-- result: pending
-- next: 既存 `.talking-pets.local.env` / presets / config validator / routing diagnosticsを読んで、最小schemaとdry-run表示を設計・実装する。
+- status: done
+- result: done
+- implementation:
+  - `src/user-preferences.js` にuser preference configの最小schemaを追加。
+  - `presets/preferences.local-first.json` にlocal-firstのサンプル設定を追加。
+  - `scripts/pet-rollout-monitor.mjs --preferences <path>` でpreferenceを読み、`--diagnose-routing` にsafe summaryを表示。
+  - API opt-inはbooleanのみ。API key、secret、外部送信、paid callは扱わない。
+  - `scripts/check-config-files.mjs` とunit testでschemaを検証。
+  - README / README.en に設定例を追加。
+- changed_files:
+  - `src/user-preferences.js`
+  - `presets/preferences.local-first.json`
+  - `scripts/pet-rollout-monitor.mjs`
+  - `scripts/check-config-files.mjs`
+  - `test/monitor.test.mjs`
+  - `package.json`
+  - `README.md`
+  - `README.en.md`
+  - `docs/goals/talking-pets-feature-expansion/notes/T003-user-preference-config.md`
+  - `docs/goals/talking-pets-feature-expansion/activity-log.md`
+  - `docs/goals/talking-pets-feature-expansion/state.yaml`
+- verification:
+  - `npm run check:config`
+  - `node --no-warnings --test`
+  - `node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --preferences presets/preferences.local-first.json --rollout test/fixtures/ko-zh-rollout.jsonl`
+  - `CLANG_MODULE_CACHE_PATH=/private/tmp/talking-pets-clang-module-cache npm run check:all`
+- verification_result: pass
+- next: `T004 latency benchmark出力改善`へ進む。first audio、total、RTF、端末情報つきの機能アップデート用出力へ進める。
+
+## Agent Completion Comments
+
+- 相庭 愛: 「ユーザーの好みをJSONで表現できる入口ができました。API keyは絶対に入れない設計です。」
+- 歌澄 音羽: 「provider優先度と声の好みがrouting diagnosticsに見えるようになりました。」
+- 白瀬 怜奈: 「韓国語/中国語は引き続き`say` fallback-first。provider-specific claimは増やしていません。」

@@ -4,6 +4,8 @@ import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 
+import { normalizeUserPreferences } from "../src/user-preferences.js";
+
 const root = process.cwd();
 const scriptPath = fileURLToPath(import.meta.url);
 let failures = 0;
@@ -27,6 +29,7 @@ function main() {
   failures = 0;
   checkSpeechStyle();
   checkVoicePresets();
+  checkUserPreferences();
   checkEnvFile(".talking-pets.local.env.example", { expectedUILanguage: "en" });
   checkEnvFile(".talking-pets.local.env", { optional: true, allowMissingUILanguage: true, allowMissingSpeechLanguage: true });
   checkEnvFile("presets/examples/ja-voicevox-zundamon.env", { expectedTTS: "voicevox", expectedRoute: "0", expectedUILanguage: "ja" });
@@ -51,6 +54,20 @@ function main() {
   }
 
   console.log("config files: ok");
+}
+
+function checkUserPreferences() {
+  const config = readJSON("presets/preferences.local-first.json");
+  if (!config) return;
+  try {
+    const { preferences } = normalizeUserPreferences(config);
+    if (preferences.apiOptIn !== false) fail("presets/preferences.local-first.json apiOptIn must default to false");
+    if (preferences.speedQuality !== "balanced") fail("presets/preferences.local-first.json speedQuality must default to balanced");
+    if (preferences.providerPriority.ko[0] !== "say") fail("presets/preferences.local-first.json ko must stay fallback-first");
+    if (preferences.providerPriority.zh[0] !== "say") fail("presets/preferences.local-first.json zh must stay fallback-first");
+  } catch (error) {
+    fail(`presets/preferences.local-first.json is invalid: ${error.message}`);
+  }
 }
 
 if (process.argv[1] === scriptPath) {

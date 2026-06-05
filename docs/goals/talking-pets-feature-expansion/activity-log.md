@@ -58,3 +58,13 @@ Handoff:
 Handoff:
 
 > T003 Workerへ: provider registryを使って、言語、声、provider優先度、速度/品質、API opt-inを表現するuser preference configの最小schemaへ進んでください。secret値は保存せず、API opt-in未設定時に外部送信しないこと。
+
+### T003 Worker Result
+
+- 相庭 愛: 「`--preferences` でlocal-firstな好み設定を読めるようにしました。API keyは扱いません。」
+- 歌澄 音羽: 「provider優先度、声、速度/品質、API opt-inがrouting diagnosticsに出ます。」
+- 白瀬 怜奈: 「`apiOptIn`はbooleanだけです。secret、外部送信、paid callは発生しません。」
+
+Handoff:
+
+> T004 Workerへ: latency benchmark出力改善へ進んでください。first audio、total、RTF、端末情報を、公開機能アップデートで説明できる表/CSVにしてください。1端末の数字を性能保証として書かないこと。

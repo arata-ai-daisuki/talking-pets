@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "speechLanguage": "auto",
+  "speedQuality": "balanced",
+  "apiOptIn": false,
+  "providerPriority": {
+    "ja": ["voicevox", "say"],
+    "en": ["kokoro", "say"],
+    "ko": ["say"],
+    "zh": ["say"],
+    "other": ["say"]
+  },
+  "voices": {
+    "ja": {
+      "voicevoxSpeaker": "3"
+    },
+    "en": {
+      "kokoroVoice": "af_heart"
+    },
+    "fallback": {
+      "sayVoice": "Kyoko"
+    }
+  }
+}
