@@ -15,6 +15,8 @@ If you can share Korean, Chinese, or other dedicated-provider evidence, use the 
 
 To check what is verified, what is waiting, and how to share useful evidence, start from the [Public proof hub](docs/contributor-entrypoints.md#public-proof-hub).
 
+Latest feature update summary: [Voice Personalization Feature Update](docs/feature-update-voice-personalization.md)
+
 ![Talking Pets demo preview](assets/demo-preview.png)
 
 ## Demo Recording
