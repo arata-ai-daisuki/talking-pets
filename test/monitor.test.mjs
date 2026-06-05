@@ -35,6 +35,7 @@ import { parseArgs as parseMeloTTSArgs, safeURLForLog as safeMeloTTSURLForLog } 
 import { parseArgs as parseVoiceboxArgs, safeURLForLog } from "../scripts/tts-voicebox.mjs";
 import { formatAudioDurationSeconds, formatRealTimeFactor, latencyAudioFields, wavDurationSeconds } from "../scripts/wav-duration.mjs";
 import { csvCell, formatLatencyRows, latencyRowsFromText, parseLatencyLine as parseLatencyTableLine } from "../scripts/latency-lines-to-table.mjs";
+import { formatSummary, summarizeRuns as summarizeLatencyRuns } from "../scripts/latency-benchmark.mjs";
 import { sanitizePublicOutput, stripURLQuery } from "../scripts/sanitize-public-output.mjs";
 import { forbiddenText as sanitizerForbiddenText, requiredText as sanitizerRequiredText, sample as sanitizerSample } from "../scripts/check-public-output-sanitizer.mjs";
 
@@ -314,6 +315,25 @@ test("converts latency lines to markdown and CSV tables", () => {
   assert.match(formatLatencyRows(rows, "csv"), /^run,provider,total,synthesis,audioDuration,rtf,play,success,audio_query/m);
   assert.equal(parseLatencyTableLine("[latency] provider=a|b total=1ms").provider, "a|b");
   assert.equal(csvCell('a,"b"'), '"a,""b"""');
+});
+
+test("formats latency benchmark summaries with first-audio and device fields", () => {
+  const summary = summarizeLatencyRuns([
+    { total: 10, speechText: 2, candidate: true },
+    { total: 20, speechText: 4, candidate: true },
+  ], ["node", "scripts/pet-rollout-monitor.mjs", "--once"]);
+
+  assert.equal(summary.firstAudio.status, "not_measured");
+  assert.equal(typeof summary.device.platform, "string");
+  assert.equal(summary.metrics.total.p50Ms, 15);
+
+  const markdown = formatSummary(summary, "markdown");
+  assert.match(markdown, /First audio: not_measured/);
+  assert.match(markdown, /\| metric \| minMs \| p50Ms \|/);
+
+  const csv = formatSummary(summary, "csv");
+  assert.match(csv, /metric,minMs,p50Ms,p95Ms,maxMs,runs,firstAudio/);
+  assert.match(csv, /total,10,15/);
 });
 
 test("sanitizes public check output before issue sharing", () => {
