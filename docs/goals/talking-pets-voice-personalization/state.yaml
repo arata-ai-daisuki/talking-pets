@@ -1,0 +1,177 @@
+version: 2
+
+goal:
+  title: "Talking Pets 声と好みの機能開発"
+  slug: "talking-pets-voice-personalization"
+  kind: recovery
+  tranche: "声、言語、local TTS、Voice/API opt-in、latency、installer/update/uninstallをユーザー体験中心で進め直す。"
+  status: active
+  oracle:
+    signal: "CLI/docs/README上で、ユーザー好みの声・言語・provider選択、fallback理由、Voice/API opt-in境界、latency結果、install/update/uninstall導線が確認できる。"
+    cadence: "各小PR、provider追加、preference schema変更、benchmark改善、installer改善ごと"
+    final_proof: "最初の機能開発波がmergeされ、Masterが機能アップデートとして公開できると判断する。"
+  intake:
+    original_request: "方針をおおきく変えたのでworktree整理してgoal buddyも新しく切った方がいいかもね"
+    interpreted_outcome: "旧GoalBuddyを履歴化し、新しい声・好み中心のGoalBuddyへ安全に切り替える。"
+    input_shape: recovery
+    audience: "Talking Pets users / contributors / ARATA"
+    authority: requested
+    proof_type: artifact
+    completion_proof: "新GoalBuddyが作成され、旧途中成果が保存/分類され、次の実装タスクが明確になる。"
+    likely_misfire: "旧タスクを消してしまう、または新方針なのに運用中心タスクを続けてしまう。"
+    blind_spots_considered:
+      - "T004の有用なlatency成果を捨てるリスク"
+      - "旧GoalBuddy履歴を上書きするリスク"
+      - "外部APIやmodel downloadへ早く進みすぎるリスク"
+      - "installer/uninstallの破壊操作を先に実行してしまうリスク"
+
+rules:
+  pm_owns_state: true
+  one_active_task: true
+  max_write_workers: 1
+  no_implementation_without_worker_or_pm_task: true
+  no_completion_without_judge_or_pm_audit: true
+  planning_is_not_completion: true
+  queued_required_worker_blocks_completion: true
+  continuous_until_full_outcome: true
+  missing_input_or_credentials_do_not_stop_goal: true
+  preserve_and_validate_existing_plan: true
+  intake_misfire_must_be_audited: true
+  goal_pressure_requires_oracle: true
+  no_completion_on_weak_proof: true
+
+agents:
+  scout: installed
+  worker: installed
+  judge: installed
+
+visual_board:
+  selected: local
+  local:
+    status: planned
+    url: "http://goalbuddy.localhost:41737/talking-pets-voice-personalization/"
+    command: "npx goalbuddy board <repo>/docs/goals/talking-pets-voice-personalization"
+
+agent_visibility:
+  roster: "docs/goals/talking-pets-voice-personalization/agent-roster.md"
+  activity_log: "docs/goals/talking-pets-voice-personalization/activity-log.md"
+  rule: "各タスクのreceiptに担当agentコメントとhandoff summaryを残す。"
+
+active_task: T002
+
+tasks:
+  - id: T001
+    type: judge
+    assignee: Judge
+    owner_role: "相庭 愛 / 白瀬 怜奈"
+    status: done
+    reasoning_hint: high
+    objective: "旧feature-expansionの途中成果、現在のブランチ、旧GoalBuddyを棚卸しし、新しいvoice-personalization看板へ安全に切り替える。"
+    allowed_files:
+      - "docs/goals/talking-pets-voice-personalization/**"
+      - "docs/goals/talking-pets-feature-expansion/**"
+    constraints:
+      - "旧GoalBuddy履歴を上書きしない。"
+      - "旧ブランチを削除しない。"
+      - "resetや削除などの破壊操作をしない。"
+    expected_output:
+      - "新GoalBuddy board"
+      - "旧成果の分類"
+      - "次のactive task"
+      - "GoalBuddy board URL"
+    receipt:
+      result: done
+      decision: goal_switch_complete
+      full_outcome_complete: true
+      summary: "T004 latency成果はcheckpoint commitとして保存し、新GoalBuddyを作成した。旧HQと旧feature-expansion看板は履歴として保持し、次は保存済みlatency成果を新ゴールへ取り込む。"
+      note: "notes/T001-worktree-goal-switch-audit.md"
+      changed_files:
+        - "docs/goals/talking-pets-voice-personalization/goal.md"
+        - "docs/goals/talking-pets-voice-personalization/state.yaml"
+        - "docs/goals/talking-pets-voice-personalization/agent-roster.md"
+        - "docs/goals/talking-pets-voice-personalization/activity-log.md"
+        - "docs/goals/talking-pets-voice-personalization/notes/T001-worktree-goal-switch-audit.md"
+      commands:
+        - cmd: "ruby -e 'require \"yaml\"; YAML.load_file(\"docs/goals/talking-pets-voice-personalization/state.yaml\"); puts \"yaml: ok\"'"
+          status: pass
+        - cmd: "npm run check:docs"
+          status: pass
+        - cmd: "npx goalbuddy board docs/goals/talking-pets-voice-personalization"
+          status: pass
+
+  - id: T002
+    type: worker
+    assignee: Worker
+    owner_role: "速水 光莉"
+    status: active
+    reasoning_hint: default
+    objective: "保存済みT004 latency benchmark outputを新ゴールへ取り込み、Markdown/CSV/JSON出力とdevice info/first-audio境界をmainへ入れる小PRにする。"
+    depends_on:
+      - T001
+    constraints:
+      - "実音声、model download、外部API callはしない。"
+      - "1端末の数字を性能保証として書かない。"
+    expected_output:
+      - "latency benchmark output PR"
+      - "docs/performance.md更新"
+      - "test追加"
+    receipt:
+      result: active
+      decision: reuse_latency_checkpoint
+      full_outcome_complete: false
+      summary: "次はcheckpoint commit `fc131f1` のlatency benchmark output改善を、新ゴールの最初の機能PRとしてmainへ取り込む。"
+      note: "notes/T002-latency-benchmark-output.md"
+      commands: []
+
+  - id: T003
+    type: worker
+    assignee: Worker
+    owner_role: "歌澄 音羽 / 言守 詞葉"
+    status: queued
+    reasoning_hint: default
+    objective: "local TTS providerと言語対応を、provider registry、preferences、routing diagnostics、READMEに接続する次の小PRを設計・実装する。"
+    depends_on:
+      - T001
+    constraints:
+      - "新規providerは証拠なしにsupportedとclaimしない。"
+      - "model downloadが必要な場合はdry-runまたはdocsから始める。"
+
+  - id: T004
+    type: scout
+    assignee: Scout
+    owner_role: "白瀬 怜奈"
+    status: queued
+    reasoning_hint: high
+    objective: "Voice系LLM/API providerのopt-in境界を調査し、OpenAI-compatible local API、remote API、secret/privacy/billingの設計候補を比較する。"
+    depends_on:
+      - T001
+    constraints:
+      - "paid API callやAPI key作成はしない。"
+      - "secretを保存しない。"
+
+  - id: T005
+    type: worker
+    assignee: Worker
+    owner_role: "月城 奏"
+    status: queued
+    reasoning_hint: default
+    objective: "installer高度化として、update、uninstall、external runtime download/install、config保持、cache削除選択、rollbackのdocsまたはdry-runを整備する。"
+    depends_on:
+      - T001
+    constraints:
+      - "削除やuninstallを実行しない。"
+      - "既存config/cacheを確認なしに変更しない。"
+
+  - id: T006
+    type: scout
+    assignee: Scout
+    owner_role: "星乃 玲"
+    status: queued
+    reasoning_hint: default
+    objective: "機能アップデートとして見えるREADME/SNS導線を整理し、協力者がlatency/provider/language報告を出しやすい形にする。"
+    depends_on:
+      - T002
+      - T003
+    constraints:
+      - "未検証の性能claimをしない。"
+      - "outreach送信はMasterの手動判断に残す。"
