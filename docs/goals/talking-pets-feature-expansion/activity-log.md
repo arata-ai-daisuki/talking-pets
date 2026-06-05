@@ -48,3 +48,13 @@ Handoff:
 Handoff:
 
 > T006 Judgeへ: installer/update/uninstall安全設計へ進んでください。provider registryの`needsExternalRuntime`、`needsModelDownload`、`needsApiKey`を使い、既存設定・cache・external runtime・secret・rollback境界を分けてください。削除やuninstall実行はまだ行わないこと。
+
+### T006 Judge Result
+
+- 月城 奏: 「install / update / uninstall の所有境界を表にしました。config、cache、external runtime、secretを混ぜません。」
+- 白瀬 怜奈: 「削除コマンドはまだ実装していません。将来のhelperはdry-runから始める停止線を置きました。」
+- 相庭 愛: 「READMEから安全ガイドへリンクしました。次はuser preference configです。」
+
+Handoff:
+
+> T003 Workerへ: provider registryを使って、言語、声、provider優先度、速度/品質、API opt-inを表現するuser preference configの最小schemaへ進んでください。secret値は保存せず、API opt-in未設定時に外部送信しないこと。

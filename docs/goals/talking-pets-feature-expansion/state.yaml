@@ -58,7 +58,7 @@ agent_visibility:
   activity_log: "docs/goals/talking-pets-feature-expansion/activity-log.md"
   rule: "各タスクのreceiptに担当agentコメントとhandoff summaryを残す。"
 
-active_task: T006
+active_task: T003
 
 tasks:
   - id: T001
@@ -156,7 +156,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "相庭 愛 / 歌澄 音羽"
-    status: pending
+    status: active
     reasoning_hint: default
     objective: "user preference configの最小schemaを追加し、language、voice/provider優先度、speed/quality preference、API opt-inをdry-runで反映できるようにする。"
     depends_on:
@@ -165,6 +165,13 @@ tasks:
     constraints:
       - "secret値は保存しない。"
       - "API opt-inは未設定時に絶対に外部送信しない。"
+    receipt:
+      result: active
+      decision: user_preference_config
+      full_outcome_complete: false
+      summary: "T002 provider registryとT006 installer安全境界を受けて、次はuser preference configの最小schemaへ進む。言語、声、provider優先度、速度/品質、API opt-inをdry-runで見えるようにする。"
+      note: "notes/T003-user-preference-config.md"
+      commands: []
 
   - id: T004
     type: worker
@@ -194,7 +201,7 @@ tasks:
     type: judge
     assignee: Judge
     owner_role: "月城 奏 / 白瀬 怜奈"
-    status: active
+    status: done
     reasoning_hint: high
     objective: "installer高度化、update、uninstall対応の最小安全導線を設計する。既存設定保持、cache削除選択、provider別external runtime、rollback、dry-run/confirmation境界を整理する。"
     depends_on:
@@ -204,9 +211,25 @@ tasks:
       - "既存設定を確認なしに上書きまたは削除しない。"
       - "external runtime、model cache、API secretはproviderごとの所有境界を明記する。"
     receipt:
-      result: active
+      result: done
       decision: installer_update_uninstall_safety
-      full_outcome_complete: false
-      summary: "T002のprovider capability registryを受けて、次はinstaller/update/uninstallの安全設計を行う。導入ファイル、既存設定、model cache、external runtime、API secret、rollback境界を壊さない形で整理する。"
+      full_outcome_complete: true
+      summary: "install/update/uninstallの所有境界を`docs/install-update-uninstall.md`へ整理し、README/README.enからリンクした。既存設定、node_modules、Kokoro cache、Codex state、external runtime、API secret、generated evidenceを分け、将来のhelperはdry-runから始める停止線を明記した。"
       note: "notes/T006-installer-update-uninstall-safety.md"
-      commands: []
+      changed_files:
+        - "docs/install-update-uninstall.md"
+        - "README.md"
+        - "README.en.md"
+        - "package.json"
+        - "scripts/check-npm-pack.mjs"
+        - "docs/goals/talking-pets-feature-expansion/notes/T006-installer-update-uninstall-safety.md"
+        - "docs/goals/talking-pets-feature-expansion/notes/T003-user-preference-config.md"
+        - "docs/goals/talking-pets-feature-expansion/activity-log.md"
+        - "docs/goals/talking-pets-feature-expansion/state.yaml"
+      commands:
+        - cmd: "npm run check:docs"
+          status: pass
+        - cmd: "npm run check:installers"
+          status: pass
+        - cmd: "npm run check:all"
+          status: pass

@@ -296,7 +296,7 @@ monitorの診断では、絶対パスは既定で `<redacted path>` として表
 - Stop: 起動中のターミナルで `Ctrl-C` を押します。
 - Restart: もう一度 `./start-selected-tts.command` を実行します。
 - Change config: `./install.command` を再実行して `.talking-pets.local.env` を作り直します。
-- Uninstall local config: `.talking-pets.local.env` を削除します。`node_modules/` も不要なら削除できます。
+- Update / uninstall: 既存設定、`node_modules/`、Kokoro cache、外部runtimeの扱いは [Install / Update / Uninstall Safety](docs/install-update-uninstall.md) を確認してください。
 
 ## 実機検証メモ
 
