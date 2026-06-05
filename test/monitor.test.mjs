@@ -15,9 +15,11 @@ import {
   readLatestSpeechCandidate,
   redactPrivatePaths as monitorRedactPrivatePaths,
   resolvedTTSEngine,
+  routingDiagnostic,
   speechCandidate,
   textForSource,
 } from "../scripts/pet-rollout-monitor.mjs";
+import { providerCapability, providerLanguageSupport } from "../src/provider-capabilities.js";
 import { checkAudioPath } from "../scripts/check-audio-path.mjs";
 import { windowsPowerShellCommand } from "../scripts/audio-platform.mjs";
 import { displayPrivatePath, fixturePaths, redactPrivatePaths } from "../scripts/check-codex-compat.mjs";
@@ -117,6 +119,28 @@ test("detects priority languages and routes local TTS", () => {
   assert.equal(resolvedTTSEngine("日本語の確認です", options), "voicevox");
   assert.equal(resolvedTTSEngine("English check ready", options), "kokoro");
   assert.equal(resolvedTTSEngine("中文语音确认", options), "say");
+});
+
+test("exposes provider capabilities without overclaiming language support", () => {
+  assert.equal(providerCapability("voicevox").needsExternalRuntime, true);
+  assert.equal(providerLanguageSupport("voicevox", "ja").level, "provider-specific");
+  assert.equal(providerCapability("kokoro").needsModelDownload, true);
+  assert.equal(providerLanguageSupport("kokoro", "en").level, "provider-specific");
+  assert.equal(providerCapability("voice-api").needsApiKey, true);
+  assert.equal(providerCapability("sherpa-onnx-node").status, "design-only");
+
+  assert.equal(providerLanguageSupport("say", "ko").level, "fallback-only");
+  assert.equal(providerLanguageSupport("say", "zh").level, "fallback-only");
+  assert.equal(providerLanguageSupport("voicevox", "ko").level, "unknown");
+});
+
+test("routing diagnostics include provider capability boundaries", () => {
+  const diagnostic = routingDiagnostic("한국어 확인", "새 메시지가 있습니다.", parseOptions(["--tts", "auto", "--diagnose-routing"]));
+  assert.equal(diagnostic.chosenEngine, "say");
+  assert.equal(diagnostic.capability.provider, "say");
+  assert.equal(diagnostic.capability.languageSupport.level, "fallback-only");
+  assert.match(diagnostic.capability.languageSupport.claimBoundary, /Korean uses OS speech fallback/);
+  assert.equal(diagnostic.capability.needsApiKey, false);
 });
 
 test("rejects invalid monitor CLI option values", () => {

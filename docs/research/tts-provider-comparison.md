@@ -59,6 +59,24 @@ Current provider claims should stay at L1-L2 unless contributor evidence arrives
 | P2 | sherpa-onnx-node | Future local ONNX provider | L0 design-only | Cross-platform package looks promising from design notes | Needs dependency, model, vocoder, tokens, espeak data, and license confirmation | Stay design-only until Master approves dependency/model experiment |
 | P2 | API TTS | Optional cloud or remote fallback | L0 design-only | Can be fast and high quality on good networks | Privacy, cost, API key management, and local-first positioning | Keep opt-in only; do not implement by default; see `docs/research/api-tts-design-note.md` |
 
+## Capability Registry
+
+Talking Pets now keeps provider support boundaries in code, not only in prose.
+
+Check the current registry with:
+
+```bash
+node scripts/pet-rollout-monitor.mjs --list-provider-capabilities
+```
+
+Routing diagnostics also include the selected provider capability:
+
+```bash
+node scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --rollout test/fixtures/ko-zh-rollout.jsonl
+```
+
+Important reading rule: `provider-specific` means the route has provider-level evidence for that language. `fallback-only` means Talking Pets can pass text to OS speech fallback, but does not claim a dedicated TTS provider for that language. `unknown` means do not make public support claims yet.
+
 ## Measurement Text
 
 Use short, boring sentences so provider comparisons are less about prompt content and more about runtime behavior.
@@ -673,6 +691,66 @@ No install, dependency change, model download, API call, generated audio, README
 Checked: 2026-06-05.
 
 The T258 recheck keeps the same boundary after outreach wait-state maintenance:
+
+- VOICEVOX / Voicebox-compatible endpoint: still evidence-first. Keep issue #26 and sanitized contributor latency/audibility reports as the proof path before broadening public wording.
+- Irodori-TTS Server: still evidence-first. Keep issue #25 and contributor CPU/GPU/backend reports as the proof path, because maintainer measurements are reference data only.
+- Kokoro.js: helper remains available, but cold-start/cache measurement still needs explicit model-download approval.
+- sherpa-onnx-node: still design-only. Do not treat prior package research or npm-install-only checks as approval for dependency changes, optional dependency changes, model/vocoder/token/espeak downloads, helper code, or generated audio.
+- MeloTTS: still design-only / external-runtime. Health-only detect/connect remains the limit; no Python/Docker/model/unidic setup, synthesis, or Korean/Chinese support wording.
+- API TTS: still later opt-in. No API key creation, remote endpoint call, paid call, default route, or support claim change.
+
+No install, dependency change, optional dependency change, model download, API call, generated audio, README support claim change, latency guarantee claim, platform support claim, or default routing change was made in this watch.
+
+### Local TTS Boundary Watch Result 10
+
+Checked: 2026-06-05.
+
+The T261 recheck keeps the same boundary after the outreach waiting lane returned control to local TTS:
+
+- VOICEVOX / Voicebox-compatible endpoint: still evidence-first. Keep issue #26 and sanitized contributor latency/audibility reports as the proof path before broadening public wording.
+- Irodori-TTS Server: still evidence-first. Keep issue #25 and contributor CPU/GPU/backend reports as the proof path, because maintainer measurements are reference data only.
+- Kokoro.js: helper remains available, but cold-start/cache measurement still needs explicit model-download approval.
+- sherpa-onnx-node: still design-only. Do not treat prior package research or npm-install-only checks as approval for dependency changes, optional dependency changes, model/vocoder/token/espeak downloads, helper code, or generated audio.
+- MeloTTS: still design-only / external-runtime. Health-only detect/connect remains the limit; no Python/Docker/model/unidic setup, synthesis, or Korean/Chinese support wording.
+- API TTS: still later opt-in. No API key creation, remote endpoint call, paid call, default route, or support claim change.
+
+No install, dependency change, optional dependency change, model download, API call, generated audio, README support claim change, latency guarantee claim, platform support claim, or default routing change was made in this watch.
+
+### Local TTS Boundary Watch Result 11
+
+Checked: 2026-06-05.
+
+The T264 recheck keeps the same boundary after the outreach waiting lane returned control to local TTS:
+
+- VOICEVOX / Voicebox-compatible endpoint: still evidence-first. Keep issue #26 and sanitized contributor latency/audibility reports as the proof path before broadening public wording.
+- Irodori-TTS Server: still evidence-first. Keep issue #25 and contributor CPU/GPU/backend reports as the proof path, because maintainer measurements are reference data only.
+- Kokoro.js: helper remains available, but cold-start/cache measurement still needs explicit model-download approval.
+- sherpa-onnx-node: still design-only. Do not treat prior package research or npm-install-only checks as approval for dependency changes, optional dependency changes, model/vocoder/token/espeak downloads, helper code, or generated audio.
+- MeloTTS: still design-only / external-runtime. Health-only detect/connect remains the limit; no Python/Docker/model/unidic setup, synthesis, or Korean/Chinese support wording.
+- API TTS: still later opt-in. No API key creation, remote endpoint call, paid call, default route, or support claim change.
+
+No install, dependency change, optional dependency change, model download, API call, generated audio, README support claim change, latency guarantee claim, platform support claim, or default routing change was made in this watch.
+
+### Local TTS Boundary Watch Result 12
+
+Checked: 2026-06-05.
+
+The T267 recheck keeps the same boundary after the outreach waiting lane returned control to local TTS:
+
+- VOICEVOX / Voicebox-compatible endpoint: still evidence-first. Keep issue #26 and sanitized contributor latency/audibility reports as the proof path before broadening public wording.
+- Irodori-TTS Server: still evidence-first. Keep issue #25 and contributor CPU/GPU/backend reports as the proof path, because maintainer measurements are reference data only.
+- Kokoro.js: helper remains available, but cold-start/cache measurement still needs explicit model-download approval.
+- sherpa-onnx-node: still design-only. Do not treat prior package research or npm-install-only checks as approval for dependency changes, optional dependency changes, model/vocoder/token/espeak downloads, helper code, or generated audio.
+- MeloTTS: still design-only / external-runtime. Health-only detect/connect remains the limit; no Python/Docker/model/unidic setup, synthesis, or Korean/Chinese support wording.
+- API TTS: still later opt-in. No API key creation, remote endpoint call, paid call, default route, or support claim change.
+
+No install, dependency change, optional dependency change, model download, API call, generated audio, README support claim change, latency guarantee claim, platform support claim, or default routing change was made in this watch.
+
+### Local TTS Boundary Watch Result 13
+
+Checked: 2026-06-05.
+
+The T270 recheck keeps the same boundary after the outreach waiting lane returned control to local TTS:
 
 - VOICEVOX / Voicebox-compatible endpoint: still evidence-first. Keep issue #26 and sanitized contributor latency/audibility reports as the proof path before broadening public wording.
 - Irodori-TTS Server: still evidence-first. Keep issue #25 and contributor CPU/GPU/backend reports as the proof path, because maintainer measurements are reference data only.

@@ -1,0 +1,212 @@
+version: 2
+
+goal:
+  title: "Talking Pets 機能拡張"
+  slug: "talking-pets-feature-expansion"
+  kind: existing_plan
+  tranche: "機能開発: ローカルTTS、対応言語、Voice/API provider、ユーザー好み反映、性能改善、installer/update/uninstallを進める。"
+  status: active
+  oracle:
+    signal: "CLI/docs/README上で、対応provider・対応言語・ユーザー設定・fallback理由・latency結果・install/update/uninstall境界が確認できる。"
+    cadence: "各実装PR、provider追加、設定schema変更、benchmark改善、installer/update/uninstall改善ごと"
+    final_proof: "機能拡張の最初の実装波がmergeされ、Masterが機能アップデートとして公開可能と判断する。"
+  intake:
+    original_request: "対応するローカルTTS、言語を増やす、Voice系LLM API対応などユーザーの好みを反映できる機能を開発するゴール設定に切り替えよう。"
+    interpreted_outcome: "運用中心HQから、機能追加と性能向上中心のGoalBuddyゴールへ切り替える。"
+    input_shape: existing_plan
+    audience: "Talking Pets users / contributors / ARATA"
+    authority: requested
+    proof_type: test
+    completion_proof: "provider capability registry、user preference config、diagnostics、latency benchmark、API opt-in境界、install/update/uninstall導線が実装または実装PR計画として確認できる。"
+    likely_misfire: "providerや言語対応を増やしたように見せるため、実機証拠やsecret/privacy境界なしにsupport claimを強める。"
+    blind_spots_considered:
+      - "model downloadや外部APIが勝手に走るリスク"
+      - "API keyやsecretをログやdocsへ漏らすリスク"
+      - "fallback-only言語をdedicated provider supportと誤表現するリスク"
+      - "provider追加が設定UXやdiagnosticsへ反映されないリスク"
+      - "update/uninstallで既存設定やcacheを確認なしに削除するリスク"
+
+rules:
+  pm_owns_state: true
+  one_active_task: true
+  max_write_workers: 1
+  no_implementation_without_worker_or_pm_task: true
+  no_completion_without_judge_or_pm_audit: true
+  planning_is_not_completion: true
+  queued_required_worker_blocks_completion: true
+  continuous_until_full_outcome: true
+  missing_input_or_credentials_do_not_stop_goal: true
+  preserve_and_validate_existing_plan: true
+  intake_misfire_must_be_audited: true
+  goal_pressure_requires_oracle: true
+  no_completion_on_weak_proof: true
+
+agents:
+  scout: installed
+  worker: installed
+  judge: installed
+
+visual_board:
+  selected: local
+  local:
+    status: planned
+    url: "http://goalbuddy.localhost:41737/talking-pets-feature-expansion/"
+    command: "npx goalbuddy board <repo>/docs/goals/talking-pets-feature-expansion"
+
+agent_visibility:
+  roster: "docs/goals/talking-pets-feature-expansion/agent-roster.md"
+  activity_log: "docs/goals/talking-pets-feature-expansion/activity-log.md"
+  rule: "各タスクのreceiptに担当agentコメントとhandoff summaryを残す。"
+
+active_task: T006
+
+tasks:
+  - id: T001
+    type: judge
+    assignee: Judge
+    owner_role: "相庭 愛 / 白瀬 怜奈"
+    status: done
+    reasoning_hint: high
+    objective: "機能拡張ゴールの最初の実装順序を決める。provider capability registry、user preference config、diagnostics、latency、API opt-in、installer/update/uninstallの依存関係を整理する。"
+    allowed_files:
+      - "docs/goals/talking-pets-feature-expansion/**"
+      - "docs/research/tts-provider-comparison.md"
+      - "docs/verification-status.md"
+      - "docs/real-device-verification.md"
+      - "docs/install*.md"
+      - "README.md"
+      - "README.en.md"
+      - "install.command"
+      - "install.sh"
+      - "install.ps1"
+      - "src/**"
+      - "scripts/**"
+      - "test/**"
+      - "package.json"
+    constraints:
+      - "まだ実装しない。"
+      - "依存追加、model download、API call、secret作成をしない。"
+      - "韓国語/中国語をdedicated provider supportとしてclaimしない。"
+    expected_output:
+      - "最初の小PR候補"
+      - "provider capability registryの置き場所"
+      - "user preference configの最小schema"
+      - "diagnostics/latency/API opt-inの実装順序"
+      - "installer/update/uninstallの最小安全導線"
+      - "stop line"
+    receipt:
+      result: done
+      decision: feature_expansion_sequence
+      full_outcome_complete: true
+      summary: "最初の小PRはprovider capability registryに決めた。理由は、provider/language/user preference/diagnostics/latency/installer責任境界の土台になるため。直後にinstaller/update/uninstall安全設計をT006として扱う。依存追加、model download、API call、secret保存、support claim変更はしない。"
+      note: "notes/T001-feature-expansion-sequence.md"
+      changed_files:
+        - "docs/goals/talking-pets-feature-expansion/goal.md"
+        - "docs/goals/talking-pets-feature-expansion/state.yaml"
+        - "docs/goals/talking-pets-feature-expansion/agent-roster.md"
+        - "docs/goals/talking-pets-feature-expansion/activity-log.md"
+        - "docs/goals/talking-pets-feature-expansion/notes/T001-feature-expansion-sequence.md"
+      commands:
+        - cmd: "rg -n \"provider capability registry|installer|update|uninstall|T002|T006|model download|API call|support claim|agent comments\" docs/goals/talking-pets-feature-expansion/goal.md docs/goals/talking-pets-feature-expansion/state.yaml docs/goals/talking-pets-feature-expansion/activity-log.md docs/goals/talking-pets-feature-expansion/agent-roster.md docs/goals/talking-pets-feature-expansion/notes/T001-feature-expansion-sequence.md"
+          status: pass
+        - cmd: "ruby -e 'require \"yaml\"; YAML.load_file(\"docs/goals/talking-pets-feature-expansion/state.yaml\"); puts \"yaml: ok\"'"
+          status: pass
+        - cmd: "npm run check:docs"
+          status: pass
+
+  - id: T002
+    type: worker
+    assignee: Worker
+    owner_role: "歌澄 音羽 / 言守 詞葉"
+    status: done
+    reasoning_hint: default
+    objective: "provider capability registryの最小実装を追加し、providerごとの対応言語、download/API要否、fallback可否、statusをCLI/dry-runから参照できるようにする。"
+    depends_on:
+      - T001
+    constraints:
+      - "新しいprovider依存は追加しない。"
+      - "support claimではなくcapability metadataとして表現する。"
+      - "model download、API call、secret保存をしない。"
+      - "Korean / Chineseをdedicated provider supportとしてclaimしない。"
+    receipt:
+      result: done
+      decision: provider_capability_registry
+      full_outcome_complete: true
+      summary: "provider capability registryを`src/provider-capabilities.js`に追加し、`--list-provider-capabilities`と`--diagnose-routing`からprovider/language/status/download/API/runtime境界を見えるようにした。韓国語/中国語はfallback-onlyまたはunknownとして扱い、dedicated provider supportとしてclaimしない。"
+      note: "notes/T002-provider-capability-registry.md"
+      changed_files:
+        - "src/provider-capabilities.js"
+        - "scripts/pet-rollout-monitor.mjs"
+        - "test/monitor.test.mjs"
+        - "package.json"
+        - "scripts/check-npm-pack.mjs"
+        - "docs/research/tts-provider-comparison.md"
+        - "docs/goals/talking-pets-feature-expansion/notes/T002-provider-capability-registry.md"
+        - "docs/goals/talking-pets-feature-expansion/activity-log.md"
+        - "docs/goals/talking-pets-feature-expansion/state.yaml"
+      commands:
+        - cmd: "node scripts/pet-rollout-monitor.mjs --list-provider-capabilities"
+          status: pass
+        - cmd: "node scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --rollout test/fixtures/ko-zh-rollout.jsonl"
+          status: pass
+        - cmd: "npm run check:all"
+          status: pass
+
+  - id: T003
+    type: worker
+    assignee: Worker
+    owner_role: "相庭 愛 / 歌澄 音羽"
+    status: pending
+    reasoning_hint: default
+    objective: "user preference configの最小schemaを追加し、language、voice/provider優先度、speed/quality preference、API opt-inをdry-runで反映できるようにする。"
+    depends_on:
+      - T001
+      - T002
+    constraints:
+      - "secret値は保存しない。"
+      - "API opt-inは未設定時に絶対に外部送信しない。"
+
+  - id: T004
+    type: worker
+    assignee: Worker
+    owner_role: "速水 光莉"
+    status: pending
+    reasoning_hint: default
+    objective: "latency benchmark出力を機能アップデートとして見せられる形に改善する。first audio、total、RTF、device infoを表とCSVで扱う。"
+    depends_on:
+      - T001
+    constraints:
+      - "1端末の数字を性能保証として書かない。"
+
+  - id: T005
+    type: scout
+    assignee: Scout
+    owner_role: "白瀬 怜奈"
+    status: pending
+    reasoning_hint: high
+    objective: "Voice系LLM/API providerのopt-in境界を調査し、OpenAI-compatible local API、remote API、secret/privacy/billingの設計候補を比較する。"
+    depends_on:
+      - T001
+    constraints:
+      - "API key作成、paid call、外部endpoint送信はしない。"
+
+  - id: T006
+    type: judge
+    assignee: Judge
+    owner_role: "月城 奏 / 白瀬 怜奈"
+    status: active
+    reasoning_hint: high
+    objective: "installer高度化、update、uninstall対応の最小安全導線を設計する。既存設定保持、cache削除選択、provider別external runtime、rollback、dry-run/confirmation境界を整理する。"
+    depends_on:
+      - T001
+    constraints:
+      - "このカードではファイル削除、uninstall実行、cache削除をしない。"
+      - "既存設定を確認なしに上書きまたは削除しない。"
+      - "external runtime、model cache、API secretはproviderごとの所有境界を明記する。"
+    receipt:
+      result: active
+      decision: installer_update_uninstall_safety
+      full_outcome_complete: false
+      summary: "T002のprovider capability registryを受けて、次はinstaller/update/uninstallの安全設計を行う。導入ファイル、既存設定、model cache、external runtime、API secret、rollback境界を壊さない形で整理する。"
+      note: "notes/T006-installer-update-uninstall-safety.md"
+      commands: []

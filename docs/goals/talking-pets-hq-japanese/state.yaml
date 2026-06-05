@@ -52,7 +52,7 @@ visual_board:
     url: "http://goalbuddy.localhost:41737/talking-pets-hq-japanese/"
     command: "npx goalbuddy board <repo>/docs/goals/talking-pets-hq-japanese"
 
-active_task: T261
+active_task: T271
 
 tasks:
   - id: T001
@@ -8817,7 +8817,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "歌澄 音羽 / 白瀬 怜奈"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "T260のoutreach waiting lane boundary watch後に、local TTS設計の境界へ戻る。"
     allowed_files:
@@ -8833,13 +8833,426 @@ tasks:
       - "model download、API call、生成音声をしない。"
       - "README support claim、latency保証claim、platform support claim、default routingを強めない。"
     receipt:
-      result: active
+      result: done
       decision: local_tts_boundary_watch
-      full_outcome_complete: false
-      summary: "次はlocal TTS境界を、install、dependency change、model download、API call、生成音声、README support claim変更なしで再確認する。"
+      full_outcome_complete: true
+      summary: "Local TTS Boundary Watch Result 10を追加し、VOICEVOX / Irodoriはevidence-first、Kokoroはmodel-download approval-gated、sherpa / MeloTTS / APIはdesign-onlyまたはopt-inの境界を維持した。install、dependency change、optional dependency change、sherpa-onnx-node install、MeloTTS Python/Docker/model/unidic setup、model download、API call、生成音声、README support claim、latency保証claim、platform support claim、default routing変更はしていない。"
       note: "notes/T261-local-tts-boundary-watch.md"
       changed_files:
+        - "docs/research/tts-provider-comparison.md"
         - "docs/goals/talking-pets-hq-japanese/notes/T261-local-tts-boundary-watch.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T262-multilingual-verification-boundary-watch.md"
+        - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+        - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n \"Local TTS Boundary Watch Result 10|active_task: T262|T262|multilingual_verification_boundary_watch|VOICEVOX / Irodori|evidence-first|sherpa-onnx-node|MeloTTS|model download|API call|support claim|default routing|fallback-to-provider wording|Dedicated Provider Evidence Checklist\" docs/research/tts-provider-comparison.md docs/goals/talking-pets-hq-japanese/notes/T261-local-tts-boundary-watch.md docs/goals/talking-pets-hq-japanese/notes/T262-multilingual-verification-boundary-watch.md docs/goals/talking-pets-hq-japanese/activity-index.md docs/goals/talking-pets-hq-japanese/hq-backlog-board.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+        - cmd: "ruby -e 'require \"yaml\"; YAML.load_file(\"docs/goals/talking-pets-hq-japanese/state.yaml\"); puts \"yaml: ok\"'"
+          status: pass
+        - cmd: "npm run check:docs"
+          status: pass
+
+  - id: T262
+    type: worker
+    assignee: Worker
+    owner_role: "言守 詞葉 / 白瀬 怜奈"
+    status: done
+    reasoning_hint: default
+    objective: "T261のlocal TTS boundary watch後に、多言語検証の境界へ戻る。"
+    allowed_files:
+      - "docs/verification-status.md"
+      - "docs/real-device-verification.md"
+      - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+      - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "Korean / ChineseをOS speech fallback-onlyからprovider-specific supportへ上げない。"
+      - "README support claim、fallback-to-provider wording、default routingを強めない。"
+      - "GitHub issue API refreshを使わない場合、新しいpublic issue stateやtimestampをclaimしない。"
+      - "model download、API call、外部TTS endpoint送信をしない。"
+      - "生成音声、private log/contact、DM全文/private threadを保存しない。"
+    receipt:
+      result: done
+      decision: multilingual_verification_boundary_watch
+      full_outcome_complete: true
+      summary: "Multilingual Verification Boundary Watch Result 11を追加し、Korean / ChineseはOS speech fallback-only、Minimal Multilingual Report FormとDedicated Provider Evidence Checklistはprovider-specific claimのgateとして維持した。GitHub issue API refresh、dedicated-provider support claim、README support claim、fallback-to-provider wording変更、生成音声、private log/contact保存、model download、API call、外部TTS endpoint送信はしていない。"
+      note: "notes/T262-multilingual-verification-boundary-watch.md"
+      changed_files:
+        - "docs/verification-status.md"
+        - "docs/real-device-verification.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T262-multilingual-verification-boundary-watch.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T263-outreach-waiting-lane-boundary-watch.md"
+        - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+        - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n \"Multilingual Verification Boundary Watch Result 11|active_task: T263|T263|outreach_waiting_lane_boundary_watch|OS speech fallback-only|Dedicated Provider Evidence Checklist|Minimal Multilingual Report Form|GitHub issue API refresh was not used|external TTS endpoint|README support claim|fallback-to-provider wording|model download|API call|2026-06-17|Star ask\" docs/verification-status.md docs/real-device-verification.md docs/goals/talking-pets-hq-japanese/notes/T262-multilingual-verification-boundary-watch.md docs/goals/talking-pets-hq-japanese/notes/T263-outreach-waiting-lane-boundary-watch.md docs/goals/talking-pets-hq-japanese/activity-index.md docs/goals/talking-pets-hq-japanese/hq-backlog-board.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+        - cmd: "ruby -e 'require \"yaml\"; YAML.load_file(\"docs/goals/talking-pets-hq-japanese/state.yaml\"); puts \"yaml: ok\"'"
+          status: pass
+        - cmd: "npm run check:docs"
+          status: pass
+
+  - id: T263
+    type: worker
+    assignee: Worker
+    owner_role: "星宮 未来 / 白瀬 怜奈"
+    status: done
+    reasoning_hint: default
+    objective: "T262のmultilingual verification boundary watch後に、outreach送信準備 / 返信待ちlaneへ戻る。"
+    allowed_files:
+      - "docs/research/x-outreach-targets.md"
+      - "docs/research/sns-outreach-strategy.md"
+      - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+      - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "自動投稿、自動DM、自動reply、自動mention、follow、likeをしない。"
+      - "2026-06-17前にV1GPT / OpenClawへ催促しない。"
+      - "private contact、DM全文、private thread、private logを保存しない。"
+      - "README/SNS support claimを強めない。"
+      - "Star askを強くしない。"
+    receipt:
+      result: done
+      decision: outreach_waiting_lane_boundary_watch
+      full_outcome_complete: true
+      summary: "Boundary watch 11を追加し、V1GPT / OpenClawはlocal HQ docs上ではwaitingのまま、public reply URLまたはMaster承認済みsanitized summary未記録として扱った。2026-06-17前の催促、再送、自動DM/reply/mention/follow/like、private contact保存、DM全文/private thread保存、README/SNS support claim変更、Star askはしていない。"
+      note: "notes/T263-outreach-waiting-lane-boundary-watch.md"
+      changed_files:
+        - "docs/research/x-outreach-targets.md"
+        - "docs/research/sns-outreach-strategy.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T263-outreach-waiting-lane-boundary-watch.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T264-local-tts-boundary-watch.md"
+        - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+        - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n \"Boundary watch 11|active_task: T264|T264|local_tts_boundary_watch|V1GPT|OpenClaw|2026-06-17|Star ask|自動投稿|DM|mention|private contact|support claim|sherpa-onnx-node|MeloTTS|model download|API call|default routing\" docs/research/x-outreach-targets.md docs/research/sns-outreach-strategy.md docs/goals/talking-pets-hq-japanese/notes/T263-outreach-waiting-lane-boundary-watch.md docs/goals/talking-pets-hq-japanese/notes/T264-local-tts-boundary-watch.md docs/goals/talking-pets-hq-japanese/activity-index.md docs/goals/talking-pets-hq-japanese/hq-backlog-board.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+        - cmd: "ruby -e 'require \"yaml\"; YAML.load_file(\"docs/goals/talking-pets-hq-japanese/state.yaml\"); puts \"yaml: ok\"'"
+          status: pass
+        - cmd: "npm run check:docs"
+          status: pass
+
+  - id: T264
+    type: worker
+    assignee: Worker
+    owner_role: "歌澄 音羽 / 白瀬 怜奈"
+    status: done
+    reasoning_hint: default
+    objective: "T263のoutreach waiting lane boundary watch後に、local TTS設計の境界へ戻る。"
+    allowed_files:
+      - "docs/research/tts-provider-comparison.md"
+      - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+      - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "install、dependency change、optional dependency changeをしない。"
+      - "`sherpa-onnx-node`をinstallしない。"
+      - "MeloTTSのPython/Docker/model/unidic setupをしない。"
+      - "model download、API call、生成音声をしない。"
+      - "README support claim、latency保証claim、platform support claim、default routingを強めない。"
+    receipt:
+      result: done
+      decision: local_tts_boundary_watch
+      full_outcome_complete: true
+      summary: "Local TTS Boundary Watch Result 11を追加し、VOICEVOX / Irodoriはevidence-first、Kokoroはmodel-download approval-gated、sherpa / MeloTTS / APIはdesign-onlyまたはopt-inの境界を維持した。install、dependency change、optional dependency change、sherpa-onnx-node install、MeloTTS Python/Docker/model/unidic setup、model download、API call、生成音声、README support claim、latency保証claim、platform support claim、default routing変更はしていない。"
+      note: "notes/T264-local-tts-boundary-watch.md"
+      changed_files:
+        - "docs/research/tts-provider-comparison.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T264-local-tts-boundary-watch.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T265-multilingual-verification-boundary-watch.md"
+        - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+        - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n \"Local TTS Boundary Watch Result 11|active_task: T265|T265|multilingual_verification_boundary_watch|VOICEVOX / Irodori|evidence-first|sherpa-onnx-node|MeloTTS|model download|API call|support claim|default routing|fallback-to-provider wording|Dedicated Provider Evidence Checklist\" docs/research/tts-provider-comparison.md docs/goals/talking-pets-hq-japanese/notes/T264-local-tts-boundary-watch.md docs/goals/talking-pets-hq-japanese/notes/T265-multilingual-verification-boundary-watch.md docs/goals/talking-pets-hq-japanese/activity-index.md docs/goals/talking-pets-hq-japanese/hq-backlog-board.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+        - cmd: "ruby -e 'require \"yaml\"; YAML.load_file(\"docs/goals/talking-pets-hq-japanese/state.yaml\"); puts \"yaml: ok\"'"
+          status: pass
+        - cmd: "npm run check:docs"
+          status: pass
+
+  - id: T265
+    type: worker
+    assignee: Worker
+    owner_role: "言守 詞葉 / 白瀬 怜奈"
+    status: done
+    reasoning_hint: default
+    objective: "T264のlocal TTS boundary watch後に、多言語検証の境界へ戻る。"
+    allowed_files:
+      - "docs/verification-status.md"
+      - "docs/real-device-verification.md"
+      - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+      - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "Korean / ChineseをOS speech fallback-onlyからprovider-specific supportへ上げない。"
+      - "README support claim、fallback-to-provider wording、default routingを強めない。"
+      - "GitHub issue API refreshを使わない場合、新しいpublic issue stateやtimestampをclaimしない。"
+      - "model download、API call、外部TTS endpoint送信をしない。"
+      - "生成音声、private log/contact、DM全文/private threadを保存しない。"
+    receipt:
+      result: done
+      decision: multilingual_verification_boundary_watch
+      full_outcome_complete: true
+      summary: "Multilingual Verification Boundary Watch Result 12を追加し、Korean / ChineseはOS speech fallback-only、Minimal Multilingual Report FormとDedicated Provider Evidence Checklistはprovider-specific claimのgateとして維持した。GitHub issue API refresh、dedicated-provider support claim、README support claim、fallback-to-provider wording変更、生成音声、private log/contact保存、model download、API call、外部TTS endpoint送信はしていない。"
+      note: "notes/T265-multilingual-verification-boundary-watch.md"
+      changed_files:
+        - "docs/verification-status.md"
+        - "docs/real-device-verification.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T265-multilingual-verification-boundary-watch.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T266-outreach-waiting-lane-boundary-watch.md"
+        - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+        - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n \"Multilingual Verification Boundary Watch Result 12|active_task: T266|T266|outreach_waiting_lane_boundary_watch|OS speech fallback-only|Dedicated Provider Evidence Checklist|Minimal Multilingual Report Form|GitHub issue API refresh was not used|external TTS endpoint|README support claim|fallback-to-provider wording|model download|API call|2026-06-17|Star ask\" docs/verification-status.md docs/real-device-verification.md docs/goals/talking-pets-hq-japanese/notes/T265-multilingual-verification-boundary-watch.md docs/goals/talking-pets-hq-japanese/notes/T266-outreach-waiting-lane-boundary-watch.md docs/goals/talking-pets-hq-japanese/activity-index.md docs/goals/talking-pets-hq-japanese/hq-backlog-board.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+        - cmd: "ruby -e 'require \"yaml\"; YAML.load_file(\"docs/goals/talking-pets-hq-japanese/state.yaml\"); puts \"yaml: ok\"'"
+          status: pass
+        - cmd: "npm run check:docs"
+          status: pass
+
+  - id: T266
+    type: worker
+    assignee: Worker
+    owner_role: "星宮 未来 / 白瀬 怜奈"
+    status: done
+    reasoning_hint: default
+    objective: "T265のmultilingual verification boundary watch後に、outreach送信準備 / 返信待ちlaneへ戻る。"
+    allowed_files:
+      - "docs/research/x-outreach-targets.md"
+      - "docs/research/sns-outreach-strategy.md"
+      - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+      - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "自動投稿、自動DM、自動reply、自動mention、follow、likeをしない。"
+      - "2026-06-17前にV1GPT / OpenClawへ催促しない。"
+      - "private contact、DM全文、private thread、private logを保存しない。"
+      - "README/SNS support claimを強めない。"
+      - "Star askを強くしない。"
+    receipt:
+      result: done
+      decision: outreach_waiting_lane_boundary_watch
+      full_outcome_complete: true
+      summary: "Boundary watch 12を追加し、V1GPT / OpenClawはlocal HQ docs上ではwaitingのまま、public reply URLまたはMaster承認済みsanitized summary未記録として扱った。2026-06-17前の催促、再送、自動DM/reply/mention/follow/like、private contact保存、DM全文/private thread保存、README/SNS support claim変更、Star askはしていない。"
+      note: "notes/T266-outreach-waiting-lane-boundary-watch.md"
+      changed_files:
+        - "docs/research/x-outreach-targets.md"
+        - "docs/research/sns-outreach-strategy.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T266-outreach-waiting-lane-boundary-watch.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T267-local-tts-boundary-watch.md"
+        - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+        - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n \"Boundary watch 12|active_task: T267|T267|local_tts_boundary_watch|V1GPT|OpenClaw|2026-06-17|Star ask|自動投稿|DM|mention|private contact|support claim|sherpa-onnx-node|MeloTTS|model download|API call|default routing\" docs/research/x-outreach-targets.md docs/research/sns-outreach-strategy.md docs/goals/talking-pets-hq-japanese/notes/T266-outreach-waiting-lane-boundary-watch.md docs/goals/talking-pets-hq-japanese/notes/T267-local-tts-boundary-watch.md docs/goals/talking-pets-hq-japanese/activity-index.md docs/goals/talking-pets-hq-japanese/hq-backlog-board.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+        - cmd: "ruby -e 'require \"yaml\"; YAML.load_file(\"docs/goals/talking-pets-hq-japanese/state.yaml\"); puts \"yaml: ok\"'"
+          status: pass
+        - cmd: "npm run check:docs"
+          status: pass
+
+  - id: T267
+    type: worker
+    assignee: Worker
+    owner_role: "歌澄 音羽 / 白瀬 怜奈"
+    status: done
+    reasoning_hint: default
+    objective: "T266のoutreach waiting lane boundary watch後に、local TTS設計の境界へ戻る。"
+    allowed_files:
+      - "docs/research/tts-provider-comparison.md"
+      - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+      - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "install、dependency change、optional dependency changeをしない。"
+      - "`sherpa-onnx-node`をinstallしない。"
+      - "MeloTTSのPython/Docker/model/unidic setupをしない。"
+      - "model download、API call、生成音声をしない。"
+      - "README support claim、latency保証claim、platform support claim、default routingを強めない。"
+    receipt:
+      result: done
+      decision: local_tts_boundary_watch
+      full_outcome_complete: true
+      summary: "Local TTS Boundary Watch Result 12を追加し、VOICEVOX / Irodoriはevidence-first、Kokoroはmodel-download approval-gated、sherpa / MeloTTS / APIはdesign-onlyまたはopt-inの境界を維持した。install、dependency change、optional dependency change、sherpa-onnx-node install、MeloTTS Python/Docker/model/unidic setup、model download、API call、生成音声、README support claim、latency保証claim、platform support claim、default routing変更はしていない。"
+      note: "notes/T267-local-tts-boundary-watch.md"
+      changed_files:
+        - "docs/research/tts-provider-comparison.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T267-local-tts-boundary-watch.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T268-multilingual-verification-boundary-watch.md"
+        - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+        - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n \"Local TTS Boundary Watch Result 12|active_task: T268|T268|multilingual_verification_boundary_watch|VOICEVOX / Irodori|evidence-first|sherpa-onnx-node|MeloTTS|model download|API call|support claim|default routing|fallback-to-provider wording|Dedicated Provider Evidence Checklist\" docs/research/tts-provider-comparison.md docs/goals/talking-pets-hq-japanese/notes/T267-local-tts-boundary-watch.md docs/goals/talking-pets-hq-japanese/notes/T268-multilingual-verification-boundary-watch.md docs/goals/talking-pets-hq-japanese/activity-index.md docs/goals/talking-pets-hq-japanese/hq-backlog-board.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+        - cmd: "ruby -e 'require \"yaml\"; YAML.load_file(\"docs/goals/talking-pets-hq-japanese/state.yaml\"); puts \"yaml: ok\"'"
+          status: pass
+        - cmd: "npm run check:docs"
+          status: pass
+
+  - id: T268
+    type: worker
+    assignee: Worker
+    owner_role: "言守 詞葉 / 白瀬 怜奈"
+    status: done
+    reasoning_hint: default
+    objective: "T267のlocal TTS boundary watch後に、多言語検証の境界へ戻る。"
+    allowed_files:
+      - "docs/verification-status.md"
+      - "docs/real-device-verification.md"
+      - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+      - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "Korean / ChineseをOS speech fallback-onlyからprovider-specific supportへ上げない。"
+      - "README support claim、fallback-to-provider wording、default routingを強めない。"
+      - "GitHub issue API refreshを使わない場合、新しいpublic issue stateやtimestampをclaimしない。"
+      - "model download、API call、外部TTS endpoint送信をしない。"
+      - "生成音声、private log/contact、DM全文/private threadを保存しない。"
+    receipt:
+      result: done
+      decision: multilingual_verification_boundary_watch
+      full_outcome_complete: true
+      summary: "Multilingual Verification Boundary Watch Result 13を追加し、Korean / ChineseはOS speech fallback-only、Minimal Multilingual Report FormとDedicated Provider Evidence Checklistはprovider-specific claimのgateとして維持した。GitHub issue API refresh、dedicated-provider support claim、README support claim、fallback-to-provider wording変更、生成音声、private log/contact保存、model download、API call、外部TTS endpoint送信はしていない。"
+      note: "notes/T268-multilingual-verification-boundary-watch.md"
+      changed_files:
+        - "docs/verification-status.md"
+        - "docs/real-device-verification.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T268-multilingual-verification-boundary-watch.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T269-outreach-waiting-lane-boundary-watch.md"
+        - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+        - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n \"Multilingual Verification Boundary Watch Result 13|active_task: T269|T269|outreach_waiting_lane_boundary_watch|OS speech fallback-only|Dedicated Provider Evidence Checklist|Minimal Multilingual Report Form|GitHub issue API refresh was not used|external TTS endpoint|README support claim|fallback-to-provider wording|model download|API call|2026-06-17|Star\" docs/verification-status.md docs/real-device-verification.md docs/goals/talking-pets-hq-japanese/notes/T268-multilingual-verification-boundary-watch.md docs/goals/talking-pets-hq-japanese/notes/T269-outreach-waiting-lane-boundary-watch.md docs/goals/talking-pets-hq-japanese/activity-index.md docs/goals/talking-pets-hq-japanese/hq-backlog-board.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+        - cmd: "ruby -e 'require \"yaml\"; YAML.load_file(\"docs/goals/talking-pets-hq-japanese/state.yaml\"); puts \"yaml: ok\"'"
+          status: pass
+        - cmd: "npm run check:docs"
+          status: pass
+
+  - id: T269
+    type: worker
+    assignee: Worker
+    owner_role: "星宮 未来 / 白瀬 怜奈"
+    status: done
+    reasoning_hint: default
+    objective: "T268のmultilingual verification boundary watch後に、outreach waiting laneの境界へ戻る。"
+    allowed_files:
+      - "docs/research/x-outreach-targets.md"
+      - "docs/research/sns-outreach-strategy.md"
+      - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+      - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "OpenClaw / V1GPTは送信済みとして扱い、返信が来た場合だけsafe intakeする。"
+      - "2026-06-17までは催促しない。"
+      - "自動投稿、DM、reply、mention、follow、likeをしない。"
+      - "private contact、DM全文、private thread、private logを保存しない。"
+      - "Star askを強くしない。"
+    receipt:
+      result: done
+      decision: outreach_waiting_lane_boundary_watch
+      full_outcome_complete: true
+      summary: "Boundary watch 13を追加し、V1GPT / OpenClaw / Sogni Voiceはlocal HQ docs上ではwaitingのまま、public reply URLまたはMaster承認済みsanitized summary未記録として扱った。2026-06-17前の催促、再送、自動投稿、DM、reply、mention、follow、like、private contact保存、DM全文/private thread保存、README/SNS support claim変更、Star askはしていない。"
+      note: "notes/T269-outreach-waiting-lane-boundary-watch.md"
+      changed_files:
+        - "docs/research/x-outreach-targets.md"
+        - "docs/research/sns-outreach-strategy.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T269-outreach-waiting-lane-boundary-watch.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T270-local-tts-boundary-watch.md"
+        - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+        - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n \"Boundary watch 13|active_task: T270|T270|local_tts_boundary_watch|V1GPT|OpenClaw|Sogni Voice|2026-06-17|Star ask|自動投稿|DM|mention|private contact|support claim|sherpa-onnx-node|MeloTTS|model download|API call|default routing\" docs/research/x-outreach-targets.md docs/research/sns-outreach-strategy.md docs/goals/talking-pets-hq-japanese/notes/T269-outreach-waiting-lane-boundary-watch.md docs/goals/talking-pets-hq-japanese/notes/T270-local-tts-boundary-watch.md docs/goals/talking-pets-hq-japanese/activity-index.md docs/goals/talking-pets-hq-japanese/hq-backlog-board.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+        - cmd: "ruby -e 'require \"yaml\"; YAML.load_file(\"docs/goals/talking-pets-hq-japanese/state.yaml\"); puts \"yaml: ok\"'"
+          status: pass
+        - cmd: "npm run check:docs"
+          status: pass
+
+  - id: T270
+    type: worker
+    assignee: Worker
+    owner_role: "歌澄 音羽 / 白瀬 怜奈"
+    status: done
+    reasoning_hint: default
+    objective: "T269のoutreach waiting lane boundary watch後に、local TTS設計の境界へ戻る。"
+    allowed_files:
+      - "docs/research/tts-provider-comparison.md"
+      - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+      - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "install、dependency change、optional dependency changeをしない。"
+      - "`sherpa-onnx-node`をinstallしない。"
+      - "MeloTTSのPython/Docker/model/unidic setupをしない。"
+      - "model download、API call、生成音声をしない。"
+      - "README support claim、latency保証claim、platform support claim、default routingを強めない。"
+    receipt:
+      result: done
+      decision: local_tts_boundary_watch
+      full_outcome_complete: true
+      summary: "Local TTS Boundary Watch Result 13を追加し、VOICEVOX / Irodoriはevidence-first、Kokoroはmodel-download approval-gated、sherpa / MeloTTS / APIはdesign-onlyまたはopt-inの境界を維持した。install、dependency change、optional dependency change、sherpa-onnx-node install、MeloTTS Python/Docker/model/unidic setup、model download、API call、生成音声、README support claim、latency保証claim、platform support claim、default routing変更はしていない。"
+      note: "notes/T270-local-tts-boundary-watch.md"
+      changed_files:
+        - "docs/research/tts-provider-comparison.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T270-local-tts-boundary-watch.md"
+        - "docs/goals/talking-pets-hq-japanese/notes/T271-multilingual-verification-boundary-watch.md"
+        - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+        - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+        - "docs/goals/talking-pets-hq-japanese/state.yaml"
+      commands:
+        - cmd: "rg -n \"Local TTS Boundary Watch Result 13|active_task: T271|T271|multilingual_verification_boundary_watch|VOICEVOX / Irodori|evidence-first|sherpa-onnx-node|MeloTTS|model download|API call|support claim|default routing|fallback-to-provider wording|Dedicated Provider Evidence Checklist\" docs/research/tts-provider-comparison.md docs/goals/talking-pets-hq-japanese/notes/T270-local-tts-boundary-watch.md docs/goals/talking-pets-hq-japanese/notes/T271-multilingual-verification-boundary-watch.md docs/goals/talking-pets-hq-japanese/activity-index.md docs/goals/talking-pets-hq-japanese/hq-backlog-board.md docs/goals/talking-pets-hq-japanese/state.yaml"
+          status: pass
+        - cmd: "ruby -e 'require \"yaml\"; YAML.load_file(\"docs/goals/talking-pets-hq-japanese/state.yaml\"); puts \"yaml: ok\"'"
+          status: pass
+        - cmd: "npm run check:docs"
+          status: pass
+
+  - id: T271
+    type: worker
+    assignee: Worker
+    owner_role: "言守 詞葉 / 白瀬 怜奈"
+    status: active
+    reasoning_hint: default
+    objective: "T270のlocal TTS boundary watch後に、多言語検証の境界へ戻る。"
+    allowed_files:
+      - "docs/verification-status.md"
+      - "docs/real-device-verification.md"
+      - "docs/goals/talking-pets-hq-japanese/hq-backlog-board.md"
+      - "docs/goals/talking-pets-hq-japanese/activity-index.md"
+      - "docs/goals/talking-pets-hq-japanese/notes/**"
+      - "docs/goals/talking-pets-hq-japanese/state.yaml"
+    constraints:
+      - "Korean / ChineseをOS speech fallback-onlyからprovider-specific supportへ上げない。"
+      - "README support claim、fallback-to-provider wording、default routingを強めない。"
+      - "GitHub issue API refreshを使わない場合、新しいpublic issue stateやtimestampをclaimしない。"
+      - "model download、API call、外部TTS endpoint送信をしない。"
+      - "生成音声、private log/contact、DM全文/private threadを保存しない。"
+    receipt:
+      result: active
+      decision: multilingual_verification_boundary_watch
+      full_outcome_complete: false
+      summary: "次は多言語検証境界を、support wording変更、private evidence保存、model download、API callなしで再確認する。"
+      note: "notes/T271-multilingual-verification-boundary-watch.md"
+      changed_files:
+        - "docs/goals/talking-pets-hq-japanese/notes/T271-multilingual-verification-boundary-watch.md"
         - "docs/goals/talking-pets-hq-japanese/state.yaml"
       commands: []
 
