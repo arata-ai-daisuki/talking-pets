@@ -126,14 +126,14 @@ function maintenancePlan(options) {
   };
 }
 
-function runMaintenance(options, runner = spawnSync) {
+function runMaintenance(options, runner = spawnSync, root = repoRoot) {
   if (options.action !== "update") {
     throw new Error("only update maintenance can run");
   }
 
   const steps = [];
-  const configPath = join(repoRoot, ".talking-pets.local.env");
-  const backupPath = join(repoRoot, ".talking-pets.local.env.backup");
+  const configPath = join(root, ".talking-pets.local.env");
+  const backupPath = join(root, ".talking-pets.local.env.backup");
 
   if (existsSync(configPath)) {
     copyFileSync(configPath, backupPath);
@@ -145,7 +145,7 @@ function runMaintenance(options, runner = spawnSync) {
   const npmCacheDir = mkdtempSync(join(tmpdir(), "talking-pets-npm-cache-"));
   try {
     const npmResult = runner(npmCommand(), ["--cache", npmCacheDir, "ci"], {
-      cwd: repoRoot,
+      cwd: root,
       stdio: "inherit",
       shell: shouldUseShellForNPM(),
     });
@@ -161,7 +161,7 @@ function runMaintenance(options, runner = spawnSync) {
   steps.push({ step: "npm-ci", status: "ok", path: "temporary npm cache" });
 
   for (const path of ["check.command", "check.sh", "install.command", "install.sh", "scripts/pet-rollout-monitor.command", "scripts/pet-rollout-monitor-node.command", "start-selected-tts.command", "start-selected-tts.sh"]) {
-    chmodSync(join(repoRoot, path), 0o755);
+    chmodSync(join(root, path), 0o755);
     steps.push({ step: "chmod", status: "ok", path });
   }
 

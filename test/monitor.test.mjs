@@ -1,7 +1,8 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { spawnSync } from "node:child_process";
-import { mkdtempSync, readFileSync, writeFileSync } from "node:fs";
+import { spawn, spawnSync } from "node:child_process";
+import { createServer } from "node:http";
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 
@@ -38,7 +39,7 @@ import { parseArgs as parseVoiceboxArgs, safeURLForLog } from "../scripts/tts-vo
 import { formatAudioDurationSeconds, formatRealTimeFactor, latencyAudioFields, wavDurationSeconds } from "../scripts/wav-duration.mjs";
 import { csvCell, formatLatencyRows, latencyRowsFromText, parseLatencyLine as parseLatencyTableLine } from "../scripts/latency-lines-to-table.mjs";
 import { formatSummary, parseRuns, summarizeRuns as summarizeLatencyRuns } from "../scripts/latency-benchmark.mjs";
-import { maintenancePlan, parseOptions as parseMaintenanceOptions } from "../scripts/talking-pets-maintenance.mjs";
+import { maintenancePlan, parseOptions as parseMaintenanceOptions, runMaintenance } from "../scripts/talking-pets-maintenance.mjs";
 import { sanitizePublicOutput, stripURLQuery } from "../scripts/sanitize-public-output.mjs";
 import { forbiddenText as sanitizerForbiddenText, requiredText as sanitizerRequiredText, sample as sanitizerSample } from "../scripts/check-public-output-sanitizer.mjs";
 
@@ -406,6 +407,34 @@ test("maintenance keeps uninstall dry-run and allows update execution", () => {
   assert.ok(plan.sections.some(section => section.items.some(item => /API keys/.test(item.item))));
 });
 
+test("maintenance update preserves config and executes npm ci in the target root", () => {
+  const root = mkdtempSync(join(tmpdir(), "talking-pets-maintenance-test-"));
+  const config = join(root, ".talking-pets.local.env");
+  writeFileSync(config, 'TALKING_PETS_TTS="say"\n');
+  for (const file of ["check.command", "check.sh", "install.command", "install.sh", "start-selected-tts.command", "start-selected-tts.sh"]) {
+    writeFileSync(join(root, file), "#!/bin/sh\n");
+  }
+  const scriptsDir = join(root, "scripts");
+  mkdirSync(scriptsDir, { recursive: true });
+  for (const file of ["pet-rollout-monitor.command", "pet-rollout-monitor-node.command"]) {
+    writeFileSync(join(scriptsDir, file), "#!/bin/sh\n");
+  }
+
+  const calls = [];
+  const result = runMaintenance(parseMaintenanceOptions(["--update"]), (command, args, options) => {
+    calls.push({ command, args, cwd: options.cwd });
+    return { status: 0 };
+  }, root);
+
+  assert.equal(readFileSync(join(root, ".talking-pets.local.env.backup"), "utf8"), 'TALKING_PETS_TTS="say"\n');
+  assert.equal(calls.length, 1);
+  assert.equal(calls[0].command, process.platform === "win32" ? "npm.cmd" : "npm");
+  assert.equal(calls[0].cwd, root);
+  assert.ok(calls[0].args.includes("ci"));
+  assert.ok(result.steps.some(step => step.step === "backup-config" && step.status === "ok"));
+  assert.ok(result.steps.some(step => step.step === "npm-ci" && step.status === "ok"));
+});
+
 test("sanitizes public check output before issue sharing", () => {
   assert.equal(
     stripURLQuery("http://127.0.0.1:50021/audio_query?text=secret&speaker=3"),
@@ -693,6 +722,49 @@ test("monitor exposes OpenAI-compatible local manual provider path", () => {
   assert.equal(remote.status, 2);
   assert.match(remote.stderr, /only accepts localhost URLs/);
   assert.doesNotMatch(remote.stderr, /at parseArgs/);
+});
+
+test("OpenAI-compatible local helper posts speech requests to localhost", async () => {
+  let payload = null;
+  const server = createServer((request, response) => {
+    assert.equal(request.method, "POST");
+    assert.equal(request.url, "/v1/audio/speech");
+    let body = "";
+    request.setEncoding("utf8");
+    request.on("data", chunk => {
+      body += chunk;
+    });
+    request.on("end", () => {
+      payload = JSON.parse(body);
+      response.writeHead(200, { "Content-Type": "audio/wav" });
+      response.end(samplePCM16Wav({ sampleRate: 24000, channels: 1, durationSeconds: 0.05 }));
+    });
+  });
+
+  await listen(server);
+  try {
+    const { port } = server.address();
+    const result = await spawnAndCapture(process.execPath, [
+      "--no-warnings",
+      "scripts/tts-openai-compatible-local.mjs",
+      "--text", "hello local speech",
+      "--url", `http://127.0.0.1:${port}`,
+      "--model", "local-model",
+      "--voice", "test-voice",
+      "--format", "wav",
+    ]);
+
+    assert.equal(result.status, 0, result.stderr);
+    assert.deepEqual(payload, {
+      model: "local-model",
+      input: "hello local speech",
+      voice: "test-voice",
+      response_format: "wav",
+    });
+    assert.ok(existsSync(result.stdout.trim()));
+  } finally {
+    await closeServer(server);
+  }
 });
 
 test("OpenAI API helper is opt-in and keeps credentials out of diagnostics", () => {
@@ -1664,6 +1736,42 @@ function samplePCM16Wav({ sampleRate, channels, durationSeconds }) {
   buffer.write("data", 36, "ascii");
   buffer.writeUInt32LE(dataSize, 40);
   return buffer;
+}
+
+function listen(server) {
+  return new Promise((resolve, reject) => {
+    server.once("error", reject);
+    server.listen(0, "127.0.0.1", () => {
+      server.off("error", reject);
+      resolve();
+    });
+  });
+}
+
+function closeServer(server) {
+  return new Promise(resolve => {
+    server.close(() => resolve());
+  });
+}
+
+function spawnAndCapture(command, args) {
+  return new Promise((resolve, reject) => {
+    const child = spawn(command, args, { cwd: process.cwd(), encoding: "utf8" });
+    let stdout = "";
+    let stderr = "";
+    child.stdout.setEncoding("utf8");
+    child.stderr.setEncoding("utf8");
+    child.stdout.on("data", chunk => {
+      stdout += chunk;
+    });
+    child.stderr.on("data", chunk => {
+      stderr += chunk;
+    });
+    child.on("error", reject);
+    child.on("close", status => {
+      resolve({ status, stdout, stderr });
+    });
+  });
 }
 
 function removeLine(text, line) {
