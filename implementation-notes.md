@@ -947,3 +947,9 @@
 - 実処理は `.talking-pets.local.env` がある場合の `.talking-pets.local.env.backup` 作成、`npm ci`、主要shell scriptの実行bit再設定に限定した。
 - `--uninstall` は引き続き `--dry-run` 必須にした。node_modules、cache、外部runtime、API secretの削除や推測は行わない。
 - README / README.en / `docs/install-update-uninstall.md` / unit test を新しい境界に合わせた。
+
+## 2026-06-05 TTS Installer Flow Verification
+
+- `scripts/talking-pets-maintenance.mjs` の `runMaintenance` にテスト用root引数を追加し、CLI挙動は変えずに一時ディレクトリ上で config backup、stubbed `npm ci`、chmod step を検査できるようにした。
+- `test/monitor.test.mjs` に localhost の偽OpenAI互換TTS serverを立てるsmoke testを追加し、`scripts/tts-openai-compatible-local.mjs` が `/v1/audio/speech` へ model/input/voice/format をPOSTし、WAVを書き出すところまで確認した。
+- sandbox内では localhost listen と npm registry access が制限されるため、最終検証は sandbox外で `npm run maintenance:plan -- --update` と `npm run check:all` を実行した。
