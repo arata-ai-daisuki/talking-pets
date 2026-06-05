@@ -61,3 +61,13 @@ Handoff:
 Handoff:
 
 > T005 Workerへ: installer高度化へ進んでください。update、uninstall、external runtime download/install、config保持、cache削除選択、rollbackをdocsまたはdry-runで安全に見える化してください。削除やuninstall実行はしないこと。
+
+### T005 Worker Result
+
+- 月城 奏: 「`npm run maintenance:plan -- --update --dry-run` と `--uninstall --dry-run` を追加しました。」
+- 白瀬 怜奈: 「削除、download、config変更、secret探索は一切しません。計画を出すだけです。」
+- 相庭 愛: 「保持される設定、削除候補、external runtime、cache、rollbackが表とJSONで見えます。」
+
+Handoff:
+
+> T006 Scoutへ: 機能アップデートとして見えるREADME/SNS導線を整理してください。latency、providerSelection、API boundary、maintenance dry-runを短く説明できる形にし、未検証の性能claimはしないこと。
