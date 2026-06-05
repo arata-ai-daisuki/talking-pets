@@ -57,7 +57,7 @@ agent_visibility:
   activity_log: "docs/goals/talking-pets-voice-personalization/activity-log.md"
   rule: "各タスクのreceiptに担当agentコメントとhandoff summaryを残す。"
 
-active_task: T002
+active_task: T003
 
 tasks:
   - id: T001
@@ -103,7 +103,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "速水 光莉"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "保存済みT004 latency benchmark outputを新ゴールへ取り込み、Markdown/CSV/JSON出力とdevice info/first-audio境界をmainへ入れる小PRにする。"
     depends_on:
@@ -116,18 +116,42 @@ tasks:
       - "docs/performance.md更新"
       - "test追加"
     receipt:
-      result: active
-      decision: reuse_latency_checkpoint
-      full_outcome_complete: false
-      summary: "次はcheckpoint commit `fc131f1` のlatency benchmark output改善を、新ゴールの最初の機能PRとしてmainへ取り込む。"
+      result: done
+      decision: latency_benchmark_output
+      full_outcome_complete: true
+      summary: "保存済みcheckpointを取り込み、latency benchmarkがJSON/Markdown/CSVでdevice infoとfirst-audio境界を出せるようにした。dry-runでは音を鳴らさないためfirst audioは`not_measured`として扱い、1端末の数字を性能保証として書かないdocsを追加した。"
       note: "notes/T002-latency-benchmark-output.md"
-      commands: []
+      changed_files:
+        - "scripts/latency-benchmark.mjs"
+        - "scripts/latency-lines-to-table.mjs"
+        - "test/monitor.test.mjs"
+        - "docs/performance.md"
+        - "docs/goals/talking-pets-voice-personalization/notes/T002-latency-benchmark-output.md"
+        - "docs/goals/talking-pets-voice-personalization/activity-log.md"
+        - "docs/goals/talking-pets-voice-personalization/state.yaml"
+      commands:
+        - cmd: "node --check scripts/latency-benchmark.mjs"
+          status: pass
+        - cmd: "node --no-warnings --test"
+          status: pass
+        - cmd: "npm run benchmark:dry-run"
+          status: pass
+        - cmd: "npm run benchmark:latency -- --runs 2 --format markdown"
+          status: pass
+        - cmd: "npm run benchmark:latency -- --runs 2 --format csv"
+          status: pass
+        - cmd: "ruby -e 'require \"yaml\"; YAML.load_file(\"docs/goals/talking-pets-voice-personalization/state.yaml\"); puts \"yaml: ok\"'"
+          status: pass
+        - cmd: "npm run check:docs"
+          status: pass
+        - cmd: "CLANG_MODULE_CACHE_PATH=/private/tmp/talking-pets-clang-module-cache npm run check:all"
+          status: pass
 
   - id: T003
     type: worker
     assignee: Worker
     owner_role: "歌澄 音羽 / 言守 詞葉"
-    status: queued
+    status: active
     reasoning_hint: default
     objective: "local TTS providerと言語対応を、provider registry、preferences、routing diagnostics、READMEに接続する次の小PRを設計・実装する。"
     depends_on:
@@ -135,6 +159,13 @@ tasks:
     constraints:
       - "新規providerは証拠なしにsupportedとclaimしない。"
       - "model downloadが必要な場合はdry-runまたはdocsから始める。"
+    receipt:
+      result: active
+      decision: local_tts_language_next
+      full_outcome_complete: false
+      summary: "次はlocal TTS providerと言語対応を、provider registry、preferences、routing diagnostics、READMEへ接続する小PRに進む。"
+      note: "notes/T003-local-tts-language-connection.md"
+      commands: []
 
   - id: T004
     type: scout

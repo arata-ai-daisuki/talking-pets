@@ -32,9 +32,13 @@ npm run benchmark:dry-run
 
 ```bash
 npm run benchmark:latency -- --runs 20
+npm run benchmark:latency -- --runs 20 --format markdown
+npm run benchmark:latency -- --runs 20 --format csv
 ```
 
-このコマンドはdry-runを複数回実行し、`minMs` / `p50Ms` / `p95Ms` / `maxMs` をJSONで出します。最適化前後は単発値ではなく、同じ `--runs` で比較してください。
+このコマンドはdry-runを複数回実行し、`minMs` / `p50Ms` / `p95Ms` / `maxMs` をJSON、Markdown、CSVで出します。出力には端末情報と `firstAudio=not_measured` も含めます。dry-runは音を鳴らさないため、first audible speechは測れません。最適化前後は単発値ではなく、同じ `--runs` で比較してください。
+
+Markdown / CSV の表は、協力者からの報告やREADME用の下書きに使えます。ただし1端末の結果を性能保証として書かないでください。
 
 ### Kokoro helper
 

@@ -2,54 +2,66 @@
 
 import { spawnSync } from "node:child_process";
 import { writeFileSync } from "node:fs";
+import { arch, cpus, freemem, platform, release, totalmem } from "node:os";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const scriptDir = dirname(fileURLToPath(import.meta.url));
 const repoRoot = dirname(scriptDir);
-const options = parseOptions(process.argv.slice(2));
+const scriptPath = fileURLToPath(import.meta.url);
 
-const command = [
-  process.execPath,
-  "--no-warnings",
-  join(scriptDir, "pet-rollout-monitor.mjs"),
-  "--once",
-  "--dry-run",
-  "--profile-latency",
-  "--rollout",
-  options.rollout,
-];
+function main(argv = process.argv.slice(2)) {
+  const options = parseOptions(argv);
+  const command = benchmarkCommand(options);
+  const runs = [];
 
-const runs = [];
+  for (let i = 0; i < options.runs; i += 1) {
+    const result = spawnSync(command[0], command.slice(1), {
+      cwd: repoRoot,
+      encoding: "utf8",
+    });
+    const output = `${result.stdout || ""}${result.stderr || ""}`;
+    const latency = parseLatencyLine(output);
 
-for (let i = 0; i < options.runs; i += 1) {
-  const result = spawnSync(command[0], command.slice(1), {
-    cwd: repoRoot,
-    encoding: "utf8",
-  });
-  const output = `${result.stdout || ""}${result.stderr || ""}`;
-  const latency = parseLatencyLine(output);
+    if (result.status !== 0 || !latency) {
+      console.error(`Run ${i + 1} failed.`);
+      if (result.stdout) console.error(result.stdout.trim());
+      if (result.stderr) console.error(result.stderr.trim());
+      process.exit(result.status || 1);
+    }
 
-  if (result.status !== 0 || !latency) {
-    console.error(`Run ${i + 1} failed.`);
-    if (result.stdout) console.error(result.stdout.trim());
-    if (result.stderr) console.error(result.stderr.trim());
-    process.exit(result.status || 1);
+    runs.push(latency);
   }
 
-  runs.push(latency);
+  const summary = summarizeRuns(runs, command);
+  const output = formatSummary(summary, options.format);
+  if (options.out) writeFileSync(options.out, output);
+  process.stdout.write(output);
 }
 
-const summary = summarizeRuns(runs);
-const json = JSON.stringify(summary, null, 2);
-if (options.out) writeFileSync(options.out, `${json}\n`);
-console.log(json);
+if (process.argv[1] === scriptPath) {
+  main();
+}
+
+function benchmarkCommand(options) {
+  return [
+    process.execPath,
+    "--no-warnings",
+    join(scriptDir, "pet-rollout-monitor.mjs"),
+    "--once",
+    "--dry-run",
+    "--profile-latency",
+    "--rollout",
+    options.rollout,
+  ];
+}
 
 function parseOptions(argv) {
   const result = {
     runs: 10,
     out: null,
     rollout: join(repoRoot, "test", "fixtures", "assistant-rollout.jsonl"),
+    format: "json",
   };
 
   for (let i = 0; i < argv.length; i += 1) {
@@ -63,13 +75,19 @@ function parseOptions(argv) {
 
     switch (arg) {
       case "--runs":
-        result.runs = Math.max(1, Number(takeValue()));
+        result.runs = parseRuns(takeValue());
         break;
       case "--rollout":
         result.rollout = takeValue();
         break;
       case "--out":
         result.out = takeValue();
+        break;
+      case "--format":
+        result.format = takeValue();
+        if (!["json", "markdown", "csv"].includes(result.format)) {
+          throw new Error("--format must be json, markdown, or csv");
+        }
         break;
       case "--help":
       case "-h":
@@ -90,8 +108,17 @@ function printUsage() {
 Options:
   --runs N        Number of dry-run samples (default: 10)
   --rollout PATH Rollout JSONL fixture or log to measure
-  --out PATH      Write the JSON summary to a file
+  --format FORMAT json, markdown, or csv (default: json)
+  --out PATH      Write the formatted summary to a file
   --help         Show this help`);
+}
+
+function parseRuns(value) {
+  const runs = Number(value);
+  if (!Number.isInteger(runs) || runs < 1) {
+    throw new Error("--runs must be a positive integer");
+  }
+  return runs;
 }
 
 function parseLatencyLine(output) {
@@ -117,7 +144,7 @@ function parseLatencyValue(value) {
   return Number.isFinite(numeric) ? numeric : value;
 }
 
-function summarizeRuns(runs) {
+function summarizeRuns(runs, command = benchmarkCommand(parseOptions([]))) {
   const metricNames = [...new Set(runs.flatMap((run) => Object.keys(run)))].filter((name) => {
     return runs.some((run) => typeof run[name] === "number");
   });
@@ -139,8 +166,88 @@ function summarizeRuns(runs) {
   return {
     runs: runs.length,
     command: command.map((part) => part.replace(repoRoot, ".")).join(" "),
+    firstAudio: {
+      status: "not_measured",
+      reason: "dry-run benchmark does not play audio or observe audible playback start",
+    },
+    device: deviceInfo(),
     metrics,
   };
+}
+
+function deviceInfo() {
+  const cpuList = cpus();
+  const cpu = cpuList[0];
+  return {
+    platform: platform(),
+    release: release(),
+    arch: arch(),
+    cpuModel: cpu?.model ?? "unknown",
+    cpuCount: cpuList.length,
+    totalMemoryGB: round(totalmem() / 1024 / 1024 / 1024),
+    freeMemoryGB: round(freemem() / 1024 / 1024 / 1024),
+    node: process.version,
+  };
+}
+
+function formatSummary(summary, format) {
+  if (format === "csv") return formatCSV(summary);
+  if (format === "markdown") return formatMarkdown(summary);
+  return `${JSON.stringify(summary, null, 2)}\n`;
+}
+
+function summaryRows(summary) {
+  return Object.entries(summary.metrics).map(([metric, values]) => ({
+    metric,
+    minMs: values.minMs,
+    p50Ms: values.p50Ms,
+    p95Ms: values.p95Ms,
+    maxMs: values.maxMs,
+    runs: summary.runs,
+    firstAudio: summary.firstAudio.status,
+    platform: summary.device.platform,
+    arch: summary.device.arch,
+    cpuModel: summary.device.cpuModel,
+    node: summary.device.node,
+  }));
+}
+
+function formatMarkdown(summary) {
+  const columns = ["metric", "minMs", "p50Ms", "p95Ms", "maxMs", "runs", "firstAudio", "platform", "arch", "node"];
+  const rows = summaryRows(summary);
+  return [
+    `Command: \`${summary.command}\``,
+    "",
+    `First audio: ${summary.firstAudio.status} (${summary.firstAudio.reason})`,
+    "",
+    `Device: ${summary.device.platform} ${summary.device.release} / ${summary.device.arch} / ${summary.device.cpuModel} / Node ${summary.device.node}`,
+    "",
+    `| ${columns.join(" | ")} |`,
+    `| ${columns.map(() => "---").join(" | ")} |`,
+    ...rows.map(row => `| ${columns.map(column => markdownCell(row[column])).join(" | ")} |`),
+  ].join("\n") + "\n";
+}
+
+function formatCSV(summary) {
+  const columns = ["metric", "minMs", "p50Ms", "p95Ms", "maxMs", "runs", "firstAudio", "platform", "release", "arch", "cpuModel", "node", "command"];
+  const rows = summaryRows(summary).map(row => ({
+    ...row,
+    release: summary.device.release,
+    command: summary.command,
+  }));
+  return [
+    columns.map(csvCell).join(","),
+    ...rows.map(row => columns.map(column => csvCell(row[column])).join(",")),
+  ].join("\n") + "\n";
+}
+
+function markdownCell(value) {
+  return String(value ?? "").replaceAll("|", "\\|");
+}
+
+function csvCell(value) {
+  const text = String(value ?? "");
+  return /[",\r\n]/.test(text) ? `"${text.replaceAll("\"", "\"\"")}"` : text;
 }
 
 function percentile(values, rank) {
@@ -155,3 +262,12 @@ function percentile(values, rank) {
 function round(value) {
   return Math.round(value * 10) / 10;
 }
+
+export {
+  deviceInfo,
+  formatSummary,
+  parseLatencyLine,
+  parseLatencyValue,
+  parseRuns,
+  summarizeRuns,
+};
