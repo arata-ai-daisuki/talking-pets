@@ -129,6 +129,12 @@ test("exposes provider capabilities without overclaiming language support", () =
   assert.equal(providerCapability("kokoro").needsModelDownload, true);
   assert.equal(providerLanguageSupport("kokoro", "en").level, "provider-specific");
   assert.equal(providerCapability("voice-api").needsApiKey, true);
+  assert.equal(providerCapability("openai-compatible-local").local, true);
+  assert.equal(providerCapability("openai-compatible-local").needsExternalRuntime, true);
+  assert.equal(providerCapability("openai-compatible-local").needsApiKey, false);
+  assert.equal(providerCapability("openai-tts-api").local, false);
+  assert.equal(providerCapability("openai-tts-api").needsApiKey, true);
+  assert.equal(providerLanguageSupport("openai-tts-api", "en").level, "unknown");
   assert.equal(providerCapability("sherpa-onnx-node").status, "design-only");
 
   assert.equal(providerLanguageSupport("say", "ko").level, "fallback-only");
