@@ -20,6 +20,7 @@ import {
   textForSource,
 } from "../scripts/pet-rollout-monitor.mjs";
 import { providerCapability, providerLanguageSupport } from "../src/provider-capabilities.js";
+import { applyUserPreferences, loadUserPreferences, normalizeUserPreferences, preferredProviderForLanguage } from "../src/user-preferences.js";
 import { checkAudioPath } from "../scripts/check-audio-path.mjs";
 import { windowsPowerShellCommand } from "../scripts/audio-platform.mjs";
 import { displayPrivatePath, fixturePaths, redactPrivatePaths } from "../scripts/check-codex-compat.mjs";
@@ -141,6 +142,29 @@ test("routing diagnostics include provider capability boundaries", () => {
   assert.equal(diagnostic.capability.languageSupport.level, "fallback-only");
   assert.match(diagnostic.capability.languageSupport.claimBoundary, /Korean uses OS speech fallback/);
   assert.equal(diagnostic.capability.needsApiKey, false);
+});
+
+test("loads user preferences without storing secrets or overclaiming providers", () => {
+  const state = loadUserPreferences("presets/preferences.local-first.json");
+  assert.equal(state.preferences.apiOptIn, false);
+  assert.equal(state.preferences.speedQuality, "balanced");
+  assert.equal(preferredProviderForLanguage("ko", state), "say");
+  assert.equal(preferredProviderForLanguage("zh", state), "say");
+  assert.equal(state.preferences.providerPriority.ja[0], "voicevox");
+
+  const options = applyUserPreferences(parseOptions(["--tts", "auto", "--preferences", "presets/preferences.local-first.json"]), state);
+  const diagnostic = routingDiagnostic("中文语音确认", "有新的消息。", options);
+  assert.equal(diagnostic.chosenEngine, "say");
+  assert.equal(diagnostic.userPreferences.source, "presets/preferences.local-first.json");
+  assert.equal(diagnostic.userPreferences.apiOptIn, false);
+  assert.equal(diagnostic.userPreferences.providerPriority.zh[0], "say");
+});
+
+test("rejects unsafe or unsupported user preference values", () => {
+  assert.throws(() => normalizeUserPreferences({ schemaVersion: 2 }), /schemaVersion/);
+  assert.throws(() => normalizeUserPreferences({ speedQuality: "fastest" }), /speedQuality/);
+  assert.throws(() => normalizeUserPreferences({ apiOptIn: "yes" }), /apiOptIn/);
+  assert.throws(() => normalizeUserPreferences({ providerPriority: { ja: [] } }), /providerPriority\.ja/);
 });
 
 test("rejects invalid monitor CLI option values", () => {

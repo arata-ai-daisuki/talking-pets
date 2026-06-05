@@ -9,6 +9,7 @@ import { fileURLToPath } from "node:url";
 
 import { windowsPowerShellCommand } from "./audio-platform.mjs";
 import { providerCapabilityForRouting, providerCapabilitySummary } from "../src/provider-capabilities.js";
+import { applyUserPreferences, loadUserPreferences, preferredProviderForLanguage } from "../src/user-preferences.js";
 
 const scriptPath = fileURLToPath(import.meta.url);
 const scriptDir = dirname(scriptPath);
@@ -37,6 +38,7 @@ const optionFlags = new Set([
   "--voicebox-language",
   "--speech-language",
   "--speech-style",
+  "--preferences",
   "--language-route",
   "--no-language-route",
   "--rate",
@@ -59,18 +61,20 @@ const optionFlags = new Set([
 
 async function main(argv = process.argv.slice(2)) {
   const options = parseOptions(argv);
+  const preferenceState = loadUserPreferences(options.preferencesPath);
+  const runtimeOptions = applyUserPreferences(options, preferenceState);
 
-  if (options.listProviderCapabilities) {
+  if (runtimeOptions.listProviderCapabilities) {
     printProviderCapabilities();
     return;
   }
 
-  if (options.listVoices) {
-    listVoices(options);
+  if (runtimeOptions.listVoices) {
+    listVoices(runtimeOptions);
     return;
   }
 
-  if (options.version) {
+  if (runtimeOptions.version) {
     printVersion();
     return;
   }
@@ -80,51 +84,51 @@ async function main(argv = process.argv.slice(2)) {
   let didSkipExisting = false;
 
   while (true) {
-    const latencyProfile = startLatencyProfile(options.profileLatency);
-    const thread = await measureLatency(latencyProfile, "resolveThread", () => resolveThread(options));
+    const latencyProfile = startLatencyProfile(runtimeOptions.profileLatency);
+    const thread = await measureLatency(latencyProfile, "resolveThread", () => resolveThread(runtimeOptions));
     if (!thread) {
       console.log("[wait] Codex thread not found");
-      printLatencyProfile(latencyProfile, { candidate: false, dryRun: options.dryRun, thread: false });
-      if (options.once) break;
-      await sleep(options.interval * 1000);
+      printLatencyProfile(latencyProfile, { candidate: false, dryRun: runtimeOptions.dryRun, thread: false });
+      if (runtimeOptions.once) break;
+      await sleep(runtimeOptions.interval * 1000);
       continue;
     }
 
     if (!lastThread || thread.id !== lastThread.id || thread.rolloutPath !== lastThread.rolloutPath) {
       console.log(`[thread] ${thread.title} / ${thread.id}`);
-      console.log(`[rollout] ${displayPrivatePath(thread.rolloutPath, options)}`);
+      console.log(`[rollout] ${displayPrivatePath(thread.rolloutPath, runtimeOptions)}`);
       lastThread = thread;
       lastSpokenKey = null;
       didSkipExisting = false;
     }
 
-    const speechResult = measureLatency(latencyProfile, "readLatestSpeechCandidate", () => readLatestSpeechCandidate(thread.rolloutPath, options.maxSourceCharacters, options));
+    const speechResult = measureLatency(latencyProfile, "readLatestSpeechCandidate", () => readLatestSpeechCandidate(thread.rolloutPath, runtimeOptions.maxSourceCharacters, runtimeOptions));
     const candidate = speechResult.candidate;
     if (candidate) {
       const key = normalizedKey(candidate.text);
-      if (options.skipExisting && !didSkipExisting) {
+      if (runtimeOptions.skipExisting && !didSkipExisting) {
         lastSpokenKey = key;
         didSkipExisting = true;
         console.log(`[skip-existing] ${candidate.source} / ${candidate.timestamp}`);
       } else if (key !== lastSpokenKey) {
-        const speech = measureLatency(latencyProfile, "speechText", () => speechText(candidate.text, options));
+        const speech = measureLatency(latencyProfile, "speechText", () => speechText(candidate.text, runtimeOptions));
         console.log(`[source] ${candidate.text}`);
         console.log(`[pet] ${speech}`);
-        if (options.diagnoseRouting) {
-          console.log(JSON.stringify(routingDiagnostic(candidate.text, speech, options), null, 2));
+        if (runtimeOptions.diagnoseRouting) {
+          console.log(JSON.stringify(routingDiagnostic(candidate.text, speech, runtimeOptions), null, 2));
         }
         lastSpokenKey = key;
-        if (!options.dryRun) {
-          measureLatency(latencyProfile, "speak", () => speak(speech, options));
+        if (!runtimeOptions.dryRun) {
+          measureLatency(latencyProfile, "speak", () => speak(speech, runtimeOptions));
         }
       }
     } else {
       console.log(`[wait] ${speechResult.message}`);
     }
 
-    printLatencyProfile(latencyProfile, { candidate: Boolean(candidate), dryRun: options.dryRun, thread: true });
-    if (options.once) break;
-    await sleep(options.interval * 1000);
+    printLatencyProfile(latencyProfile, { candidate: Boolean(candidate), dryRun: runtimeOptions.dryRun, thread: true });
+    if (runtimeOptions.once) break;
+    await sleep(runtimeOptions.interval * 1000);
   }
 }
 
@@ -158,6 +162,7 @@ function parseOptions(argv) {
     voiceboxLanguage: null,
     speechLanguage: "auto",
     speechStylePath: join(dirname(scriptDir), "presets", "speech-style.json"),
+    preferencesPath: null,
     languageRoute: false,
     rate: 185,
     dryRun: false,
@@ -254,6 +259,9 @@ function parseOptions(argv) {
         break;
       case "--speech-style":
         result.speechStylePath = takeValue();
+        break;
+      case "--preferences":
+        result.preferencesPath = takeValue();
         break;
       case "--language-route":
         result.languageRoute = true;
@@ -368,6 +376,7 @@ Speech:
   --no-summary                   Speak the full source text
   --speech-language LANG         auto, ja, en, ko, zh, or other
   --speech-style PATH            JSON style config for spoken phrasing
+  --preferences PATH             JSON user preference config; no secrets or API keys
 
 TTS:
   --tts auto|voicevox|voicebox|kokoro|irodori|melotts|say Select TTS engine (default: auto)
@@ -739,9 +748,10 @@ function resolvedTTSEngine(text, opts) {
   const configured = opts.ttsEngine.toLowerCase();
   if (configured !== "auto" && !opts.languageRoute) return configured;
   const language = resolvedSpeechLanguage(text, opts);
+  if (configured === "auto") return preferredProviderForLanguage(language, opts.userPreferencesState);
   if (language === "ja") return "voicevox";
   if (language === "en") return "kokoro";
-  return configured === "auto" ? "say" : configured;
+  return configured;
 }
 
 function routingDiagnostic(sourceText, spokenText, opts) {
@@ -759,6 +769,7 @@ function routingDiagnostic(sourceText, spokenText, opts) {
     languageRoute: opts.languageRoute,
     chosenEngine: chosen,
     capability,
+    userPreferences: opts.userPreferences,
     fallbackReason: routingFallbackReason(chosen, effective, opts),
     summary: opts.summarizeSpeech ? "enabled" : "disabled",
     sourceCharacters: sourceText.length,

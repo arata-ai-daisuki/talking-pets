@@ -397,6 +397,12 @@ If you use `TALKING_PETS_TTS="voicebox"`, you can also set `TALKING_PETS_VOICEBO
 To force a spoken language from saved config, set `TALKING_PETS_SPEECH_LANGUAGE="ja|en|ko|zh|other"`.
 `TALKING_PETS_SAY_VOICE` is a macOS `say` voice name. Windows `System.Speech` and Linux `espeak` currently do not use this value for voice selection.
 
+To try user preferences as JSON, use [presets/preferences.local-first.json](presets/preferences.local-first.json). It stores provider priority, voice preferences, speed/quality intent, and API opt-in only. Do not put API keys or secrets in this file.
+
+```bash
+npm run monitor:node -- --once --dry-run --diagnose-routing --preferences presets/preferences.local-first.json --rollout test/fixtures/ko-zh-rollout.jsonl
+```
+
 ## Troubleshooting
 
 - `node: not found`: install Node.js 22 or later. If you only want to try macOS say, choose `4` in the installer.
