@@ -57,7 +57,9 @@ Current provider claims should stay at L1-L2 unless contributor evidence arrives
 | P1 | Kokoro.js | English local TTS | L1 supported helper | Already has helper and profile output; useful for English demo path | First run may download/load a model; warm mode may need process reuse | Ask before model download; otherwise keep on hold |
 | P1 | Irodori-TTS Server | Japanese-oriented local server / OpenAI-compatible API | L2 maintainer measured | High-quality local Japanese candidate; now has health and contribution docs | Cold start and warm synthesis were slow on the maintainer M1 test device | Collect L3 contributor data through issue #25 |
 | P2 | sherpa-onnx-node | Future local ONNX provider | L0 design-only | Cross-platform package looks promising from design notes | Needs dependency, model, vocoder, tokens, espeak data, and license confirmation | Stay design-only until Master approves dependency/model experiment |
-| P2 | API TTS | Optional cloud or remote fallback | L0 design-only | Can be fast and high quality on good networks | Privacy, cost, API key management, and local-first positioning | Keep opt-in only; do not implement by default; see `docs/research/api-tts-design-note.md` |
+| P2 | OpenAI-compatible local speech endpoint | Optional local API bridge | L0 design-only | Could reuse local self-hosted voice servers without provider-specific adapters | External runtime ownership, endpoint compatibility, auth, and generated audio cache boundaries | Keep as opt-in local design; validate config/dry-run before synthesis |
+| P2 | OpenAI Audio speech API | Optional remote API fallback | L0 design-only | Official TTS endpoint can provide high-quality voices and streaming | Text leaves machine, API key, billing, disclosure, and local-first positioning | Keep opt-in remote design; do not implement by default; see `docs/research/api-tts-design-note.md` |
+| P2 | Generic API TTS | Optional cloud or remote fallback | L0 design-only | Can cover other providers if users ask for them | Privacy, cost, API key management, and provider terms vary | Keep opt-in only; require provider-specific note before implementation |
 
 ## Capability Registry
 

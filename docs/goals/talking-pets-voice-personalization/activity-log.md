@@ -51,3 +51,13 @@ Handoff:
 Handoff:
 
 > T004 Scoutへ: Voice系LLM/API providerのopt-in境界を調査してください。remote API、OpenAI-compatible local API、secret/privacy/billingを分け、paid call/API key作成/secret保存はしないこと。
+
+### T004 Scout Result
+
+- 白瀬 怜奈: 「OpenAI-compatible local endpointとremote OpenAI TTS APIをregistry上で分けました。」
+- 歌澄 音羽: 「local endpointは外部runtime所有、remote APIはAPI key/課金/text送信/disclosure境界つきです。」
+- 相庭 愛: 「公式OpenAI TTS docsは確認しましたが、API call、API key作成、secret保存、依存追加はしていません。」
+
+Handoff:
+
+> T005 Workerへ: installer高度化へ進んでください。update、uninstall、external runtime download/install、config保持、cache削除選択、rollbackをdocsまたはdry-runで安全に見える化してください。削除やuninstall実行はしないこと。

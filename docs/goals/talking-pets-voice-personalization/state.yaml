@@ -57,7 +57,7 @@ agent_visibility:
   activity_log: "docs/goals/talking-pets-voice-personalization/activity-log.md"
   rule: "各タスクのreceiptに担当agentコメントとhandoff summaryを残す。"
 
-active_task: T004
+active_task: T005
 
 tasks:
   - id: T001
@@ -193,7 +193,7 @@ tasks:
     type: scout
     assignee: Scout
     owner_role: "白瀬 怜奈"
-    status: active
+    status: done
     reasoning_hint: high
     objective: "Voice系LLM/API providerのopt-in境界を調査し、OpenAI-compatible local API、remote API、secret/privacy/billingの設計候補を比較する。"
     depends_on:
@@ -202,18 +202,38 @@ tasks:
       - "paid API callやAPI key作成はしない。"
       - "secretを保存しない。"
     receipt:
-      result: active
-      decision: voice_api_boundary_next
-      full_outcome_complete: false
-      summary: "次はVoice系LLM/API providerのopt-in境界を調査する。remote API、OpenAI-compatible local API、secret/privacy/billingを分け、実装する場合も明示opt-inから始める。"
+      result: done
+      decision: voice_api_opt_in_boundary
+      full_outcome_complete: true
+      summary: "OpenAI-compatible local endpoint、OpenAI remote TTS API、generic Voice/API providerをregistry/docsで分けた。local endpointは外部runtime所有、remote APIはAPI key/課金/text送信/disclosure境界つきのopt-in design-onlyとして扱い、API call、secret保存、依存追加はしていない。"
       note: "notes/T004-voice-api-opt-in-boundary.md"
-      commands: []
+      changed_files:
+        - "src/provider-capabilities.js"
+        - "test/monitor.test.mjs"
+        - "docs/research/api-tts-design-note.md"
+        - "docs/research/tts-provider-comparison.md"
+        - "docs/goals/talking-pets-voice-personalization/notes/T004-voice-api-opt-in-boundary.md"
+        - "docs/goals/talking-pets-voice-personalization/activity-log.md"
+        - "docs/goals/talking-pets-voice-personalization/state.yaml"
+      commands:
+        - cmd: "node --check src/provider-capabilities.js"
+          status: pass
+        - cmd: "node --no-warnings scripts/pet-rollout-monitor.mjs --list-provider-capabilities"
+          status: pass
+        - cmd: "node --no-warnings --test"
+          status: pass
+        - cmd: "ruby -e 'require \"yaml\"; YAML.load_file(\"docs/goals/talking-pets-voice-personalization/state.yaml\"); puts \"yaml: ok\"'"
+          status: pass
+        - cmd: "npm run check:docs"
+          status: pass
+        - cmd: "CLANG_MODULE_CACHE_PATH=/private/tmp/talking-pets-clang-module-cache npm run check:all"
+          status: pass
 
   - id: T005
     type: worker
     assignee: Worker
     owner_role: "月城 奏"
-    status: queued
+    status: active
     reasoning_hint: default
     objective: "installer高度化として、update、uninstall、external runtime download/install、config保持、cache削除選択、rollbackのdocsまたはdry-runを整備する。"
     depends_on:
@@ -221,6 +241,13 @@ tasks:
     constraints:
       - "削除やuninstallを実行しない。"
       - "既存config/cacheを確認なしに変更しない。"
+    receipt:
+      result: active
+      decision: installer_update_uninstall_next
+      full_outcome_complete: false
+      summary: "次はinstaller高度化。update、uninstall、external runtime download/install、config保持、cache削除選択、rollbackをdocsまたはdry-runで安全に見える化する。"
+      note: "notes/T005-installer-update-uninstall-runtime.md"
+      commands: []
 
   - id: T006
     type: scout

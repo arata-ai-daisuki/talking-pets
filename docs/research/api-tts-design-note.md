@@ -1,15 +1,25 @@
 # API TTS Design Note
 
-Checked: 2026-06-04
+Checked: 2026-06-05
 
 This is a design-only note. No API key was used, no paid API call was made, no text was sent to an external service, no dependency was installed, and no README support claim is approved by this note.
+
+The 2026-06-05 refresh checked the official OpenAI Audio / text-to-speech docs only. OpenAI documents `POST /v1/audio/speech` for text-to-speech, including models such as `gpt-4o-mini-tts`, `tts-1`, and `tts-1-hd`, built-in voices, output formats, speed, and streaming options. This note still does not approve a live request path.
 
 ## Candidate
 
 - Provider: API TTS / cloud or remote TTS fallback
-- Public source: provider-specific source not selected yet
+- Public source: provider-specific source not selected for implementation
 - Intended role: explicit opt-in fallback for users who choose cloud or remote TTS
 - Proposed readiness level: L0 design-only / privacy-and-billing-review candidate
+
+## Candidate Split
+
+| Candidate | Registry id | Network shape | Credential shape | Current status |
+| --- | --- | --- | --- | --- |
+| OpenAI-compatible local speech endpoint | `openai-compatible-local` | User-configured localhost/LAN endpoint; local external runtime owns any model/cache | No API key by default; endpoint-specific auth remains design-only | Local opt-in design-only |
+| OpenAI Audio speech API | `openai-tts-api` | Remote OpenAI API endpoint; text leaves the machine | API key required outside the repo; billing warning required before live calls | Remote opt-in design-only |
+| Generic Voice/API provider | `voice-api` | Future provider-specific remote or local voice API | Provider-specific; must be documented before use | Approval-gated design placeholder |
 
 ## Integration Shape
 
@@ -18,6 +28,10 @@ This is a design-only note. No API key was used, no paid API call was made, no t
 - Normal install impact: none; `npm ci`, `npm run check:all`, and package checks must pass without API credentials.
 - Failure mode when provider is absent: helper reports unavailable and routing falls back to local providers or OS speech.
 - First helper PR scope: configuration validation and dry-run diagnostics only; no default network calls, no bundled provider SDK unless approved, no README support wording.
+
+For OpenAI-compatible local endpoints, the first safe implementation should look more like the existing Irodori/Voicebox health boundary than a remote API integration: validate URL shape, show whether the endpoint is configured, print what would be sent in sanitized dry-run diagnostics, and stop before synthesis until Master approves the exact local runtime.
+
+For remote OpenAI TTS, the first safe implementation should not read the API key or send text. It should only add provider-specific config names, privacy/billing warnings, and dry-run diagnostics that prove the route remains disabled unless both `apiOptIn` and an explicit provider choice are present.
 
 ## Boundaries
 
@@ -67,9 +81,10 @@ Stop and ask Master before:
 
 - choosing a specific API provider
 - adding an SDK or dependency
-- reading, storing, or validating real API credentials
+- reading, storing, validating, or logging real API credentials
 - sending text to a remote API
 - making a paid API call
+- enabling remote API routing by default
 - caching generated remote audio
 - writing README support wording
 - changing default routing
