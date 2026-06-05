@@ -165,6 +165,24 @@ tasks:
     constraints:
       - "secret値は保存しない。"
       - "API opt-inは未設定時に絶対に外部送信しない。"
+    allowed_files:
+      - "src/**"
+      - "scripts/**"
+      - "presets/**"
+      - "test/**"
+      - "docs/goals/talking-pets-feature-expansion/**"
+      - "docs/research/tts-provider-comparison.md"
+      - "README.md"
+      - "README.en.md"
+      - "package.json"
+    verify:
+      - "npm run check:config"
+      - "node --no-warnings --test"
+      - "CLANG_MODULE_CACHE_PATH=/private/tmp/talking-pets-clang-module-cache npm run check:all"
+    stop_if:
+      - "API keyやsecret値を保存する必要が出た。"
+      - "外部API送信、paid call、model downloadが必要になった。"
+      - "既存installer configを確認なしに上書きする必要が出た。"
     receipt:
       result: active
       decision: user_preference_config
@@ -177,7 +195,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "速水 光莉"
-    status: pending
+    status: queued
     reasoning_hint: default
     objective: "latency benchmark出力を機能アップデートとして見せられる形に改善する。first audio、total、RTF、device infoを表とCSVで扱う。"
     depends_on:
@@ -189,7 +207,7 @@ tasks:
     type: scout
     assignee: Scout
     owner_role: "白瀬 怜奈"
-    status: pending
+    status: queued
     reasoning_hint: high
     objective: "Voice系LLM/API providerのopt-in境界を調査し、OpenAI-compatible local API、remote API、secret/privacy/billingの設計候補を比較する。"
     depends_on:
