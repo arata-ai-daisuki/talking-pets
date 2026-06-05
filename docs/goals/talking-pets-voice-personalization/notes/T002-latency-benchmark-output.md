@@ -21,3 +21,23 @@
 - 実音声やmodel downloadが必要になったら止める。
 - 外部API callやpaid APIが必要になったら止める。
 - 1端末のlatency値を保証値として書く必要が出たら止める。
+
+## 実装結果
+
+- `scripts/latency-benchmark.mjs` に `--format json|markdown|csv` を追加。
+- benchmark summaryにdevice infoを追加。
+- dry-runで測れないfirst audioは `not_measured` として明示。
+- `scripts/latency-lines-to-table.mjs` の表カラムにfirst audio/device系を追加。
+- `docs/performance.md` にMarkdown/CSV出力と協力者報告向けの注意を追加。
+- `--runs` は正の整数だけ受け付けるようにした。
+
+## 検証
+
+- `node --check scripts/latency-benchmark.mjs`
+- `node --no-warnings --test`
+- `npm run benchmark:dry-run`
+- `npm run benchmark:latency -- --runs 2 --format markdown`
+- `npm run benchmark:latency -- --runs 2 --format csv`
+- `ruby -e 'require "yaml"; YAML.load_file("docs/goals/talking-pets-voice-personalization/state.yaml"); puts "yaml: ok"'`
+- `npm run check:docs`
+- `CLANG_MODULE_CACHE_PATH=/private/tmp/talking-pets-clang-module-cache npm run check:all`

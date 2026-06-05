@@ -75,7 +75,7 @@ function parseOptions(argv) {
 
     switch (arg) {
       case "--runs":
-        result.runs = Math.max(1, Number(takeValue()));
+        result.runs = parseRuns(takeValue());
         break;
       case "--rollout":
         result.rollout = takeValue();
@@ -111,6 +111,14 @@ Options:
   --format FORMAT json, markdown, or csv (default: json)
   --out PATH      Write the formatted summary to a file
   --help         Show this help`);
+}
+
+function parseRuns(value) {
+  const runs = Number(value);
+  if (!Number.isInteger(runs) || runs < 1) {
+    throw new Error("--runs must be a positive integer");
+  }
+  return runs;
 }
 
 function parseLatencyLine(output) {
@@ -260,5 +268,6 @@ export {
   formatSummary,
   parseLatencyLine,
   parseLatencyValue,
+  parseRuns,
   summarizeRuns,
 };

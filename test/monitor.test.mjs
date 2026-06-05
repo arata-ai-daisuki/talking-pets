@@ -35,7 +35,7 @@ import { parseArgs as parseMeloTTSArgs, safeURLForLog as safeMeloTTSURLForLog } 
 import { parseArgs as parseVoiceboxArgs, safeURLForLog } from "../scripts/tts-voicebox.mjs";
 import { formatAudioDurationSeconds, formatRealTimeFactor, latencyAudioFields, wavDurationSeconds } from "../scripts/wav-duration.mjs";
 import { csvCell, formatLatencyRows, latencyRowsFromText, parseLatencyLine as parseLatencyTableLine } from "../scripts/latency-lines-to-table.mjs";
-import { formatSummary, summarizeRuns as summarizeLatencyRuns } from "../scripts/latency-benchmark.mjs";
+import { formatSummary, parseRuns, summarizeRuns as summarizeLatencyRuns } from "../scripts/latency-benchmark.mjs";
 import { sanitizePublicOutput, stripURLQuery } from "../scripts/sanitize-public-output.mjs";
 import { forbiddenText as sanitizerForbiddenText, requiredText as sanitizerRequiredText, sample as sanitizerSample } from "../scripts/check-public-output-sanitizer.mjs";
 
@@ -334,6 +334,13 @@ test("formats latency benchmark summaries with first-audio and device fields", (
   const csv = formatSummary(summary, "csv");
   assert.match(csv, /metric,minMs,p50Ms,p95Ms,maxMs,runs,firstAudio/);
   assert.match(csv, /total,10,15/);
+});
+
+test("rejects invalid latency benchmark run counts", () => {
+  assert.equal(parseRuns("1"), 1);
+  assert.throws(() => parseRuns("0"), /positive integer/);
+  assert.throws(() => parseRuns("abc"), /positive integer/);
+  assert.throws(() => parseRuns("1.5"), /positive integer/);
 });
 
 test("sanitizes public check output before issue sharing", () => {

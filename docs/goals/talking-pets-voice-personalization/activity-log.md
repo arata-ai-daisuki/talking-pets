@@ -31,3 +31,13 @@ ProducerからJudgeへ:
 Handoff:
 
 > T002 Workerへ: 保存済みlatency benchmark output改善を新ゴールへ取り込んでください。実音声、model download、外部API callはしないこと。1端末の数字を保証値として書かず、協力者報告フォーマットとして扱ってください。
+
+### T002 Worker Result
+
+- 速水 光莉: 「latency benchmarkがJSON/Markdown/CSVで出せるようになりました。device infoも入ります。」
+- 白瀬 怜奈: 「dry-runでは音を鳴らさないので、first audioは `not_measured` と明記しています。性能保証にはしていません。」
+- 星乃 玲: 「Markdown/CSVは協力者からの報告やREADME用の下書きに使いやすい形です。」
+
+Handoff:
+
+> T003 Workerへ: 次はlocal TTS providerと言語対応を、provider registry、preferences、routing diagnostics、READMEへ接続してください。新規providerは証拠なしにsupportedとclaimせず、model downloadが必要なものはdry-run/docs境界から始めること。
