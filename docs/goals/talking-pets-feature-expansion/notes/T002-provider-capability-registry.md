@@ -40,6 +40,30 @@ provider capability registryの最小実装を追加する。
 
 - decision: `provider_capability_registry`
 - owner: `歌澄 音羽 / 言守 詞葉`
-- status: active
-- result: pending
-- next: 既存のprovider option、presets、config validator、testsを読んで、最小registryの置き場所と出力面を実装する。
+- status: done
+- result: done
+- implementation:
+  - `src/provider-capabilities.js` にprovider capability registryを追加。
+  - `scripts/pet-rollout-monitor.mjs --list-provider-capabilities` でregistryをJSON表示。
+  - `--diagnose-routing` の出力に `capability` を追加し、選ばれたproviderのstatus、languageSupport、model/API/runtime要否を表示。
+  - `test/monitor.test.mjs` でprovider-specific / fallback-only / unknownの境界を固定。
+  - `docs/research/tts-provider-comparison.md` に確認コマンドと読み方を追加。
+- changed_files:
+  - `src/provider-capabilities.js`
+  - `scripts/pet-rollout-monitor.mjs`
+  - `test/monitor.test.mjs`
+  - `package.json`
+  - `scripts/check-npm-pack.mjs`
+  - `docs/research/tts-provider-comparison.md`
+- verification:
+  - `node scripts/pet-rollout-monitor.mjs --list-provider-capabilities`
+  - `node scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --rollout test/fixtures/ko-zh-rollout.jsonl`
+  - `npm run check:all`
+- verification_result: pass
+- next: `T006 installer/update/uninstall安全設計`へ進む。既存設定、cache、external runtime、rollback境界を先に固める。
+
+## Agent Completion Comments
+
+- 歌澄 音羽: 「声の候補が一覧で見えるようになりました。次にuser preferenceでこの表を使えるようにします。」
+- 言守 詞葉: 「韓国語/中国語はfallback-onlyとして診断に出ます。これでsupport claimの言い過ぎを防げます。」
+- 白瀬 怜奈: 「依存追加、model download、API call、secret保存は発生していません。次はinstallerの破壊境界を見ます。」

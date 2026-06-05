@@ -58,7 +58,7 @@ agent_visibility:
   activity_log: "docs/goals/talking-pets-feature-expansion/activity-log.md"
   rule: "各タスクのreceiptに担当agentコメントとhandoff summaryを残す。"
 
-active_task: T002
+active_task: T006
 
 tasks:
   - id: T001
@@ -118,7 +118,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "歌澄 音羽 / 言守 詞葉"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "provider capability registryの最小実装を追加し、providerごとの対応言語、download/API要否、fallback可否、statusをCLI/dry-runから参照できるようにする。"
     depends_on:
@@ -129,14 +129,28 @@ tasks:
       - "model download、API call、secret保存をしない。"
       - "Korean / Chineseをdedicated provider supportとしてclaimしない。"
     receipt:
-      result: active
+      result: done
       decision: provider_capability_registry
-      full_outcome_complete: false
-      summary: "次はprovider capability registryの最小実装。対応provider、対応言語、status、download/API要否、fallback-only/provider-specific境界をCLIまたはdry-run diagnosticsから見えるようにする。"
+      full_outcome_complete: true
+      summary: "provider capability registryを`src/provider-capabilities.js`に追加し、`--list-provider-capabilities`と`--diagnose-routing`からprovider/language/status/download/API/runtime境界を見えるようにした。韓国語/中国語はfallback-onlyまたはunknownとして扱い、dedicated provider supportとしてclaimしない。"
       note: "notes/T002-provider-capability-registry.md"
       changed_files:
+        - "src/provider-capabilities.js"
+        - "scripts/pet-rollout-monitor.mjs"
+        - "test/monitor.test.mjs"
+        - "package.json"
+        - "scripts/check-npm-pack.mjs"
+        - "docs/research/tts-provider-comparison.md"
+        - "docs/goals/talking-pets-feature-expansion/notes/T002-provider-capability-registry.md"
+        - "docs/goals/talking-pets-feature-expansion/activity-log.md"
         - "docs/goals/talking-pets-feature-expansion/state.yaml"
-      commands: []
+      commands:
+        - cmd: "node scripts/pet-rollout-monitor.mjs --list-provider-capabilities"
+          status: pass
+        - cmd: "node scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --rollout test/fixtures/ko-zh-rollout.jsonl"
+          status: pass
+        - cmd: "npm run check:all"
+          status: pass
 
   - id: T003
     type: worker
@@ -180,7 +194,7 @@ tasks:
     type: judge
     assignee: Judge
     owner_role: "月城 奏 / 白瀬 怜奈"
-    status: pending
+    status: active
     reasoning_hint: high
     objective: "installer高度化、update、uninstall対応の最小安全導線を設計する。既存設定保持、cache削除選択、provider別external runtime、rollback、dry-run/confirmation境界を整理する。"
     depends_on:
@@ -189,3 +203,10 @@ tasks:
       - "このカードではファイル削除、uninstall実行、cache削除をしない。"
       - "既存設定を確認なしに上書きまたは削除しない。"
       - "external runtime、model cache、API secretはproviderごとの所有境界を明記する。"
+    receipt:
+      result: active
+      decision: installer_update_uninstall_safety
+      full_outcome_complete: false
+      summary: "T002のprovider capability registryを受けて、次はinstaller/update/uninstallの安全設計を行う。導入ファイル、既存設定、model cache、external runtime、API secret、rollback境界を壊さない形で整理する。"
+      note: "notes/T006-installer-update-uninstall-safety.md"
+      commands: []

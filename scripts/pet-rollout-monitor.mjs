@@ -8,6 +8,7 @@ import { dirname, isAbsolute, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { windowsPowerShellCommand } from "./audio-platform.mjs";
+import { providerCapabilityForRouting, providerCapabilitySummary } from "../src/provider-capabilities.js";
 
 const scriptPath = fileURLToPath(import.meta.url);
 const scriptDir = dirname(scriptPath);
@@ -50,6 +51,7 @@ const optionFlags = new Set([
   "--dry-run",
   "--once",
   "--list-voices",
+  "--list-provider-capabilities",
   "--profile-latency",
   "--diagnose-routing",
   "--show-private-paths",
@@ -57,6 +59,11 @@ const optionFlags = new Set([
 
 async function main(argv = process.argv.slice(2)) {
   const options = parseOptions(argv);
+
+  if (options.listProviderCapabilities) {
+    printProviderCapabilities();
+    return;
+  }
 
   if (options.listVoices) {
     listVoices(options);
@@ -155,6 +162,7 @@ function parseOptions(argv) {
     rate: 185,
     dryRun: false,
     listVoices: false,
+    listProviderCapabilities: false,
     version: false,
     once: false,
     summarizeSpeech: true,
@@ -289,6 +297,9 @@ function parseOptions(argv) {
       case "--list-voices":
         result.listVoices = true;
         break;
+      case "--list-provider-capabilities":
+        result.listProviderCapabilities = true;
+        break;
       case "--profile-latency":
         result.profileLatency = true;
         break;
@@ -363,6 +374,7 @@ TTS:
   --language-route               Route by detected language
   --no-language-route            Use the selected TTS without language routing
   --list-voices                  List voices for the selected TTS
+  --list-provider-capabilities   Print provider/language capability metadata as JSON
   --voice NAME                   macOS say voice (default: Kyoko)
   --voicebox-url URL             VOICEVOX or compatible local endpoint
   --voicebox-speaker ID          VOICEVOX speaker/style id (default: 3)
@@ -736,6 +748,7 @@ function routingDiagnostic(sourceText, spokenText, opts) {
   const detected = detectedLanguage(sourceText);
   const effective = resolvedSpeechLanguage(sourceText, opts);
   const chosen = resolvedTTSEngine(sourceText, opts);
+  const capability = compactRoutingCapability(chosen, effective);
   return {
     sourceText,
     spokenText,
@@ -745,9 +758,25 @@ function routingDiagnostic(sourceText, spokenText, opts) {
     ttsEngineConfigured: opts.ttsEngine,
     languageRoute: opts.languageRoute,
     chosenEngine: chosen,
+    capability,
     fallbackReason: routingFallbackReason(chosen, effective, opts),
     summary: opts.summarizeSpeech ? "enabled" : "disabled",
     sourceCharacters: sourceText.length,
+  };
+}
+
+function compactRoutingCapability(providerId, language) {
+  const { provider, languageSupport } = providerCapabilityForRouting(providerId, language);
+  return {
+    provider: provider?.id ?? providerId,
+    status: provider?.status ?? "unknown",
+    language,
+    languageSupport,
+    defaultRouteEligible: Boolean(provider?.defaultRouteEligible),
+    needsExternalRuntime: Boolean(provider?.needsExternalRuntime),
+    needsModelDownload: Boolean(provider?.needsModelDownload),
+    needsApiKey: Boolean(provider?.needsApiKey),
+    publicClaimLevel: provider?.publicClaimLevel ?? "unknown",
   };
 }
 
@@ -863,6 +892,10 @@ function listVoices(opts) {
   }
 }
 
+function printProviderCapabilities() {
+  console.log(JSON.stringify({ providers: providerCapabilitySummary() }, null, 2));
+}
+
 function runProcess(command, args, opts = {}) {
   const result = spawnSync(command, args, { stdio: opts.stdio ?? "ignore" });
   if (result.status === 0) return true;
@@ -941,6 +974,7 @@ export {
   detectedLanguage,
   resolvedTTSEngine,
   routingDiagnostic,
+  compactRoutingCapability,
   normalizedKey,
   processFailureMessage,
   displayPrivatePath,

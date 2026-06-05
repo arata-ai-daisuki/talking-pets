@@ -38,3 +38,13 @@ ProducerからJudgeへ:
 Handoff:
 
 > T002 Workerへ: provider capability registryの最小実装に進んでください。まずは機械可読なprovider/language/status metadataと、dry-runまたはdiagnosticsから見える導線を作ること。実装前に既存testとrelease checksの期待を崩さないこと。
+
+### T002 Worker Result
+
+- 歌澄 音羽: 「provider capability registryを`src/provider-capabilities.js`へ追加しました。CLIからprovider一覧が見えます。」
+- 言守 詞葉: 「routing diagnosticsに`capability`を入れました。fallback-onlyとprovider-specificが同じJSONで確認できます。」
+- 白瀬 怜奈: 「依存追加、model download、API call、secret保存はありません。README support claimも強めていません。」
+
+Handoff:
+
+> T006 Judgeへ: installer/update/uninstall安全設計へ進んでください。provider registryの`needsExternalRuntime`、`needsModelDownload`、`needsApiKey`を使い、既存設定・cache・external runtime・secret・rollback境界を分けてください。削除やuninstall実行はまだ行わないこと。
