@@ -41,3 +41,13 @@ Handoff:
 Handoff:
 
 > T003 Workerへ: 次はlocal TTS providerと言語対応を、provider registry、preferences、routing diagnostics、READMEへ接続してください。新規providerは証拠なしにsupportedとclaimせず、model downloadが必要なものはdry-run/docs境界から始めること。
+
+### T003 Worker Result
+
+- 歌澄 音羽: 「preferencesのprovider優先度が、routing diagnosticsの `providerSelection` として見えるようになりました。」
+- 言守 詞葉: 「候補providerごとの `supportLevel` と `selectable` を出します。未検証providerは `unknown` のままなので、対応済みclaimにはなりません。」
+- 白瀬 怜奈: 「fallback-onlyとprovider-specificの境界を守ったまま、なぜそのproviderが選ばれたかを説明できます。」
+
+Handoff:
+
+> T004 Scoutへ: Voice系LLM/API providerのopt-in境界を調査してください。remote API、OpenAI-compatible local API、secret/privacy/billingを分け、paid call/API key作成/secret保存はしないこと。

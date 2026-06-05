@@ -403,6 +403,8 @@ To try user preferences as JSON, use [presets/preferences.local-first.json](pres
 npm run monitor:node -- --once --dry-run --diagnose-routing --preferences presets/preferences.local-first.json --rollout test/fixtures/ko-zh-rollout.jsonl
 ```
 
+The `--diagnose-routing` JSON includes `providerSelection`. Use it to inspect provider priority, each candidate `supportLevel`, and the selected provider. For example, when Korean has no dedicated-provider evidence, an unverified provider stays `unknown` and `say` is selected as `fallback-only`.
+
 ## Troubleshooting
 
 - `node: not found`: install Node.js 22 or later. If you only want to try macOS say, choose `4` in the installer.
@@ -435,6 +437,12 @@ To inspect routing without playing audio, print JSON diagnostics:
 
 ```bash
 node --no-warnings scripts/pet-rollout-monitor.mjs --once --diagnose-routing --rollout test/fixtures/ko-rollout.jsonl
+```
+
+To include user preferences in the same check:
+
+```bash
+npm run monitor:node -- --once --dry-run --diagnose-routing --preferences presets/preferences.local-first.json --rollout test/fixtures/ko-zh-rollout.jsonl
 ```
 
 Experimental Node monitor:

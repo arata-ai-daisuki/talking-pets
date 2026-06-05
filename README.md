@@ -416,6 +416,8 @@ macOS安定版のSwift monitorで同じ確認をする場合は、`npm run monit
 npm run monitor:node -- --once --dry-run --diagnose-routing --preferences presets/preferences.local-first.json --rollout test/fixtures/ko-zh-rollout.jsonl
 ```
 
+`--diagnose-routing` のJSONには `providerSelection` が含まれます。ここでprovider優先度、各候補の `supportLevel`、選ばれたproviderを確認できます。例えば韓国語で専用provider証跡がない場合は、未検証providerを `unknown` として残し、`say` を `fallback-only` として選びます。
+
 ## Troubleshooting
 
 - `node: not found`: Node.js 22 以上をインストールしてください。macOS sayだけで試す場合はインストーラーで `4` を選びます。
@@ -448,6 +450,12 @@ Routingだけを確認する場合は、音声を鳴らさずにJSON診断を出
 
 ```bash
 node --no-warnings scripts/pet-rollout-monitor.mjs --once --diagnose-routing --rollout test/fixtures/ko-rollout.jsonl
+```
+
+好み設定も含めて確認する場合:
+
+```bash
+npm run monitor:node -- --once --dry-run --diagnose-routing --preferences presets/preferences.local-first.json --rollout test/fixtures/ko-zh-rollout.jsonl
 ```
 
 Node版 experimental:
