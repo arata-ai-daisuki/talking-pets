@@ -5,7 +5,7 @@ goal:
   slug: "talking-pets-voice-personalization"
   kind: recovery
   tranche: "声、言語、local TTS、Voice/API opt-in、latency、installer/update/uninstallをユーザー体験中心で進め直す。"
-  status: active
+  status: done
   oracle:
     signal: "CLI/docs/README上で、ユーザー好みの声・言語・provider選択、fallback理由、Voice/API opt-in境界、latency結果、install/update/uninstall導線が確認できる。"
     cadence: "各小PR、provider追加、preference schema変更、benchmark改善、installer改善ごと"
@@ -57,7 +57,7 @@ agent_visibility:
   activity_log: "docs/goals/talking-pets-voice-personalization/activity-log.md"
   rule: "各タスクのreceiptに担当agentコメントとhandoff summaryを残す。"
 
-active_task: T999
+active_task: null
 
 tasks:
   - id: T001
@@ -312,7 +312,7 @@ tasks:
     type: judge
     assignee: Judge
     owner_role: "相庭 愛 / 白瀬 怜奈"
-    status: active
+    status: done
     reasoning_hint: high
     objective: "声と好みの機能開発ゴールの完了監査を行い、10条件すべてが現在のmainで証拠つき達成済みか確認する。"
     depends_on:
@@ -326,9 +326,23 @@ tasks:
       - "弱い証拠で完了扱いしない。"
       - "未達条件があれば次タスクを作る。"
     receipt:
-      result: active
-      decision: final_audit_next
-      full_outcome_complete: false
-      summary: "次は10条件の完了監査。provider registry、preferences、local TTS、多言語diagnostics、Voice/API boundary、latency、docs、check:all、feature update、installer maintenanceを証拠で確認する。"
+      result: done
+      decision: goal_complete
+      full_outcome_complete: true
+      summary: "10条件を現在のmainで監査し、provider registry、preferences、local TTS provider追加/改善、多言語diagnostics、Voice/API opt-in境界、latency benchmark、README/docs、check:all、feature update、installer maintenance dry-runが証拠つきで揃っていることを確認した。"
       note: "notes/T999-final-audit.md"
-      commands: []
+      changed_files:
+        - "docs/goals/talking-pets-voice-personalization/notes/T999-final-audit.md"
+        - "docs/goals/talking-pets-voice-personalization/activity-log.md"
+        - "docs/goals/talking-pets-voice-personalization/state.yaml"
+      commands:
+        - cmd: "npm run monitor:node -- --list-provider-capabilities"
+          status: pass
+        - cmd: "npm run monitor:node -- --once --dry-run --diagnose-routing --preferences presets/preferences.local-first.json --rollout test/fixtures/ko-zh-rollout.jsonl"
+          status: pass
+        - cmd: "npm run maintenance:plan -- --uninstall --dry-run"
+          status: pass
+        - cmd: "npm run benchmark:latency -- --runs 2 --format markdown"
+          status: pass
+        - cmd: "CLANG_MODULE_CACHE_PATH=/private/tmp/talking-pets-clang-module-cache npm run check:all"
+          status: pass
