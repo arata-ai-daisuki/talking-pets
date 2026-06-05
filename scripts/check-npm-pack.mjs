@@ -9,7 +9,7 @@ import { documentAnchors, documentLinks, shouldSkip, splitTarget } from "./check
 
 const scriptPath = fileURLToPath(import.meta.url);
 const maxPackageSize = 600_000;
-const maxEntryCount = 67;
+const maxEntryCount = 68;
 const publicFixtureRollouts = new Set([
   "test/fixtures/assistant-rollout.jsonl",
   "test/fixtures/mixed-ja-en-rollout.jsonl",
@@ -61,6 +61,7 @@ const requiredPaths = [
   "scripts/check-release-readiness.mjs",
   "scripts/check-swift-cli.mjs",
   "scripts/sanitize-public-output.mjs",
+  "scripts/talking-pets-maintenance.mjs",
   "scripts/pet-rollout-monitor-node.command",
   "scripts/pet-rollout-monitor.command",
   "scripts/pet-rollout-monitor.mjs",

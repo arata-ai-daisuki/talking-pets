@@ -57,7 +57,7 @@ agent_visibility:
   activity_log: "docs/goals/talking-pets-voice-personalization/activity-log.md"
   rule: "各タスクのreceiptに担当agentコメントとhandoff summaryを残す。"
 
-active_task: T005
+active_task: T006
 
 tasks:
   - id: T001
@@ -233,7 +233,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "月城 奏"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "installer高度化として、update、uninstall、external runtime download/install、config保持、cache削除選択、rollbackのdocsまたはdry-runを整備する。"
     depends_on:
@@ -242,18 +242,45 @@ tasks:
       - "削除やuninstallを実行しない。"
       - "既存config/cacheを確認なしに変更しない。"
     receipt:
-      result: active
-      decision: installer_update_uninstall_next
-      full_outcome_complete: false
-      summary: "次はinstaller高度化。update、uninstall、external runtime download/install、config保持、cache削除選択、rollbackをdocsまたはdry-runで安全に見える化する。"
+      result: done
+      decision: maintenance_plan_dry_run
+      full_outcome_complete: true
+      summary: "update/uninstall用のdry-run maintenance planを追加した。保持される設定、削除候補、external runtime、cache、API secret境界、rollbackをMarkdown/JSONで確認でき、削除、download、config変更は実行しない。"
       note: "notes/T005-installer-update-uninstall-runtime.md"
-      commands: []
+      changed_files:
+        - "scripts/talking-pets-maintenance.mjs"
+        - "package.json"
+        - "scripts/check-npm-pack.mjs"
+        - "test/monitor.test.mjs"
+        - "docs/install-update-uninstall.md"
+        - "README.md"
+        - "README.en.md"
+        - "docs/goals/talking-pets-voice-personalization/notes/T005-installer-update-uninstall-runtime.md"
+        - "docs/goals/talking-pets-voice-personalization/activity-log.md"
+        - "docs/goals/talking-pets-voice-personalization/state.yaml"
+      commands:
+        - cmd: "node --check scripts/talking-pets-maintenance.mjs"
+          status: pass
+        - cmd: "npm run maintenance:plan -- --update --dry-run"
+          status: pass
+        - cmd: "npm run maintenance:plan -- --uninstall --dry-run --format json"
+          status: pass
+        - cmd: "node --no-warnings --test"
+          status: pass
+        - cmd: "npm run check:pack"
+          status: pass
+        - cmd: "ruby -e 'require \"yaml\"; YAML.load_file(\"docs/goals/talking-pets-voice-personalization/state.yaml\"); puts \"yaml: ok\"'"
+          status: pass
+        - cmd: "npm run check:docs"
+          status: pass
+        - cmd: "CLANG_MODULE_CACHE_PATH=/private/tmp/talking-pets-clang-module-cache npm run check:all"
+          status: pass
 
   - id: T006
     type: scout
     assignee: Scout
     owner_role: "星乃 玲"
-    status: queued
+    status: active
     reasoning_hint: default
     objective: "機能アップデートとして見えるREADME/SNS導線を整理し、協力者がlatency/provider/language報告を出しやすい形にする。"
     depends_on:
@@ -262,3 +289,10 @@ tasks:
     constraints:
       - "未検証の性能claimをしない。"
       - "outreach送信はMasterの手動判断に残す。"
+    receipt:
+      result: active
+      decision: feature_update_surface_next
+      full_outcome_complete: false
+      summary: "次は機能アップデートとして見えるREADME/SNS導線を整理する。latency、providerSelection、API boundary、maintenance dry-runを短く説明できる形にする。"
+      note: "notes/T006-feature-update-surface.md"
+      commands: []

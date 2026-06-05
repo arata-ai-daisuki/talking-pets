@@ -36,6 +36,7 @@ import { parseArgs as parseVoiceboxArgs, safeURLForLog } from "../scripts/tts-vo
 import { formatAudioDurationSeconds, formatRealTimeFactor, latencyAudioFields, wavDurationSeconds } from "../scripts/wav-duration.mjs";
 import { csvCell, formatLatencyRows, latencyRowsFromText, parseLatencyLine as parseLatencyTableLine } from "../scripts/latency-lines-to-table.mjs";
 import { formatSummary, parseRuns, summarizeRuns as summarizeLatencyRuns } from "../scripts/latency-benchmark.mjs";
+import { maintenancePlan, parseOptions as parseMaintenanceOptions } from "../scripts/talking-pets-maintenance.mjs";
 import { sanitizePublicOutput, stripURLQuery } from "../scripts/sanitize-public-output.mjs";
 import { forbiddenText as sanitizerForbiddenText, requiredText as sanitizerRequiredText, sample as sanitizerSample } from "../scripts/check-public-output-sanitizer.mjs";
 
@@ -369,6 +370,19 @@ test("rejects invalid latency benchmark run counts", () => {
   assert.throws(() => parseRuns("0"), /positive integer/);
   assert.throws(() => parseRuns("abc"), /positive integer/);
   assert.throws(() => parseRuns("1.5"), /positive integer/);
+});
+
+test("maintenance plan stays dry-run and separates runtime ownership", () => {
+  assert.throws(() => parseMaintenanceOptions(["--uninstall"]), /dry-run only/);
+  const options = parseMaintenanceOptions(["--uninstall", "--dry-run", "--format", "json"]);
+  const plan = maintenancePlan(options);
+  assert.equal(plan.action, "uninstall");
+  assert.equal(plan.dryRun, true);
+  assert.match(plan.warning, /No files/);
+  const titles = plan.sections.map(section => section.title);
+  assert.ok(titles.includes("User-managed external runtimes"));
+  assert.ok(titles.includes("Never infer"));
+  assert.ok(plan.sections.some(section => section.items.some(item => /API keys/.test(item.item))));
 });
 
 test("sanitizes public check output before issue sharing", () => {
@@ -1190,7 +1204,7 @@ test("detects npm pack scope drift", () => {
   }).join("\n"), /missing required file: test\/fixtures\/mixed-ja-en-rollout\.jsonl/);
   const completePackIssues = packIssues({
     size: 300_000,
-    entryCount: 62,
+    entryCount: 63,
     files: [
       { path: ".talking-pets.local.env.example", mode: 0o644 },
       { path: "README.md", mode: 0o644 },
@@ -1237,6 +1251,7 @@ test("detects npm pack scope drift", () => {
       { path: "scripts/check-swift-cli.mjs", mode: 0o644 },
       { path: "scripts/latency-lines-to-table.mjs", mode: 0o644 },
       { path: "scripts/sanitize-public-output.mjs", mode: 0o644 },
+      { path: "scripts/talking-pets-maintenance.mjs", mode: 0o644 },
       { path: "scripts/pet-rollout-monitor-node.command", mode: 0o755 },
       { path: "scripts/pet-rollout-monitor.command", mode: 0o755 },
       { path: "scripts/pet-rollout-monitor.mjs", mode: 0o644 },

@@ -422,6 +422,7 @@ The `--diagnose-routing` JSON includes `providerSelection`. Use it to inspect pr
 - No sound: check OS volume, selected TTS, VOICEVOX/Kokoro state, and macOS output device.
 - Missing audio command: run `npm run check:audio` and check `afplay` / `say` on macOS, PowerShell / `System.Speech` on Windows, or `aplay` / `paplay` / `ffplay` / `espeak` on Linux.
 - First Kokoro run is slow: model download is running. The default q8 model is about 92 MB, and the cache path is `~/.cache/talking-pets/transformers`.
+- Before update or uninstall: run `npm run maintenance:plan -- --update --dry-run` or `npm run maintenance:plan -- --uninstall --dry-run` to review kept config, removable candidates, external runtimes, caches, and rollback steps. This command does not delete files.
 
 ## Language And Device Limits
 

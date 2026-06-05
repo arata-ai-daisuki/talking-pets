@@ -2,7 +2,7 @@
 
 Last updated: 2026-06-05
 
-This page defines the current safe boundary for Talking Pets install, update, and uninstall work. It is a design and user guidance page. It does not run deletion commands.
+This page defines the current safe boundary for Talking Pets install, update, and uninstall work. It is a design and user guidance page. The maintenance helper below is dry-run only and does not run deletion commands.
 
 ## Ownership Boundary
 
@@ -57,7 +57,12 @@ npm run check:config
 
 ## Safe Uninstall Flow
 
-Use this as the current manual uninstall guide. Do not automate deletion until a future PR adds a dry-run helper.
+Use this as the current manual uninstall guide. The dry-run helper prints the same ownership boundary before any future automation exists.
+
+```bash
+npm run maintenance:plan -- --uninstall --dry-run
+npm run maintenance:plan -- --uninstall --dry-run --format json
+```
 
 | Action | Command example | Safety note |
 | --- | --- | --- |
@@ -68,16 +73,16 @@ Use this as the current manual uninstall guide. Do not automate deletion until a
 | Remove repo | Delete the repository folder | Only after confirming there is no local work you need. |
 | Remove external runtimes | Use each runtime's own uninstall docs | Talking Pets should not remove VOICEVOX, Irodori, Docker, Python, or API secrets for the user. |
 
-## Next Implementation Boundary
+## Dry-Run Helper
 
-A future uninstall or update command should start as dry-run only:
+The current helper is intentionally dry-run only:
 
 ```bash
-node scripts/talking-pets-maintenance.mjs --uninstall --dry-run
-node scripts/talking-pets-maintenance.mjs --update --dry-run
+npm run maintenance:plan -- --update --dry-run
+npm run maintenance:plan -- --uninstall --dry-run
 ```
 
-Minimum expected output:
+It prints:
 
 - files that would be kept
 - files that could be removed
@@ -86,4 +91,4 @@ Minimum expected output:
 - API secret locations that are unknown or user-managed
 - rollback step for any config rewrite
 
-Stop before implementation if a helper would delete files without showing the exact path first.
+Stop before adding real actions if a helper would delete files without showing the exact path first.

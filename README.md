@@ -435,6 +435,7 @@ npm run monitor:node -- --once --dry-run --diagnose-routing --preferences preset
 - 音が出ない: OSの音量、選択したTTS、VOICEVOX/Kokoroの状態、macOSの出力先を確認してください。
 - 音声再生コマンドが見つからない: `npm run check:audio` を実行し、macOSなら `afplay` / `say`、Windowsなら PowerShell / `System.Speech`、Linuxなら `aplay` / `paplay` / `ffplay` / `espeak` の状態を確認してください。
 - Kokoro初回だけ遅い: 初回モデル取得が走ります。既定の q8 モデルは約92MB級で、cache path は `~/.cache/talking-pets/transformers` です。
+- update / uninstall の前に確認したい: `npm run maintenance:plan -- --update --dry-run` または `npm run maintenance:plan -- --uninstall --dry-run` で、保持される設定、削除候補、外部runtime、cache、rollbackを確認できます。このコマンドは削除を実行しません。
 
 ## Language And Device Limits
 
