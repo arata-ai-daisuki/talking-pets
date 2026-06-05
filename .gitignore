@@ -30,3 +30,4 @@ node_modules/
 *.gguf
 PUBLIC_REPO_REVIEW_CHECKLIST.md
 local-experimental/
+docs/goals/**/.goalbuddy-board/
