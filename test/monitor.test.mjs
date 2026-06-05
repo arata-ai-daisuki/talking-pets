@@ -1204,7 +1204,7 @@ test("detects npm pack scope drift", () => {
   }).join("\n"), /missing required file: test\/fixtures\/mixed-ja-en-rollout\.jsonl/);
   const completePackIssues = packIssues({
     size: 300_000,
-    entryCount: 63,
+    entryCount: 64,
     files: [
       { path: ".talking-pets.local.env.example", mode: 0o644 },
       { path: "README.md", mode: 0o644 },
@@ -1221,6 +1221,7 @@ test("detects npm pack scope drift", () => {
       { path: "check.sh", mode: 0o755 },
       { path: "demo/index.html", mode: 0o644 },
       { path: "docs/demo/talking-pets-overlay-2026-05-28-frame.png", mode: 0o644 },
+      { path: "docs/feature-update-voice-personalization.md", mode: 0o644 },
       { path: "docs/public-repo-review-checklist.md", mode: 0o644 },
       { path: "docs/real-device-verification.md", mode: 0o644 },
       { path: "docs/release-notes-template.md", mode: 0o644 },

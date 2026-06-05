@@ -71,3 +71,9 @@ Handoff:
 Handoff:
 
 > T006 Scoutへ: 機能アップデートとして見えるREADME/SNS導線を整理してください。latency、providerSelection、API boundary、maintenance dry-runを短く説明できる形にし、未検証の性能claimはしないこと。
+
+### T006 Scout Result
+
+- 星乃 玲: 「機能アップデートまとめを `docs/feature-update-voice-personalization.md` に作りました。」
+- 相庭 愛: 「README/README.enから辿れます。X投稿下書きもありますが、投稿はMaster手動です。」
+- 白瀬 怜奈: 「性能保証、API TTS対応済み、多言語provider対応済みのような誤解は避けています。」

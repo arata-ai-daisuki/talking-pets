@@ -57,7 +57,7 @@ agent_visibility:
   activity_log: "docs/goals/talking-pets-voice-personalization/activity-log.md"
   rule: "各タスクのreceiptに担当agentコメントとhandoff summaryを残す。"
 
-active_task: T006
+active_task: T999
 
 tasks:
   - id: T001
@@ -280,7 +280,7 @@ tasks:
     type: scout
     assignee: Scout
     owner_role: "星乃 玲"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "機能アップデートとして見えるREADME/SNS導線を整理し、協力者がlatency/provider/language報告を出しやすい形にする。"
     depends_on:
@@ -290,9 +290,45 @@ tasks:
       - "未検証の性能claimをしない。"
       - "outreach送信はMasterの手動判断に残す。"
     receipt:
-      result: active
-      decision: feature_update_surface_next
-      full_outcome_complete: false
-      summary: "次は機能アップデートとして見えるREADME/SNS導線を整理する。latency、providerSelection、API boundary、maintenance dry-runを短く説明できる形にする。"
+      result: done
+      decision: feature_update_surface
+      full_outcome_complete: true
+      summary: "機能アップデートまとめを追加し、README/README.enからリンクした。latency、providerSelection、API boundary、maintenance dry-runを短く説明し、X投稿下書きも置いた。未検証性能claimやAPI/multilingual過剰claimは避けている。"
       note: "notes/T006-feature-update-surface.md"
+      changed_files:
+        - "docs/feature-update-voice-personalization.md"
+        - "README.md"
+        - "README.en.md"
+        - "docs/goals/talking-pets-voice-personalization/notes/T006-feature-update-surface.md"
+        - "docs/goals/talking-pets-voice-personalization/activity-log.md"
+        - "docs/goals/talking-pets-voice-personalization/state.yaml"
+      commands:
+        - cmd: "npm run check:docs"
+          status: pass
+        - cmd: "CLANG_MODULE_CACHE_PATH=/private/tmp/talking-pets-clang-module-cache npm run check:all"
+          status: pass
+
+  - id: T999
+    type: judge
+    assignee: Judge
+    owner_role: "相庭 愛 / 白瀬 怜奈"
+    status: active
+    reasoning_hint: high
+    objective: "声と好みの機能開発ゴールの完了監査を行い、10条件すべてが現在のmainで証拠つき達成済みか確認する。"
+    depends_on:
+      - T001
+      - T002
+      - T003
+      - T004
+      - T005
+      - T006
+    constraints:
+      - "弱い証拠で完了扱いしない。"
+      - "未達条件があれば次タスクを作る。"
+    receipt:
+      result: active
+      decision: final_audit_next
+      full_outcome_complete: false
+      summary: "次は10条件の完了監査。provider registry、preferences、local TTS、多言語diagnostics、Voice/API boundary、latency、docs、check:all、feature update、installer maintenanceを証拠で確認する。"
+      note: "notes/T999-final-audit.md"
       commands: []
