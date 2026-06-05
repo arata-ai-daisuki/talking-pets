@@ -296,7 +296,7 @@ Monitor diagnostics redact absolute paths as `<redacted path>` by default. Use `
 - Stop: press `Ctrl-C` in the terminal running the monitor.
 - Restart: run `./start-selected-tts.command` again.
 - Change config: rerun `./install.command` to recreate `.talking-pets.local.env`.
-- Uninstall local config: delete `.talking-pets.local.env`. You can also delete `node_modules/` if you no longer need it.
+- Update / uninstall: check [Install / Update / Uninstall Safety](docs/install-update-uninstall.md) for existing config, `node_modules/`, Kokoro cache, and external runtime ownership.
 
 ## Windows Experimental
 
