@@ -77,6 +77,8 @@ node scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --rollo
 
 Important reading rule: `provider-specific` means the route has provider-level evidence for that language. `fallback-only` means Talking Pets can pass text to OS speech fallback, but does not claim a dedicated TTS provider for that language. `unknown` means do not make public support claims yet.
 
+When `--preferences` is used, diagnostics also include `providerSelection`. Read it as the routing decision trace: candidates with `supportLevel: "unknown"` are kept visible but are not selected ahead of a `provider-specific` or `fallback-only` candidate. This lets contributors see why a preferred provider was skipped without upgrading the public support claim.
+
 ## Measurement Text
 
 Use short, boring sentences so provider comparisons are less about prompt content and more about runtime behavior.

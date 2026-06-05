@@ -57,7 +57,7 @@ agent_visibility:
   activity_log: "docs/goals/talking-pets-voice-personalization/activity-log.md"
   rule: "各タスクのreceiptに担当agentコメントとhandoff summaryを残す。"
 
-active_task: T003
+active_task: T004
 
 tasks:
   - id: T001
@@ -151,7 +151,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "歌澄 音羽 / 言守 詞葉"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "local TTS providerと言語対応を、provider registry、preferences、routing diagnostics、READMEに接続する次の小PRを設計・実装する。"
     depends_on:
@@ -160,18 +160,40 @@ tasks:
       - "新規providerは証拠なしにsupportedとclaimしない。"
       - "model downloadが必要な場合はdry-runまたはdocsから始める。"
     receipt:
-      result: active
-      decision: local_tts_language_next
-      full_outcome_complete: false
-      summary: "次はlocal TTS providerと言語対応を、provider registry、preferences、routing diagnostics、READMEへ接続する小PRに進む。"
+      result: done
+      decision: provider_priority_trace
+      full_outcome_complete: true
+      summary: "user preferencesのprovider優先度をrouting diagnosticsへ接続し、`providerSelection`で候補provider、supportLevel、選択可否、選ばれたproviderを確認できるようにした。未検証providerは`unknown`として残し、fallback-only/provider-specificを混同しない。"
       note: "notes/T003-local-tts-language-connection.md"
-      commands: []
+      changed_files:
+        - "src/user-preferences.js"
+        - "scripts/pet-rollout-monitor.mjs"
+        - "test/monitor.test.mjs"
+        - "README.md"
+        - "README.en.md"
+        - "docs/research/tts-provider-comparison.md"
+        - "docs/goals/talking-pets-voice-personalization/notes/T003-local-tts-language-connection.md"
+        - "docs/goals/talking-pets-voice-personalization/activity-log.md"
+        - "docs/goals/talking-pets-voice-personalization/state.yaml"
+      commands:
+        - cmd: "node --check src/user-preferences.js"
+          status: pass
+        - cmd: "node --check scripts/pet-rollout-monitor.mjs"
+          status: pass
+        - cmd: "node --no-warnings --test"
+          status: pass
+        - cmd: "node --no-warnings scripts/pet-rollout-monitor.mjs --once --dry-run --diagnose-routing --preferences presets/preferences.local-first.json --rollout test/fixtures/ko-zh-rollout.jsonl"
+          status: pass
+        - cmd: "npm run check:docs"
+          status: pass
+        - cmd: "CLANG_MODULE_CACHE_PATH=/private/tmp/talking-pets-clang-module-cache npm run check:all"
+          status: pass
 
   - id: T004
     type: scout
     assignee: Scout
     owner_role: "白瀬 怜奈"
-    status: queued
+    status: active
     reasoning_hint: high
     objective: "Voice系LLM/API providerのopt-in境界を調査し、OpenAI-compatible local API、remote API、secret/privacy/billingの設計候補を比較する。"
     depends_on:
@@ -179,6 +201,13 @@ tasks:
     constraints:
       - "paid API callやAPI key作成はしない。"
       - "secretを保存しない。"
+    receipt:
+      result: active
+      decision: voice_api_boundary_next
+      full_outcome_complete: false
+      summary: "次はVoice系LLM/API providerのopt-in境界を調査する。remote API、OpenAI-compatible local API、secret/privacy/billingを分け、実装する場合も明示opt-inから始める。"
+      note: "notes/T004-voice-api-opt-in-boundary.md"
+      commands: []
 
   - id: T005
     type: worker

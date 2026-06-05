@@ -20,7 +20,7 @@ import {
   textForSource,
 } from "../scripts/pet-rollout-monitor.mjs";
 import { providerCapability, providerLanguageSupport } from "../src/provider-capabilities.js";
-import { applyUserPreferences, loadUserPreferences, normalizeUserPreferences, preferredProviderForLanguage } from "../src/user-preferences.js";
+import { applyUserPreferences, loadUserPreferences, normalizeUserPreferences, preferredProviderForLanguage, providerPriorityTrace } from "../src/user-preferences.js";
 import { checkAudioPath } from "../scripts/check-audio-path.mjs";
 import { windowsPowerShellCommand } from "../scripts/audio-platform.mjs";
 import { displayPrivatePath, fixturePaths, redactPrivatePaths } from "../scripts/check-codex-compat.mjs";
@@ -159,6 +159,28 @@ test("loads user preferences without storing secrets or overclaiming providers",
   assert.equal(diagnostic.userPreferences.source, "presets/preferences.local-first.json");
   assert.equal(diagnostic.userPreferences.apiOptIn, false);
   assert.equal(diagnostic.userPreferences.providerPriority.zh[0], "say");
+  assert.equal(diagnostic.providerSelection.selectedProvider, "say");
+  assert.equal(diagnostic.providerSelection.selectedSupportLevel, "fallback-only");
+  assert.equal(diagnostic.providerSelection.candidates[0].supportLevel, "fallback-only");
+});
+
+test("traces provider priority without overclaiming unsupported languages", () => {
+  const state = {
+    source: "inline-test",
+    warnings: [],
+    preferences: normalizeUserPreferences({
+      providerPriority: {
+        ko: ["voicevox", "say"],
+      },
+    }).preferences,
+  };
+  const trace = providerPriorityTrace("ko", state);
+  assert.equal(trace.selectedProvider, "say");
+  assert.equal(trace.candidates[0].provider, "voicevox");
+  assert.equal(trace.candidates[0].supportLevel, "unknown");
+  assert.equal(trace.candidates[0].selectable, false);
+  assert.equal(trace.candidates[1].provider, "say");
+  assert.equal(trace.candidates[1].supportLevel, "fallback-only");
 });
 
 test("rejects unsafe or unsupported user preference values", () => {

@@ -117,14 +117,32 @@ function applyUserPreferences(options, preferencesState) {
 }
 
 function preferredProviderForLanguage(language, preferencesState) {
+  return providerPriorityTrace(language, preferencesState).selectedProvider;
+}
+
+function providerPriorityTrace(language, preferencesState) {
   const preferences = preferencesState?.preferences ?? DEFAULT_USER_PREFERENCES;
   const key = LANGUAGE_VALUES.has(language) && language !== "auto" ? language : "other";
   const priority = preferences.providerPriority[key] ?? preferences.providerPriority.other ?? ["say"];
-  for (const providerId of priority) {
+  const candidates = priority.map((providerId) => {
     const support = providerLanguageSupport(providerId, key);
-    if (["provider-specific", "fallback-only"].includes(support.level)) return providerId;
-  }
-  return priority[0] ?? "say";
+    return {
+      provider: providerId,
+      language: key,
+      supportLevel: support.level,
+      claimBoundary: support.claimBoundary,
+      selectable: ["provider-specific", "fallback-only"].includes(support.level),
+    };
+  });
+  const selected = candidates.find(candidate => candidate.selectable) ?? candidates[0];
+  return {
+    language: key,
+    source: preferencesState?.source ?? "default",
+    priority,
+    selectedProvider: selected?.provider ?? "say",
+    selectedSupportLevel: selected?.supportLevel ?? "unknown",
+    candidates,
+  };
 }
 
 function preferenceDiagnostic(preferencesState) {
@@ -162,4 +180,5 @@ export {
   normalizeUserPreferences,
   preferenceDiagnostic,
   preferredProviderForLanguage,
+  providerPriorityTrace,
 };

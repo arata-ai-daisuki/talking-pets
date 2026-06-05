@@ -9,7 +9,7 @@ import { fileURLToPath } from "node:url";
 
 import { windowsPowerShellCommand } from "./audio-platform.mjs";
 import { providerCapabilityForRouting, providerCapabilitySummary } from "../src/provider-capabilities.js";
-import { applyUserPreferences, loadUserPreferences, preferredProviderForLanguage } from "../src/user-preferences.js";
+import { applyUserPreferences, loadUserPreferences, preferredProviderForLanguage, providerPriorityTrace } from "../src/user-preferences.js";
 
 const scriptPath = fileURLToPath(import.meta.url);
 const scriptDir = dirname(scriptPath);
@@ -769,6 +769,7 @@ function routingDiagnostic(sourceText, spokenText, opts) {
     languageRoute: opts.languageRoute,
     chosenEngine: chosen,
     capability,
+    providerSelection: providerPriorityTrace(effective, opts.userPreferencesState),
     userPreferences: opts.userPreferences,
     fallbackReason: routingFallbackReason(chosen, effective, opts),
     summary: opts.summarizeSpeech ? "enabled" : "disabled",
