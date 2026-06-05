@@ -108,6 +108,9 @@ function applyUserPreferences(options, preferencesState) {
   if (options.speechLanguage === "auto" && preferences.speechLanguage !== "auto") {
     next.speechLanguage = preferences.speechLanguage;
   }
+  if (preferences.apiOptIn === true) {
+    next.apiOptIn = true;
+  }
 
   const voice = voicePreferenceFor(next.speechLanguage, preferences);
   if (voice.sayVoice && options.voice === "Kyoko") next.voice = voice.sayVoice;

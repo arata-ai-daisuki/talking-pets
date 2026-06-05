@@ -362,6 +362,24 @@ npm run monitor:node -- --tts irodori --no-language-route --irodori-url http://1
 npm run tts:irodori -- --health --url http://127.0.0.1:8088
 ```
 
+OpenAI-compatible local speech endpoint:
+
+```bash
+npm run monitor:node -- --tts openai-compatible-local --no-language-route --openai-compatible-local-url http://127.0.0.1:8089 --openai-compatible-local-model tts-1 --openai-compatible-local-voice default --skip-existing
+npm run tts:openai-compatible-local -- --health --url http://127.0.0.1:8089
+```
+
+This provider accepts only `localhost`, `127.0.0.1`, or `::1`. Remote APIs and API keys belong in a separate explicit opt-in path.
+
+OpenAI Audio speech API (explicit opt-in only):
+
+```bash
+npm run tts:openai-api -- --dry-run
+OPENAI_API_KEY="<your-api-key>" npm run monitor:node -- --tts openai-tts-api --api-opt-in --openai-tts-api-model gpt-4o-mini-tts --openai-tts-api-voice alloy --skip-existing
+```
+
+This path sends spoken text to the OpenAI API, and API billing may apply. Pass `OPENAI_API_KEY` through the environment only; do not store it in `.talking-pets.local.env`, preferences JSON, README files, issues, or logs. OpenAI's Speech endpoint is `/v1/audio/speech`, with TTS models such as `gpt-4o-mini-tts`, `tts-1`, and `tts-1-hd`, and voices such as `alloy`. See the [OpenAI Text to speech guide](https://platform.openai.com/docs/guides/text-to-speech) and [Audio API reference](https://platform.openai.com/docs/api-reference/audio/create).
+
 OS speech:
 
 ```bash
@@ -399,7 +417,7 @@ If you use `TALKING_PETS_TTS="voicebox"`, you can also set `TALKING_PETS_VOICEBO
 To force a spoken language from saved config, set `TALKING_PETS_SPEECH_LANGUAGE="ja|en|ko|zh|other"`.
 `TALKING_PETS_SAY_VOICE` is a macOS `say` voice name. Windows `System.Speech` and Linux `espeak` currently do not use this value for voice selection.
 
-To try user preferences as JSON, use [presets/preferences.local-first.json](presets/preferences.local-first.json). It stores provider priority, voice preferences, speed/quality intent, and API opt-in only. Do not put API keys or secrets in this file.
+To try user preferences as JSON, use [presets/preferences.local-first.json](presets/preferences.local-first.json). It stores provider priority, voice preferences, speed/quality intent, and API opt-in only. Do not put API keys or secrets in this file. `apiOptIn: true` is only the sending permission switch; it does not read or store the API key itself.
 
 ```bash
 npm run monitor:node -- --once --dry-run --diagnose-routing --preferences presets/preferences.local-first.json --rollout test/fixtures/ko-zh-rollout.jsonl
@@ -419,12 +437,12 @@ The `--diagnose-routing` JSON includes `providerSelection`. Use it to inspect pr
 - `[wait] Codex thread not found`: confirm Codex Desktop or Codex CLI is saving local conversation logs.
 - `[wait] rollout unreadable`: confirm the rollout JSONL path exists and whether `CODEX_HOME` points somewhere custom.
 - `--interval` / `--rate` / `--max-source-chars` errors: pass positive numeric values. `--max-source-chars` accepts only positive integers.
-- `--tts` / `--speech-language` errors: use `--tts auto|voicevox|voicebox|kokoro|irodori|say` and `--speech-language auto|ja|en|ko|zh|other`.
+- `--tts` / `--speech-language` errors: use `--tts auto|voicevox|voicebox|kokoro|irodori|openai-compatible-local|openai-tts-api|say` and `--speech-language auto|ja|en|ko|zh|other`.
 - `npm run check:config` URL / speaker / voice errors: `TALKING_PETS_VOICEVOX_URL` must be an `http://` or `https://` URL, `TALKING_PETS_VOICEVOX_SPEAKER` must be numeric, `TALKING_PETS_VOICEBOX_MODE` must be `voicevox` or `generic`, and Kokoro / say / Voicebox profile / language values must not be empty.
 - No sound: check OS volume, selected TTS, VOICEVOX/Kokoro state, and macOS output device.
 - Missing audio command: run `npm run check:audio` and check `afplay` / `say` on macOS, PowerShell / `System.Speech` on Windows, or `aplay` / `paplay` / `ffplay` / `espeak` on Linux.
 - First Kokoro run is slow: model download is running. The default q8 model is about 92 MB, and the cache path is `~/.cache/talking-pets/transformers`.
-- Before update or uninstall: run `npm run maintenance:plan -- --update --dry-run` or `npm run maintenance:plan -- --uninstall --dry-run` to review kept config, removable candidates, external runtimes, caches, and rollback steps. This command does not delete files.
+- Before update or uninstall: run `npm run maintenance:plan -- --update --dry-run` or `npm run maintenance:plan -- --uninstall --dry-run` to review kept config, removable candidates, external runtimes, caches, and rollback steps. To run the safe update path, use `npm run maintenance:plan -- --update`. Uninstall is still dry-run only.
 
 ## Language And Device Limits
 

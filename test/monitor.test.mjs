@@ -32,6 +32,8 @@ import { forbiddenArtifactLabel, githubTemplateIssues, issueFieldBlock, localCon
 import { documentAnchors, documentLinks, shouldSkip, stripHtmlComments } from "../scripts/check-markdown-links.mjs";
 import { KOKORO_VOICES, parseArgs as parseKokoroArgs } from "../scripts/tts-kokoro.mjs";
 import { parseArgs as parseMeloTTSArgs, safeURLForLog as safeMeloTTSURLForLog } from "../scripts/tts-melotts.mjs";
+import { assertLocalURL as assertOpenAICompatibleLocalURL, parseArgs as parseOpenAICompatibleLocalArgs, safeURLForLog as safeOpenAICompatibleLocalURLForLog } from "../scripts/tts-openai-compatible-local.mjs";
+import { BUILT_IN_VOICES as OPENAI_TTS_VOICES, parseArgs as parseOpenAIAPIArgs, redactCredentials as redactOpenAIAPICredentials, requireApiKey as requireOpenAIAPIKey, requireApiOptIn as requireOpenAIAPIOptIn, safeURLForLog as safeOpenAIAPIURLForLog } from "../scripts/tts-openai-api.mjs";
 import { parseArgs as parseVoiceboxArgs, safeURLForLog } from "../scripts/tts-voicebox.mjs";
 import { formatAudioDurationSeconds, formatRealTimeFactor, latencyAudioFields, wavDurationSeconds } from "../scripts/wav-duration.mjs";
 import { csvCell, formatLatencyRows, latencyRowsFromText, parseLatencyLine as parseLatencyTableLine } from "../scripts/latency-lines-to-table.mjs";
@@ -131,9 +133,11 @@ test("exposes provider capabilities without overclaiming language support", () =
   assert.equal(providerLanguageSupport("kokoro", "en").level, "provider-specific");
   assert.equal(providerCapability("voice-api").needsApiKey, true);
   assert.equal(providerCapability("openai-compatible-local").local, true);
+  assert.equal(providerCapability("openai-compatible-local").status, "optional-local-manual");
   assert.equal(providerCapability("openai-compatible-local").needsExternalRuntime, true);
   assert.equal(providerCapability("openai-compatible-local").needsApiKey, false);
   assert.equal(providerCapability("openai-tts-api").local, false);
+  assert.equal(providerCapability("openai-tts-api").status, "optional-remote-manual");
   assert.equal(providerCapability("openai-tts-api").needsApiKey, true);
   assert.equal(providerLanguageSupport("openai-tts-api", "en").level, "unknown");
   assert.equal(providerCapability("sherpa-onnx-node").status, "design-only");
@@ -169,6 +173,22 @@ test("loads user preferences without storing secrets or overclaiming providers",
   assert.equal(diagnostic.providerSelection.selectedProvider, "say");
   assert.equal(diagnostic.providerSelection.selectedSupportLevel, "fallback-only");
   assert.equal(diagnostic.providerSelection.candidates[0].supportLevel, "fallback-only");
+});
+
+test("applies explicit API opt-in from preferences without storing secrets", () => {
+  const dir = mkdtempSync(join(tmpdir(), "talking-pets-preferences-"));
+  const path = join(dir, "preferences.json");
+  writeFileSync(path, JSON.stringify({
+    schemaVersion: 1,
+    apiOptIn: true,
+    providerPriority: { en: ["openai-tts-api", "say"] },
+  }));
+  const state = loadUserPreferences(path);
+  const options = applyUserPreferences(parseOptions(["--tts", "openai-tts-api"]), state);
+
+  assert.equal(options.apiOptIn, true);
+  assert.equal(options.userPreferences.apiOptIn, true);
+  assert.equal(state.preferences.providerPriority.en[0], "openai-tts-api");
 });
 
 test("traces provider priority without overclaiming unsupported languages", () => {
@@ -372,8 +392,9 @@ test("rejects invalid latency benchmark run counts", () => {
   assert.throws(() => parseRuns("1.5"), /positive integer/);
 });
 
-test("maintenance plan stays dry-run and separates runtime ownership", () => {
+test("maintenance keeps uninstall dry-run and allows update execution", () => {
   assert.throws(() => parseMaintenanceOptions(["--uninstall"]), /dry-run only/);
+  assert.equal(parseMaintenanceOptions(["--update"]).dryRun, false);
   const options = parseMaintenanceOptions(["--uninstall", "--dry-run", "--format", "json"]);
   const plan = maintenancePlan(options);
   assert.equal(plan.action, "uninstall");
@@ -632,6 +653,112 @@ test("monitor exposes MeloTTS health-only list path", () => {
   });
   assert.equal(configured.status, 0);
   assert.doesNotMatch(configured.stderr, /not_configured/);
+});
+
+test("OpenAI-compatible local helper accepts only localhost endpoints", () => {
+  assert.deepEqual(parseOpenAICompatibleLocalArgs([
+    "--health",
+    "--url", "http://127.0.0.1:8089",
+    "--model", "local-tts",
+    "--voice", "default",
+  ]), {
+    health: true,
+    url: "http://127.0.0.1:8089",
+    model: "local-tts",
+    voice: "default",
+  });
+  assert.doesNotThrow(() => assertOpenAICompatibleLocalURL("http://localhost:8089"));
+  assert.throws(() => assertOpenAICompatibleLocalURL("https://api.openai.com"), /only accepts localhost URLs/);
+  assert.equal(safeOpenAICompatibleLocalURLForLog("http://127.0.0.1:8089/v1/audio/speech?input=secret#frag"), "http://127.0.0.1:8089/v1/audio/speech");
+});
+
+test("monitor exposes OpenAI-compatible local manual provider path", () => {
+  const options = parseOptions([
+    "--tts", "openai-compatible-local",
+    "--openai-compatible-local-url", "http://127.0.0.1:8089",
+    "--openai-compatible-local-model", "local-tts",
+    "--openai-compatible-local-voice", "aria",
+    "--openai-compatible-local-format", "wav",
+  ]);
+
+  assert.equal(options.ttsEngine, "openai-compatible-local");
+  assert.equal(options.openaiCompatibleLocalURL, "http://127.0.0.1:8089");
+  assert.equal(options.openaiCompatibleLocalModel, "local-tts");
+  assert.equal(options.openaiCompatibleLocalVoice, "aria");
+  assert.equal(options.openaiCompatibleLocalFormat, "wav");
+
+  const remote = spawnSync(process.execPath, ["--no-warnings", "scripts/tts-openai-compatible-local.mjs", "--health", "--url", "https://api.openai.com"], {
+    encoding: "utf8",
+  });
+  assert.equal(remote.status, 2);
+  assert.match(remote.stderr, /only accepts localhost URLs/);
+  assert.doesNotMatch(remote.stderr, /at parseArgs/);
+});
+
+test("OpenAI API helper is opt-in and keeps credentials out of diagnostics", () => {
+  assert.deepEqual(parseOpenAIAPIArgs([
+    "--api-opt-in",
+    "--dry-run",
+    "--model", "gpt-4o-mini-tts",
+    "--voice", "alloy",
+    "--format", "wav",
+  ]), {
+    "api-opt-in": true,
+    "dry-run": true,
+    model: "gpt-4o-mini-tts",
+    voice: "alloy",
+    format: "wav",
+  });
+  assert.ok(OPENAI_TTS_VOICES.includes("alloy"));
+  assert.throws(() => requireOpenAIAPIOptIn({}), /remote OpenAI TTS is disabled/);
+  assert.throws(() => requireOpenAIAPIKey(""), /OPENAI_API_KEY/);
+  assert.equal(requireOpenAIAPIKey(" sk-test "), "sk-test");
+  assert.equal(safeOpenAIAPIURLForLog("https://api.openai.com/v1/audio/speech?input=secret#frag"), "https://api.openai.com/v1/audio/speech");
+  assert.equal(redactOpenAIAPICredentials("Authorization: Bearer sk-private"), "Authorization: Bearer <redacted credential>");
+
+  const blocked = spawnSync(process.execPath, ["--no-warnings", "scripts/tts-openai-api.mjs", "--text", "hello"], {
+    encoding: "utf8",
+    env: { ...process.env, OPENAI_API_KEY: "" },
+  });
+  assert.equal(blocked.status, 2);
+  assert.match(blocked.stderr, /pass --api-opt-in/);
+  assert.doesNotMatch(blocked.stderr, /hello/);
+
+  const dryRun = spawnSync(process.execPath, ["--no-warnings", "scripts/tts-openai-api.mjs", "--dry-run"], {
+    encoding: "utf8",
+    env: { ...process.env, OPENAI_API_KEY: "" },
+  });
+  assert.equal(dryRun.status, 0);
+  assert.match(dryRun.stdout, /"dryRun": true/);
+  assert.match(dryRun.stdout, /"requiresApiKeyEnv": "OPENAI_API_KEY"/);
+});
+
+test("monitor exposes OpenAI API provider only as explicit opt-in", () => {
+  const options = parseOptions([
+    "--tts", "openai-tts-api",
+    "--api-opt-in",
+    "--openai-tts-api-url", "https://api.openai.com",
+    "--openai-tts-api-model", "gpt-4o-mini-tts",
+    "--openai-tts-api-voice", "alloy",
+    "--openai-tts-api-format", "wav",
+    "--openai-tts-api-instructions", "Speak warmly.",
+  ]);
+
+  assert.equal(options.ttsEngine, "openai-tts-api");
+  assert.equal(options.apiOptIn, true);
+  assert.equal(options.openaiTTSAPIURL, "https://api.openai.com");
+  assert.equal(options.openaiTTSAPIModel, "gpt-4o-mini-tts");
+  assert.equal(options.openaiTTSAPIVoice, "alloy");
+  assert.equal(options.openaiTTSAPIFormat, "wav");
+  assert.equal(options.openaiTTSAPIInstructions, "Speak warmly.");
+
+  const list = spawnSync(process.execPath, ["--no-warnings", "scripts/pet-rollout-monitor.mjs", "--tts", "openai-tts-api", "--list-voices"], {
+    encoding: "utf8",
+    env: { ...process.env, OPENAI_API_KEY: "" },
+  });
+  assert.equal(list.status, 0);
+  assert.match(list.stdout, /"provider": "openai-tts-api"/);
+  assert.match(list.stdout, /"alloy"/);
 });
 
 test("detects release readiness package and workflow drift", () => {
@@ -1236,6 +1363,7 @@ test("detects npm pack scope drift", () => {
       { path: "presets/examples/ko-say-fallback.env", mode: 0o644 },
       { path: "presets/examples/privacy-first-say.env", mode: 0o644 },
       { path: "presets/examples/zh-say-fallback.env", mode: 0o644 },
+      { path: "presets/preferences.local-first.json", mode: 0o644 },
       { path: "presets/speech-style.json", mode: 0o644 },
       { path: "presets/voices.json", mode: 0o644 },
       { path: "scripts/audio-platform.mjs", mode: 0o644 },
@@ -1259,6 +1387,8 @@ test("detects npm pack scope drift", () => {
       { path: "scripts/pet-rollout-monitor.swift", mode: 0o644 },
       { path: "scripts/tts-kokoro.mjs", mode: 0o644 },
       { path: "scripts/tts-voicebox.mjs", mode: 0o644 },
+      { path: "scripts/tts-openai-compatible-local.mjs", mode: 0o644 },
+      { path: "scripts/tts-openai-api.mjs", mode: 0o644 },
       { path: "scripts/tts-melotts.mjs", mode: 0o644 },
       { path: "scripts/wav-duration.mjs", mode: 0o644 },
       { path: "src/talking-pet-mvp.js", mode: 0o644 },

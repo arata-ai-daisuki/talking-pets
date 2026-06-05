@@ -925,3 +925,25 @@
 - `docs/goals/talking-pets-routing-diagnostics/` を追加し、routing diagnostics の設計・検証receiptを保存した。実装本体はPR1で保存済み。
 - `docs/goals/talking-pets-sherpa-onnx-design/` と `docs/research/sherpa-onnx-design.md` を追加し、`sherpa-onnx-node` を次のlocal TTS候補として設計だけ行った。依存追加、model download、API callはしていない。
 - npm cache権限問題のため一時的に静的看板を使ったが、その後 `npx goalbuddy board <absolute-goal-dir>` で local hub に `growth-latency-wave`、`routing-diagnostics`、`sherpa-onnx-design` を登録できることを確認した。
+
+## 2026-06-05 OpenAI-Compatible Local Speech Provider
+
+- `scripts/tts-openai-compatible-local.mjs` を追加し、OpenAI互換の `/v1/audio/speech` を持つローカル音声endpointを手動選択providerとして呼べるようにした。
+- このproviderは `localhost` / `127.0.0.1` / `::1` のみ許可する。リモートAPI、API key、課金の可能性がある経路は次のAPI opt-in実装として分離する。
+- `scripts/pet-rollout-monitor.mjs` に `--tts openai-compatible-local` と `--openai-compatible-local-url` / `model` / `voice` / `format` を追加した。既定の自動ルーティングには入れていない。
+- package / pack / release readiness / README / README.en / unit test を更新し、新providerがsyntax checkと公開pack検査に残るようにした。
+
+## 2026-06-05 Remote OpenAI TTS API Opt-In
+
+- `scripts/tts-openai-api.mjs` を追加し、OpenAI Audio speech API を `--api-opt-in` 必須のremote providerとして呼べるようにした。
+- `OPENAI_API_KEY` は環境変数からのみ読む。preferences JSON、`.talking-pets.local.env`、docs、fixturesにはsecret値を保存しない。
+- `scripts/pet-rollout-monitor.mjs` に `--tts openai-tts-api`、`--api-opt-in`、`--openai-tts-api-model` / `voice` / `format` / `instructions` を追加した。既定の自動ルーティングには入れていない。
+- API opt-inがない場合は送信せず、remote API routeでは失敗時に自動fallbackしない。text送信、課金、AI音声disclosureの境界を明示するため。
+- OpenAI docs上の Speech endpoint `/v1/audio/speech`、`gpt-4o-mini-tts`、built-in voice群をREADMEに記録した。
+
+## 2026-06-05 Maintenance Update Execution
+
+- `scripts/talking-pets-maintenance.mjs --update` をdry-run専用から実処理へ進めた。
+- 実処理は `.talking-pets.local.env` がある場合の `.talking-pets.local.env.backup` 作成、`npm ci`、主要shell scriptの実行bit再設定に限定した。
+- `--uninstall` は引き続き `--dry-run` 必須にした。node_modules、cache、外部runtime、API secretの削除や推測は行わない。
+- README / README.en / `docs/install-update-uninstall.md` / unit test を新しい境界に合わせた。
