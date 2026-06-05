@@ -50,6 +50,8 @@ const requiredFiles = [
   "scripts/pet-rollout-monitor.swift",
   "scripts/tts-kokoro.mjs",
   "scripts/tts-voicebox.mjs",
+  "scripts/tts-openai-compatible-local.mjs",
+  "scripts/tts-openai-api.mjs",
   "scripts/tts-melotts.mjs",
   "scripts/audio-platform.mjs",
   "scripts/check-audio-path.mjs",
@@ -215,7 +217,7 @@ function main() {
   checkTextContains("README.md", "既知の `TALKING_PETS_*` キー");
   checkTextContains("README.md", "生成音声、録画、archive、macOS metadata、ローカルSQLite DB名、モデルファイル名");
   checkTextContains("README.md", "ローカルSQLite DB名");
-  checkTextContains("README.md", "--tts auto|voicevox|voicebox|kokoro|irodori|say");
+  checkTextContains("README.md", "--tts auto|voicevox|voicebox|kokoro|irodori|openai-compatible-local|openai-tts-api|say");
   checkTextContains("README.md", "--speech-language auto|ja|en|ko|zh|other");
   checkTextContains("README.md", "--max-source-chars");
   checkTextContains("README.md", "--show-private-paths");
@@ -289,7 +291,7 @@ function main() {
   checkTextContains("README.en.md", "known `TALKING_PETS_*` keys");
   checkTextContains("README.en.md", "recording names, archive names, macOS metadata names");
   checkTextContains("README.en.md", "local SQLite DB names");
-  checkTextContains("README.en.md", "--tts auto|voicevox|voicebox|kokoro|irodori|say");
+  checkTextContains("README.en.md", "--tts auto|voicevox|voicebox|kokoro|irodori|openai-compatible-local|openai-tts-api|say");
   checkTextContains("README.en.md", "--speech-language auto|ja|en|ko|zh|other");
   checkTextContains("README.en.md", "--max-source-chars");
   checkTextContains("README.en.md", "--show-private-paths");
@@ -974,7 +976,7 @@ function main() {
   checkTextContains("test/monitor.test.mjs", "requires installer config checks on their native platforms");
   checkTextContains("test/monitor.test.mjs", "keeps installer output safe for public evidence");
   checkTextContains("test/monitor.test.mjs", "validates local env values before startup");
-  checkTextContains("scripts/pet-rollout-monitor.mjs", "--tts auto|voicevox|voicebox|kokoro|irodori|melotts|say");
+  checkTextContains("scripts/pet-rollout-monitor.mjs", "--tts auto|voicevox|voicebox|kokoro|irodori|openai-compatible-local|openai-tts-api|melotts|say");
   checkTextContains("scripts/pet-rollout-monitor.swift", "choiceValue(\"--tts\"");
   checkTextContains("scripts/pet-rollout-monitor.swift", "choiceValue(\"--speech-language\"");
   checkTextContains("scripts/pet-rollout-monitor.mjs", "\"zh\"");
@@ -1536,6 +1538,8 @@ function packageIssues(pkg) {
     "tts:kokoro",
     "tts:voicebox",
     "tts:voicevox",
+    "tts:openai-compatible-local",
+    "tts:openai-api",
     "tts:melotts",
   ];
   for (const script of requiredScripts) {
@@ -1570,6 +1574,8 @@ function packageIssues(pkg) {
     "scripts/pet-rollout-monitor.mjs",
     "scripts/tts-kokoro.mjs",
     "scripts/tts-voicebox.mjs",
+    "scripts/tts-openai-compatible-local.mjs",
+    "scripts/tts-openai-api.mjs",
     "scripts/tts-melotts.mjs",
     "scripts/check-node-runtime.mjs",
     "scripts/check-codex-compat.mjs",

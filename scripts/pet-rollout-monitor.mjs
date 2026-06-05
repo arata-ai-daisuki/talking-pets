@@ -27,6 +27,15 @@ const optionFlags = new Set([
   "--irodori-voice",
   "--irodori-model",
   "--irodori-format",
+  "--openai-compatible-local-url",
+  "--openai-compatible-local-model",
+  "--openai-compatible-local-voice",
+  "--openai-compatible-local-format",
+  "--openai-tts-api-url",
+  "--openai-tts-api-model",
+  "--openai-tts-api-voice",
+  "--openai-tts-api-format",
+  "--openai-tts-api-instructions",
   "--melotts-url",
   "--melotts-command",
   "--melotts-health-arg",
@@ -51,6 +60,8 @@ const optionFlags = new Set([
   "--skip-existing",
   "--no-summary",
   "--dry-run",
+  "--api-opt-in",
+  "--no-api-opt-in",
   "--once",
   "--list-voices",
   "--list-provider-capabilities",
@@ -151,6 +162,15 @@ function parseOptions(argv) {
     irodoriVoice: "none",
     irodoriModel: "irodori-tts",
     irodoriFormat: "wav",
+    openaiCompatibleLocalURL: "http://127.0.0.1:8089",
+    openaiCompatibleLocalModel: "tts-1",
+    openaiCompatibleLocalVoice: "default",
+    openaiCompatibleLocalFormat: "wav",
+    openaiTTSAPIURL: "https://api.openai.com",
+    openaiTTSAPIModel: "gpt-4o-mini-tts",
+    openaiTTSAPIVoice: "alloy",
+    openaiTTSAPIFormat: "wav",
+    openaiTTSAPIInstructions: null,
     melottsURL: null,
     melottsCommand: null,
     melottsHealthArg: null,
@@ -165,6 +185,7 @@ function parseOptions(argv) {
     preferencesPath: null,
     languageRoute: false,
     rate: 185,
+    apiOptIn: false,
     dryRun: false,
     listVoices: false,
     listProviderCapabilities: false,
@@ -204,7 +225,7 @@ function parseOptions(argv) {
         result.voice = takeValue();
         break;
       case "--tts":
-        result.ttsEngine = choiceValue("--tts", takeValue(), ["auto", "voicevox", "voicebox", "kokoro", "irodori", "melotts", "say"]);
+        result.ttsEngine = choiceValue("--tts", takeValue(), ["auto", "voicevox", "voicebox", "kokoro", "irodori", "openai-compatible-local", "openai-tts-api", "melotts", "say"]);
         break;
       case "--kokoro-voice":
         result.kokoroVoice = takeValue();
@@ -226,6 +247,33 @@ function parseOptions(argv) {
         break;
       case "--irodori-format":
         result.irodoriFormat = takeValue();
+        break;
+      case "--openai-compatible-local-url":
+        result.openaiCompatibleLocalURL = takeValue();
+        break;
+      case "--openai-compatible-local-model":
+        result.openaiCompatibleLocalModel = takeValue();
+        break;
+      case "--openai-compatible-local-voice":
+        result.openaiCompatibleLocalVoice = takeValue();
+        break;
+      case "--openai-compatible-local-format":
+        result.openaiCompatibleLocalFormat = takeValue();
+        break;
+      case "--openai-tts-api-url":
+        result.openaiTTSAPIURL = takeValue();
+        break;
+      case "--openai-tts-api-model":
+        result.openaiTTSAPIModel = takeValue();
+        break;
+      case "--openai-tts-api-voice":
+        result.openaiTTSAPIVoice = takeValue();
+        break;
+      case "--openai-tts-api-format":
+        result.openaiTTSAPIFormat = takeValue();
+        break;
+      case "--openai-tts-api-instructions":
+        result.openaiTTSAPIInstructions = takeValue();
         break;
       case "--melotts-url":
         result.melottsURL = takeValue();
@@ -298,6 +346,12 @@ function parseOptions(argv) {
         break;
       case "--dry-run":
         result.dryRun = true;
+        break;
+      case "--api-opt-in":
+        result.apiOptIn = true;
+        break;
+      case "--no-api-opt-in":
+        result.apiOptIn = false;
         break;
       case "--once":
         result.once = true;
@@ -379,7 +433,7 @@ Speech:
   --preferences PATH             JSON user preference config; no secrets or API keys
 
 TTS:
-  --tts auto|voicevox|voicebox|kokoro|irodori|melotts|say Select TTS engine (default: auto)
+  --tts auto|voicevox|voicebox|kokoro|irodori|openai-compatible-local|openai-tts-api|melotts|say Select TTS engine (default: auto)
   --language-route               Route by detected language
   --no-language-route            Use the selected TTS without language routing
   --list-voices                  List voices for the selected TTS
@@ -390,6 +444,14 @@ TTS:
   --kokoro-voice ID              Kokoro voice id (default: af_heart)
   --irodori-url URL              Irodori-TTS-Server URL (default: http://127.0.0.1:8088)
   --irodori-voice ID             Irodori voice id (default: none)
+  --openai-compatible-local-url URL    Local OpenAI-compatible speech URL (localhost only; default: http://127.0.0.1:8089)
+  --openai-compatible-local-model ID   Local OpenAI-compatible speech model (default: tts-1)
+  --openai-compatible-local-voice ID   Local OpenAI-compatible speech voice (default: default)
+  --api-opt-in                  Allow explicit remote API TTS when selected; text leaves this machine and billing may apply
+  --openai-tts-api-url URL      Remote OpenAI-compatible API base URL (default: https://api.openai.com)
+  --openai-tts-api-model ID     OpenAI speech model (default: gpt-4o-mini-tts)
+  --openai-tts-api-voice ID     OpenAI speech voice (default: alloy)
+  --openai-tts-api-format ID    OpenAI speech format (default: wav)
   --melotts-url URL              MeloTTS external runtime health URL
   --melotts-command PATH         MeloTTS external health command
   --melotts-health-arg ARG       MeloTTS health command arg (default: helper default)
@@ -727,6 +789,10 @@ function speak(text, opts) {
     if (!speakWithKokoro(text, opts)) speakWithFallback(text, opts, "Kokoro");
   } else if (engine === "irodori") {
     if (!speakWithIrodori(text, opts)) speakWithFallback(text, opts, "Irodori");
+  } else if (engine === "openai-compatible-local") {
+    if (!speakWithOpenAICompatibleLocal(text, opts)) speakWithFallback(text, opts, "OpenAI-compatible local speech");
+  } else if (engine === "openai-tts-api") {
+    speakWithOpenAITTSAPI(text, opts);
   } else if (engine === "melotts") {
     console.error("[tts-error] MeloTTS is health-only in this build; use --tts melotts --list-voices for external runtime health checks");
   } else if (engine === "voicebox" || engine === "voicevox") {
@@ -850,6 +916,42 @@ function speakWithIrodori(text, opts) {
   ]);
 }
 
+function speakWithOpenAICompatibleLocal(text, opts) {
+  const scriptPath = join(scriptDir, "tts-openai-compatible-local.mjs");
+  return runProcess(process.execPath, [
+    scriptPath,
+    "--text", text,
+    "--url", opts.openaiCompatibleLocalURL,
+    "--model", opts.openaiCompatibleLocalModel,
+    "--voice", opts.openaiCompatibleLocalVoice,
+    "--format", opts.openaiCompatibleLocalFormat,
+    "--play",
+  ]);
+}
+
+function speakWithOpenAITTSAPI(text, opts) {
+  if (!opts.apiOptIn) {
+    console.error("[tts-error] OpenAI TTS API requires --api-opt-in or preferences.apiOptIn=true; text would leave this machine and API billing may apply");
+    return;
+  }
+
+  const scriptPath = join(scriptDir, "tts-openai-api.mjs");
+  const args = [
+    scriptPath,
+    "--api-opt-in",
+    "--text", text,
+    "--url", opts.openaiTTSAPIURL,
+    "--model", opts.openaiTTSAPIModel,
+    "--voice", opts.openaiTTSAPIVoice,
+    "--format", opts.openaiTTSAPIFormat,
+    "--play",
+  ];
+  if (opts.openaiTTSAPIInstructions) args.push("--instructions", opts.openaiTTSAPIInstructions);
+  if (!runProcess(process.execPath, args)) {
+    console.error("[tts-error] OpenAI TTS API failed; not falling back automatically because this is an explicit remote API path");
+  }
+}
+
 function speakWithVoicebox(text, opts) {
   const scriptPath = join(scriptDir, "tts-voicebox.mjs");
   const args = [
@@ -887,6 +989,10 @@ function listVoices(opts) {
     runAndPrint(process.execPath, [join(scriptDir, "tts-kokoro.mjs"), "--list-voices", "--dtype", opts.kokoroDtype, "--device", opts.kokoroDevice]);
   } else if (opts.ttsEngine === "irodori") {
     runAndPrint(process.execPath, [join(scriptDir, "tts-irodori.mjs"), "--health", "--url", opts.irodoriURL]);
+  } else if (opts.ttsEngine === "openai-compatible-local") {
+    runAndPrint(process.execPath, [join(scriptDir, "tts-openai-compatible-local.mjs"), "--health", "--url", opts.openaiCompatibleLocalURL]);
+  } else if (opts.ttsEngine === "openai-tts-api") {
+    runAndPrint(process.execPath, [join(scriptDir, "tts-openai-api.mjs"), "--list-voices"]);
   } else if (opts.ttsEngine === "melotts") {
     const args = [join(scriptDir, "tts-melotts.mjs"), "--health"];
     if (opts.melottsURL) args.push("--url", opts.melottsURL);

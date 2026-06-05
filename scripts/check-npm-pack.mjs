@@ -9,7 +9,7 @@ import { documentAnchors, documentLinks, shouldSkip, splitTarget } from "./check
 
 const scriptPath = fileURLToPath(import.meta.url);
 const maxPackageSize = 600_000;
-const maxEntryCount = 69;
+const maxEntryCount = 71;
 const publicFixtureRollouts = new Set([
   "test/fixtures/assistant-rollout.jsonl",
   "test/fixtures/mixed-ja-en-rollout.jsonl",
@@ -47,6 +47,7 @@ const requiredPaths = [
   "presets/examples/ko-say-fallback.env",
   "presets/examples/privacy-first-say.env",
   "presets/examples/zh-say-fallback.env",
+  "presets/preferences.local-first.json",
   "presets/speech-style.json",
   "presets/voices.json",
   "scripts/audio-platform.mjs",
@@ -69,6 +70,8 @@ const requiredPaths = [
   "scripts/pet-rollout-monitor.swift",
   "scripts/tts-kokoro.mjs",
   "scripts/tts-voicebox.mjs",
+  "scripts/tts-openai-compatible-local.mjs",
+  "scripts/tts-openai-api.mjs",
   "scripts/tts-melotts.mjs",
   "src/talking-pet-mvp.js",
   "start-selected-tts.command",

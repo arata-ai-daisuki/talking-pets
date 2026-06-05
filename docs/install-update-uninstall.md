@@ -2,7 +2,7 @@
 
 Last updated: 2026-06-05
 
-This page defines the current safe boundary for Talking Pets install, update, and uninstall work. It is a design and user guidance page. The maintenance helper below is dry-run only and does not run deletion commands.
+This page defines the current safe boundary for Talking Pets install, update, and uninstall work. The maintenance helper can run the safe update path, but uninstall remains dry-run only and does not run deletion commands.
 
 ## Ownership Boundary
 
@@ -35,20 +35,26 @@ test -f .talking-pets.local.env && echo "config exists"
 cp .talking-pets.local.env .talking-pets.local.env.backup
 ```
 
-3. Update repo files or reinstall dependencies:
+3. Update repo files if needed, then reinstall dependencies:
 
 ```bash
 npm ci
 npm run check:all
 ```
 
-4. If you rerun an installer, compare the config before replacing a working setup:
+4. Or run the safe update helper, which backs up `.talking-pets.local.env` when present, runs `npm ci`, and refreshes executable script bits:
+
+```bash
+npm run maintenance:plan -- --update
+```
+
+5. If you rerun an installer, compare the config before replacing a working setup:
 
 ```bash
 diff -u .talking-pets.local.env.backup .talking-pets.local.env
 ```
 
-5. Recheck the selected provider:
+6. Recheck the selected provider:
 
 ```bash
 npm run monitor:node -- --list-provider-capabilities
@@ -73,16 +79,22 @@ npm run maintenance:plan -- --uninstall --dry-run --format json
 | Remove repo | Delete the repository folder | Only after confirming there is no local work you need. |
 | Remove external runtimes | Use each runtime's own uninstall docs | Talking Pets should not remove VOICEVOX, Irodori, Docker, Python, or API secrets for the user. |
 
-## Dry-Run Helper
+## Maintenance Helper
 
-The current helper is intentionally dry-run only:
+The update helper can run the safe dependency refresh:
+
+```bash
+npm run maintenance:plan -- --update
+```
+
+Preview the same ownership boundary without changing files:
 
 ```bash
 npm run maintenance:plan -- --update --dry-run
 npm run maintenance:plan -- --uninstall --dry-run
 ```
 
-It prints:
+Dry-run output prints:
 
 - files that would be kept
 - files that could be removed
@@ -91,4 +103,4 @@ It prints:
 - API secret locations that are unknown or user-managed
 - rollback step for any config rewrite
 
-Stop before adding real actions if a helper would delete files without showing the exact path first.
+Uninstall automation is still dry-run only. Stop before adding destructive actions if a helper would delete files without showing the exact path first.

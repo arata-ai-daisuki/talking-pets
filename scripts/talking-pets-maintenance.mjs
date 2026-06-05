@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 
-import { existsSync } from "node:fs";
+import { chmodSync, copyFileSync, existsSync, mkdtempSync, rmSync } from "node:fs";
+import { spawnSync } from "node:child_process";
+import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -51,6 +53,11 @@ const sections = [
 
 function main(argv = process.argv.slice(2)) {
   const options = parseOptions(argv);
+  if (!options.dryRun) {
+    const result = runMaintenance(options);
+    process.stdout.write(formatRunResult(result));
+    return;
+  }
   const plan = maintenancePlan(options);
   const output = options.format === "json" ? `${JSON.stringify(plan, null, 2)}\n` : formatMarkdown(plan);
   process.stdout.write(output);
@@ -94,8 +101,8 @@ function parseOptions(argv) {
     }
   }
 
-  if (!options.dryRun) {
-    throw new Error("maintenance actions are dry-run only; pass --dry-run");
+  if (!options.dryRun && options.action !== "update") {
+    throw new Error("only --update can run without --dry-run; uninstall remains dry-run only");
   }
   return options;
 }
@@ -103,13 +110,15 @@ function parseOptions(argv) {
 function maintenancePlan(options) {
   return {
     action: options.action,
-    dryRun: true,
+    dryRun: options.dryRun,
     repoRoot: ".",
     detected: {
       localConfig: existsSync(join(repoRoot, ".talking-pets.local.env")),
       nodeModules: existsSync(join(repoRoot, "node_modules")),
     },
-    warning: "No files are changed or deleted by this command.",
+    warning: options.dryRun
+      ? "No files are changed or deleted by this command."
+      : "Update will preserve config, run npm ci, and refresh executable script bits. It will not update external runtimes or delete files.",
     sections: sections.map(section => ({
       title: section.title,
       items: section.rows.map(([item, path, note]) => ({ item, path, note })),
@@ -117,9 +126,57 @@ function maintenancePlan(options) {
   };
 }
 
+function runMaintenance(options, runner = spawnSync) {
+  if (options.action !== "update") {
+    throw new Error("only update maintenance can run");
+  }
+
+  const steps = [];
+  const configPath = join(repoRoot, ".talking-pets.local.env");
+  const backupPath = join(repoRoot, ".talking-pets.local.env.backup");
+
+  if (existsSync(configPath)) {
+    copyFileSync(configPath, backupPath);
+    steps.push({ step: "backup-config", status: "ok", path: ".talking-pets.local.env.backup" });
+  } else {
+    steps.push({ step: "backup-config", status: "skipped", reason: "no .talking-pets.local.env" });
+  }
+
+  const npmCacheDir = mkdtempSync(join(tmpdir(), "talking-pets-npm-cache-"));
+  try {
+    const npmResult = runner(npmCommand(), ["--cache", npmCacheDir, "ci"], {
+      cwd: repoRoot,
+      stdio: "inherit",
+      shell: shouldUseShellForNPM(),
+    });
+    if (npmResult.error) {
+      throw new Error(`npm ci failed to start: ${npmResult.error.code ?? npmResult.error.message}`);
+    }
+    if (npmResult.status !== 0) {
+      throw new Error(`npm ci exited ${npmResult.status ?? npmResult.signal ?? "unknown"}`);
+    }
+  } finally {
+    rmSync(npmCacheDir, { recursive: true, force: true });
+  }
+  steps.push({ step: "npm-ci", status: "ok", path: "temporary npm cache" });
+
+  for (const path of ["check.command", "check.sh", "install.command", "install.sh", "scripts/pet-rollout-monitor.command", "scripts/pet-rollout-monitor-node.command", "start-selected-tts.command", "start-selected-tts.sh"]) {
+    chmodSync(join(repoRoot, path), 0o755);
+    steps.push({ step: "chmod", status: "ok", path });
+  }
+
+  return {
+    action: "update",
+    dryRun: false,
+    repoRoot: ".",
+    steps,
+    next: "Run npm run check:all before sharing results.",
+  };
+}
+
 function formatMarkdown(plan) {
   const lines = [
-    `# Talking Pets maintenance ${plan.action} dry-run`,
+    `# Talking Pets maintenance ${plan.action}${plan.dryRun ? " dry-run" : ""}`,
     "",
     plan.warning,
     "",
@@ -135,16 +192,42 @@ function formatMarkdown(plan) {
   return `${lines.join("\n")}\n`;
 }
 
+function formatRunResult(result) {
+  const lines = [
+    "# Talking Pets maintenance update",
+    "",
+    "Update completed.",
+    "",
+    "| Step | Status | Detail |",
+    "| --- | --- | --- |",
+  ];
+  for (const step of result.steps) {
+    lines.push(`| ${cell(step.step)} | ${cell(step.status)} | ${cell(step.path ?? step.reason ?? "")} |`);
+  }
+  lines.push("", result.next, "");
+  return `${lines.join("\n")}\n`;
+}
+
 function cell(value) {
   return String(value).replaceAll("|", "\\|");
 }
 
 function printUsage() {
   console.log(`Usage:
+  node scripts/talking-pets-maintenance.mjs --update
   node scripts/talking-pets-maintenance.mjs --update --dry-run [--format markdown|json]
   node scripts/talking-pets-maintenance.mjs --uninstall --dry-run [--format markdown|json]
 
-This command only prints a plan. It never deletes files, downloads runtimes, or edits config.`);
+Update preserves local config, runs npm ci, and refreshes executable script bits.
+Uninstall is dry-run only. This command never deletes files or manages external runtimes.`);
+}
+
+function npmCommand() {
+  return process.platform === "win32" ? "npm.cmd" : "npm";
+}
+
+function shouldUseShellForNPM() {
+  return process.platform === "win32";
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
@@ -153,6 +236,8 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
 
 export {
   formatMarkdown,
+  formatRunResult,
   maintenancePlan,
   parseOptions,
+  runMaintenance,
 };

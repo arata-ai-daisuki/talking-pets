@@ -375,6 +375,24 @@ npm run monitor:node -- --tts irodori --no-language-route --irodori-url http://1
 npm run tts:irodori -- --health --url http://127.0.0.1:8088
 ```
 
+OpenAI互換のローカル音声endpoint:
+
+```bash
+npm run monitor:node -- --tts openai-compatible-local --no-language-route --openai-compatible-local-url http://127.0.0.1:8089 --openai-compatible-local-model tts-1 --openai-compatible-local-voice default --skip-existing
+npm run tts:openai-compatible-local -- --health --url http://127.0.0.1:8089
+```
+
+このproviderは `localhost` / `127.0.0.1` / `::1` のみ受け付けます。リモートAPIやAPI keyを使う経路は別の明示opt-inとして扱います。
+
+OpenAI Audio speech API（明示opt-inのみ）:
+
+```bash
+npm run tts:openai-api -- --dry-run
+OPENAI_API_KEY="<your-api-key>" npm run monitor:node -- --tts openai-tts-api --api-opt-in --openai-tts-api-model gpt-4o-mini-tts --openai-tts-api-voice alloy --skip-existing
+```
+
+この経路では読み上げるtextがOpenAI APIへ送信され、API billingが発生する可能性があります。`OPENAI_API_KEY` は環境変数で渡し、`.talking-pets.local.env`、preferences JSON、README、issue、ログには保存しないでください。OpenAIのSpeech endpointは `/v1/audio/speech` で、`gpt-4o-mini-tts` / `tts-1` / `tts-1-hd` などのTTS modelと `alloy` などのvoiceを使います。詳細は [OpenAI Text to speech guide](https://platform.openai.com/docs/guides/text-to-speech) と [Audio API reference](https://platform.openai.com/docs/api-reference/audio/create) を確認してください。
+
 OS標準音声:
 
 ```bash
@@ -412,7 +430,7 @@ macOS安定版のSwift monitorで同じ確認をする場合は、`npm run monit
 保存済み設定から言語を固定したい場合は、`TALKING_PETS_SPEECH_LANGUAGE="ja|en|ko|zh|other"` を設定できます。
 `TALKING_PETS_SAY_VOICE` はmacOS `say` のvoice名です。Windows `System.Speech` と Linux `espeak` では、現在この値はvoice選択に使われません。
 
-ユーザーの好みをJSONで試したい場合は [presets/preferences.local-first.json](presets/preferences.local-first.json) を使えます。API keyやsecretは入れず、provider優先度、声、速度/品質の希望、API opt-inの有無だけを表現します。
+ユーザーの好みをJSONで試したい場合は [presets/preferences.local-first.json](presets/preferences.local-first.json) を使えます。API keyやsecretは入れず、provider優先度、声、速度/品質の希望、API opt-inの有無だけを表現します。`apiOptIn: true` は送信許可のスイッチだけで、API key本体は読みません。
 
 ```bash
 npm run monitor:node -- --once --dry-run --diagnose-routing --preferences presets/preferences.local-first.json --rollout test/fixtures/ko-zh-rollout.jsonl
@@ -432,12 +450,12 @@ npm run monitor:node -- --once --dry-run --diagnose-routing --preferences preset
 - `[wait] Codex thread not found`: Codex Desktop / Codex CLI がローカル会話ログを保存しているか確認してください。
 - `[wait] rollout unreadable`: rollout JSONL のパスが存在するか、`CODEX_HOME` が通常と違わないか確認してください。
 - `--interval` / `--rate` / `--max-source-chars` のエラー: 数値には正の値を指定してください。`--max-source-chars` は正の整数だけ受け付けます。
-- `--tts` / `--speech-language` のエラー: `--tts auto|voicevox|voicebox|kokoro|irodori|say`、`--speech-language auto|ja|en|ko|zh|other` のいずれかを指定してください。
+- `--tts` / `--speech-language` のエラー: `--tts auto|voicevox|voicebox|kokoro|irodori|openai-compatible-local|openai-tts-api|say`、`--speech-language auto|ja|en|ko|zh|other` のいずれかを指定してください。
 - `npm run check:config` のURL / speaker / voiceエラー: `TALKING_PETS_VOICEVOX_URL` は `http://` または `https://` のURL、`TALKING_PETS_VOICEVOX_SPEAKER` は数値、`TALKING_PETS_VOICEBOX_MODE` は `voicevox` または `generic`、Kokoro / say / Voicebox profile / language は空でない値にしてください。
 - 音が出ない: OSの音量、選択したTTS、VOICEVOX/Kokoroの状態、macOSの出力先を確認してください。
 - 音声再生コマンドが見つからない: `npm run check:audio` を実行し、macOSなら `afplay` / `say`、Windowsなら PowerShell / `System.Speech`、Linuxなら `aplay` / `paplay` / `ffplay` / `espeak` の状態を確認してください。
 - Kokoro初回だけ遅い: 初回モデル取得が走ります。既定の q8 モデルは約92MB級で、cache path は `~/.cache/talking-pets/transformers` です。
-- update / uninstall の前に確認したい: `npm run maintenance:plan -- --update --dry-run` または `npm run maintenance:plan -- --uninstall --dry-run` で、保持される設定、削除候補、外部runtime、cache、rollbackを確認できます。このコマンドは削除を実行しません。
+- update / uninstall の前に確認したい: `npm run maintenance:plan -- --update --dry-run` または `npm run maintenance:plan -- --uninstall --dry-run` で、保持される設定、削除候補、外部runtime、cache、rollbackを確認できます。安全な更新を実行する場合は `npm run maintenance:plan -- --update` を使います。uninstall はまだ dry-run only です。
 
 ## Language And Device Limits
 
