@@ -5,7 +5,7 @@ goal:
   slug: "talking-pets-skill-growth-map"
   kind: recovery
   tranche: "検証設計、公開 docs 同期、small-PR preflight を branch 単位で育てる。"
-  status: active
+  status: done
   oracle:
     signal: "各スキルが専用 branch と artifact に落ち、次の 1 手が明文化されている。"
     cadence: "branch を切るたび"
@@ -44,7 +44,7 @@ agents:
   worker: installed
   judge: installed
 
-active_task: T004
+active_task: null
 
 tasks:
   - id: T001
@@ -163,7 +163,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "白瀬 怜奈"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "preflight kit branch で、5分 preflight と赤信号表を作る。"
     depends_on:
@@ -175,3 +175,29 @@ tasks:
       - "preflight template"
       - "red-flag table"
       - "stage-before-check commands"
+    receipt:
+      result: done
+      decision: pr_preflight_kit_v1
+      full_outcome_complete: true
+      summary: "5分preflight、red flag表、change type別command set、PR body snippetを追加した。"
+      note: "notes/T004-pr-preflight-kit.md"
+      changed_files:
+        - "docs/pr-preflight-kit.md"
+        - "docs/public-repo-review-checklist.md"
+        - ".github/pull_request_template.md"
+        - "package.json"
+        - "scripts/check-npm-pack.mjs"
+        - "docs/goals/talking-pets-skill-growth-map/state.yaml"
+        - "docs/goals/talking-pets-skill-growth-map/notes/T004-pr-preflight-kit.md"
+        - "implementation-notes.md"
+      commands:
+        - cmd: "ruby -e 'require \"yaml\"; YAML.load_file(\"docs/goals/talking-pets-skill-growth-map/state.yaml\"); puts \"yaml: ok\"'"
+          status: pass
+        - cmd: "npm run check:docs"
+          status: pass
+        - cmd: "npm run check:pack"
+          status: pass
+        - cmd: "node --check scripts/check-npm-pack.mjs"
+          status: pass
+        - cmd: "npm run check:release"
+          status: pass
