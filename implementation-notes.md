@@ -971,3 +971,9 @@
 - 検証設計スキルの最初の artifact として `docs/verification-matrix.md` を追加し、routine local proof、stateful local proof、audible real-device proof、sandbox-sensitive checks、opt-in external boundaries を分けた。
 - `docs/public-repo-review-checklist.md` と `docs/install-update-uninstall.md` から matrix へ辿れるようにし、package allowlist にも追加した。公開レビューやinstall/update系PRで、fixture proof と real-device evidence を混同しないため。
 - これは docs / verification planning の追加であり、paid API call、destructive uninstall、Windows / Linux platform claim の変更はしていない。
+
+## 2026-06-12 Release Doc Sync Matrix
+
+- 公開 docs 同期スキルの artifact として `docs/release-doc-sync-matrix.md` を追加し、public wording、release evidence、install/update、package scope、provider boundary、multilingual wording、sanitizer、issue intake の同期先を整理した。
+- `.github/pull_request_template.md` と `docs/public-repo-review-checklist.md` から matrix へ辿れるようにし、package allowlist と npm pack guard にも追加した。
+- これは docs 同期の作業導線追加であり、README claim、Windows / Linux platform status、issue template field は変更していない。
