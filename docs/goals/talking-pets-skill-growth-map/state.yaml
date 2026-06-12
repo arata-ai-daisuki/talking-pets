@@ -1,0 +1,125 @@
+version: 2
+
+goal:
+  title: "Talking Pets スキル育成順マップ"
+  slug: "talking-pets-skill-growth-map"
+  kind: recovery
+  tranche: "検証設計、公開 docs 同期、small-PR preflight を branch 単位で育てる。"
+  status: active
+  oracle:
+    signal: "各スキルが専用 branch と artifact に落ち、次の 1 手が明文化されている。"
+    cadence: "branch を切るたび"
+    final_proof: "3つの中核スキルが branch ベースで artifact 化される。"
+  intake:
+    original_request: "週ごとといわず、どんどんブランチ切って作っていって。"
+    interpreted_outcome: "育成順マップを先に固定し、その順で専用 branch を切って artifact を作っていく。"
+    input_shape: recovery
+    audience: "ARATA / future Codex worker"
+    authority: requested
+    proof_type: artifact
+    completion_proof: "育成順、branch 名、各 branch の目的と完了条件が repo 内に残る。"
+    likely_misfire: "一般論の学習計画で終わる、または1 branch に複数スキルを混ぜる。"
+    blind_spots_considered:
+      - "verification boundary を docs 作業より後回しにするリスク"
+      - "README / release / issue template drift を再発させるリスク"
+      - "preflight 不足で private path や claim 過大を再発させるリスク"
+
+rules:
+  pm_owns_state: true
+  one_active_task: true
+  max_write_workers: 1
+  no_implementation_without_worker_or_pm_task: true
+  no_completion_without_judge_or_pm_audit: true
+  planning_is_not_completion: true
+  queued_required_worker_blocks_completion: true
+  continuous_until_full_outcome: true
+  missing_input_or_credentials_do_not_stop_goal: true
+  preserve_and_validate_existing_plan: true
+  intake_misfire_must_be_audited: true
+  goal_pressure_requires_oracle: true
+  no_completion_on_weak_proof: true
+
+agents:
+  scout: installed
+  worker: installed
+  judge: installed
+
+active_task: T002
+
+tasks:
+  - id: T001
+    type: judge
+    assignee: Judge
+    owner_role: "相庭 愛"
+    status: done
+    reasoning_hint: high
+    objective: "直近 PR / review / CI follow-up をもとに、育てる順と次に切る branch を固定する。"
+    expected_output:
+      - "育成順マップ"
+      - "branch sequence"
+      - "根拠メモ"
+    receipt:
+      result: done
+      decision: skill_growth_map_v1
+      full_outcome_complete: false
+      summary: "検証設計、公開 docs 同期、small-PR preflight の順に育てる方針を固定し、次に切る branch を定義した。"
+      note: "notes/T001-skill-growth-map-v1.md"
+      changed_files:
+        - "docs/goals/talking-pets-skill-growth-map/goal.md"
+        - "docs/goals/talking-pets-skill-growth-map/state.yaml"
+        - "docs/goals/talking-pets-skill-growth-map/notes/T001-skill-growth-map-v1.md"
+        - "implementation-notes.md"
+      commands:
+        - cmd: "ruby -e 'require \"yaml\"; YAML.load_file(\"docs/goals/talking-pets-skill-growth-map/state.yaml\"); puts \"yaml: ok\"'"
+          status: pass
+
+  - id: T002
+    type: worker
+    assignee: Worker
+    owner_role: "白瀬 怜奈"
+    status: active
+    reasoning_hint: default
+    objective: "verification matrix branch で、sandbox内 / sandbox外 / dry-run代替の verify path を artifact 化する。"
+    depends_on:
+      - T001
+    constraints:
+      - "実際の paid API call をしない。"
+      - "destructive uninstall をしない。"
+    expected_output:
+      - "verification matrix doc"
+      - "command inventory"
+      - "boundary checklist"
+
+  - id: T003
+    type: worker
+    assignee: Worker
+    owner_role: "言守 詞葉"
+    status: queued
+    reasoning_hint: default
+    objective: "release-doc sync branch で、README / README.en / verification / release / issue template の同期表を作る。"
+    depends_on:
+      - T002
+    constraints:
+      - "新しい claim を足さない。"
+      - "実装と無関係な docs polish を広げない。"
+    expected_output:
+      - "doc sync matrix"
+      - "claim-change checklist"
+      - "file touch map"
+
+  - id: T004
+    type: worker
+    assignee: Worker
+    owner_role: "白瀬 怜奈"
+    status: queued
+    reasoning_hint: default
+    objective: "preflight kit branch で、5分 preflight と赤信号表を作る。"
+    depends_on:
+      - T003
+    constraints:
+      - "既存 PR template をいきなり大改造しない。"
+      - "抽象論だけで終わらずコマンドと確認観点を残す。"
+    expected_output:
+      - "preflight template"
+      - "red-flag table"
+      - "stage-before-check commands"
