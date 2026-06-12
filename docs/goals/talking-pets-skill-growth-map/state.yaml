@@ -44,7 +44,7 @@ agents:
   worker: installed
   judge: installed
 
-active_task: T002
+active_task: T003
 
 tasks:
   - id: T001
@@ -77,7 +77,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "白瀬 怜奈"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "verification matrix branch で、sandbox内 / sandbox外 / dry-run代替の verify path を artifact 化する。"
     depends_on:
@@ -89,12 +89,38 @@ tasks:
       - "verification matrix doc"
       - "command inventory"
       - "boundary checklist"
+    receipt:
+      result: done
+      decision: verification_matrix_v1
+      full_outcome_complete: true
+      summary: "routine local proof、stateful/real-device proof、sandbox-sensitive checks、opt-in external boundariesを1つのmatrixに整理した。"
+      note: "notes/T002-verification-matrix.md"
+      changed_files:
+        - "docs/verification-matrix.md"
+        - "docs/public-repo-review-checklist.md"
+        - "docs/install-update-uninstall.md"
+        - "package.json"
+        - "scripts/check-npm-pack.mjs"
+        - "docs/goals/talking-pets-skill-growth-map/state.yaml"
+        - "docs/goals/talking-pets-skill-growth-map/notes/T002-verification-matrix.md"
+        - "implementation-notes.md"
+      commands:
+        - cmd: "ruby -e 'require \"yaml\"; YAML.load_file(\"docs/goals/talking-pets-skill-growth-map/state.yaml\"); puts \"yaml: ok\"'"
+          status: pass
+        - cmd: "npm run check:docs"
+          status: pass
+        - cmd: "npm run check:pack"
+          status: pass
+        - cmd: "node --check scripts/check-npm-pack.mjs"
+          status: pass
+        - cmd: "npm run check:release"
+          status: pass
 
   - id: T003
     type: worker
     assignee: Worker
     owner_role: "言守 詞葉"
-    status: queued
+    status: active
     reasoning_hint: default
     objective: "release-doc sync branch で、README / README.en / verification / release / issue template の同期表を作る。"
     depends_on:

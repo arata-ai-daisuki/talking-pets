@@ -35,6 +35,7 @@
     "docs/public-repo-review-checklist.md",
     "docs/real-device-verification.md",
     "docs/release-notes-template.md",
+    "docs/verification-matrix.md",
     "docs/verification-status.md",
     "install.command",
     "install.ps1",
