@@ -965,3 +965,9 @@
 - 直近の PR `#175` から `#182` と、`docs/goals/talking-pets-hq-japanese/notes/T009-T011`、`T068-pr9-ci-followup.md` を見て、次に育てるスキルを `検証設計 -> 公開 docs 同期 -> small-PR preflight` の順に固定した。
 - 理由は、sandbox / localhost / dry-run / installer / opt-in API の verify path を先に切れないと、README / release / issue template の更新も自信を持って出しにくいから。
 - docs 側では新しい一般論ページを root に増やさず、既存の GoalBuddy 流儀に合わせて `docs/goals/talking-pets-skill-growth-map/` を追加した。次の worker が branch 名、対象ファイル、done 条件をそのまま拾えるようにするため。
+
+## 2026-06-12 Verification Matrix
+
+- 検証設計スキルの最初の artifact として `docs/verification-matrix.md` を追加し、routine local proof、stateful local proof、audible real-device proof、sandbox-sensitive checks、opt-in external boundaries を分けた。
+- `docs/public-repo-review-checklist.md` と `docs/install-update-uninstall.md` から matrix へ辿れるようにし、package allowlist にも追加した。公開レビューやinstall/update系PRで、fixture proof と real-device evidence を混同しないため。
+- これは docs / verification planning の追加であり、paid API call、destructive uninstall、Windows / Linux platform claim の変更はしていない。

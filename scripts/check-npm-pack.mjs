@@ -9,7 +9,7 @@ import { documentAnchors, documentLinks, shouldSkip, splitTarget } from "./check
 
 const scriptPath = fileURLToPath(import.meta.url);
 const maxPackageSize = 600_000;
-const maxEntryCount = 71;
+const maxEntryCount = 72;
 const publicFixtureRollouts = new Set([
   "test/fixtures/assistant-rollout.jsonl",
   "test/fixtures/mixed-ja-en-rollout.jsonl",
@@ -36,6 +36,7 @@ const requiredPaths = [
   "docs/public-repo-review-checklist.md",
   "docs/real-device-verification.md",
   "docs/release-notes-template.md",
+  "docs/verification-matrix.md",
   "docs/verification-status.md",
   "install.command",
   "install.ps1",

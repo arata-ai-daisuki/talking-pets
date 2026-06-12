@@ -23,6 +23,8 @@ This page defines the current safe boundary for Talking Pets install, update, an
 
 Use this flow before changing installer scripts or asking users to update:
 
+For PR verification, first check the [Verification Matrix](verification-matrix.md) so routine local checks, sandbox-sensitive checks, and real-device evidence are recorded separately.
+
 1. Check for local config:
 
 ```bash
