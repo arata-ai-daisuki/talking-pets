@@ -959,3 +959,9 @@
 - `docs/release-notes/weekly-2026-06-05-to-2026-06-12.md` を追加し、2026-06-05 00:00 JST から 2026-06-12 23:59 JST までに merge された PR だけで週次リリースノート草案を作成した。
 - 根拠は `gh pr list --state merged --search "merged:2026-06-05..2026-06-12"` と同期間の `git log` に限定し、本文では PR タイトルと PR 本文の Summary / Verification に明記された内容だけを使った。
 - merged PR 本文で数値指標を確認できなかったため、指標セクションは入れていない。
+
+## 2026-06-12 Skill Growth Map
+
+- 直近の PR `#175` から `#182` と、`docs/goals/talking-pets-hq-japanese/notes/T009-T011`、`T068-pr9-ci-followup.md` を見て、次に育てるスキルを `検証設計 -> 公開 docs 同期 -> small-PR preflight` の順に固定した。
+- 理由は、sandbox / localhost / dry-run / installer / opt-in API の verify path を先に切れないと、README / release / issue template の更新も自信を持って出しにくいから。
+- docs 側では新しい一般論ページを root に増やさず、既存の GoalBuddy 流儀に合わせて `docs/goals/talking-pets-skill-growth-map/` を追加した。次の worker が branch 名、対象ファイル、done 条件をそのまま拾えるようにするため。
