@@ -953,3 +953,9 @@
 - `scripts/talking-pets-maintenance.mjs` の `runMaintenance` にテスト用root引数を追加し、CLI挙動は変えずに一時ディレクトリ上で config backup、stubbed `npm ci`、chmod step を検査できるようにした。
 - `test/monitor.test.mjs` に localhost の偽OpenAI互換TTS serverを立てるsmoke testを追加し、`scripts/tts-openai-compatible-local.mjs` が `/v1/audio/speech` へ model/input/voice/format をPOSTし、WAVを書き出すところまで確認した。
 - sandbox内では localhost listen と npm registry access が制限されるため、最終検証は sandbox外で `npm run maintenance:plan -- --update` と `npm run check:all` を実行した。
+
+## 2026-06-12 Weekly Release Notes Draft
+
+- `docs/release-notes/weekly-2026-06-05-to-2026-06-12.md` を追加し、2026-06-05 00:00 JST から 2026-06-12 23:59 JST までに merge された PR だけで週次リリースノート草案を作成した。
+- 根拠は `gh pr list --state merged --search "merged:2026-06-05..2026-06-12"` と同期間の `git log` に限定し、本文では PR タイトルと PR 本文の Summary / Verification に明記された内容だけを使った。
+- merged PR 本文で数値指標を確認できなかったため、指標セクションは入れていない。
