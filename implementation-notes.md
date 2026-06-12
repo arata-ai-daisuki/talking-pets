@@ -977,3 +977,9 @@
 - 公開 docs 同期スキルの artifact として `docs/release-doc-sync-matrix.md` を追加し、public wording、release evidence、install/update、package scope、provider boundary、multilingual wording、sanitizer、issue intake の同期先を整理した。
 - `.github/pull_request_template.md` と `docs/public-repo-review-checklist.md` から matrix へ辿れるようにし、package allowlist と npm pack guard にも追加した。
 - これは docs 同期の作業導線追加であり、README claim、Windows / Linux platform status、issue template field は変更していない。
+
+## 2026-06-12 PR Preflight Kit
+
+- small-PR preflight / 赤信号抽出スキルの artifact として `docs/pr-preflight-kit.md` を追加し、5分preflight、red flag表、change type別command set、PR body snippet をまとめた。
+- `.github/pull_request_template.md` と `docs/public-repo-review-checklist.md` から preflight kit へ辿れるようにし、package allowlist と npm pack guard にも追加した。
+- これはPR前の作業導線追加であり、新しい platform claim、provider claim、issue template field は追加していない。

@@ -9,7 +9,7 @@ import { documentAnchors, documentLinks, shouldSkip, splitTarget } from "./check
 
 const scriptPath = fileURLToPath(import.meta.url);
 const maxPackageSize = 600_000;
-const maxEntryCount = 73;
+const maxEntryCount = 74;
 const publicFixtureRollouts = new Set([
   "test/fixtures/assistant-rollout.jsonl",
   "test/fixtures/mixed-ja-en-rollout.jsonl",
@@ -34,6 +34,7 @@ const requiredPaths = [
   "docs/demo/talking-pets-overlay-2026-05-28-frame.png",
   "docs/feature-update-voice-personalization.md",
   "docs/public-repo-review-checklist.md",
+  "docs/pr-preflight-kit.md",
   "docs/real-device-verification.md",
   "docs/release-doc-sync-matrix.md",
   "docs/release-notes-template.md",

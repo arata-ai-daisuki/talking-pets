@@ -19,6 +19,7 @@ This checklist tracks public-readiness work that should stay visible after the o
 
 - Verification planning should start from [Verification Matrix](verification-matrix.md) so routine fixture checks, stateful local checks, audible real-device checks, sandbox-sensitive checks, and opt-in external checks do not get mixed together.
 - Public wording changes should use the [Release Doc Sync Matrix](release-doc-sync-matrix.md) so README, verification status, release notes, package scope, and issue templates move together.
+- Before opening a PR, use the [PR Preflight Kit](pr-preflight-kit.md) to catch claim strength, private evidence, scope drift, and verification mismatch.
 - Codex local storage compatibility: `state_5.sqlite`, `threads.rollout_path`, rollout JSONL assistant message shapes, and mixed Japanese / English speech fixture coverage.
 - Platform check scripts should keep public-friendly fixture compatibility and fixture dry-run output; stateful Codex verification stays in `npm run check:compat`.
 - CI-only and fixture-only evidence can keep the repo release-ready, but cannot graduate Windows or Linux without audible, sanitized real-device evidence.
