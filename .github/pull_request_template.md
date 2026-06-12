@@ -20,6 +20,7 @@
 ## Documentation
 
 - [ ] Updated `README.md` and `README.en.md` together for user-facing behavior changes
+- [ ] Checked `docs/release-doc-sync-matrix.md` when changing public wording, release evidence, platform status, provider claims, or issue intake
 - [ ] Updated `CHANGELOG.md` for release-visible changes
 - [ ] Updated `implementation-notes.md` for judgment calls, compromises, or public-facing behavior changes
 - [ ] Updated `docs/verification-status.md` when verification state, release gates, or platform status changed

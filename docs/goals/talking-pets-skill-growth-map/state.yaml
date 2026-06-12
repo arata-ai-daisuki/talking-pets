@@ -44,7 +44,7 @@ agents:
   worker: installed
   judge: installed
 
-active_task: T003
+active_task: T004
 
 tasks:
   - id: T001
@@ -120,7 +120,7 @@ tasks:
     type: worker
     assignee: Worker
     owner_role: "言守 詞葉"
-    status: active
+    status: done
     reasoning_hint: default
     objective: "release-doc sync branch で、README / README.en / verification / release / issue template の同期表を作る。"
     depends_on:
@@ -132,12 +132,38 @@ tasks:
       - "doc sync matrix"
       - "claim-change checklist"
       - "file touch map"
+    receipt:
+      result: done
+      decision: release_doc_sync_matrix_v1
+      full_outcome_complete: true
+      summary: "public wording、release evidence、install/update、package scope、provider boundary、multilingual wording、sanitizer、issue intakeの同期先をmatrix化した。"
+      note: "notes/T003-release-doc-sync-matrix.md"
+      changed_files:
+        - "docs/release-doc-sync-matrix.md"
+        - "docs/public-repo-review-checklist.md"
+        - ".github/pull_request_template.md"
+        - "package.json"
+        - "scripts/check-npm-pack.mjs"
+        - "docs/goals/talking-pets-skill-growth-map/state.yaml"
+        - "docs/goals/talking-pets-skill-growth-map/notes/T003-release-doc-sync-matrix.md"
+        - "implementation-notes.md"
+      commands:
+        - cmd: "ruby -e 'require \"yaml\"; YAML.load_file(\"docs/goals/talking-pets-skill-growth-map/state.yaml\"); puts \"yaml: ok\"'"
+          status: pass
+        - cmd: "npm run check:docs"
+          status: pass
+        - cmd: "npm run check:pack"
+          status: pass
+        - cmd: "node --check scripts/check-npm-pack.mjs"
+          status: pass
+        - cmd: "npm run check:release"
+          status: pass
 
   - id: T004
     type: worker
     assignee: Worker
     owner_role: "白瀬 怜奈"
-    status: queued
+    status: active
     reasoning_hint: default
     objective: "preflight kit branch で、5分 preflight と赤信号表を作る。"
     depends_on:
