@@ -983,3 +983,9 @@
 - small-PR preflight / 赤信号抽出スキルの artifact として `docs/pr-preflight-kit.md` を追加し、5分preflight、red flag表、change type別command set、PR body snippet をまとめた。
 - `.github/pull_request_template.md` と `docs/public-repo-review-checklist.md` から preflight kit へ辿れるようにし、package allowlist と npm pack guard にも追加した。
 - これはPR前の作業導線追加であり、新しい platform claim、provider claim、issue template field は追加していない。
+
+## 2026-06-16 First Five Minutes Onboarding
+
+- 初見ユーザー導線の1本目として `README.md` / `README.en.md` に「初めての5分 / First Five Minutes」を追加し、デモ確認、macOS say の最短確認、`./check.command`、Install trouble issue への流れをREADME冒頭から辿れるようにした。
+- Windows / Linux は引き続き experimental とし、初見の安定ルートではなく実機検証entrypointとして説明した。platform status、provider support、latency claim は強めていない。
+- Quick Start の macOS say ルートを「追加インストールなしの切り分け」と明記し、公開Issueへ貼る前の `npm run sanitize:public-output` と手動確認も先に見える位置へ移した。
