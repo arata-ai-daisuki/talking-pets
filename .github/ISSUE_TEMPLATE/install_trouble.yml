@@ -47,6 +47,27 @@ body:
         - not audio-related
     validations:
       required: false
+  - type: dropdown
+    id: first_blocker
+    attributes:
+      label: First place setup stopped
+      description: Pick the earliest step that failed or became confusing.
+      options:
+        - install.command / install.ps1 / install.sh
+        - npm ci
+        - Node.js or npm version check
+        - check.command / check.ps1 / check.sh
+        - npm run check:compat
+        - npm run check:config
+        - npm run check:audio
+        - start-selected-tts
+        - VOICEVOX or Voicebox endpoint check
+        - Irodori endpoint check
+        - dry run
+        - audio plays no sound
+        - other / not sure
+    validations:
+      required: true
   - type: input
     id: config_source
     attributes:
@@ -58,7 +79,7 @@ body:
     id: check_output
     attributes:
       label: Check output
-      description: Paste `./check.command`, `.\check.ps1`, or `./check.sh` output. Remove private paths, conversation text, local env values, credentials, local SQLite DBs such as `state_5.sqlite`, private rollout JSONL, generated audio, local recordings, archives, macOS metadata, and downloaded model files first. Known public fixture rollout paths may remain visible as evidence. You can pipe check output through `npm run sanitize:public-output` before pasting.
+      description: Paste `./check.command`, `.\check.ps1`, or `./check.sh` output. Remove private paths, conversation text, local env values, credentials, local SQLite DBs such as `state_5.sqlite`, private rollout JSONL, generated audio, local recordings, archives, macOS metadata, and downloaded model files first. Known public fixture rollout paths may remain visible as evidence. You can pipe check output through `npm run sanitize:public-output` before pasting. If setup stopped before a check command could run, say that here.
       render: shell
     validations:
       required: true
@@ -74,6 +95,6 @@ body:
     id: blocker
     attributes:
       label: Where did setup stop?
-      placeholder: "install.command / install.ps1 / install.sh, npm ci, VOICEVOX or Voicebox endpoint check, dry run, start-selected-tts..."
+      placeholder: "Example: install.command finished, npm ci passed, ./check.command showed VOICEVOX not reachable, then start-selected-tts produced no sound. Or: Voicebox endpoint check failed."
     validations:
       required: true

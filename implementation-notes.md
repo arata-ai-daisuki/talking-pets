@@ -989,3 +989,9 @@
 - 初見ユーザー導線の1本目として `README.md` / `README.en.md` に「初めての5分 / First Five Minutes」を追加し、デモ確認、macOS say の最短確認、`./check.command`、Install trouble issue への流れをREADME冒頭から辿れるようにした。
 - Windows / Linux は引き続き experimental とし、初見の安定ルートではなく実機検証entrypointとして説明した。platform status、provider support、latency claim は強めていない。
 - Quick Start の macOS say ルートを「追加インストールなしの切り分け」と明記し、公開Issueへ貼る前の `npm run sanitize:public-output` と手動確認も先に見える位置へ移した。
+
+## 2026-06-17 Troubleshooting Entry
+
+- 初見ユーザー導線の2本目として `README.md` / `README.en.md` の Verify 付近に first-run troubleshooting 表を追加し、Node.js不足、VOICEVOX未起動、fixture-only check、壊れた local config、無音、公開前sanitize の最初の分岐を短く整理した。
+- `.github/ISSUE_TEMPLATE/install_trouble.yml` に `First place setup stopped` dropdown を追加し、最初に止まった場所を maintainer が先に把握できるようにした。
+- これは install / runtime behavior の変更ではなく、初見の報告導線を整える docs / issue intake 変更。Windows / Linux status、provider support、latency claim は変更していない。
