@@ -5,7 +5,7 @@ Talking Pets is a small add-on that reads Codex Pet bubbles or the latest Codex 
 It reads local conversation logs and sends short spoken lines to VOICEVOX, Kokoro, or OS speech without patching Codex or modifying a signed app bundle.
 It does not replace your existing Codex Pet. It adds a local voice layer to the pet experience you already use.
 
-Start here: [Demo recording](https://github.com/arata-ai-daisuki/talking-pets/blob/main/docs/demo/talking-pets-overlay-2026-05-28.mov) / [Quick Start](#quick-start) / [ways to help](docs/contributor-entrypoints.md) / [Open an issue](https://github.com/arata-ai-daisuki/talking-pets/issues)
+First time here: [Demo recording](https://github.com/arata-ai-daisuki/talking-pets/blob/main/docs/demo/talking-pets-overlay-2026-05-28.mov) -> [First five minutes](#first-five-minutes) -> [Quick Start](#quick-start) -> [Open an issue](https://github.com/arata-ai-daisuki/talking-pets/issues)
 
 If this looks useful, a GitHub Star helps guide the next TTS, multilingual, and latency improvements.
 
@@ -18,6 +18,17 @@ To check what is verified, what is waiting, and how to share useful evidence, st
 Latest feature update summary: [Voice Personalization Feature Update](docs/feature-update-voice-personalization.md)
 
 ![Talking Pets demo preview](assets/demo-preview.png)
+
+## First Five Minutes
+
+Start with the demo recording to see the "voice layer for Codex Pet" experience, then try the no-extra-install macOS path if it looks useful.
+
+1. Watch it: [Demo recording](https://github.com/arata-ai-daisuki/talking-pets/blob/main/docs/demo/talking-pets-overlay-2026-05-28.mov)
+2. Try the fastest path: on macOS, choose `macOS say` to test without VOICEVOX or model downloads.
+3. Check your setup: `./check.command` verifies the local environment and prints public-friendlier dry-run output.
+4. If you get stuck: open an [Install trouble issue](https://github.com/arata-ai-daisuki/talking-pets/issues/new?template=install_trouble.yml) or start from [ways to help](docs/contributor-entrypoints.md).
+
+Windows and Linux are still experimental. Treat those paths as real-device verification entrypoints rather than the most reliable first-run path.
 
 ## Demo Recording
 
@@ -112,7 +123,7 @@ Linux experimental:
 
 ## Quick Start
 
-Fast macOS path:
+For the fastest macOS check, start with these three commands:
 
 ```bash
 cd /path/to/talking-pets
@@ -121,11 +132,13 @@ cd /path/to/talking-pets
 ./start-selected-tts.command
 ```
 
-For a reproducible no-extra-install macOS say setup, feed the installer choices directly:
+If you want the shortest no-extra-install speech check, pin the installer to macOS say. This is a first-run isolation path, so it does not require VOICEVOX Engine or a Kokoro model download.
 
 ```bash
 printf 'en\n4\nKyoko\n' | ./install.command
 ```
+
+`./check.command` uses fixture-based checks, while real local Codex state verification stays in `npm run check:compat`. Before pasting output into a public issue, run it through `npm run sanitize:public-output` and manually check that private paths or conversation text are not present.
 
 The macOS installer first asks for a display language (`en` / `ja`), then lets you choose a local TTS provider. If unsure, choose `1` for automatic routing.
 
