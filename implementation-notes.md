@@ -995,3 +995,9 @@
 - 初見ユーザー導線の2本目として `README.md` / `README.en.md` の Verify 付近に first-run troubleshooting 表を追加し、Node.js不足、VOICEVOX未起動、fixture-only check、壊れた local config、無音、公開前sanitize の最初の分岐を短く整理した。
 - `.github/ISSUE_TEMPLATE/install_trouble.yml` に `First place setup stopped` dropdown を追加し、最初に止まった場所を maintainer が先に把握できるようにした。
 - これは install / runtime behavior の変更ではなく、初見の報告導線を整える docs / issue intake 変更。Windows / Linux status、provider support、latency claim は変更していない。
+
+## 2026-06-18 Contributor Paths
+
+- 初見ユーザー導線の3本目として `docs/contributor-entrypoints.md` に `Choose Your Path` を追加し、Windows、Linux、VOICEVOX、Irodori、installer feedback、local TTS provider suggestion を「自分ができる1つ」から選べる形にした。
+- README / README.en の協力導線は `docs/contributor-entrypoints.md#choose-your-path` へ向け、既存の issue #23-#26 や issue template に自然に接続するようにした。
+- これは contributor intake の整理であり、platform status、provider support、latency claim、issue template field は変更していない。
