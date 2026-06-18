@@ -2,6 +2,19 @@
 
 This page lists small, concrete ways to help Talking Pets without needing to understand the whole codebase.
 
+## Choose Your Path
+
+Pick the row that matches what you can test. One small, sanitized report is enough.
+
+| I can... | Start with | Open / update | Useful proof |
+| --- | --- | --- | --- |
+| run Talking Pets on Windows | `install.ps1`, `check.ps1`, one audible TTS command | [Windows #24](https://github.com/arata-ai-daisuki/talking-pets/issues/24) or [Platform verification](https://github.com/arata-ai-daisuki/talking-pets/issues/new?template=platform_verification.yml) | OS/version, Node/npm, sanitized check output, `audible: yes` |
+| run Talking Pets on Linux | `install.sh`, `check.sh`, one audible TTS command | [Linux #23](https://github.com/arata-ai-daisuki/talking-pets/issues/23) or [Platform verification](https://github.com/arata-ai-daisuki/talking-pets/issues/new?template=platform_verification.yml) | audio command used, sanitized output, `audible: yes` |
+| test VOICEVOX on another machine | VOICEVOX Engine plus the short latency commands | [VOICEVOX #26](https://github.com/arata-ai-daisuki/talking-pets/issues/26) | device specs, synthesis/playback timing, whether speech was audible |
+| test Irodori on another CPU/GPU | Irodori health and latency contribution commands | [Irodori #25](https://github.com/arata-ai-daisuki/talking-pets/issues/25) | backend, cold/warm state, audio duration, sanitized output |
+| try the installer as a first-time user | the installer for your OS and `./check.command` / platform equivalent | [Install trouble](https://github.com/arata-ai-daisuki/talking-pets/issues/new?template=install_trouble.yml) | first place setup stopped, check output, what felt unclear |
+| suggest a local TTS provider | provider docs, license, runtime shape, local/offline behavior | [TTS provider request](https://github.com/arata-ai-daisuki/talking-pets/issues/new?template=tts_provider_request.yml) | setup shape, CLI/HTTP interface, privacy/cache notes |
+
 ## Public Proof Hub
 
 Use this hub to see what is already evidenced, what is still waiting, and where to add useful public verification.
@@ -14,7 +27,7 @@ Use this hub to see what is already evidenced, what is still waiting, and where 
 | VOICEVOX / Irodori latency | [Real Device Verification](real-device-verification.md#voicevox-latency-contribution) | How to report device, timing, playback, audio duration, and sanitized output. | One machine's data is reference evidence, not a universal speed claim. |
 | Korean / Chinese evidence | [Minimal Multilingual Report Form](real-device-verification.md#minimal-multilingual-report-form) | Whether a report is fallback-only or provider-specific. | OS speech fallback is not dedicated provider support. |
 
-If you only have a few minutes, pick one row from [Best First Issues](#best-first-issues), run the smallest matching check, sanitize output, and open a public issue.
+If you only have a few minutes, pick one row from [Choose Your Path](#choose-your-path) or [Best First Issues](#best-first-issues), run the smallest matching check, sanitize output, and open a public issue.
 
 ## Best First Issues
 
