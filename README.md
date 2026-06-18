@@ -210,6 +210,19 @@ npm run check:audio
 npm run check:config
 ```
 
+### 初見トラブル切り分け
+
+最初に止まった場所だけ見れば大丈夫です。すべての確認を一度に通す必要はありません。
+
+| 表示 / 症状 | よくある意味 | 次に見る場所 |
+| --- | --- | --- |
+| `node` が見つからない、または v22 未満 | 必要な Node.js がまだ入っていません。 | Node.js 22 以上を入れてから `./check.command` を再実行 |
+| `VOICEVOX: not reachable` | VOICEVOX Engine が起動していません。別TTSだけ使うなら続行できます。 | VOICEVOXを使う時だけEngineを起動 |
+| `state DB check skipped (--no-state)` | `./check.command` が公開しやすいfixture確認だけを実行しています。 | 実ローカルCodex確認は `npm run check:compat` |
+| `check: failed -> fix .talking-pets.local.env` | ローカル設定ファイルの値が壊れている可能性があります。 | `./install.command` を再実行、または `npm run check:config` |
+| 音が出ない | 再生コマンドか選択TTSの問題かもしれません。 | `npm run check:audio` と [Install trouble issue](https://github.com/arata-ai-daisuki/talking-pets/issues/new?template=install_trouble.yml) |
+| Issueへ貼るログにパスや会話文がある | 公開前に伏せる必要があります。 | `./check.command 2>&1 | npm run sanitize:public-output` |
+
 成功時の目安:
 
 ```text

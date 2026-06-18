@@ -233,6 +233,19 @@ Before pasting logs into a public issue, you can run them through the sanitizer.
 ./check.command 2>&1 | npm run sanitize:public-output
 ```
 
+### First-Run Troubleshooting
+
+Start from the first place that stopped. You do not need to make every check pass at once.
+
+| Output / symptom | Common meaning | Next place to look |
+| --- | --- | --- |
+| `node` is missing or below v22 | The required Node.js version is not installed yet. | Install Node.js 22 or later, then rerun `./check.command` |
+| `VOICEVOX: not reachable` | VOICEVOX Engine is not running. You can continue if you use another TTS path. | Start VOICEVOX Engine only when using VOICEVOX |
+| `state DB check skipped (--no-state)` | `./check.command` is running public-friendlier fixture checks only. | Use `npm run check:compat` for real local Codex state |
+| `check: failed -> fix .talking-pets.local.env` | The local config file may contain an invalid value. | Rerun `./install.command`, or inspect `npm run check:config` |
+| No sound plays | The playback command or selected TTS path may need checking. | Run `npm run check:audio` and open an [Install trouble issue](https://github.com/arata-ai-daisuki/talking-pets/issues/new?template=install_trouble.yml) |
+| Logs contain paths or conversation text | They need to be redacted before posting publicly. | Run `./check.command 2>&1 | npm run sanitize:public-output` |
+
 Check compatibility with the current Codex local storage shape:
 
 ```bash
